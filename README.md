@@ -33,3 +33,4 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
+<img src='https://raw.githubusercontent.com/AdrianAntico/QuickEcharts/main/Images/Histogram.PNG' align='center' width='1000' />
