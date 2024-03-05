@@ -34,4 +34,5 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
+#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/Images/Histogram.PNG" align="center" width="800" />
