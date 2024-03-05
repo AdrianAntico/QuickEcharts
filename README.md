@@ -2,18 +2,17 @@
 Create Echart plots in a single simple function call, with internal data wrangling via polars
 
 ```python
-
 # Environment
 import pkg_resources
 import polars as pl
-from QuickEcharts import Histogram
+from QuickEcharts import Histogram as h
 
 # Pull Data from Package
 FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
 data = pl.read_csv(FilePath)
 
 # Create Histogram Plot in Jupyter Lab
-p1 = Histogram(
+p1 = h.Histogram(
   Notebook = 'jupyter_lab',
   dt = data,
   SampleSize = 100000,
@@ -31,4 +30,4 @@ p1 = Histogram(
 p1.load_javascript()
 p1.render_notebook()
 ```
-pip install git+https://github.com/AdrianAntico/QuickEcharts.git#egg=quickecharts
+

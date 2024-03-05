@@ -140,7 +140,7 @@ def Histogram(Notebook = 'jupyter_lab',
     )
     
     # Series Options
-    if not HLine is None:
+    if not HorizonalLine is None:
         c = c.set_series_opts(
             markline_opts = opts.MarkLineOpts(
                data = [opts.MarkLineItem(y = HorizonalLine, name = HorizonalLineName)]
@@ -153,3 +153,32 @@ def Histogram(Notebook = 'jupyter_lab',
 # hist.load_javascript()
 # hist.render_notebook()
 # pkg_resources.resource_filename
+
+
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Histogram as h
+
+# Pull Data from Package
+FilePath = FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"# pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
+data = pl.read_csv(FilePath)
+
+# Create Histogram Plot in Jupyter Lab
+p1 = h.Histogram(
+  Notebook = 'jupyter_lab',
+  dt = data,
+  SampleSize = 100000,
+  YVar = "Daily Liters",
+  GroupVar = None,
+  YVarTrans = "sqrt",
+  Title = 'Histogram Plot',
+  Theme = 'wonderland',
+  NumberBins = 20,
+  CategoryGap = "10%",
+  HorizonalLine = 500,
+  HorizonalLineName = 'Yaxis Value')
+
+# To display in jupyter lab
+p1.load_javascript()
+p1.render_notebook()
