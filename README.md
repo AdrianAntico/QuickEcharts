@@ -35,4 +35,4 @@ p1.render_notebook()
 ```
 
 #### Jupyter Lab View
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/Images/Histogram.PNG" align="center" width="800" />
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Histogram.PNG" align="center" width="800" />
