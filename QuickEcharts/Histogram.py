@@ -136,8 +136,8 @@ def Histogram(Notebook = 'jupyter_lab',
     c = c.set_global_opts(
         title_opts = opts.TitleOpts(title = Title),
         xaxis_opts = opts.AxisOpts(name = XAxisTitle),
-        toolbox_opts=opts.ToolboxOpts(),
-        brush_opts=opts.BrushOpts(),
+        toolbox_opts = opts.ToolboxOpts(),
+        brush_opts = opts.BrushOpts(),
         datazoom_opts = [
           opts.DataZoomOpts(
             range_start = 0,
