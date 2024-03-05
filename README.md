@@ -26,8 +26,10 @@ p1 = h.Histogram(
   HorizonalLine = 500,
   HorizonalLineName = 'Yaxis Value')
 
-# To display in jupyter lab
+# Needed to display
 p1.load_javascript()
+
+# In a new cell
 p1.render_notebook()
 ```
 
