@@ -1,0 +1,18 @@
+# build-system.requires gives a list of packages that 
+# are needed to build your package. Listing something here will only make 
+# it available during the build, not after it is installed.
+
+# build-system.build-backend is the name of Python object that will be
+# used to perform the build. If you were to use a different build 
+# system, such as flit or poetry, those would go here, and the 
+# configuration details would be completely different than 
+# the setuptools configuration described below.
+
+[build-system]
+
+# package for installing RetroFit (won't be available after install)
+requires = [
+    "setuptools>=42",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
