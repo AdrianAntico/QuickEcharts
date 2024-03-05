@@ -7,6 +7,7 @@ def Histogram(Notebook = 'jupyter_lab',
               GroupVar = None,
               YVarTrans = "Identity", # Log, Sqrt, Asinh
               Title = 'Histogram',
+              XAxisTitle = None,
               Theme = 'wonderland',
               NumberBins = 20,
               CategoryGap = "10%",
@@ -21,6 +22,7 @@ def Histogram(Notebook = 'jupyter_lab',
     GroupVar: grouping variable for histogram
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, sqrt, and asinh
     Title: title of plot in quotes
+    XAxisTitle: Title for the XAxis. If none, then YVar will be the Title
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
     NumberBins: number of histogram bins. Default is 20
     CategoryGap: amount of spacing between bars
@@ -51,13 +53,16 @@ def Histogram(Notebook = 'jupyter_lab',
     # HorizonalLine = 500
     # HorizonalLineName = 'Yo Yo Daddyo'
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
+    
+    if XAxisTitle == None:
+      XAxisTitle = YVar
 
     # Cap number of records and define dt1
-    if SampleSize == None:
-      SampleSize = 100000
-
-    if dt.shape[0] > SampleSize:
-      dt1 = dt.sample(n = SampleSize, shuffle = True)
+    if SampleSize != None:
+      if dt.shape[0] > SampleSize:
+        dt1 = dt.sample(n = SampleSize, shuffle = True)
+      else:
+        dt1 = dt.clone()
     else:
       dt1 = dt.clone()
 
@@ -72,7 +77,7 @@ def Histogram(Notebook = 'jupyter_lab',
       dt1 = dt1.select([pl.col(YVar), pl.col(GroupVar)])
 
     # Transformation
-    # "Asinh"  "Log"  "LogPlus1"  "Sqrt"  "Asin"  "Logit"  "BoxCox"  "YeoJohnson"
+    # "Asinh" "Log" "Sqrt"
     trans = YVarTrans.lower()
     if trans != "identity":
       if trans == "sqrt":
@@ -126,6 +131,7 @@ def Histogram(Notebook = 'jupyter_lab',
     c = Bar(init_opts = opts.InitOpts(theme = Theme))
     c = c.add_xaxis(Buckets)
     c = c.add_yaxis('YVar', YVar, stack = "stack1", category_gap = CategoryGap)
+    c = c.yaxis_opts=opts.AxisOpts(name = XAxisTitle),
     
     # Global Options
     c = c.set_global_opts(
