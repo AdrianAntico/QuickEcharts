@@ -1,9 +1,10 @@
-# QuickECharts
+# QuickEcharts
 Create Echart plots in a single simple function call, with internal data wrangling via polars
 
 ```python
 
 # Environment
+import pkg_resources
 import polars as pl
 from QuickEcharts import Histogram
 
@@ -30,3 +31,4 @@ p1 = Histogram(
 p1.load_javascript()
 p1.render_notebook()
 ```
+pip install git+https://github.com/AdrianAntico/QuickEcharts.git#egg=quickecharts

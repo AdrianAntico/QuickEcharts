@@ -1,3 +1,5 @@
+import QuickEcharts
+
 def Histogram(Notebook = 'jupyter_lab',
               dt = None,
               SampleSize = None,
@@ -150,4 +152,4 @@ def Histogram(Notebook = 'jupyter_lab',
 # hist = Histogram(...)
 # hist.load_javascript()
 # hist.render_notebook()
-
+# pkg_resources.resource_filename
