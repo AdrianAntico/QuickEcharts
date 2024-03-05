@@ -23,6 +23,7 @@ setup(
     author=["Adrian Antico"],
     author_email="adrianantico@gmail.com",
     license="AGPL >= 3",
+    include_package_data=True,
     install_requires=required,
     classifiers=[
         "Programming Language :: Python",
