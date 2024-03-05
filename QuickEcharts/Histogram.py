@@ -131,11 +131,11 @@ def Histogram(Notebook = 'jupyter_lab',
     c = Bar(init_opts = opts.InitOpts(theme = Theme))
     c = c.add_xaxis(Buckets)
     c = c.add_yaxis('YVar', YVar, stack = "stack1", category_gap = CategoryGap)
-    c = c.yaxis_opts=opts.AxisOpts(name = XAxisTitle),
-    
+
     # Global Options
     c = c.set_global_opts(
         title_opts = opts.TitleOpts(title = Title),
+        xaxis_opts = opts.AxisOpts(name = XAxisTitle),
         toolbox_opts=opts.ToolboxOpts(),
         brush_opts=opts.BrushOpts(),
         datazoom_opts = [
