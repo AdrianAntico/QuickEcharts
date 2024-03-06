@@ -1,6 +1,6 @@
 import QuickEcharts
 
-def Histogram(Notebook = 'jupyter_lab',
+def Histogram(Render = 'jupyter_lab',
               dt = None,
               SampleSize = None,
               YVar = None,
@@ -16,7 +16,7 @@ def Histogram(Notebook = 'jupyter_lab',
     
     """
     # Parameters
-    Notebook: notebook of choice, 'jupyter_lab', 'jupyter_notebook', 'nteract', 'zeppelin'
+    Render: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     dt: polars dataframe
     YVar: numeric variable for histogram
     GroupVar: grouping variable for histogram
@@ -30,12 +30,12 @@ def Histogram(Notebook = 'jupyter_lab',
     HorizonalLineName: add a series name for the horizontal line
     """
 
-    # Notebook = 'jupyter_lab'
+    # Render = "html" 'jupyter_lab'
 
     # Load environment
-    from pyecharts.globals import CurrentConfig, NotebookType 
-    if Notebook != 'jupyter_notebook':
-      CurrentConfig.NOTEBOOK_TYPE = Notebook
+    from pyecharts.globals import CurrentConfig, RenderType 
+    if Render.lower() != 'jupyter_notebook' and Render.lower() != 'html':
+      CurrentConfig.Render_TYPE = Render.lower()
     
     from pyecharts import options as opts
     from pyecharts.charts import Bar
@@ -122,7 +122,7 @@ def Histogram(Notebook = 'jupyter_lab',
     #     temp[, Buckets := round(get(YVar) / acc) * acc]
     #     gg[[i]] = temp[, .N, by = c("Buckets",GroupVar)][order(Buckets)]
     #   
-    #   dt1 = data.table::rbindlist(gg)asdf
+    #   dt1 = data.table::rbindlist(gg)
     
     # Define data elements
     Buckets = dt1['Buckets'].to_list()
@@ -155,5 +155,31 @@ def Histogram(Notebook = 'jupyter_lab',
             ),
         )
     
+    if Render.lower() == "html":
+      c.render()
+    
     return c
+
+
+
+# Create plot
+c = Bar(init_opts = opts.InitOpts(theme = Theme))
+c = c.add_xaxis(Buckets)
+c = c.add_yaxis('YVar', YVar, stack = "stack1", category_gap = CategoryGap)
+
+# Global Options
+c = c.set_global_opts(
+    title_opts = opts.TitleOpts(title = Title),
+    xaxis_opts = opts.AxisOpts(name = XAxisTitle),
+    toolbox_opts = opts.ToolboxOpts(),
+    brush_opts = opts.BrushOpts(),
+    datazoom_opts = [
+      opts.DataZoomOpts(
+        range_start = 0,
+        range_end = 100),
+      opts.DataZoomOpts(
+        type_="inside")],
+)
+
+
 
