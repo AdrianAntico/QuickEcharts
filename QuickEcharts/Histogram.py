@@ -38,7 +38,7 @@ def Histogram(Render = 'jupyter_lab',
       CurrentConfig.Render_TYPE = Render.lower()
     
     from pyecharts import options as opts
-    from pyecharts.charts import Bar
+    from pyecharts.charts import Bar, Grid
     import polars as pl
     import math
 
@@ -159,27 +159,4 @@ def Histogram(Render = 'jupyter_lab',
       c.render()
     
     return c
-
-
-
-# Create plot
-c = Bar(init_opts = opts.InitOpts(theme = Theme))
-c = c.add_xaxis(Buckets)
-c = c.add_yaxis('YVar', YVar, stack = "stack1", category_gap = CategoryGap)
-
-# Global Options
-c = c.set_global_opts(
-    title_opts = opts.TitleOpts(title = Title),
-    xaxis_opts = opts.AxisOpts(name = XAxisTitle),
-    toolbox_opts = opts.ToolboxOpts(),
-    brush_opts = opts.BrushOpts(),
-    datazoom_opts = [
-      opts.DataZoomOpts(
-        range_start = 0,
-        range_end = 100),
-      opts.DataZoomOpts(
-        type_="inside")],
-)
-
-
 
