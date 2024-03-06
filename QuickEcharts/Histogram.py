@@ -34,7 +34,8 @@ def Histogram(Notebook = 'jupyter_lab',
 
     # Load environment
     from pyecharts.globals import CurrentConfig, NotebookType 
-    CurrentConfig.NOTEBOOK_TYPE = Notebook
+    if Notebook != 'jupyter_notebook':
+      CurrentConfig.NOTEBOOK_TYPE = Notebook
     
     from pyecharts import options as opts
     from pyecharts.charts import Bar
