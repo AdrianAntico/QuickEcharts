@@ -9,10 +9,14 @@ def FacetGridValues(FacetRows = 1, FacetCols = 1, Legend = 'top', LegendSpace = 
   FacetCols: Number of columns in the facet grid
   Legend: 'top', 'bottom', or None
   LegendSpace: numeric. Defautl is 10
-  
   """
   
-   # number of series
+  # FacetRows = 2
+  # FacetCols = 2
+  # Legend = 'top'
+  # LegendSpace = 10
+  
+  # number of series
   nseries = FacetRows * FacetCols
   
   # Specified margins
@@ -66,6 +70,7 @@ def FacetGridValues(FacetRows = 1, FacetCols = 1, Legend = 'top', LegendSpace = 
     top_pos_values[x] = margin_trbl["t"] + top_offset + (x * (height + v_panel_space))
 
   top_pos_values_rep = top_pos_values * FacetCols
+  top_pos_values_rep.sort()
 
   # Generate a vector for positions from the left
   left_pos_values = [0 for i in range(0, FacetCols)]
@@ -73,7 +78,7 @@ def FacetGridValues(FacetRows = 1, FacetCols = 1, Legend = 'top', LegendSpace = 
     left_pos_values[x] = margin_trbl["l"] + left_offset + (x * (width + h_panel_space))
 
   left_pos_values_rep = left_pos_values * FacetRows
-
+  
   return {'top': top_pos_values_rep, 'left': left_pos_values_rep, 'width': width, 'height': height}
 
 
@@ -129,7 +134,7 @@ def Histogram(Render = 'jupyter_lab',
     HorizonalLineName: add a series name for the horizontal line
     """
 
-    # Render = 'jupyter_lab' #"html"
+    # Render = "html"   'jupyter_lab'
 
     # Load environment
     from pyecharts.globals import CurrentConfig, RenderType 
@@ -144,6 +149,10 @@ def Histogram(Render = 'jupyter_lab',
     # SampleSize = 100000
     # YVar = 'Daily Liters'
     # GroupVar = 'Brand'
+    # FacetRows = 2
+    # FacetCols = 2
+    # FacetLevels = None
+    # YVarTrans = "Identity"
     # XAxisTitle = YVar
     # YVarTrans = "Identity"
     # XVarTrans = "Identity"
@@ -266,6 +275,7 @@ def Histogram(Render = 'jupyter_lab',
       return c
 
     else:
+      
       if not FacetLevels is None:
         levs = FacetLevels
       else:
@@ -290,13 +300,13 @@ def Histogram(Render = 'jupyter_lab',
           dt2 = dt2.sort("Buckets")
        
         # Define data elements
-        Buckets = dt2['Buckets'].to_list()
-        YVal = dt2[YVar].to_list()
+        Buckets = dt2['Buckets'].to_list().copy()
+        YVal = dt2[YVar].to_list().copy()
        
         # Create plot
         plot_dict[i] = Bar(init_opts = opts.InitOpts(theme = Theme))
         plot_dict[i] = plot_dict[i].add_xaxis(Buckets)
-        plot_dict[i] = plot_dict[i].add_yaxis('YVar', YVar, stack = "stack1", category_gap = CategoryGap)
+        plot_dict[i] = plot_dict[i].add_yaxis('YVar', YVal, stack = "stack1", category_gap = CategoryGap)
 
     # Setup Grid Output
     grid = Grid()
@@ -306,15 +316,15 @@ def Histogram(Render = 'jupyter_lab',
       Legend = Legend,
       LegendSpace = 10)
     counter = -1
-    for i in levs:
+    for i in levs: # i = Levs[0]
       counter += 1
       grid = grid.add(
         plot_dict[i],
         grid_opts = opts.GridOpts(
-          pos_left = facet_vals['left'][counter],
-          pos_top = facet_vals['top'][counter],
-          width = facet_vals['width'],
-          height = facet_vals['height']))
+          pos_left = f"{facet_vals['left'][counter]}%",
+          pos_top = f"{facet_vals['top'][counter]}%",
+          width = f"{facet_vals['width']}%",
+          height = f"{facet_vals['height']}%"))
 
     # Render html
     if Render.lower() == "html":
