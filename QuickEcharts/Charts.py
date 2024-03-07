@@ -313,7 +313,7 @@ def Histogram(Render = 'jupyter_lab',
           GlobalOptions['title_opts'] = opts.TitleOpts(title = Title)
   
         if not XAxisTitle is None:
-          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle)
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{XAxisTitle} - {i}")
 
         plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
 
