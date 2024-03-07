@@ -86,6 +86,9 @@ def Histogram(Render = 'jupyter_lab',
               SampleSize = None,
               YVar = None,
               GroupVar = None,
+              FacetRows = 1,
+              FacetCols = 1,
+              FacetLevels = None,
               YVarTrans = "Identity", # Log, Sqrt, Asinh
               Title = 'Histogram',
               XAxisTitle = None,
@@ -107,6 +110,9 @@ def Histogram(Render = 'jupyter_lab',
     dt: polars dataframe
     YVar: numeric variable for histogram
     GroupVar: grouping variable for histogram
+    FacetRows: Number of rows in facet grid
+    FacetCols: Number of columns in facet grid
+    FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, sqrt, and asinh
     Title: title of plot in quotes
     XAxisTitle: Title for the XAxis. If none, then YVar will be the Title
@@ -254,7 +260,10 @@ def Histogram(Render = 'jupyter_lab',
         )
 
     else:
-      levs = dt1[GroupVar].unique()
+      if not FacetLevels is None:
+        levs = FacetLevels
+      else:
+        levs = dt1[GroupVar].unique().sort()[0:(FacetCols * FacetRows)]
       plot_dict = {}
       for i in levs: # i = levs[0]
         dt2 = dt1.filter(dt1[GroupVar] == i)
@@ -283,6 +292,8 @@ def Histogram(Render = 'jupyter_lab',
         plot_dict[i] = plot_dict[i].add_xaxis(Buckets)
         plot_dict[i] = plot_dict[i].add_yaxis('YVar', YVar, stack = "stack1", category_gap = CategoryGap)
 
+  # Setup Grid Output
+  # GroupVar not None:
   if not GroupVar is None:
     grid = Grid()
     facet_vals = FacetGridValues(
