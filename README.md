@@ -19,6 +19,8 @@ pip install git+https://github.com/AdrianAntico/QuickEcharts.git#egg=quickechart
 import pkg_resources
 import polars as pl
 from QuickEcharts import Histogram as h
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
 FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
