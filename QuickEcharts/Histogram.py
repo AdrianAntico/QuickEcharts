@@ -11,6 +11,12 @@ def Histogram(Render = 'jupyter_lab',
               Theme = 'wonderland',
               NumberBins = 20,
               CategoryGap = "10%",
+              Legend = None,
+              LegendPosRight = '0%',
+              LegendPosTop = '5%',
+              ToolBox = True,
+              Brush = True,
+              DataZoom = True,
               HorizonalLine = None,
               HorizonalLineName = 'Line Name'):
     
@@ -26,6 +32,12 @@ def Histogram(Render = 'jupyter_lab',
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
     NumberBins: number of histogram bins. Default is 20
     CategoryGap: amount of spacing between bars
+    Legend: Choose from None, 'right', 'top'
+    LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
+    LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
+    ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
+    Brush: Logical. Select True for addition ToolBox functionality. Default is True
+    DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
     HorizonalLine: numeric. Add a horizontal line on the plot at the value specified
     HorizonalLineName: add a series name for the horizontal line
     """
@@ -134,19 +146,37 @@ def Histogram(Render = 'jupyter_lab',
     c = c.add_yaxis('YVar', YVar, stack = "stack1", category_gap = CategoryGap)
 
     # Global Options
-    c = c.set_global_opts(
-        title_opts = opts.TitleOpts(title = Title),
-        xaxis_opts = opts.AxisOpts(name = XAxisTitle),
-        toolbox_opts = opts.ToolboxOpts(),
-        brush_opts = opts.BrushOpts(),
-        datazoom_opts = [
+    GlobalOptions = {}
+    if Legend:
+      if Legend == 'right':
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
+      else:
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
+
+    if Title:
+      GlobalOptions['title_opts'] = opts.TitleOpts(title = Title)
+
+    if XAxisTitle:
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle)
+
+    if ToolBox:
+      GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+
+    if Brush:
+      GlobalOptions['brush_opts'] = opts.BrushOpts()
+
+    if DataZoom:
+      GlobalOptions['datazoom_opts'] = [
           opts.DataZoomOpts(
             range_start = 0,
             range_end = 100),
           opts.DataZoomOpts(
-            type_="inside")],
-    )
+            type_="inside")]
     
+    # Final Setting of Global Options
+    c = c.set_global_opts(GlobalOptions)
+
+
     # Series Options
     if not HorizonalLine is None:
         c = c.set_series_opts(

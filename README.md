@@ -37,6 +37,12 @@ p1 = h.Histogram(
   Theme = 'wonderland',
   NumberBins = 20,
   CategoryGap = "10%",
+  Legend = None,
+  LegendPosRight = '0%',
+  LegendPosTop = '5%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
   HorizonalLine = 500,
   HorizonalLineName = 'Yaxis Value')
 
