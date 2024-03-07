@@ -18,7 +18,7 @@ pip install git+https://github.com/AdrianAntico/QuickEcharts.git#egg=quickechart
 # Environment
 import pkg_resources
 import polars as pl
-from QuickEcharts import Histogram as h
+from QuickEcharts import Charts
 from pyecharts.globals import CurrentConfig, NotebookType 
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
@@ -27,7 +27,7 @@ FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData
 data = pl.read_csv(FilePath)
 
 # Create Histogram Plot in Jupyter Lab
-p1 = h.Histogram(
+p1 = Charts.Histogram(
   Notebook = 'jupyter_lab',
   dt = data,
   SampleSize = 100000,
