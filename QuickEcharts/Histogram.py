@@ -174,7 +174,7 @@ def Histogram(Render = 'jupyter_lab',
             type_="inside")]
     
     # Final Setting of Global Options
-    c = c.set_global_opts(GlobalOptions)
+    c = c.set_global_opts({GlobalOptions})
 
 
     # Series Options
