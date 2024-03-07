@@ -282,6 +282,7 @@ def Histogram(Render = 'jupyter_lab',
         levs = dt1[GroupVar].unique().sort()[0:(FacetCols * FacetRows)]
       plot_dict = {}
       for i in levs: # i = levs[0]
+        GlobalOptions = {}
         dt2 = dt1.filter(dt1[GroupVar] == i)
         Min = dt2.select(pl.min(YVar))
         Max = dt2.select(pl.max(YVar))
@@ -306,7 +307,15 @@ def Histogram(Render = 'jupyter_lab',
         # Create plot
         plot_dict[i] = Bar(init_opts = opts.InitOpts(theme = Theme))
         plot_dict[i] = plot_dict[i].add_xaxis(Buckets)
-        plot_dict[i] = plot_dict[i].add_yaxis('YVar', YVal, stack = "stack1", category_gap = CategoryGap)
+        plot_dict[i] = plot_dict[i].add_yaxis(YVar, YVal, stack = "stack1", category_gap = CategoryGap)
+
+        if not Title is None:
+          GlobalOptions['title_opts'] = opts.TitleOpts(title = Title)
+  
+        if not XAxisTitle is None:
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle)
+
+        plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
 
     # Setup Grid Output
     grid = Grid()
