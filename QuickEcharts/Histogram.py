@@ -147,25 +147,25 @@ def Histogram(Render = 'jupyter_lab',
 
     # Global Options
     GlobalOptions = {}
-    if Legend:
+    if not Legend is None:
       if Legend == 'right':
         GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
       else:
         GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
 
-    if Title:
+    if not Title is None:
       GlobalOptions['title_opts'] = opts.TitleOpts(title = Title)
 
-    if XAxisTitle:
+    if not XAxisTitle is None:
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle)
 
-    if ToolBox:
+    if not ToolBox is None:
       GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
 
-    if Brush:
+    if not Brush is None:
       GlobalOptions['brush_opts'] = opts.BrushOpts()
 
-    if DataZoom:
+    if not DataZoom is None:
       GlobalOptions['datazoom_opts'] = [
           opts.DataZoomOpts(
             range_start = 0,
