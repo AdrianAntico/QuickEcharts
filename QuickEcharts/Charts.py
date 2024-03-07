@@ -292,29 +292,29 @@ def Histogram(Render = 'jupyter_lab',
         plot_dict[i] = plot_dict[i].add_xaxis(Buckets)
         plot_dict[i] = plot_dict[i].add_yaxis('YVar', YVar, stack = "stack1", category_gap = CategoryGap)
 
-  # Setup Grid Output
-  # GroupVar not None:
-  if not GroupVar is None:
-    grid = Grid()
-    facet_vals = FacetGridValues(
-      FacetRows = FacetRows,
-      FacetCols = FacetCols,
-      Legend = Legend,
-      LegendSpace = 10)
-    counter = -1
-    for i in levs:
-      counter += 1
-      grid = grid.add(
-        plot_dict[i],
-        grid_opts = opts.GridOpts(
-          pos_left = facet_vals['left'][counter],
-          pos_top = facet_vals['top'][counter],
-          width = facet_vals['width'],
-          height = facet_vals['height']))
-
-    # Render html
-    if Render.lower() == "html":
-      c.render()
+    # Setup Grid Output
+    # GroupVar not None:
+    if not GroupVar is None:
+      grid = Grid()
+      facet_vals = FacetGridValues(
+        FacetRows = FacetRows,
+        FacetCols = FacetCols,
+        Legend = Legend,
+        LegendSpace = 10)
+      counter = -1
+      for i in levs:
+        counter += 1
+        grid = grid.add(
+          plot_dict[i],
+          grid_opts = opts.GridOpts(
+            pos_left = facet_vals['left'][counter],
+            pos_top = facet_vals['top'][counter],
+            width = facet_vals['width'],
+            height = facet_vals['height']))
+  
+      # Render html
+      if Render.lower() == "html":
+        c.render()
     
     return c
 
