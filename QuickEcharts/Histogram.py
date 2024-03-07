@@ -147,11 +147,10 @@ def Histogram(Render = 'jupyter_lab',
 
     # Global Options
     GlobalOptions = {}
-    if not Legend is None:
-      if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
-      else:
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
+    if Legend == 'right':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
+    elif Legend == 'top':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
 
     if not Title is None:
       GlobalOptions['title_opts'] = opts.TitleOpts(title = Title)
@@ -159,13 +158,13 @@ def Histogram(Render = 'jupyter_lab',
     if not XAxisTitle is None:
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle)
 
-    if not ToolBox is None:
+    if ToolBox:
       GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
 
-    if not Brush is None:
+    if Brush:
       GlobalOptions['brush_opts'] = opts.BrushOpts()
 
-    if not DataZoom is None:
+    if DataZoom:
       GlobalOptions['datazoom_opts'] = [
           opts.DataZoomOpts(
             range_start = 0,
@@ -179,11 +178,11 @@ def Histogram(Render = 'jupyter_lab',
 
     # Series Options
     if not HorizonalLine is None:
-        c = c.set_series_opts(
-            markline_opts = opts.MarkLineOpts(
-               data = [opts.MarkLineItem(y = HorizonalLine, name = HorizonalLineName)]
-            ),
-        )
+      c = c.set_series_opts(
+          markline_opts = opts.MarkLineOpts(
+             data = [opts.MarkLineItem(y = HorizonalLine, name = HorizonalLineName)]
+          ),
+      )
     
     if Render.lower() == "html":
       c.render()
