@@ -79,7 +79,7 @@ def FacetGridValues(FacetRows = 1, FacetCols = 1, Legend = 'top', LegendSpace = 
 
   left_pos_values_rep = left_pos_values * FacetRows
   
-  return {'top': top_pos_values_rep, 'left': left_pos_values_rep, 'width': width, 'height': height}
+  return {'top': top_pos_values_rep, 'left': left_pos_values_rep, 'width': width-5, 'height': height}
 
 
 # grid_vals = FacetGridValues(FacetRows = 6, FacetCols = 6, Legend = 'top', LegendSpace = 10)
@@ -310,10 +310,10 @@ def Histogram(Render = 'jupyter_lab',
         plot_dict[i] = plot_dict[i].add_yaxis(YVar, YVal, stack = "stack1", category_gap = CategoryGap)
 
         if not Title is None:
-          GlobalOptions['title_opts'] = opts.TitleOpts(title = Title)
+          GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
   
         if not XAxisTitle is None:
-          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{XAxisTitle} - {i}")
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}")
 
         plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
 
