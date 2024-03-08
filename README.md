@@ -12,7 +12,7 @@ pip install git+https://github.com/AdrianAntico/QuickEcharts.git#egg=quickechart
 ```
 
 
-### Histograms
+### Histogram
 
 ```python
 # Environment
@@ -60,3 +60,53 @@ p1.render_notebook()
 
 #### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Histogram.PNG" align="center" width="800" />
+
+
+### Histogram Facet
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Pull Data from Package
+FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
+data = pl.read_csv(FilePath)
+
+# Create Histogram Plot in Jupyter Lab
+p1 = Charts.Histogram(
+  Notebook = 'jupyter_lab',
+  dt = data,
+  SampleSize = 100000,
+  YVar = "Daily Liters",
+  GroupVar = 'Brand',
+  FacetRows = 2,
+  FacetCols = 2,
+  FacetLevels = None,
+  YVarTrans = "sqrt",
+  Title = 'Histogram Plot',
+  XAxisTitle = 'Daily Liters Buckets',
+  Theme = 'wonderland',
+  NumberBins = 20,
+  CategoryGap = "10%",
+  Legend = None,
+  LegendPosRight = '0%',
+  LegendPosTop = '5%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  HorizonalLine = 500,
+  HorizonalLineName = 'Yaxis Value')
+
+# Needed to display
+p1.load_javascript()
+
+# In a new cell
+p1.render_notebook()
+```
+
+#### Jupyter Lab View
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Histogram_Facet.PNG" align="center" width="800" />
