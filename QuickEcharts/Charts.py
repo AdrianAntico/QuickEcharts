@@ -139,6 +139,9 @@ def Histogram(dt = None,
     from pyecharts.charts import Bar, Grid
     import polars as pl
     import math
+    
+    from pyecharts.globals import CurrentConfig, NotebookType 
+    global CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
     # SampleSize = 100000
     # YVar = 'Daily Liters'
