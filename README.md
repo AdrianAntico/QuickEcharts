@@ -2,7 +2,7 @@
 
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Logo.PNG" align="center" width="800" />
 
-Create Echart plots in a single simple function call, with internal data wrangling via polars
+Create Echarts plots in a single simple function call, with internal data wrangling via polars
 
 This package is in the early stages. The idea is to design it in a similar way to my R package AutoPlots. The goal is to make plotting echarts quick and easy and to allow polars to do the heavy data wrangling work under the hood.
 
