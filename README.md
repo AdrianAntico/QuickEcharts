@@ -28,7 +28,6 @@ data = pl.read_csv(FilePath)
 
 # Create Histogram Plot in Jupyter Lab
 p1 = Charts.Histogram(
-  Notebook = 'jupyter_lab',
   dt = data,
   SampleSize = 100000,
   YVar = "Daily Liters",
@@ -37,6 +36,7 @@ p1 = Charts.Histogram(
   FacetCols = 1,
   FacetLevels = None,
   YVarTrans = "sqrt",
+  RenderHTML = False,
   Title = 'Histogram Plot',
   XAxisTitle = 'Daily Liters Buckets',
   Theme = 'wonderland',
