@@ -263,7 +263,7 @@ def Histogram(dt = None,
         )
 
       # Render html
-      if RenderHTML.lower() == "html":
+      if RenderHTML:
         c.render()
     
       return c
@@ -331,7 +331,7 @@ def Histogram(dt = None,
           height = f"{facet_vals['height']}%"))
 
     # Render html
-    if RenderHTML.lower() == "html":
+    if RenderHTML:
       grid.render()
   
     return grid
