@@ -138,8 +138,8 @@ def Histogram(Render = 'jupyter_lab',
 
     # Load environment
     from pyecharts.globals import CurrentConfig, RenderType 
-    if Render.lower() != 'jupyter_notebook' and Render.lower() != 'html':
-      CurrentConfig.Render_TYPE = Render.lower()
+    if Render.lower() != 'html':
+      global CurrentConfig.Render_TYPE = Render.lower()
 
     from pyecharts import options as opts
     from pyecharts.charts import Bar, Grid
@@ -274,6 +274,7 @@ def Histogram(Render = 'jupyter_lab',
     
       return c
 
+    # Group Variable Case
     else:
       
       if not FacetLevels is None:
