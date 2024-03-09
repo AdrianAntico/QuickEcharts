@@ -86,8 +86,7 @@ def FacetGridValues(FacetRows = 1, FacetCols = 1, Legend = 'top', LegendSpace = 
 # grid_vals['top'][0]
 
 
-def Histogram(Render = 'jupyter_lab',
-              dt = None,
+def Histogram(dt = None,
               SampleSize = None,
               YVar = None,
               GroupVar = None,
@@ -95,6 +94,7 @@ def Histogram(Render = 'jupyter_lab',
               FacetCols = 1,
               FacetLevels = None,
               YVarTrans = "Identity", # Log, Sqrt, Asinh
+              RenderHTML = False,
               Title = 'Histogram',
               XAxisTitle = None,
               Theme = 'wonderland',
@@ -111,7 +111,6 @@ def Histogram(Render = 'jupyter_lab',
     
     """
     # Parameters
-    Render: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     dt: polars dataframe
     YVar: numeric variable for histogram
     GroupVar: grouping variable for histogram
@@ -119,6 +118,7 @@ def Histogram(Render = 'jupyter_lab',
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, sqrt, and asinh
+    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Title: title of plot in quotes
     XAxisTitle: Title for the XAxis. If none, then YVar will be the Title
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
@@ -134,13 +134,7 @@ def Histogram(Render = 'jupyter_lab',
     HorizonalLineName: add a series name for the horizontal line
     """
 
-    # Render = "html"   'jupyter_lab'
-
     # Load environment
-    from pyecharts.globals import CurrentConfig, RenderType 
-    if Render.lower() != 'html':
-      global CurrentConfig.Render_TYPE = Render.lower()
-
     from pyecharts import options as opts
     from pyecharts.charts import Bar, Grid
     import polars as pl
@@ -269,7 +263,7 @@ def Histogram(Render = 'jupyter_lab',
         )
 
       # Render html
-      if Render.lower() == "html":
+      if RenderHTML.lower() == "html":
         c.render()
     
       return c
@@ -337,7 +331,7 @@ def Histogram(Render = 'jupyter_lab',
           height = f"{facet_vals['height']}%"))
 
     # Render html
-    if Render.lower() == "html":
+    if RenderHTML.lower() == "html":
       grid.render()
   
     return grid
