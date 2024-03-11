@@ -282,7 +282,7 @@ def Histogram(dt = None,
       if not HorizontalLine is None or not VerticalLine is None:
         MarkLineDict = {}
         if not HorizontalLine is None and not VerticalLine is None:
-          MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
+          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
         elif HorizontalLine is None:
           MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
         elif VerticalLine is None:
