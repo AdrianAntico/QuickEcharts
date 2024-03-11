@@ -96,6 +96,11 @@ def Histogram(dt = None,
               YVarTrans = "Identity", # Log, Sqrt, Asinh
               RenderHTML = False,
               Title = 'Histogram',
+              TitleColor = "#fff",
+              TitleFontSize = 20,
+              SubTitle = None,
+              SubTitleColor = "#fff",
+              SubTitleFontSize = 12,
               XAxisTitle = None,
               Theme = 'wonderland',
               NumberBins = 20,
@@ -106,8 +111,10 @@ def Histogram(dt = None,
               ToolBox = True,
               Brush = True,
               DataZoom = True,
-              HorizonalLine = None,
-              HorizonalLineName = 'Line Name'):
+              VerticalLine = None,
+              VerticalLineName = 'Line Name',
+              HorizontalLine = None,
+              HorizontalLineName = 'Line Name'):
     
     """
     # Parameters
@@ -120,6 +127,11 @@ def Histogram(dt = None,
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, sqrt, and asinh
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Title: title of plot in quotes
+    TitleColor: Color of title in hex. Default "#fff"
+    TitleFontSize: Font text size. Default 20
+    SubTitle: text underneath main title
+    SubTitleColor: Subtitle color of text. Default "#fff"
+    SubTitleFontSize: Font text size. Default 12
     XAxisTitle: Title for the XAxis. If none, then YVar will be the Title
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
     NumberBins: number of histogram bins. Default is 20
@@ -130,6 +142,8 @@ def Histogram(dt = None,
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    VerticalLine: numeric. Add a vertical line on the plot at the value specified
+    VerticalLineName: add a series name for the vertical line
     HorizonalLine: numeric. Add a horizontal line on the plot at the value specified
     HorizonalLineName: add a series name for the horizontal line
     """
@@ -231,7 +245,17 @@ def Histogram(dt = None,
         GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
   
       if not Title is None:
-        GlobalOptions['title_opts'] = opts.TitleOpts(title = Title)
+        GlobalOptions['title_opts'] = opts.TitleOpts(
+            title = Title, subtitle = SubTitle,
+            title_textstyle_opts = opts.TextStyleOpts(
+              color = TitleColor,
+              font_size = TitleFontSize,
+            ),
+            subtitle_textstyle_opts = opts.TextStyleOpts(
+              color = SubTitleColor,
+              font_size = SubTitleFontSize,
+            )
+        )
   
       if not XAxisTitle is None:
         GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle)
@@ -255,12 +279,15 @@ def Histogram(dt = None,
   
   
       # Series Options
-      if not HorizonalLine is None:
-        c = c.set_series_opts(
-            markline_opts = opts.MarkLineOpts(
-               data = [opts.MarkLineItem(y = HorizonalLine, name = HorizonalLineName)]
-            ),
-        )
+      if not HorizontalLine is None or not VerticalLine is None:
+        MarkLineDict = {}
+        if not HorizontalLine is None and not VerticalLine is None:
+          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+        if HorizontalLine is None:
+          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+        if VerticalLine is None:
+          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
 
       # Render html
       if RenderHTML:
