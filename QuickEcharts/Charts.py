@@ -283,9 +283,9 @@ def Histogram(dt = None,
         MarkLineDict = {}
         if not HorizontalLine is None and not VerticalLine is None:
           MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
-        if HorizontalLine is None:
+        elif HorizontalLine is None:
           MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        if VerticalLine is None:
+        elif VerticalLine is None:
           MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
         c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
 
