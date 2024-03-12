@@ -102,6 +102,7 @@ def Histogram(dt = None,
               SubTitleColor = "#fff",
               SubTitleFontSize = 12,
               XAxisTitle = None,
+              XAxisNameLocation = 'middle',
               Theme = 'wonderland',
               NumberBins = 20,
               CategoryGap = "10%",
@@ -133,6 +134,7 @@ def Histogram(dt = None,
     SubTitleColor: Subtitle color of text. Default "#fff"
     SubTitleFontSize: Font text size. Default 12
     XAxisTitle: Title for the XAxis. If none, then YVar will be the Title
+    XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
     NumberBins: number of histogram bins. Default is 20
     CategoryGap: amount of spacing between bars
@@ -144,8 +146,8 @@ def Histogram(dt = None,
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
     VerticalLine: numeric. Add a vertical line on the plot at the value specified
     VerticalLineName: add a series name for the vertical line
-    HorizonalLine: numeric. Add a horizontal line on the plot at the value specified
-    HorizonalLineName: add a series name for the horizontal line
+    HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
+    HorizontalLineName: add a series name for the horizontal line
     """
 
     # Load environment
@@ -162,6 +164,13 @@ def Histogram(dt = None,
     # FacetLevels = None
     # YVarTrans = "Identity"
     # XAxisTitle = YVar
+    # RenderHTML = False
+    # Title = 'Hist Plot'
+    # TitleColor = 'fff'
+    # TitleFontSize = 20
+    # SubTitle = 'Subtitle'
+    # SubTitleColor = 'fff'
+    # SubTitleFontSize = 12
     # YVarTrans = "Identity"
     # XVarTrans = "Identity"
     # Theme = 'wonderland'
@@ -173,6 +182,8 @@ def Histogram(dt = None,
     # ToolBox = True
     # Brush = True
     # DataZoom = True
+    # VerticalLine = 35
+    # VerticalLineName = 'bla'
     # HorizonalLine = 500
     # HorizonalLineName = 'Yo Yo Daddyo'
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
@@ -258,7 +269,7 @@ def Histogram(dt = None,
         )
   
       if not XAxisTitle is None:
-        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle)
+        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = "middle")
   
       if ToolBox:
         GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
@@ -277,7 +288,6 @@ def Histogram(dt = None,
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
   
-  
       # Series Options
       if not HorizontalLine is None or not VerticalLine is None:
         MarkLineDict = {}
@@ -285,8 +295,9 @@ def Histogram(dt = None,
           MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
         elif HorizontalLine is None:
           MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        elif VerticalLine is None:
+        else:
           MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+
         c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
 
       # Render html
