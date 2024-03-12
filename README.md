@@ -188,8 +188,10 @@ p1.load_javascript()
 
 # In a new cell
 p1.render_notebook()
-```
 
+```
+#### Jupyter Lab View
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Density.PNG" align="center" width="800" />
 </details>
 
 ### Density Facet
@@ -248,4 +250,7 @@ p1.load_javascript()
 # In a new cell
 p1.render_notebook()
 ```
+
+#### Jupyter Lab View
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Density_Facet.PNG" align="center" width="800" />
 </details>
