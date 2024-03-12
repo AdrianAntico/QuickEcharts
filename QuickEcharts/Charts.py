@@ -656,8 +656,13 @@ def Density(dt = None,
         # Create plot
         plot_dict[i] = Line(init_opts = opts.InitOpts(theme = Theme))
         plot_dict[i] = plot_dict[i].add_xaxis(Buckets)
-        plot_dict[i] = plot_dict[i].add_yaxis(YVar, YVal, is_smooth = True)
-
+        plot_dict[i] = plot_dict[i].add_yaxis(
+          'YVar',
+          YVar,
+          is_smooth = True,
+          linestyle_opts = opts.LineStyleOpts(width = LineWidth),
+          areastyle_opts = opts.AreaStyleOpts(opacity = FillOpacity))
+        
         if not Title is None:
           GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
   
