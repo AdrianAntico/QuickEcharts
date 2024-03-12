@@ -103,6 +103,7 @@ def Histogram(dt = None,
               SubTitleFontSize = 12,
               XAxisTitle = None,
               XAxisNameLocation = 'middle',
+              XAxisNameGap = 42,
               Theme = 'wonderland',
               NumberBins = 20,
               CategoryGap = "10%",
@@ -135,6 +136,7 @@ def Histogram(dt = None,
     SubTitleFontSize: Font text size. Default 12
     XAxisTitle: Title for the XAxis. If none, then YVar will be the Title
     XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
+    XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
     NumberBins: number of histogram bins. Default is 20
     CategoryGap: amount of spacing between bars
@@ -270,7 +272,7 @@ def Histogram(dt = None,
         )
   
       
-      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation)
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
   
       if ToolBox:
         GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
