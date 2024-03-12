@@ -164,6 +164,7 @@ def Histogram(dt = None,
     # FacetLevels = None
     # YVarTrans = "Identity"
     # XAxisTitle = YVar
+    # XAxisNameLocation = 'middle'
     # RenderHTML = False
     # Title = 'Hist Plot'
     # TitleColor = 'fff'
@@ -268,8 +269,8 @@ def Histogram(dt = None,
             )
         )
   
-      if not XAxisTitle is None:
-        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = "middle")
+      
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation)
   
       if ToolBox:
         GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
