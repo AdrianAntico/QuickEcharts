@@ -101,6 +101,7 @@ def Histogram(dt = None,
               SubTitle = None,
               SubTitleColor = "#fff",
               SubTitleFontSize = 12,
+              AxisPointerType = 'cross',
               XAxisTitle = None,
               XAxisNameLocation = 'middle',
               XAxisNameGap = 42,
@@ -134,6 +135,7 @@ def Histogram(dt = None,
     SubTitle: text underneath main title
     SubTitleColor: Subtitle color of text. Default "#fff"
     SubTitleFontSize: Font text size. Default 12
+    AxisPointerType: 'cross' 'line', 'shadow', or None
     XAxisTitle: Title for the XAxis. If none, then YVar will be the Title
     XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
     XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
@@ -167,6 +169,7 @@ def Histogram(dt = None,
     # YVarTrans = "Identity"
     # XAxisTitle = YVar
     # XAxisNameLocation = 'middle'
+    # AxisPointerType = 'cross' # 'line', 'shadow'
     # RenderHTML = False
     # Title = 'Hist Plot'
     # TitleColor = 'fff'
@@ -276,6 +279,8 @@ def Histogram(dt = None,
   
       if ToolBox:
         GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+      
+      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
   
       if Brush:
         GlobalOptions['brush_opts'] = opts.BrushOpts()
