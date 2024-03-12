@@ -14,7 +14,7 @@ pip install git+https://github.com/AdrianAntico/QuickEcharts.git#egg=quickechart
 
 ### Histogram
 
-<details><summary>Click for code</summary>
+<details><summary>Click for code example</summary>
 
 ```python
 # Environment
@@ -74,7 +74,7 @@ p1.render_notebook()
 
 ### Histogram Facet
 
-<details><summary>Click for code</summary>
+<details><summary>Click for code example</summary>
 
 ```python
 # Environment
@@ -134,7 +134,7 @@ p1.render_notebook()
 
 ### Density
 
-<details><summary>Click for code</summary>
+<details><summary>Click for code example</summary>
 
 ```python
 
@@ -196,7 +196,7 @@ p1.render_notebook()
 
 ### Density Facet
 
-<details><summary>Click for code</summary>
+<details><summary>Click for code example</summary>
 
 ```python
 # Environment
