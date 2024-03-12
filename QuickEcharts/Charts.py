@@ -658,7 +658,7 @@ def Density(dt = None,
         plot_dict[i] = plot_dict[i].add_xaxis(Buckets)
         plot_dict[i] = plot_dict[i].add_yaxis(
           'YVar',
-          YVar,
+          YVal,
           is_smooth = True,
           linestyle_opts = opts.LineStyleOpts(width = LineWidth),
           areastyle_opts = opts.AreaStyleOpts(opacity = FillOpacity))
