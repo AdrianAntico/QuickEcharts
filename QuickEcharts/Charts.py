@@ -458,7 +458,7 @@ def Density(dt = None,
 
     # Load environment
     from pyecharts import options as opts
-    from pyecharts.charts import Bar, Grid
+    from pyecharts.charts import Line, Grid
     import polars as pl
     import math
 
