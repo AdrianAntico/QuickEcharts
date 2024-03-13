@@ -70,9 +70,6 @@ p1.render_notebook()
 #### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Histogram.PNG" align="center" width="800" />
 
-</details>
-
-### Histogram Facet
 
 <details><summary>Click for code example</summary>
 
@@ -194,11 +191,7 @@ p1.render_notebook()
 ```
 #### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Density.PNG" align="center" width="800" />
-</details>
 
-### Density Facet
-
-<details><summary>Click for code example</summary>
 
 ```python
 # Environment
@@ -255,6 +248,7 @@ p1.render_notebook()
 
 #### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Density_Facet.PNG" align="center" width="800" />
+
 </details>
 
 
@@ -276,10 +270,36 @@ FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Pie Chart Plot in Jupyter Lab
+p1 = Charts.Pie(
+  dt = data,
+  PreAgg = False,
+  YVar = 'Daily Liters',
+  GroupVar = 'Brand',
+  AggMethod = 'count',
+  YVarTrans = "Identity",
+  RenderHTML = False,
+  Title = 'Pie Chart',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  Theme = 'wonderland',
+  Legend = None,
+  LegendPosRight = '0%',
+  LegendPosTop = '5%')
 
+# Needed to display
+p1.load_javascript()
+
+# In a new cell
+p1.render_notebook()
 ```
 
-### RoseType Chart
+#### Jupyter Lab View
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Pie.PNG" align="center" width="800" />
+
+### Rosetype Chart
 
 <details><summary>Click for code example</summary>
 
@@ -296,5 +316,35 @@ FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create RoseType Chart Plot in Jupyter Lab
+p1 = Charts.Rosetype(
+  dt = data,
+  PreAgg = False,
+  YVar = 'Daily Liters',
+  GroupVar = 'Brand',
+  AggMethod = 'count',
+  YVarTrans = "Identity",
+  RenderHTML = False,
+  Type = "area",
+  Radius = "55%",
+  Title = 'Rosetype Chart',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  Theme = 'wonderland',
+  Legend = None,
+  LegendPosRight = '0%',
+  LegendPosTop = '5%')
 
+# Needed to display
+p1.load_javascript()
+
+# In a new cell
+p1.render_notebook()
 ```
+
+#### Jupyter Lab View
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Rosetype.PNG" align="center" width="800" />
+
+</details>
