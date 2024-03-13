@@ -71,8 +71,6 @@ p1.render_notebook()
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Histogram.PNG" align="center" width="800" />
 
 
-<details><summary>Click for code example</summary>
-
 ```python
 # Environment
 import pkg_resources
