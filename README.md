@@ -9,6 +9,7 @@ QuickEcharts is in the early stages. The idea is to design it similar to my R pa
 pip install git+https://github.com/AdrianAntico/QuickEcharts.git#egg=quickecharts
 ```
 
+<br>
 
 ## Histogram
 
@@ -128,6 +129,8 @@ p1.render_notebook()
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Histogram_Facet.PNG" align="center" width="800" />
 
 </details>
+
+<br>
 
 ## Density
 
@@ -249,7 +252,7 @@ p1.render_notebook()
 
 </details>
 
-
+<br>
 
 ## Pie Chart
 
@@ -298,6 +301,8 @@ p1.render_notebook()
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Pie.PNG" align="center" width="800" />
 
 </details>
+
+<br>
 
 ## Rosetype Chart
 
@@ -349,6 +354,7 @@ p1.render_notebook()
 
 </details>
 
+<br>
 
 ## Donut Chart
 
