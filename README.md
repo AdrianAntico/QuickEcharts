@@ -10,7 +10,7 @@ pip install git+https://github.com/AdrianAntico/QuickEcharts.git#egg=quickechart
 ```
 
 
-### Histogram
+## Histogram
 
 <details><summary>Click for code example</summary>
 
@@ -129,7 +129,7 @@ p1.render_notebook()
 
 </details>
 
-### Density
+## Density
 
 <details><summary>Click for code example</summary>
 
@@ -251,7 +251,7 @@ p1.render_notebook()
 
 
 
-### Pie Chart
+## Pie Chart
 
 <details><summary>Click for code example</summary>
 
@@ -299,7 +299,7 @@ p1.render_notebook()
 
 </details>
 
-### Rosetype Chart
+## Rosetype Chart
 
 <details><summary>Click for code example</summary>
 
