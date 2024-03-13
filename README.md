@@ -297,6 +297,8 @@ p1.render_notebook()
 #### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Pie.PNG" align="center" width="800" />
 
+<details>
+
 ### Rosetype Chart
 
 <details><summary>Click for code example</summary>
