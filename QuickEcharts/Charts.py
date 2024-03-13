@@ -1,5 +1,69 @@
 import QuickEcharts
 
+def SummaryFunction(AggMethod):
+  import polars as pl
+  import math
+  from scipy.stats import skew, kurtosis
+  if AggMethod == "count":
+    def aggFunc(x): 
+      pl.count()
+  elif AggMethod == "mean":
+    def aggFunc(x):
+      pl.mean()
+  elif AggMethod == "log(mean(x))":
+    def aggFunc(x):
+      math.log(pl.mean(x))
+  elif AggMethod == "mean(abs(x))":
+    def aggFunc(x): 
+      pl.mean(math.fabs(x))
+  elif AggMethod == "sum":
+    def aggFunc(x): 
+      pl.sum(x)
+  elif AggMethod == "log(sum(x))":
+    def aggFunc(x): 
+      math.log(pl.sum(x))
+  elif AggMethod == "sum(abs(x))":
+    def aggFunc(x): 
+      pl.sum(math.fabs(x))
+  elif AggMethod == "median":
+    def aggFunc(x):
+      pl.median(x)
+  elif AggMethod == "log(median(x))":
+    def aggFunc(x):
+      math.log(pl.median(x))
+  elif AggMethod == "median(abs(x))":
+    def aggFunc(x): 
+      pl.median(math.fabs(x))
+  elif AggMethod == "sd":
+    def aggFunc(x): 
+      pl.std(x)
+  elif AggMethod == "log(sd(x))":
+    def aggFunc(x):
+      math.log(pl.std(x))
+  elif AggMethod == "sd(abs(x))":
+    def aggFunc(x): 
+      pl.std(math.fabs(x))
+  elif AggMethod == "skewness":
+    def aggFunc(x): 
+      skew(x)
+  elif AggMethod == "skewness(abs(x))":
+    def aggFunc(x): 
+      skew(math.fabs(x))
+  elif AggMethod == "kurtosis":
+    def aggFunc(x): 
+      kurtosis(x)
+  elif AggMethod == "kurtosis(abs(x))":
+    def aggFunc(x):
+      kurtosis(math.fabs(x))
+  elif AggMethod == "CoeffVar":
+    def aggFunc(x): 
+      pl.std(x) / pl.mean(x)
+  elif AggMethod == "CoeffVar(abs(x))":
+    def aggFunc(x): 
+      pl.std(math.fabs(x)) / pl.mean(math.fabs(x))
+  
+  return(aggFunc)
+
 
 def FacetGridValues(FacetRows = 1, FacetCols = 1, Legend = 'top', LegendSpace = 10):
   
@@ -82,8 +146,7 @@ def FacetGridValues(FacetRows = 1, FacetCols = 1, Legend = 'top', LegendSpace = 
   return {'top': top_pos_values_rep, 'left': left_pos_values_rep, 'width': width-5, 'height': height}
 
 
-# grid_vals = FacetGridValues(FacetRows = 6, FacetCols = 6, Legend = 'top', LegendSpace = 10)
-# grid_vals['top'][0]
+#################################################################################################
 
 
 def Histogram(dt = None,
@@ -694,6 +757,9 @@ def Density(dt = None,
       grid.render()
   
     return grid
+
+
+#################################################################################################
 
 
 
