@@ -348,3 +348,52 @@ p1.render_notebook()
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Rosetype.PNG" align="center" width="800" />
 
 </details>
+
+
+## Donut Chart
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Pull Data from Package
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+# Create RoseType Chart Plot in Jupyter Lab
+p1 = Charts.Donut(
+  dt = data,
+  PreAgg = False,
+  YVar = 'Daily Liters',
+  GroupVar = 'Brand',
+  AggMethod = 'count',
+  YVarTrans = "Identity",
+  RenderHTML = False,
+  Title = 'Donut Chart',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  Theme = 'wonderland',
+  Legend = None,
+  LegendPosRight = '0%',
+  LegendPosTop = '5%')
+
+# Needed to display
+p1.load_javascript()
+
+# In a new cell
+p1.render_notebook()
+```
+
+#### Jupyter Lab View
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Donut.PNG" align="center" width="800" />
+
+</details>

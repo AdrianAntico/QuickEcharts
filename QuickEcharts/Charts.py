@@ -1076,5 +1076,151 @@ def Rosetype(dt = None,
     return c
 
 
+#################################################################################################
 
+
+def Donut(dt = None,
+          PreAgg = False,
+          YVar = None,
+          GroupVar = None,
+          AggMethod = 'count',
+          YVarTrans = "Identity",
+          RenderHTML = False,
+          Title = 'Histogram',
+          TitleColor = "#fff",
+          TitleFontSize = 20,
+          SubTitle = None,
+          SubTitleColor = "#fff",
+          SubTitleFontSize = 12,
+          Theme = 'wonderland',
+          Legend = None,
+          LegendPosRight = '0%',
+          LegendPosTop = '5%'):
+    
+    """
+    # Parameters
+    dt: polars dataframe
+    PreAgg: Set to True if your data is already aggregated. Default is False
+    YVar: numeric variable for histogram
+    GroupVar: grouping variable for histogram
+    AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, sqrt, and asinh
+    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    Title: title of plot in quotes
+    TitleColor: Color of title in hex. Default "#fff"
+    TitleFontSize: Font text size. Default 20
+    SubTitle: text underneath main title
+    SubTitleColor: Subtitle color of text. Default "#fff"
+    SubTitleFontSize: Font text size. Default 12
+    Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    Legend: Choose from None, 'right', 'top'
+    LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
+    LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
+    """
+
+    # Load environment
+    from pyecharts import options as opts
+    from pyecharts.charts import Pie, Grid
+    import polars as pl
+    import math
+
+    # PreAgg = False
+    # YVar = 'Daily Liters'
+    # GroupVar = 'Brand'
+    # AggMethod = 'count'
+    # FacetRows = 2
+    # FacetCols = 2
+    # FacetLevels = None
+    # YVarTrans = "Identity"
+    # Type = 'radius' # 'area'
+    # Radius = "55%"
+    # RenderHTML = False
+    # Title = 'Pie Plot'
+    # TitleColor = 'fff'
+    # TitleFontSize = 20
+    # SubTitle = 'Subtitle'
+    # SubTitleColor = 'fff'
+    # SubTitleFontSize = 12
+    # YVarTrans = "Identity"
+    # Theme = 'wonderland'
+    # Legend = None
+    # LegendPosRight = '0%'
+    # LegendPosTop = '5%'
+    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
+    
+    # Define Plotting Variable
+    if YVar == None:
+      return NULL
+
+    # Subset Columns
+    dt1 = dt.select([pl.col(YVar), pl.col(GroupVar)])
+
+    # Transformation: "Asinh" "Log" "Sqrt"
+    trans = YVarTrans.lower()
+    if trans != "identity":
+      if trans == "sqrt":
+        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.sqrt))
+      elif trans == 'log':
+        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.log))
+      elif trans == 'asinh':
+        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.asinh))
+  
+    # Agg Data
+    if not PreAgg:
+      dt1 = SummaryFunction(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = None)
+
+    # Define data elements
+    GroupVals = dt1[GroupVar].to_list()
+    YVal = dt1[YVar].to_list()
+    data_pair = [list(z) for z in zip(GroupVals, YVal)]
+    data_pair.sort(key=lambda x: x[1])
+    
+    # Create plot
+    c = Pie(init_opts = opts.InitOpts(theme = Theme))
+    c = c.add(
+        series_name = YVar,
+        data_pair = data_pair,
+        radius = ["40%","70%"],
+        center = ["50%", "50%"],
+        label_opts = opts.LabelOpts(is_show=False, position="center"),
+    )
+
+    # Global Options
+    GlobalOptions = {}
+    if Legend == 'right':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
+    elif Legend == 'top':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
+    else:
+      GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+
+    if not Title is None:
+      GlobalOptions['title_opts'] = opts.TitleOpts(
+          title = Title, subtitle = SubTitle,
+          title_textstyle_opts = opts.TextStyleOpts(
+            color = TitleColor,
+            font_size = TitleFontSize,
+          ),
+          subtitle_textstyle_opts = opts.TextStyleOpts(
+            color = SubTitleColor,
+            font_size = SubTitleFontSize,
+          )
+      )
+
+    c = c.set_series_opts(
+      tooltip_opts = opts.TooltipOpts(
+        trigger = "item", 
+        formatter="{a} <br/>{b}: {c} ({d}%)"
+      ),
+      label_opts = opts.LabelOpts(color="rgba(255, 255, 255, 0.3)"),
+    )
+    
+    # Final Setting of Global Options
+    c = c.set_global_opts(**GlobalOptions)
+
+    # Render html
+    if RenderHTML:
+      c.render()
+  
+    return c
 
