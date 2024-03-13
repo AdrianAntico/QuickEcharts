@@ -1,68 +1,84 @@
 import QuickEcharts
 
-def SummaryFunction(AggMethod):
+def SummaryFunction(dt, AggMethod, NumericVariable, GroupVariable, DateVariable):
   import polars as pl
   import math
   from scipy.stats import skew, kurtosis
   if AggMethod == "count":
-    def aggFunc(x): 
-      pl.count()
+    if not GroupVariable is None and not DateVariable is None:
+      dt = dt.group_by(GroupVariable, DateVariable).agg(pl.col(NumericVariable).len())
+    elif not GroupVariable is None:
+      dt = dt.group_by(GroupVariable).agg(pl.col(NumericVariable).len())
+    else:
+      dt = dt.group_by(DateVariable).agg(pl.col(NumericVariable).len())
   elif AggMethod == "mean":
-    def aggFunc(x):
-      pl.mean()
-  elif AggMethod == "log(mean(x))":
-    def aggFunc(x):
-      math.log(pl.mean(x))
-  elif AggMethod == "mean(abs(x))":
-    def aggFunc(x): 
-      pl.mean(math.fabs(x))
+    if not GroupVariable is None and not DateVariable is None:
+      dt = dt.group_by(GroupVariable, DateVariable).agg(pl.col(NumericVariable).mean())
+    elif not GroupVariable is None:
+      dt = dt.group_by(GroupVariable).agg(pl.col(NumericVariable).mean())
+    else:
+      dt = dt.group_by(DateVariable).agg(pl.col(NumericVariable).mean())
   elif AggMethod == "sum":
-    def aggFunc(x): 
-      pl.sum(x)
-  elif AggMethod == "log(sum(x))":
-    def aggFunc(x): 
-      math.log(pl.sum(x))
-  elif AggMethod == "sum(abs(x))":
-    def aggFunc(x): 
-      pl.sum(math.fabs(x))
+    if not GroupVariable is None and not DateVariable is None:
+      dt = dt.group_by(GroupVariable, DateVariable).agg(pl.col(NumericVariable).sum())
+    elif not GroupVariable is None:
+      dt = dt.group_by(GroupVariable).agg(pl.col(NumericVariable).sum())
+    else:
+      dt = dt.group_by(DateVariable).agg(pl.col(NumericVariable).sum())
   elif AggMethod == "median":
-    def aggFunc(x):
-      pl.median(x)
-  elif AggMethod == "log(median(x))":
-    def aggFunc(x):
-      math.log(pl.median(x))
-  elif AggMethod == "median(abs(x))":
-    def aggFunc(x): 
-      pl.median(math.fabs(x))
+    if not GroupVariable is None and not DateVariable is None:
+      dt = dt.group_by(GroupVariable, DateVariable).agg(pl.col(NumericVariable).median())
+    elif not GroupVariable is None:
+      dt = dt.group_by(GroupVariable).agg(pl.col(NumericVariable).median())
+    else:
+      dt = dt.group_by(DateVariable).agg(pl.col(NumericVariable).median())
   elif AggMethod == "sd":
-    def aggFunc(x): 
-      pl.std(x)
-  elif AggMethod == "log(sd(x))":
-    def aggFunc(x):
-      math.log(pl.std(x))
-  elif AggMethod == "sd(abs(x))":
-    def aggFunc(x): 
-      pl.std(math.fabs(x))
+    if not GroupVariable is None and not DateVariable is None:
+      dt = dt.group_by(GroupVariable, DateVariable).agg(pl.col(NumericVariable).std())
+    elif not GroupVariable is None:
+      dt = dt.group_by(GroupVariable).agg(pl.col(NumericVariable).std())
+    else:
+      dt = dt.group_by(DateVariable).agg(pl.col(NumericVariable).std())
   elif AggMethod == "skewness":
-    def aggFunc(x): 
-      skew(x)
-  elif AggMethod == "skewness(abs(x))":
-    def aggFunc(x): 
-      skew(math.fabs(x))
+    def Skewness_Calc():
+      return map(lambda x: skew(x), values)
+
+    if not GroupVariable is None and not DateVariable is None:
+      dt = dt.group_by(GroupVariable, DateVariable).agg(pl.col(NumericVariable).map_elements(Skewness_Calc))
+    elif not GroupVariable is None:
+      dt = dt.group_by(GroupVariable).agg(pl.col(NumericVariable).map_elements(Skewness_Calc))
+    else:
+      dt = dt.group_by(DateVariable).agg(pl.col(NumericVariable).map_elements(Skewness_Calc))
   elif AggMethod == "kurtosis":
-    def aggFunc(x): 
-      kurtosis(x)
-  elif AggMethod == "kurtosis(abs(x))":
-    def aggFunc(x):
-      kurtosis(math.fabs(x))
+    def Kurtosis_Calc():
+      return map(lambda x: kurtosis(x), values)
+    if not GroupVariable is None and not DateVariable is None:
+      dt = dt.group_by(GroupVariable, DateVariable).agg(pl.col(NumericVariable).map_elements(Kurtosis_Calc))
+    elif not GroupVariable is None:
+      dt = dt.group_by(GroupVariable).agg(pl.col(NumericVariable).map_elements(Kurtosis_Calc))
+    else:
+      dt = dt.group_by(DateVariable).agg(pl.col(NumericVariable).map_elements(Kurtosis_Calc))
   elif AggMethod == "CoeffVar":
-    def aggFunc(x): 
-      pl.std(x) / pl.mean(x)
-  elif AggMethod == "CoeffVar(abs(x))":
-    def aggFunc(x): 
-      pl.std(math.fabs(x)) / pl.mean(math.fabs(x))
+    if not GroupVariable is None and not DateVariable is None:
+      mean = dt.group_by(GroupVariable, DateVariable).agg(pl.col(NumericVariable).mean())
+      std = dt.group_by(GroupVariable, DateVariable).agg(pl.col(NumericVariable).std())
+      joined = mean.join(std, on = [GroupVariable, DateVariable])
+      joined = joined.with_columns((pl.col(NumericVariable) / pl.col(NumericVariable + '_right')).alias(NumericVariable))
+      dt = joined.select([pl.col(GroupVariable), pl.col(DateVariable), pl.col(NumericVariable)])
+    elif not GroupVariable is None:
+      mean = dt.group_by(GroupVariable).agg(pl.col(NumericVariable).mean())
+      std = dt.group_by(GroupVariable).agg(pl.col(NumericVariable).std())
+      joined = mean.join(std, on = [GroupVariable])
+      joined = joined.with_columns((pl.col(NumericVariable) / pl.col(NumericVariable + '_right')).alias(NumericVariable))
+      dt = joined.select([pl.col(GroupVariable), pl.col(NumericVariable)])
+    else:
+      mean = dt.group_by(DateVariable).agg(pl.col(NumericVariable).mean())
+      std = dt.group_by(DateVariable).agg(pl.col(NumericVariable).std())
+      joined = mean.join(std, on = [DateVariable])
+      joined = joined.with_columns((pl.col(NumericVariable) / pl.col(NumericVariable + '_right')).alias(NumericVariable))
+      dt = joined.select([pl.col(DateVariable), pl.col(NumericVariable)])
   
-  return(aggFunc)
+  return(dt)
 
 
 def FacetGridValues(FacetRows = 1, FacetCols = 1, Legend = 'top', LegendSpace = 10):
@@ -298,13 +314,13 @@ def Histogram(dt = None,
         acc = round(Range / NumberBins, ndigits = 2)
         dt1 = dt1.with_columns(Buckets = pl.col(YVar) / acc)
         dt1 = dt1.with_columns(Buckets = dt1['Buckets'].round() * acc)
-        dt1 = dt1.group_by("Buckets").agg(pl.count(YVar))
+        dt1 = dt1.group_by("Buckets").agg(pl.len(YVar))
         dt1 = dt1.sort("Buckets")
       else:
         acc = math.ceil(Range / NumberBins)
         dt1 = dt1.with_columns(Buckets = pl.col(YVar) / acc)
         dt1 = dt1.with_columns(Buckets = dt1['Buckets'].round() * acc)
-        dt1 = dt1.group_by("Buckets").agg(pl.count(YVar))
+        dt1 = dt1.group_by("Buckets").agg(pl.len(YVar))
         dt1 = dt1.sort("Buckets")
 
 
@@ -323,6 +339,8 @@ def Histogram(dt = None,
         GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
       elif Legend == 'top':
         GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
+      else:
+        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
       if not Title is None:
         GlobalOptions['title_opts'] = opts.TitleOpts(
@@ -395,13 +413,13 @@ def Histogram(dt = None,
           acc = round(Range / NumberBins, ndigits = 2)
           dt2 = dt2.with_columns(Buckets = pl.col(YVar) / acc)
           dt2 = dt2.with_columns(Buckets = dt2['Buckets'].round() * acc)
-          dt2 = dt2.group_by("Buckets").agg(pl.count(YVar))
+          dt2 = dt2.group_by("Buckets").agg(pl.len(YVar))
           dt2 = dt2.sort("Buckets")
         else:
           acc = math.ceil(Range / NumberBins)
           dt2 = dt2.with_columns(Buckets = pl.col(YVar) / acc)
           dt2 = dt2.with_columns(Buckets = dt2['Buckets'].round() * acc)
-          dt2 = dt2.group_by("Buckets").agg(pl.count(YVar))
+          dt2 = dt2.group_by("Buckets").agg(pl.len(YVar))
           dt2 = dt2.sort("Buckets")
        
         # Define data elements
@@ -471,7 +489,6 @@ def Density(dt = None,
             XAxisNameLocation = 'middle',
             XAxisNameGap = 42,
             Theme = 'wonderland',
-            NumberBins = 20,
             Legend = None,
             LegendPosRight = '0%',
             LegendPosTop = '5%',
@@ -506,7 +523,6 @@ def Density(dt = None,
     XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
     XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
-    NumberBins: number of histogram bins. Default is 20
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
@@ -601,13 +617,13 @@ def Density(dt = None,
         acc = round(Range / NumberBins, ndigits = 2)
         dt1 = dt1.with_columns(Buckets = pl.col(YVar) / acc)
         dt1 = dt1.with_columns(Buckets = dt1['Buckets'].round() * acc)
-        dt1 = dt1.group_by("Buckets").agg(pl.count(YVar))
+        dt1 = dt1.group_by("Buckets").agg(pl.len(YVar))
         dt1 = dt1.sort("Buckets")
       else:
         acc = math.ceil(Range / NumberBins)
         dt1 = dt1.with_columns(Buckets = pl.col(YVar) / acc)
         dt1 = dt1.with_columns(Buckets = dt1['Buckets'].round() * acc)
-        dt1 = dt1.group_by("Buckets").agg(pl.count(YVar))
+        dt1 = dt1.group_by("Buckets").agg(pl.len(YVar))
         dt1 = dt1.sort("Buckets")
 
 
@@ -631,6 +647,8 @@ def Density(dt = None,
         GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
       elif Legend == 'top':
         GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
+      else:
+        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
       if not Title is None:
         GlobalOptions['title_opts'] = opts.TitleOpts(
@@ -703,13 +721,13 @@ def Density(dt = None,
           acc = round(Range / NumberBins, ndigits = 2)
           dt2 = dt2.with_columns(Buckets = pl.col(YVar) / acc)
           dt2 = dt2.with_columns(Buckets = dt2['Buckets'].round() * acc)
-          dt2 = dt2.group_by("Buckets").agg(pl.count(YVar))
+          dt2 = dt2.group_by("Buckets").agg(pl.len(YVar))
           dt2 = dt2.sort("Buckets")
         else:
           acc = math.ceil(Range / NumberBins)
           dt2 = dt2.with_columns(Buckets = pl.col(YVar) / acc)
           dt2 = dt2.with_columns(Buckets = dt2['Buckets'].round() * acc)
-          dt2 = dt2.group_by("Buckets").agg(pl.count(YVar))
+          dt2 = dt2.group_by("Buckets").agg(pl.len(YVar))
           dt2 = dt2.sort("Buckets")
        
         # Define data elements
@@ -762,7 +780,300 @@ def Density(dt = None,
 #################################################################################################
 
 
+def Pie(dt = None,
+        PreAgg = False,
+        YVar = None,
+        GroupVar = None,
+        AggMethod = 'count',
+        YVarTrans = "Identity",
+        RenderHTML = False,
+        Title = 'Histogram',
+        TitleColor = "#fff",
+        TitleFontSize = 20,
+        SubTitle = None,
+        SubTitleColor = "#fff",
+        SubTitleFontSize = 12,
+        Theme = 'wonderland',
+        Legend = None,
+        LegendPosRight = '0%',
+        LegendPosTop = '5%'):
+    
+    """
+    # Parameters
+    dt: polars dataframe
+    PreAgg: Set to True if your data is already aggregated. Default is False
+    YVar: numeric variable for histogram
+    GroupVar: grouping variable for histogram
+    AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, sqrt, and asinh
+    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    Title: title of plot in quotes
+    TitleColor: Color of title in hex. Default "#fff"
+    TitleFontSize: Font text size. Default 20
+    SubTitle: text underneath main title
+    SubTitleColor: Subtitle color of text. Default "#fff"
+    SubTitleFontSize: Font text size. Default 12
+    Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    Legend: Choose from None, 'right', 'top'
+    LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
+    LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
+    """
 
+    # Load environment
+    from pyecharts import options as opts
+    from pyecharts.charts import Pie, Grid
+    import polars as pl
+    import math
+
+    # PreAgg = False
+    # YVar = 'Daily Liters'
+    # GroupVar = 'Brand'
+    # AggMethod = 'count'
+    # YVarTrans = "Identity"
+    # RenderHTML = False
+    # Title = 'Pie Plot'
+    # TitleColor = 'fff'
+    # TitleFontSize = 20
+    # SubTitle = 'Subtitle'
+    # SubTitleColor = 'fff'
+    # SubTitleFontSize = 12
+    # YVarTrans = "Identity"
+    # XVarTrans = "Identity"
+    # Theme = 'wonderland'
+    # NumberBins = 20
+    # Legend = None
+    # LegendPosRight = '0%'
+    # LegendPosTop = '5%'
+    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
+    
+    # Define Plotting Variable
+    if YVar == None:
+      return NULL
+
+    # Subset Columns
+    dt1 = dt.select([pl.col(YVar), pl.col(GroupVar)])
+
+    # Transformation: "Asinh" "Log" "Sqrt"
+    trans = YVarTrans.lower()
+    if trans != "identity":
+      if trans == "sqrt":
+        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.sqrt))
+      elif trans == 'log':
+        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.log))
+      elif trans == 'asinh':
+        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.asinh))
+  
+    # Agg Data
+    if not PreAgg:
+      dt1 = SummaryFunction(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = None)
+
+    # Define data elements
+    GroupVals = dt1[GroupVar].to_list()
+    YVal = dt1[YVar].to_list()
+    data_pair = [list(z) for z in zip(GroupVals, YVal)]
+    data_pair.sort(key=lambda x: x[1])
+    
+    # Create plot
+    c = Pie(init_opts = opts.InitOpts(theme = Theme))
+    c = c.add(
+        series_name = YVar,
+        data_pair = data_pair,
+        center = ["50%", "50%"],
+        label_opts = opts.LabelOpts(is_show=False, position="center"),
+    )
+
+    # Global Options
+    GlobalOptions = {}
+    if Legend == 'right':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
+    elif Legend == 'top':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
+    else:
+      GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+
+    if not Title is None:
+      GlobalOptions['title_opts'] = opts.TitleOpts(
+          title = Title, subtitle = SubTitle,
+          title_textstyle_opts = opts.TextStyleOpts(
+            color = TitleColor,
+            font_size = TitleFontSize,
+          ),
+          subtitle_textstyle_opts = opts.TextStyleOpts(
+            color = SubTitleColor,
+            font_size = SubTitleFontSize,
+          )
+      )
+
+    c = c.set_series_opts(
+      tooltip_opts = opts.TooltipOpts(
+        trigger = "item", 
+        formatter="{a} <br/>{b}: {c} ({d}%)"
+      ),
+      label_opts = opts.LabelOpts(color="rgba(255, 255, 255, 0.3)"),
+    )
+    
+    # Final Setting of Global Options
+    c = c.set_global_opts(**GlobalOptions)
+
+    # Render html
+    if RenderHTML:
+      c.render()
+  
+    return c
+
+
+#################################################################################################
+
+
+def Rosetype(dt = None,
+             PreAgg = False,
+             YVar = None,
+             GroupVar = None,
+             AggMethod = 'count',
+             YVarTrans = "Identity",
+             RenderHTML = False,
+             Type = "radius",
+             Radius = "55%",
+             Title = 'Histogram',
+             TitleColor = "#fff",
+             TitleFontSize = 20,
+             SubTitle = None,
+             SubTitleColor = "#fff",
+             SubTitleFontSize = 12,
+             Theme = 'wonderland',
+             Legend = None,
+             LegendPosRight = '0%',
+             LegendPosTop = '5%'):
+    
+    """
+    # Parameters
+    dt: polars dataframe
+    PreAgg: Set to True if your data is already aggregated. Default is False
+    YVar: numeric variable for histogram
+    GroupVar: grouping variable for histogram
+    AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, sqrt, and asinh
+    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    Type: Default "radius". Otherwise, "area"
+    Radius: Default "55%"
+    Title: title of plot in quotes
+    TitleColor: Color of title in hex. Default "#fff"
+    TitleFontSize: Font text size. Default 20
+    SubTitle: text underneath main title
+    SubTitleColor: Subtitle color of text. Default "#fff"
+    SubTitleFontSize: Font text size. Default 12
+    Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    Legend: Choose from None, 'right', 'top'
+    LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
+    LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
+    """
+
+    # Load environment
+    from pyecharts import options as opts
+    from pyecharts.charts import Pie, Grid
+    import polars as pl
+    import math
+
+    # PreAgg = False
+    # YVar = 'Daily Liters'
+    # GroupVar = 'Brand'
+    # AggMethod = 'count'
+    # FacetRows = 2
+    # FacetCols = 2
+    # FacetLevels = None
+    # YVarTrans = "Identity"
+    # Type = 'radius' # 'area'
+    # Radius = "55%"
+    # RenderHTML = False
+    # Title = 'Pie Plot'
+    # TitleColor = 'fff'
+    # TitleFontSize = 20
+    # SubTitle = 'Subtitle'
+    # SubTitleColor = 'fff'
+    # SubTitleFontSize = 12
+    # YVarTrans = "Identity"
+    # Theme = 'wonderland'
+    # Legend = None
+    # LegendPosRight = '0%'
+    # LegendPosTop = '5%'
+    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
+    
+    # Define Plotting Variable
+    if YVar == None:
+      return NULL
+
+    # Subset Columns
+    dt1 = dt.select([pl.col(YVar), pl.col(GroupVar)])
+
+    # Transformation: "Asinh" "Log" "Sqrt"
+    trans = YVarTrans.lower()
+    if trans != "identity":
+      if trans == "sqrt":
+        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.sqrt))
+      elif trans == 'log':
+        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.log))
+      elif trans == 'asinh':
+        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.asinh))
+  
+    # Agg Data
+    if not PreAgg:
+      dt1 = SummaryFunction(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = None)
+
+    # Define data elements
+    GroupVals = dt1[GroupVar].to_list()
+    YVal = dt1[YVar].to_list()
+    data_pair = [list(z) for z in zip(GroupVals, YVal)]
+    data_pair.sort(key=lambda x: x[1])
+    
+    # Create plot
+    c = Pie(init_opts = opts.InitOpts(theme = Theme))
+    c = c.add(
+        series_name = YVar,
+        data_pair = data_pair,
+        rosetype = Type,
+        radius = Radius,
+        center = ["50%", "50%"],
+        label_opts = opts.LabelOpts(is_show=False, position="center"),
+    )
+
+    # Global Options
+    GlobalOptions = {}
+    if Legend == 'right':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
+    elif Legend == 'top':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
+    else:
+      GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+
+    if not Title is None:
+      GlobalOptions['title_opts'] = opts.TitleOpts(
+          title = Title, subtitle = SubTitle,
+          title_textstyle_opts = opts.TextStyleOpts(
+            color = TitleColor,
+            font_size = TitleFontSize,
+          ),
+          subtitle_textstyle_opts = opts.TextStyleOpts(
+            color = SubTitleColor,
+            font_size = SubTitleFontSize,
+          )
+      )
+
+    c = c.set_series_opts(
+      tooltip_opts = opts.TooltipOpts(
+        trigger = "item", 
+        formatter="{a} <br/>{b}: {c} ({d}%)"
+      ),
+      label_opts = opts.LabelOpts(color="rgba(255, 255, 255, 0.3)"),
+    )
+    
+    # Final Setting of Global Options
+    c = c.set_global_opts(**GlobalOptions)
+
+    # Render html
+    if RenderHTML:
+      c.render()
+  
+    return c
 
 
 

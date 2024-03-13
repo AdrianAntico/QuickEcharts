@@ -174,7 +174,6 @@ p1 = Charts.Density(
   XAxisNameLocation = 'middle',
   XAxisNameGap = 42,
   Theme = 'macarons',
-  NumberBins = 20,
   Legend = 'top',
   LegendPosRight = '0%',
   LegendPosTop = '15%',
@@ -236,7 +235,6 @@ p1 = Charts.Density(
   XAxisNameLocation = 'middle',
   XAxisNameGap = 42,
   Theme = 'macarons',
-  NumberBins = 20,
   Legend = 'top',
   LegendPosRight = '0%',
   LegendPosTop = '15%',
@@ -258,3 +256,45 @@ p1.render_notebook()
 #### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Density_Facet.PNG" align="center" width="800" />
 </details>
+
+
+
+### Pie Chart
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Pull Data from Package
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+# Create Pie Chart Plot in Jupyter Lab
+
+```
+
+### RoseType Chart
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Pull Data from Package
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+# Create RoseType Chart Plot in Jupyter Lab
+
+```
