@@ -835,7 +835,7 @@ def Pie(dt = None,
 
     # Load environment
     from pyecharts import options as opts
-    from pyecharts.charts import Pie, Grid
+    from pyecharts.charts import Pie
     import polars as pl
     import math
 
@@ -979,7 +979,7 @@ def Rosetype(dt = None,
 
     # Load environment
     from pyecharts import options as opts
-    from pyecharts.charts import Pie, Grid
+    from pyecharts.charts import Pie
     import polars as pl
     import math
 
@@ -1124,7 +1124,7 @@ def Donut(dt = None,
 
     # Load environment
     from pyecharts import options as opts
-    from pyecharts.charts import Pie, Grid
+    from pyecharts.charts import Pie
     import polars as pl
     import math
 
@@ -1282,7 +1282,7 @@ def BoxPlot(dt = None,
 
     # Load environment
     from pyecharts import options as opts
-    from pyecharts.charts import Boxplot, Grid
+    from pyecharts.charts import Boxplot
     import polars as pl
     import math
 
@@ -1415,3 +1415,101 @@ def BoxPlot(dt = None,
   
     return c
 
+
+#################################################################################################
+
+
+def WordCloud(dt = None,
+              SampleSize = None,
+              YVar = None,
+              RenderHTML = False,
+              Title = 'Word Cloud',
+              TitleColor = "#fff",
+              TitleFontSize = 20,
+              SubTitle = None,
+              SubTitleColor = "#fff",
+              SubTitleFontSize = 12,
+              Theme = 'wonderland'):
+    
+    """
+    # Parameters
+    dt: polars dataframe
+    YVar: numeric variable for histogram
+    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    Title: title of plot in quotes
+    TitleColor: Color of title in hex. Default "#fff"
+    TitleFontSize: Font text size. Default 20
+    SubTitle: text underneath main title
+    SubTitleColor: Subtitle color of text. Default "#fff"
+    SubTitleFontSize: Font text size. Default 12
+    Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    """
+
+    # Load environment
+    from pyecharts import options as opts
+    from pyecharts.charts import WordCloud
+    import polars as pl
+    import math
+
+    # SampleSize = 100000
+    # YVar = 'Daily Liters'
+    # RenderHTML = False
+    # Title = 'Hist Plot'
+    # TitleColor = 'fff'
+    # TitleFontSize = 20
+    # SubTitle = 'Subtitle'
+    # SubTitleColor = 'fff'
+    # SubTitleFontSize = 12
+    # Theme = 'wonderland'
+    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
+    
+    # Cap number of records and define dt1
+    if SampleSize != None:
+      if dt.shape[0] > SampleSize:
+        dt1 = dt.sample(n = SampleSize, shuffle = True)
+      else:
+        dt1 = dt.clone()
+    else:
+      dt1 = dt.clone()
+
+    # Define Plotting Variable
+    if YVar == None:
+      return NULL
+
+    # Subset Columns
+    dt1 = dt1.select([pl.col(YVar)])
+    
+    # Define data elements
+    dt1 = dt1.group_by(pl.col(YVar)).agg(pl.count(YVar).alias('Count'))
+    GroupVals = dt1[YVar]
+    YVal = dt1['Count']
+    data_pair = [list(z) for z in zip(GroupVals, YVal)]
+    data_pair.sort(key=lambda x: x[1])
+
+    # Create plot
+    c = WordCloud(init_opts = opts.InitOpts(theme = Theme))
+    c = c.add(series_name = YVar, data_pair = data_pair, word_size_range=[6, 66])
+
+    # Global Options
+    GlobalOptions = {}
+    if not Title is None:
+      GlobalOptions['title_opts'] = opts.TitleOpts(
+          title = Title, subtitle = SubTitle,
+          title_textstyle_opts = opts.TextStyleOpts(
+            color = TitleColor,
+            font_size = TitleFontSize,
+          ),
+          subtitle_textstyle_opts = opts.TextStyleOpts(
+            color = SubTitleColor,
+            font_size = SubTitleFontSize,
+          )
+      )
+
+    # Final Setting of Global Options
+    c = c.set_global_opts(**GlobalOptions)
+
+    # Render html
+    if RenderHTML:
+      c.render()
+  
+    return c
