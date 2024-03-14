@@ -9,7 +9,7 @@ def NumericTransformation(dt, YVar, Trans):
   """
   Trans = Trans.lower()
   import math
-  import polars
+  import polars as pl
   if Trans == "sqrt":
     dt = dt.with_columns(pl.col(YVar).map_elements(math.sqrt))
   elif Trans == 'log':
