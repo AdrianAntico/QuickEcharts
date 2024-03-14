@@ -4,12 +4,14 @@
 
 QuickEcharts is in the early stages. The idea is to design it similar to my R package AutoPlots. The goal is to make plotting echarts quick, easy, and to allow polars to do the data wrangling under the hood, saving the end user valuable time.
 
-### Installation
+# Installation
 ```
 pip install git+https://github.com/AdrianAntico/QuickEcharts.git#egg=quickecharts
 ```
 
 <br>
+
+# Code Examples
 
 ## Histogram
 
