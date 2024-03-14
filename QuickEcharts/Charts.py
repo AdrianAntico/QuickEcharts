@@ -17,8 +17,9 @@ def NumericTransformation(dt, YVar, Trans):
   elif Trans == 'asinh':
     dt = dt.with_columns(pl.col(YVar).map_elements(math.asinh))
   elif Trans == 'logmin':
-    min_val = dt[YVar].min()
-    dt = dt.with_columns(YVar = dt[YVar] + 1 + min_val)
+    dt = dt.with_columns(YVar = dt[YVar] + 1 + dt[YVar].min())
+    dt = dt.drop(YVar)
+    dt = dt.rename({"YVar": YVar})
     dt = dt.with_columns(pl.col(YVar).map_elements(math.log))
   return dt
 
