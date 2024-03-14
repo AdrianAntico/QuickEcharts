@@ -1239,6 +1239,9 @@ def BoxPlot(dt = None,
             SubTitleColor = "#fff",
             SubTitleFontSize = 12,
             AxisPointerType = 'cross',
+            YAxisTitle = None,
+            YAxisNameLocation = 'middle',
+            YAxisNameGap = 42,
             XAxisTitle = None,
             XAxisNameLocation = 'middle',
             XAxisNameGap = 42,
@@ -1266,6 +1269,9 @@ def BoxPlot(dt = None,
     SubTitleColor: Subtitle color of text. Default "#fff"
     SubTitleFontSize: Font text size. Default 12
     AxisPointerType: 'cross' 'line', 'shadow', or None
+    YAxisTitle: Title for the YAxis. If none, then YVar will be the Title
+    YAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
+    YAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
     XAxisTitle: Title for the XAxis. If none, then YVar will be the Title
     XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
     XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
@@ -1291,7 +1297,11 @@ def BoxPlot(dt = None,
     # GroupVar = 'Brand'
     # YVarTrans = "Identity"
     # XAxisTitle = YVar
+    # XAxisNameLocation = 'end'
+    # YAxisNameGap = 15
+    # XAxisTitle = GroupVar
     # XAxisNameLocation = 'middle'
+    # XAxisNameGap = 42
     # AxisPointerType = 'cross' # 'line', 'shadow'
     # RenderHTML = False
     # Title = 'Hist Plot'
@@ -1313,8 +1323,8 @@ def BoxPlot(dt = None,
     # HorizonalLineName = 'Yo Yo Daddyo'
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
-    if XAxisTitle == None:
-      XAxisTitle = YVar
+    if XAxisTitle == None and not GroupVar is None:
+      XAxisTitle = GroupVar
 
     # Cap number of records and define dt1
     if SampleSize != None:
@@ -1382,6 +1392,7 @@ def BoxPlot(dt = None,
       )
       
     GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+    GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
 
     if ToolBox:
       GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
