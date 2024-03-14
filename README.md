@@ -445,3 +445,42 @@ p1.render_notebook()
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Donut.PNG" align="center" width="800" />
 
 </details>
+
+
+## Word Cloud
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+import polars as pl
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+p1 = Charts.WordCloud(
+  dt = data,
+  SampleSize = 100000,
+  YVar = 'Brand',
+  RenderHTML = False,
+  Title = 'Word Cloud',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  Theme = 'wonderland')
+
+p1.load_javascript()
+p1.render_notebook()
+```
+
+#### Jupyter Lab View
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Wordcloud.PNG" align="center" width="800" />
+
+</details>
