@@ -254,7 +254,7 @@ p1.render_notebook()
 
 <br>
 
-## Pie Chart
+## Pie
 
 <details><summary>Click for code example</summary>
 
@@ -304,7 +304,7 @@ p1.render_notebook()
 
 <br>
 
-## Rosetype Chart
+## Rosetype
 
 <details><summary>Click for code example</summary>
 
@@ -356,7 +356,7 @@ p1.render_notebook()
 
 <br>
 
-## Donut Chart
+## Donut
 
 <details><summary>Click for code example</summary>
 
