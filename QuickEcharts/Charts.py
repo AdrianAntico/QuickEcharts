@@ -1,6 +1,29 @@
 import QuickEcharts
 
-def SummaryFunction(dt, AggMethod, NumericVariable, GroupVariable, DateVariable):
+def NumericTransformation(dt, YVar, Trans):
+  """
+  Parameters
+  dt: polars dataframe
+  YVar: column to transform
+  Trans: transformation method. Choose from 'sqrt', 'log', 'logmin', and 'asinh'
+  """
+  Trans = Trans.lower()
+  import math
+  import polars
+  if Trans == "sqrt":
+    dt = dt.with_columns(pl.col(YVar).map_elements(math.sqrt))
+  elif Trans == 'log':
+    dt = dt.with_columns(pl.col(YVar).map_elements(math.log))
+  elif Trans == 'asinh':
+    dt = dt.with_columns(pl.col(YVar).map_elements(math.asinh))
+  elif Trans == 'logmin':
+    min_val = dt[YVar].min()
+    dt = dt.with_columns(YVar = dt[YVar] + 1 + min_val)
+    dt = dt.with_columns(pl.col(YVar).map_elements(math.log))
+  return dt
+
+
+def PolarsAggregation(dt, AggMethod, NumericVariable, GroupVariable, DateVariable):
   import polars as pl
   import math
   from scipy.stats import skew, kurtosis
@@ -206,7 +229,7 @@ def Histogram(dt = None,
     FacetRows: Number of rows in facet grid
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
@@ -295,15 +318,10 @@ def Histogram(dt = None,
     else:
       dt1 = dt1.select([pl.col(YVar), pl.col(GroupVar)])
 
-    # Transformation: "Asinh" "Log" "Sqrt"
+    # Transformation
     trans = YVarTrans.lower()
     if trans != "identity":
-      if trans == "sqrt":
-        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.sqrt))
-      elif trans == 'log':
-        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.log))
-      elif trans == 'asinh':
-        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.asinh))
+      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
   
     # Single Histogram, no grouping
     if GroupVar == None:
@@ -508,7 +526,7 @@ def Density(dt = None,
     FacetRows: Number of rows in facet grid
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     LineWidth: numeric. Default is 2
     FillOpacity: fill opacity under the line. Default 0.5
@@ -598,15 +616,10 @@ def Density(dt = None,
     else:
       dt1 = dt1.select([pl.col(YVar), pl.col(GroupVar)])
 
-    # Transformation: "Asinh" "Log" "Sqrt"
+    # Transformation
     trans = YVarTrans.lower()
     if trans != "identity":
-      if trans == "sqrt":
-        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.sqrt))
-      elif trans == 'log':
-        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.log))
-      elif trans == 'asinh':
-        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.asinh))
+      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
   
     # Single Histogram, no grouping
     if GroupVar == None:
@@ -805,7 +818,7 @@ def Pie(dt = None,
     YVar: numeric variable for histogram
     GroupVar: grouping variable for histogram
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
@@ -853,19 +866,14 @@ def Pie(dt = None,
     # Subset Columns
     dt1 = dt.select([pl.col(YVar), pl.col(GroupVar)])
 
-    # Transformation: "Asinh" "Log" "Sqrt"
+    # Transformation
     trans = YVarTrans.lower()
     if trans != "identity":
-      if trans == "sqrt":
-        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.sqrt))
-      elif trans == 'log':
-        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.log))
-      elif trans == 'asinh':
-        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.asinh))
+      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
   
     # Agg Data
     if not PreAgg:
-      dt1 = SummaryFunction(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = None)
+      dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = None)
 
     # Define data elements
     GroupVals = dt1[GroupVar].to_list()
@@ -952,7 +960,7 @@ def Rosetype(dt = None,
     YVar: numeric variable for histogram
     GroupVar: grouping variable for histogram
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Type: Default "radius". Otherwise, "area"
     Radius: Default "55%"
@@ -1005,19 +1013,14 @@ def Rosetype(dt = None,
     # Subset Columns
     dt1 = dt.select([pl.col(YVar), pl.col(GroupVar)])
 
-    # Transformation: "Asinh" "Log" "Sqrt"
+    # Transformation
     trans = YVarTrans.lower()
     if trans != "identity":
-      if trans == "sqrt":
-        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.sqrt))
-      elif trans == 'log':
-        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.log))
-      elif trans == 'asinh':
-        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.asinh))
+      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
   
     # Agg Data
     if not PreAgg:
-      dt1 = SummaryFunction(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = None)
+      dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = None)
 
     # Define data elements
     GroupVals = dt1[GroupVar].to_list()
@@ -1104,7 +1107,7 @@ def Donut(dt = None,
     YVar: numeric variable for histogram
     GroupVar: grouping variable for histogram
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
@@ -1155,19 +1158,14 @@ def Donut(dt = None,
     # Subset Columns
     dt1 = dt.select([pl.col(YVar), pl.col(GroupVar)])
 
-    # Transformation: "Asinh" "Log" "Sqrt"
+    # Transformation
     trans = YVarTrans.lower()
     if trans != "identity":
-      if trans == "sqrt":
-        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.sqrt))
-      elif trans == 'log':
-        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.log))
-      elif trans == 'asinh':
-        dt1 = dt1.with_columns(pl.col(YVar).map_elements(math.asinh))
+      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
   
     # Agg Data
     if not PreAgg:
-      dt1 = SummaryFunction(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = None)
+      dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = None)
 
     # Define data elements
     GroupVals = dt1[GroupVar].to_list()
@@ -1217,6 +1215,198 @@ def Donut(dt = None,
     
     # Final Setting of Global Options
     c = c.set_global_opts(**GlobalOptions)
+
+    # Render html
+    if RenderHTML:
+      c.render()
+  
+    return c
+
+#################################################################################################
+
+
+def BoxPlot(dt = None,
+            SampleSize = None,
+            YVar = None,
+            GroupVar = None,
+            YVarTrans = "Identity",
+            RenderHTML = False,
+            Title = 'Box Plot',
+            TitleColor = "#fff",
+            TitleFontSize = 20,
+            SubTitle = None,
+            SubTitleColor = "#fff",
+            SubTitleFontSize = 12,
+            AxisPointerType = 'cross',
+            XAxisTitle = None,
+            XAxisNameLocation = 'middle',
+            XAxisNameGap = 42,
+            Theme = 'wonderland',
+            Legend = None,
+            LegendPosRight = '0%',
+            LegendPosTop = '5%',
+            ToolBox = True,
+            Brush = True,
+            DataZoom = True,
+            HorizontalLine = None,
+            HorizontalLineName = 'Line Name'):
+    
+    """
+    # Parameters
+    dt: polars dataframe
+    YVar: numeric variable for histogram
+    GroupVar: grouping variable for histogram
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    Title: title of plot in quotes
+    TitleColor: Color of title in hex. Default "#fff"
+    TitleFontSize: Font text size. Default 20
+    SubTitle: text underneath main title
+    SubTitleColor: Subtitle color of text. Default "#fff"
+    SubTitleFontSize: Font text size. Default 12
+    AxisPointerType: 'cross' 'line', 'shadow', or None
+    XAxisTitle: Title for the XAxis. If none, then YVar will be the Title
+    XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
+    XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
+    Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    Legend: Choose from None, 'right', 'top'
+    LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
+    LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
+    ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
+    Brush: Logical. Select True for addition ToolBox functionality. Default is True
+    DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
+    HorizontalLineName: add a series name for the horizontal line
+    """
+
+    # Load environment
+    from pyecharts import options as opts
+    from pyecharts.charts import Boxplot, Grid
+    import polars as pl
+    import math
+
+    # SampleSize = 100000
+    # YVar = 'Daily Liters'
+    # GroupVar = 'Brand'
+    # YVarTrans = "Identity"
+    # XAxisTitle = YVar
+    # XAxisNameLocation = 'middle'
+    # AxisPointerType = 'cross' # 'line', 'shadow'
+    # RenderHTML = False
+    # Title = 'Hist Plot'
+    # TitleColor = 'fff'
+    # TitleFontSize = 20
+    # SubTitle = 'Subtitle'
+    # SubTitleColor = 'fff'
+    # SubTitleFontSize = 12
+    # YVarTrans = "Identity"
+    # XVarTrans = "Identity"
+    # Theme = 'wonderland'
+    # Legend = None
+    # LegendPosRight = '0%'
+    # LegendPosTop = '5%'
+    # ToolBox = True
+    # Brush = True
+    # DataZoom = True
+    # HorizonalLine = 500
+    # HorizonalLineName = 'Yo Yo Daddyo'
+    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
+    
+    if XAxisTitle == None:
+      XAxisTitle = YVar
+
+    # Cap number of records and define dt1
+    if SampleSize != None:
+      if dt.shape[0] > SampleSize:
+        dt1 = dt.sample(n = SampleSize, shuffle = True)
+      else:
+        dt1 = dt.clone()
+    else:
+      dt1 = dt.clone()
+
+    # Define Plotting Variable
+    if YVar == None:
+      return NULL
+
+    # Subset Columns
+    if GroupVar == None:
+      dt1 = dt1.select([pl.col(YVar)])
+    else:
+      dt1 = dt1.select([pl.col(YVar), pl.col(GroupVar)])
+
+    # Transformation
+    trans = YVarTrans.lower()
+    if trans != "identity":
+      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+
+    # Define data elements
+    YVal = [dt1[YVar].to_list()]
+    
+    # Create plot
+    c = Boxplot(init_opts = opts.InitOpts(theme = Theme))
+    if not GroupVar is None:
+      Buckets = dt1[GroupVar].unique().to_list()
+      Buckets.sort()
+      c = c.add_xaxis(Buckets)
+      bucket_data = []
+      for i in Buckets: # i = 'Angel'
+        bucket_data.append(dt1.filter(dt1[GroupVar] == i)[YVar].to_list())
+
+      c = c.add_yaxis('YVar', c.prepare_data(bucket_data))
+    else:
+      YVal = [dt1[YVar].to_list()]
+      c = c.add_xaxis(['expr1'])
+      c = c.add_yaxis('YVar', c.prepare_data(YVal))
+
+    # Global Options
+    GlobalOptions = {}
+    if Legend == 'right':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
+    elif Legend == 'top':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
+    else:
+      GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+
+    if not Title is None:
+      GlobalOptions['title_opts'] = opts.TitleOpts(
+          title = Title, subtitle = SubTitle,
+          title_textstyle_opts = opts.TextStyleOpts(
+            color = TitleColor,
+            font_size = TitleFontSize,
+          ),
+          subtitle_textstyle_opts = opts.TextStyleOpts(
+            color = SubTitleColor,
+            font_size = SubTitleFontSize,
+          )
+      )
+      
+    GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+
+    if ToolBox:
+      GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+    
+    GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
+
+    if Brush:
+      GlobalOptions['brush_opts'] = opts.BrushOpts()
+
+    if DataZoom and not GroupVar is None:
+      GlobalOptions['datazoom_opts'] = [
+          opts.DataZoomOpts(
+            range_start = 0,
+            range_end = 100),
+          opts.DataZoomOpts(
+            type_="inside")]
+    
+    # Final Setting of Global Options
+    c = c.set_global_opts(**GlobalOptions)
+
+    # Series Options
+    if not HorizontalLine is None:
+      MarkLineDict = {}
+      MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+
+      c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
 
     # Render html
     if RenderHTML:

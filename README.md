@@ -63,8 +63,6 @@ p1 = Charts.Histogram(
 
 # Needed to display
 p1.load_javascript()
-
-# In a new cell
 p1.render_notebook()
 ```
 
@@ -120,8 +118,6 @@ p1 = Charts.Histogram(
 
 # Needed to display
 p1.load_javascript()
-
-# In a new cell
 p1.render_notebook()
 ```
 
@@ -185,8 +181,6 @@ p1 = Charts.Density(
 
 # Needed to display
 p1.load_javascript()
-
-# In a new cell
 p1.render_notebook()
 
 ```
@@ -242,13 +236,67 @@ p1 = Charts.Density(
 
 # Needed to display
 p1.load_javascript()
-
-# In a new cell
 p1.render_notebook()
 ```
 
 #### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Density_Facet.PNG" align="center" width="800" />
+
+</details>
+
+<br>
+
+## Box Plot
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Pull Data from Package
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+# Create BoxPlot in Jupyter Lab
+p1 = Charts.BoxPlot(
+  dt = data,
+  SampleSize = 100000,
+  YVar = 'Daily Liters',
+  GroupVar = 'Brand',
+  YVarTrans = "logmin",
+  RenderHTML = False,
+  Title = 'Box Plot',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  AxisPointerType = 'cross',
+  XAxisTitle = None,
+  XAxisNameLocation = 'middle',
+  XAxisNameGap = 42,
+  Theme = 'wonderland',
+  Legend = None,
+  LegendPosRight = '0%',
+  LegendPosTop = '5%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  HorizontalLine = None,
+  HorizontalLineName = 'Line Name')
+
+# Needed to display
+p1.load_javascript()
+p1.render_notebook()
+```
+
+#### Jupyter Lab View
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Boxplot.PNG" align="center" width="800" />
 
 </details>
 
@@ -270,7 +318,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Pie Chart Plot in Jupyter Lab
+# Create Pie Chart in Jupyter Lab
 p1 = Charts.Pie(
   dt = data,
   PreAgg = False,
@@ -292,8 +340,6 @@ p1 = Charts.Pie(
 
 # Needed to display
 p1.load_javascript()
-
-# In a new cell
 p1.render_notebook()
 ```
 
@@ -344,8 +390,6 @@ p1 = Charts.Rosetype(
 
 # Needed to display
 p1.load_javascript()
-
-# In a new cell
 p1.render_notebook()
 ```
 
@@ -394,8 +438,6 @@ p1 = Charts.Donut(
 
 # Needed to display
 p1.load_javascript()
-
-# In a new cell
 p1.render_notebook()
 ```
 
