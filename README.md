@@ -492,6 +492,7 @@ p1.render_notebook()
 
 </details>
 
+<br>
 
 ## Radar Chart
 
