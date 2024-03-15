@@ -1362,8 +1362,8 @@ def BoxPlot(dt = None,
       Buckets = dt1[GroupVar].unique().to_list()
       Buckets.sort()
       bucket_data = []
-        for i in Buckets: # i = 'Angel'
-          bucket_data.append(dt1.filter(dt1[GroupVar] == i)[YVar].to_list())
+      for i in Buckets: # i = 'Angel'
+        bucket_data.append(dt1.filter(dt1[GroupVar] == i)[YVar].to_list())
       if not FlipAxis:
         c = c.add_xaxis(Buckets)
         c = c.add_yaxis('YVar', c.prepare_data(bucket_data))
