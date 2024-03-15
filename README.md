@@ -491,3 +491,49 @@ p1.render_notebook()
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Wordcloud.PNG" align="center" width="800" />
 
 </details>
+
+
+## Radar Chart
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+import polars as pl
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+p1 = Charts.Radar(
+  dt = data,
+  YVar = 'Daily Liters',
+  GroupVar = 'Brand',
+  AggMethod = 'mean',
+  YVarTrans = "Identity",
+  RenderHTML = False,
+  Title = 'Radar Chart',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  Theme = 'wonderland',
+  LabelColor = '#fff',
+  LineColors = ["#213f7f", "#00a6fb", "#22c0df", "#8e5fa8", "#ed1690"],
+  Legend = None,
+  LegendPosRight = '0%',
+  LegendPosTop = '5%')
+
+p1.load_javascript()
+p1.render_notebook()
+```
+
+#### Jupyter Lab View
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Radar.PNG" align="center" width="800" />
+
+</details>

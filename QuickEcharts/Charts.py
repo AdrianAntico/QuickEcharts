@@ -1527,3 +1527,154 @@ def WordCloud(dt = None,
       c.render()
   
     return c
+
+
+#################################################################################################
+
+
+def Radar(dt = None,
+          YVar = None,
+          GroupVar = None,
+          AggMethod = 'mean',
+          YVarTrans = "Identity",
+          RenderHTML = False,
+          Title = 'Radar Chart',
+          TitleColor = "#fff",
+          TitleFontSize = 20,
+          SubTitle = None,
+          SubTitleColor = "#fff",
+          SubTitleFontSize = 12,
+          Theme = 'wonderland',
+          LabelColor = '#fff',
+          LineColors = ["#213f7f", "#00a6fb", "#22c0df", "#8e5fa8", "#ed1690"],
+          Legend = None,
+          LegendPosRight = '0%',
+          LegendPosTop = '5%'):
+    
+    """
+    # Parameters
+    dt: polars dataframe
+    YVar: numeric variable for histogram
+    GroupVar: grouping variable for histogram
+    AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    Title: title of plot in quotes
+    TitleColor: Color of title in hex. Default "#fff"
+    TitleFontSize: Font text size. Default 20
+    SubTitle: text underneath main title
+    SubTitleColor: Subtitle color of text. Default "#fff"
+    SubTitleFontSize: Font text size. Default 12
+    Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    LabelColor: color for the radar category labels. Default is '#fff'
+    LineColors: Default list ["#213f7f", "#00a6fb", "#22c0df", "#8e5fa8", "#ed1690"]. If you need more add more.
+    Legend: Choose from None, 'right', 'top'
+    LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
+    LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
+    """
+
+    # Load environment
+    from pyecharts import options as opts
+    from pyecharts.charts import Radar
+    import polars as pl
+    import math
+
+    # YVar = 'Daily Liters'
+    # GroupVar = 'Brand'
+    # AggMethod = 'mean'
+    # YVarTrans = "Identity"
+    # RenderHTML = False
+    # Title = 'Hist Plot'
+    # TitleColor = 'fff'
+    # TitleFontSize = 20
+    # SubTitle = 'Subtitle'
+    # SubTitleColor = 'fff'
+    # SubTitleFontSize = 12
+    # YVarTrans = "Identity"
+    # Theme = 'wonderland'
+    # LabelColor = '#fff'
+    # LineColors = ["#213f7f", "#00a6fb", "#22c0df", "#8e5fa8", "#ed1690"]
+    # Legend = None
+    # LegendPosRight = '0%'
+    # LegendPosTop = '5%'
+    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
+    
+    # Define Plotting Variable
+    if YVar == None:
+      return NULL
+
+    # Subset Columns
+    dt1 = dt.select([pl.col(YVar), pl.col(GroupVar)])
+
+    # Transformation
+    trans = YVarTrans.lower()
+    if trans != "identity":
+      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+
+    # Define data elements
+    vals_dict = {}
+    if not isinstance(YVar, list):
+      yVar = [YVar]
+    else:
+      yVar = [YVar]
+    counter = -1
+    for yvar in yVar:# yvar = yVar
+      counter += 1
+      temp = PolarsAggregation(dt1, AggMethod, NumericVariable = yvar, GroupVariable = GroupVar, DateVariable = None) 
+      vals_dict[yvar] = [round(num, 2) for num in temp[yvar]]
+
+    group_levels = dt1[GroupVar].unique()
+
+    # Create plot
+    c = Radar(init_opts = opts.InitOpts(theme = Theme))
+    schema = []
+    for gv in group_levels:
+      schema.append(opts.RadarIndicatorItem(name = gv))
+
+    c = c.add_schema(
+        schema = schema,
+        splitarea_opt = opts.SplitAreaOpts(is_show = True, areastyle_opts = opts.AreaStyleOpts(opacity = 1)),
+        textstyle_opts = opts.TextStyleOpts(color = LabelColor),
+    )
+
+    vals_dict_keys = list(vals_dict.keys())
+    counter = -1
+    for i in vals_dict_keys: # i = vals_dict_keys[0]
+      counter += 1
+      c = c.add(
+        series_name = vals_dict_keys[counter],
+        data = [vals_dict[i]],
+        linestyle_opts = opts.LineStyleOpts(color = LineColors[counter]),
+      )
+
+    # Global Options
+    GlobalOptions = {}
+    if Legend == 'right':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
+    elif Legend == 'top':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
+    else:
+      GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+
+    if not Title is None:
+      GlobalOptions['title_opts'] = opts.TitleOpts(
+          title = Title, subtitle = SubTitle,
+          title_textstyle_opts = opts.TextStyleOpts(
+            color = TitleColor,
+            font_size = TitleFontSize,
+          ),
+          subtitle_textstyle_opts = opts.TextStyleOpts(
+            color = SubTitleColor,
+            font_size = SubTitleFontSize,
+          )
+      )
+
+    # Final Setting of Global Options
+    c = c.set_global_opts(**GlobalOptions)
+
+    # Render html
+    if RenderHTML:
+      c.render()
+
+    return c
+
