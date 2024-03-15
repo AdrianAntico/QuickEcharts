@@ -474,6 +474,7 @@ p1 = Charts.WordCloud(
   SampleSize = 100000,
   YVar = 'Brand',
   RenderHTML = False,
+  SymbolType = 'diamond',
   Title = 'Word Cloud',
   TitleColor = "#fff",
   TitleFontSize = 20,

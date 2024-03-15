@@ -1434,6 +1434,7 @@ def WordCloud(dt = None,
               SampleSize = None,
               YVar = None,
               RenderHTML = False,
+              SymbolType = 'diamond',
               Title = 'Word Cloud',
               TitleColor = "#fff",
               TitleFontSize = 20,
@@ -1447,6 +1448,7 @@ def WordCloud(dt = None,
     dt: polars dataframe
     YVar: numeric variable for histogram
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    SymbolType: 'diamond','arrow','rect','triangle', 'roundRect'
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
     TitleFontSize: Font text size. Default 20
@@ -1465,6 +1467,7 @@ def WordCloud(dt = None,
     # SampleSize = 100000
     # YVar = 'Daily Liters'
     # RenderHTML = False
+    # SymbolType = 'arrow'
     # Title = 'Hist Plot'
     # TitleColor = 'fff'
     # TitleFontSize = 20
@@ -1498,7 +1501,7 @@ def WordCloud(dt = None,
     data_pair.sort(key=lambda x: x[1])
 
     # Create plot
-    c = WordCloud(init_opts = opts.InitOpts(theme = Theme))
+    c = WordCloud(init_opts = opts.InitOpts(theme = Theme), shape = SymbolType)
     c = c.add(series_name = YVar, data_pair = data_pair, word_size_range=[6, 66])
 
     # Global Options
