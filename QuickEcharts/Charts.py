@@ -1232,7 +1232,6 @@ def BoxPlot(dt = None,
             GroupVar = None,
             YVarTrans = "Identity",
             RenderHTML = False,
-            FlipAxis = False,
             Title = 'Box Plot',
             TitleColor = "#fff",
             TitleFontSize = 20,
@@ -1263,7 +1262,6 @@ def BoxPlot(dt = None,
     GroupVar: grouping variable for histogram
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
-    FlipAxis: Logical
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
     TitleFontSize: Font text size. Default 20
@@ -1298,7 +1296,6 @@ def BoxPlot(dt = None,
     # YVar = 'Daily Liters'
     # GroupVar = 'Brand'
     # YVarTrans = "Identity"
-    # FlipAxis = False
     # XAxisTitle = YVar
     # XAxisNameLocation = 'end'
     # YAxisNameGap = 15
@@ -1365,17 +1362,11 @@ def BoxPlot(dt = None,
       c = c.add_xaxis(Buckets)
       for i in Buckets: # i = 'Angel'
         bucket_data.append(dt1.filter(dt1[GroupVar] == i)[YVar].to_list())
-      if not FlipAxis:
-        c = c.add_yaxis('YVar', c.prepare_data(bucket_data))
-      else:
-        c = c.add_yaxis('YVar', c.prepare_data(bucket_data), orient = "horizontal")
+      c = c.add_yaxis('YVar', c.prepare_data(bucket_data))
     else:
       YVal = [dt1[YVar].to_list()]
       c = c.add_xaxis(['expr1'])
-      if not FlipAxis:
-        c = c.add_yaxis('YVar', c.prepare_data(YVal))
-      else:
-        c = c.add_yaxis('YVar', c.prepare_data(YVal), orient = "horizontal")
+      c = c.add_yaxis('YVar', c.prepare_data(YVal))
 
     # Global Options
     GlobalOptions = {}
