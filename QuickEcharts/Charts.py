@@ -2786,13 +2786,14 @@ def Area(dt = None,
         for yvar in yvar_dict.keys():# yvar_dict.keys()
           c = c.add_yaxis(
             series_name = yvar,
-            areastyle_opts = opts.AreaStyleOpts(opacity = Opacity),
             symbol = Symbol,
             is_symbol_show = ShowSymbol,
             y_axis = yvar_dict[yvar],
             linestyle_opts = opts.LineStyleOpts(width = LineWidth),
             label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
           )
+          
+          c = c.set_series_opts(areastyle_opts = opts.AreaStyleOpts(opacity = Opacity)),
   
         # Global Options
         GlobalOptions = {}
@@ -2882,13 +2883,14 @@ def Area(dt = None,
           plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = XVal)
           plot_dict[i] = plot_dict[i].add_yaxis(
             series_name = i,
-            areastyle_opts = opts.AreaStyleOpts(opacity = Opacity),
             symbol = Symbol,
             is_symbol_show = ShowSymbol,
             y_axis = yvar_dict[i],
             linestyle_opts = opts.LineStyleOpts(width = LineWidth),
             label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
           )
+          
+          plot_dict[i] = plot_dict[i].set_series_opts(areastyle_opts = opts.AreaStyleOpts(opacity = Opacity)),
 
           # Global Options
           GlobalOptions = {}
