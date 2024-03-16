@@ -15,7 +15,7 @@ pip install git+https://github.com/AdrianAntico/QuickEcharts.git#egg=quickechart
 
 <br>
 
-## Line
+## Area
 
 <details><summary>Click for code example</summary>
 
