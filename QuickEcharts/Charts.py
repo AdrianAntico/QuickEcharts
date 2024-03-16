@@ -2018,11 +2018,11 @@ def Line(dt = None,
         
         yvar_dict = {}
         plot_dict = {}
-        if GroupLevels is None:
+        if FacetLevels is None:
           GroupLevels = dt1[GroupVar].unique().sort().to_list()
           GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
         else:
-          GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
+          GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
         for gv in GroupLevels:
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
@@ -2415,11 +2415,11 @@ def Step(dt = None,
         
         yvar_dict = {}
         plot_dict = {}
-        if GroupLevels is None:
+        if FacetLevels is None:
           GroupLevels = dt1[GroupVar].unique().sort().to_list()
           GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
         else:
-          GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
+          GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
         for gv in GroupLevels:
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
