@@ -763,8 +763,7 @@ def Density(dt = None,
         if not Title is None:
           GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
   
-        if not XAxisTitle is None:
-          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}")
+        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}")
 
         plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
 
@@ -2051,8 +2050,7 @@ def Line(dt = None,
           if not Title is None:
             GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
   
-          if not XAxisTitle is None:
-            GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}", position = "right")
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}", position = "right")
       
           # Final Setting of Global Options
           plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
