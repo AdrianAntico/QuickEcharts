@@ -361,6 +361,205 @@ p1.render_notebook()
 <br>
 
 
+## Line
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Pull Data from Package
+FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
+data = pl.read_csv(FilePath)
+
+p1 = Charts.Line(
+  dt = data,
+  PreAgg = False,
+  YVar = ['Daily Liters', 'Daily Margin', 'Daily Revenue', 'Daily Units'],
+  XVar = 'Date',
+  GroupVar = None,
+  FacetRows = 1,
+  FacetCols = 1,
+  FacetLevels = None,
+  AggMethod = 'sum',
+  YVarTrans = "Identity",
+  RenderHTML = False,
+  SmoothLine = True,
+  LineWidth = 2,
+  Symbol = "emptyCircle",
+  ShowLabels = False,
+  LabelPosition = "top",
+  Title = 'Line Plot',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  AxisPointerType = 'cross',
+  YAxisTitle = None,
+  YAxisNameLocation = 'middle',
+  YAxisNameGap = 70,
+  XAxisTitle = 'Date',
+  XAxisNameLocation = 'middle',
+  XAxisNameGap = 42,
+  Theme = 'wonderland',
+  Legend = 'right',
+  LegendPosRight = '0%',
+  LegendPosTop = '15%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  VerticalLine = None,
+  VerticalLineName = 'Line Name',
+  HorizontalLine = None,
+  HorizontalLineName = 'Line Name')
+
+# Needed to display
+p1.load_javascript()
+p1.render_notebook()
+```
+
+#### Jupyter Lab View
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Line_MultiYVar.PNG" align="center" width="800" />
+
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Pull Data from Package
+FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
+data = pl.read_csv(FilePath)
+
+# Create Histogram Plot in Jupyter Lab
+p1 = Charts.Line(
+  dt = data,
+  PreAgg = False,
+  YVar = 'Daily Liters',
+  XVar = 'Date',
+  GroupVar = 'Brand',
+  FacetRows = 1,
+  FacetCols = 1,
+  FacetLevels = None,
+  AggMethod = 'sum',
+  YVarTrans = "Identity",
+  RenderHTML = False,
+  SmoothLine = True,
+  LineWidth = 2,
+  Symbol = "emptyCircle",
+  ShowLabels = False,
+  LabelPosition = "top",
+  Title = 'Line Plot',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  AxisPointerType = 'cross',
+  YAxisTitle = None,
+  YAxisNameLocation = 'middle',
+  YAxisNameGap = 70,
+  XAxisTitle = 'Date',
+  XAxisNameLocation = 'middle',
+  XAxisNameGap = 42,
+  Theme = 'wonderland',
+  Legend = 'right',
+  LegendPosRight = '0%',
+  LegendPosTop = '15%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  VerticalLine = None,
+  VerticalLineName = 'Line Name',
+  HorizontalLine = None,
+  HorizontalLineName = 'Line Name')
+
+# Needed to display
+p1.load_javascript()
+p1.render_notebook()
+```
+
+#### Jupyter Lab View
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Line_GroupVar.PNG" align="center" width="800" />
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Pull Data from Package
+FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
+data = pl.read_csv(FilePath)
+
+# Create Histogram Plot in Jupyter Lab
+p1 = Charts.Line(
+  dt = data,
+  PreAgg = False,
+  YVar = 'Daily Liters',
+  XVar = 'Date',
+  GroupVar = 'Brand',
+  FacetRows = 2,
+  FacetCols = 2,
+  FacetLevels = None,
+  AggMethod = 'sum',
+  YVarTrans = "Identity",
+  RenderHTML = False,
+  SmoothLine = True,
+  LineWidth = 2,
+  Symbol = "emptyCircle",
+  ShowLabels = False,
+  LabelPosition = "top",
+  Title = 'Line Plot',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  AxisPointerType = 'cross',
+  YAxisTitle = None,
+  YAxisNameLocation = 'middle',
+  YAxisNameGap = 70,
+  XAxisTitle = 'Date',
+  XAxisNameLocation = 'middle',
+  XAxisNameGap = 42,
+  Theme = 'wonderland',
+  Legend = 'right',
+  LegendPosRight = '0%',
+  LegendPosTop = '15%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  VerticalLine = None,
+  VerticalLineName = 'Line Name',
+  HorizontalLine = None,
+  HorizontalLineName = 'Line Name')
+
+# Needed to display
+p1.load_javascript()
+p1.render_notebook()
+```
+
+#### Jupyter Lab View
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Line_Facet.PNG" align="center" width="800" />
+
+</details>
+
+
+<br>
+
+
 ## Pie
 
 <details><summary>Click for code example</summary>
@@ -504,7 +703,205 @@ p1.render_notebook()
 
 </details>
 
+
 <br>
+
+
+## Step
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Pull Data from Package
+FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
+data = pl.read_csv(FilePath)
+
+p1 = Charts.Step(
+  dt = data,
+  PreAgg = False,
+  YVar = ['Daily Liters', 'Daily Margin', 'Daily Revenue', 'Daily Units'],
+  XVar = 'Date',
+  GroupVar = None,
+  FacetRows = 1,
+  FacetCols = 1,
+  FacetLevels = None,
+  AggMethod = 'sum',
+  YVarTrans = "Identity",
+  RenderHTML = False,
+  LineWidth = 2,
+  Symbol = "emptyCircle",
+  ShowLabels = False,
+  LabelPosition = "top",
+  Title = 'Line Plot',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  AxisPointerType = 'cross',
+  YAxisTitle = None,
+  YAxisNameLocation = 'middle',
+  YAxisNameGap = 70,
+  XAxisTitle = 'Date',
+  XAxisNameLocation = 'middle',
+  XAxisNameGap = 42,
+  Theme = 'wonderland',
+  Legend = 'right',
+  LegendPosRight = '0%',
+  LegendPosTop = '15%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  VerticalLine = None,
+  VerticalLineName = 'Line Name',
+  HorizontalLine = None,
+  HorizontalLineName = 'Line Name')
+
+# Needed to display
+p1.load_javascript()
+p1.render_notebook()
+```
+
+#### Jupyter Lab View
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Step_MultiYVar.PNG" align="center" width="800" />
+
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Pull Data from Package
+FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
+data = pl.read_csv(FilePath)
+
+# Create Histogram Plot in Jupyter Lab
+p1 = Charts.Step(
+  dt = data,
+  PreAgg = False,
+  YVar = 'Daily Liters',
+  XVar = 'Date',
+  GroupVar = 'Brand',
+  FacetRows = 1,
+  FacetCols = 1,
+  FacetLevels = None,
+  AggMethod = 'sum',
+  YVarTrans = "Identity",
+  RenderHTML = False,
+  LineWidth = 2,
+  Symbol = "emptyCircle",
+  ShowLabels = False,
+  LabelPosition = "top",
+  Title = 'Line Plot',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  AxisPointerType = 'cross',
+  YAxisTitle = None,
+  YAxisNameLocation = 'middle',
+  YAxisNameGap = 70,
+  XAxisTitle = 'Date',
+  XAxisNameLocation = 'middle',
+  XAxisNameGap = 42,
+  Theme = 'wonderland',
+  Legend = 'right',
+  LegendPosRight = '0%',
+  LegendPosTop = '15%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  VerticalLine = None,
+  VerticalLineName = 'Line Name',
+  HorizontalLine = None,
+  HorizontalLineName = 'Line Name')
+
+# Needed to display
+p1.load_javascript()
+p1.render_notebook()
+```
+
+#### Jupyter Lab View
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Step_GroupVar.PNG" align="center" width="800" />
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Pull Data from Package
+FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
+data = pl.read_csv(FilePath)
+
+# Create Histogram Plot in Jupyter Lab
+p1 = Charts.Step(
+  dt = data,
+  PreAgg = False,
+  YVar = 'Daily Liters',
+  XVar = 'Date',
+  GroupVar = 'Brand',
+  FacetRows = 2,
+  FacetCols = 2,
+  FacetLevels = None,
+  AggMethod = 'sum',
+  YVarTrans = "Identity",
+  RenderHTML = False,
+  LineWidth = 2,
+  Symbol = "emptyCircle",
+  ShowLabels = False,
+  LabelPosition = "top",
+  Title = 'Line Plot',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  AxisPointerType = 'cross',
+  YAxisTitle = None,
+  YAxisNameLocation = 'middle',
+  YAxisNameGap = 70,
+  XAxisTitle = 'Date',
+  XAxisNameLocation = 'middle',
+  XAxisNameGap = 42,
+  Theme = 'wonderland',
+  Legend = 'right',
+  LegendPosRight = '0%',
+  LegendPosTop = '15%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  VerticalLine = None,
+  VerticalLineName = 'Line Name',
+  HorizontalLine = None,
+  HorizontalLineName = 'Line Name')
+
+# Needed to display
+p1.load_javascript()
+p1.render_notebook()
+```
+
+#### Jupyter Lab View
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Step_Facet.PNG" align="center" width="800" />
+
+</details>
+
+
+<br>
+
 
 ## Word Cloud
 

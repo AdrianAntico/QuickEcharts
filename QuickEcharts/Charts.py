@@ -1813,6 +1813,10 @@ def Line(dt = None,
     if YVar == None:
       return NULL
 
+    if isinstance(YVar, list):
+      if len(YVar) > 1:
+        GroupVar = None
+        
     # Subset Columns
     if not GroupVar is None:
       dt1 = dt.select([pl.col(YVar), pl.col(XVar), pl.col(GroupVar)])
@@ -2210,6 +2214,10 @@ def Step(dt = None,
     # Define Plotting Variable
     if YVar == None:
       return NULL
+    
+    if isinstance(YVar, list):
+      if len(YVar) > 1:
+        GroupVar = None
 
     # Subset Columns
     if not GroupVar is None:
