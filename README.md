@@ -145,7 +145,7 @@ p1.render_notebook()
 ```
 
 #### Jupyter Lab View
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Line_GroupVar.PNG" align="center" width="800" />
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Area_GroupVar.PNG" align="center" width="800" />
 
 ```python
 # Environment
@@ -209,7 +209,7 @@ p1.render_notebook()
 ```
 
 #### Jupyter Lab View
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Line_Facet.PNG" align="center" width="800" />
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Area_Facet.PNG" align="center" width="800" />
 
 </details>
 
