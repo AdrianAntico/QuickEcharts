@@ -2692,7 +2692,7 @@ def Area(dt = None,
         yaxis_options['y_axis'] = yvar_dict[yvar]
         yaxis_options['linestyle_opts'] = opts.LineStyleOpts(width = LineWidth)
         yaxis_options['label_opts'] = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition)
-        if isinstance(YVar, List):
+        if isinstance(YVar, list):
           if len(YVar) == 1:
             yaxis_options['areastyle_opts'] = opts.AreaStyleOpts(color = JsCode(JS_GradientAreaFill(GradientColor1, GradientColor2)), opacity=1)
         else:
