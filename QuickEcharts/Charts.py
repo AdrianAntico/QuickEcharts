@@ -333,15 +333,13 @@ def Histogram(dt = None,
         acc = round(Range / NumberBins, ndigits = 2)
         dt1 = dt1.with_columns(Buckets = pl.col(YVar) / acc)
         dt1 = dt1.with_columns(Buckets = dt1['Buckets'].round() * acc)
-        dt1 = dt1.group_by("Buckets").agg(pl.len())
-        dt1 = dt1.rename({"len": YVar})
+        dt1 = dt1.group_by("Buckets").agg(pl.len().alias(YVar))
         dt1 = dt1.sort("Buckets")
       else:
         acc = math.ceil(Range / NumberBins)
         dt1 = dt1.with_columns(Buckets = pl.col(YVar) / acc)
         dt1 = dt1.with_columns(Buckets = dt1['Buckets'].round() * acc)
-        dt1 = dt1.group_by("Buckets").agg(pl.len())
-        dt1 = dt1.rename({"len": YVar})
+        dt1 = dt1.group_by("Buckets").agg(pl.len().alias(YVar))
         dt1 = dt1.sort("Buckets")
 
 
@@ -357,7 +355,7 @@ def Histogram(dt = None,
       # Global Options
       GlobalOptions = {}
       if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical")
       elif Legend == 'top':
         GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
       else:
@@ -434,15 +432,13 @@ def Histogram(dt = None,
           acc = round(Range / NumberBins, ndigits = 2)
           dt2 = dt2.with_columns(Buckets = pl.col(YVar) / acc)
           dt2 = dt2.with_columns(Buckets = dt2['Buckets'].round() * acc)
-          dt2 = dt2.group_by("Buckets").agg(pl.len())
-          dt2 = dt2.rename({"len": YVar})
+          dt2 = dt2.group_by("Buckets").agg(pl.len().alias(YVar))
           dt2 = dt2.sort("Buckets")
         else:
           acc = math.ceil(Range / NumberBins)
           dt2 = dt2.with_columns(Buckets = pl.col(YVar) / acc)
           dt2 = dt2.with_columns(Buckets = dt2['Buckets'].round() * acc)
-          dt2 = dt2.group_by("Buckets").agg(pl.len())
-          dt2 = dt2.rename({"len": YVar})
+          dt2 = dt2.group_by("Buckets").agg(pl.len().alias(YVar))
           dt2 = dt2.sort("Buckets")
        
         # Define data elements
@@ -637,15 +633,13 @@ def Density(dt = None,
         acc = round(Range / NumberBins, ndigits = 2)
         dt1 = dt1.with_columns(Buckets = pl.col(YVar) / acc)
         dt1 = dt1.with_columns(Buckets = dt1['Buckets'].round() * acc)
-        dt1 = dt1.group_by("Buckets").agg(pl.len())
-        dt1 = dt1.rename({"len": YVar})
+        dt1 = dt1.group_by("Buckets").agg(pl.len().alias(YVar))
         dt1 = dt1.sort("Buckets")
       else:
         acc = math.ceil(Range / NumberBins)
         dt1 = dt1.with_columns(Buckets = pl.col(YVar) / acc)
         dt1 = dt1.with_columns(Buckets = dt1['Buckets'].round() * acc)
-        dt1 = dt1.group_by("Buckets").agg(pl.len())
-        dt1 = dt1.rename({"len": YVar})
+        dt1 = dt1.group_by("Buckets").agg(pl.len().alias(YVar))
         dt1 = dt1.sort("Buckets")
 
 
@@ -666,7 +660,7 @@ def Density(dt = None,
       # Global Options
       GlobalOptions = {}
       if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical")
       elif Legend == 'top':
         GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
       else:
@@ -743,15 +737,13 @@ def Density(dt = None,
           acc = round(Range / NumberBins, ndigits = 2)
           dt2 = dt2.with_columns(Buckets = pl.col(YVar) / acc)
           dt2 = dt2.with_columns(Buckets = dt2['Buckets'].round() * acc)
-          dt2 = dt2.group_by("Buckets").agg(pl.len())
-          dt2 = dt2.rename({"len": YVar})
+          dt2 = dt2.group_by("Buckets").agg(pl.len().alias(YVar))
           dt2 = dt2.sort("Buckets")
         else:
           acc = math.ceil(Range / NumberBins)
           dt2 = dt2.with_columns(Buckets = pl.col(YVar) / acc)
           dt2 = dt2.with_columns(Buckets = dt2['Buckets'].round() * acc)
-          dt2 = dt2.group_by("Buckets").agg(pl.len())
-          dt2 = dt2.rename({"len": YVar})
+          dt2 = dt2.group_by("Buckets").agg(pl.len().alias(YVar))
           dt2 = dt2.sort("Buckets")
        
         # Define data elements
@@ -904,7 +896,7 @@ def Pie(dt = None,
     # Global Options
     GlobalOptions = {}
     if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical")
     elif Legend == 'top':
       GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
     else:
@@ -1053,7 +1045,7 @@ def Rosetype(dt = None,
     # Global Options
     GlobalOptions = {}
     if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical")
     elif Legend == 'top':
       GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
     else:
@@ -1197,7 +1189,7 @@ def Donut(dt = None,
     # Global Options
     GlobalOptions = {}
     if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical")
     elif Legend == 'top':
       GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
     else:
@@ -1381,7 +1373,7 @@ def BoxPlot(dt = None,
     # Global Options
     GlobalOptions = {}
     if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical")
     elif Legend == 'top':
       GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
     else:
@@ -1659,7 +1651,7 @@ def Radar(dt = None,
     # Global Options
     GlobalOptions = {}
     if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical")
     elif Legend == 'top':
       GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
     else:
@@ -1702,7 +1694,12 @@ def Line(dt = None,
          AggMethod = 'mean',
          YVarTrans = "Identity",
          RenderHTML = False,
+         Step = False,
          SmoothLine = True,
+         LineWidth = 2,
+         Symbol = "emptyCircle",
+         ShowLabels = False,
+         LabelPosition = "top",
          Title = 'Line Plot',
          TitleColor = "#fff",
          TitleFontSize = 20,
@@ -1741,7 +1738,12 @@ def Line(dt = None,
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    Step: Step plot option
     SmoothLine: Logical
+    LineWidth: Numeric. Default 2
+    Symbol: Default "emptyCircle" 
+    ShowLabels: Default False
+    LabelPosition: "top", "center", "left", "right", "bottom"
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
     TitleFontSize: Font text size. Default 20
@@ -1778,12 +1780,16 @@ def Line(dt = None,
     # YVar = 'Daily Liters'
     # XVar = 'Date'
     # GroupVar = None 'Brand'
-    # AggMethod = 'count'
+    # AggMethod = 'mean'
     # FacetRows = 2
     # FacetCols = 2
     # FacetLevels = None
     # YVarTrans = "Identity"
     # SmoothLine = True
+    # LineWidth = 2
+    # Symbol = "emptyCircle"
+    # ShowLabels = False
+    # LabelPosition = "top"
     # RenderHTML = False
     # Title = 'Pie Plot'
     # TitleColor = 'fff'
@@ -1827,27 +1833,39 @@ def Line(dt = None,
       dt1 = dt1.sort(XVar)
 
     if GroupVar is None:
-      YVal = dt1[YVar].to_list()
-      XVal = dt1[XVar].to_list()
+      yvar_dict = {}
+      if not isinstance(YVar, list):
+        YVar = [YVar]
+      for yvar in YVar:
+        yvar_dict[yvar] = dt1[yvar].to_list()
+        
+      XVal = dt1[XVar].unique().to_list()
       
       # Create plot
       c = Line(init_opts = opts.InitOpts(theme = Theme))
       c = c.add_xaxis(xaxis_data = XVal)
-      c = c.add_yaxis(
-          series_name = YVar,
+      if Step:
+        SmoothLine = False
+      if not Symbol is None:
+        ShowSymbol = True
+      else:
+        ShowSymbol = False
+      for yvar in YVar:
+        c = c.add_yaxis(
+          series_name = yvar,
+          is_step = Step,
           is_smooth = SmoothLine,
-          symbol = "emptyCircle",
-          is_symbol_show = False,
-          color = "#d14a61",
-          y_axis = YVal,
-          linestyle_opts = opts.LineStyleOpts(width = 2),
-          label_opts = opts.LabelOpts(is_show = False, position="center"),
-      )
+          symbol = Symbol,
+          is_symbol_show = ShowSymbol,
+          y_axis = yvar_dict[yvar],
+          linestyle_opts = opts.LineStyleOpts(width = LineWidth),
+          label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
+        )
 
       # Global Options
       GlobalOptions = {}
       if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical")
       elif Legend == 'top':
         GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
       else:
@@ -1905,20 +1923,170 @@ def Line(dt = None,
         c.render()
     
       return c
-      
+
+    # Grouping Case
     else:
-      YVal = dt1[YVar].to_list()
-      XVal = dt1[XVar].to_list()
-      GroupVals = dt1[GroupVar].to_list()
 
-
+      # No Facet Case
+      if FacetCols == 1 and FacetRows == 1:
+        
+        yvar_dict = {}
+        GroupLevels = dt1[GroupVar].unique().to_list()
+        for gv in GroupLevels:
+          temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
+          yvar_dict[gv] = temp[YVar].to_list()
   
-
-    # Render html
-    if RenderHTML:
-      c.render()
+        XVal = dt1[XVar].unique().to_list()
+        
+        # Create plot
+        c = Line(init_opts = opts.InitOpts(theme = Theme))
+        c = c.add_xaxis(xaxis_data = XVal)
+        if Step:
+          SmoothLine = False
+        if not Symbol is None:
+          ShowSymbol = True
+        else:
+          ShowSymbol = False
+        for yvar in yvar_dict.keys():# yvar_dict.keys()
+          # print(yvar)
+          c = c.add_yaxis(
+            series_name = yvar,
+            is_step = Step,
+            is_smooth = SmoothLine,
+            symbol = Symbol,
+            is_symbol_show = ShowSymbol,
+            y_axis = yvar_dict[yvar],
+            linestyle_opts = opts.LineStyleOpts(width = LineWidth),
+            label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
+          )
   
-    return c
+        # Global Options
+        GlobalOptions = {}
+        if Legend == 'right':
+          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical")
+        elif Legend == 'top':
+          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
+        else:
+          GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+  
+        if not Title is None:
+          GlobalOptions['title_opts'] = opts.TitleOpts(
+              title = Title, subtitle = SubTitle,
+              title_textstyle_opts = opts.TextStyleOpts(
+                color = TitleColor,
+                font_size = TitleFontSize,
+              ),
+              subtitle_textstyle_opts = opts.TextStyleOpts(
+                color = SubTitleColor,
+                font_size = SubTitleFontSize,
+              )
+          )
+  
+        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+        GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
+    
+        if ToolBox:
+          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+        
+        GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
+    
+        if Brush:
+          GlobalOptions['brush_opts'] = opts.BrushOpts()
+    
+        if DataZoom:
+          GlobalOptions['datazoom_opts'] = [
+              opts.DataZoomOpts(
+                range_start = 0,
+                range_end = 100),
+              opts.DataZoomOpts(
+                type_="inside")]
+  
+        # Final Setting of Global Options
+        c = c.set_global_opts(**GlobalOptions)
+    
+        # Series Options
+        if not HorizontalLine is None or not VerticalLine is None:
+          MarkLineDict = {}
+          if not HorizontalLine is None and not VerticalLine is None:
+            MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+          elif HorizontalLine is None:
+            MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+          else:
+            MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+  
+          c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+          
+        # Render html
+        if RenderHTML:
+          c.render()
+      
+        return c
+
+      # Facet Case
+      else:
+        
+        yvar_dict = {}
+        plot_dict = {}
+        GroupLevels = dt1[GroupVar].unique().to_list()
+        for gv in GroupLevels:
+          temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
+          yvar_dict[gv] = temp[YVar].to_list()
+
+        XVal = dt1[XVar].unique().to_list()
+        
+        # Create plot
+        if Step:
+          SmoothLine = False
+        if not Symbol is None:
+          ShowSymbol = True
+        else:
+          ShowSymbol = False
+        for yvar in yvar_dict.keys():# yvar = 'Yellow-Yum'
+          plot_dict[yvar] = Line(init_opts = opts.InitOpts(theme = Theme))
+          plot_dict[yvar] = plot_dict[yvar].add_xaxis(xaxis_data = XVal)
+          plot_dict[yvar] = plot_dict[yvar].add_yaxis(
+            series_name = yvar,
+            is_step = Step,
+            is_smooth = SmoothLine,
+            symbol = Symbol,
+            is_symbol_show = ShowSymbol,
+            y_axis = yvar_dict[yvar],
+            linestyle_opts = opts.LineStyleOpts(width = LineWidth),
+            label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
+          )
+
+          # Global Options
+          GlobalOptions = {}
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = "end", name_gap = XAxisNameGap)
+          GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = "end", name_gap = YAxisNameGap)
+      
+          # Final Setting of Global Options
+          plot_dict[yvar] = plot_dict[yvar].set_global_opts(**GlobalOptions)
+
+        # Setup Grid Output
+        grid = Grid()
+        facet_vals = FacetGridValues(
+          FacetRows = FacetRows,
+          FacetCols = FacetCols,
+          Legend = Legend,
+          LegendSpace = 10)
+        counter = -1
+        for i in ['Yellow-Yum', 'Elves']: #yvar_dict.keys(): # i = Levs[0]
+          counter += 1
+          grid = grid.add(
+            plot_dict[i],
+            grid_opts = opts.GridOpts(
+              pos_left = f"{facet_vals['left'][counter]}%",
+              pos_top = f"{facet_vals['top'][counter]}%",
+              width = f"{facet_vals['width']}%",
+              height = f"{facet_vals['height']}%"))
+
+        # Render html
+        if RenderHTML:
+          grid.render()
+
+        return grid
+      
 
 
 #################################################################################################
