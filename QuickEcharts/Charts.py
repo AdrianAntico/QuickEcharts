@@ -334,23 +334,25 @@ def Histogram(dt = None,
         dt1 = dt1.with_columns(Buckets = pl.col(YVar) / acc)
         dt1 = dt1.with_columns(Buckets = dt1['Buckets'].round() * acc)
         dt1 = dt1.group_by("Buckets").agg(pl.len())
+        dt1 = dt1.rename({"len": YVar})
         dt1 = dt1.sort("Buckets")
       else:
         acc = math.ceil(Range / NumberBins)
         dt1 = dt1.with_columns(Buckets = pl.col(YVar) / acc)
         dt1 = dt1.with_columns(Buckets = dt1['Buckets'].round() * acc)
         dt1 = dt1.group_by("Buckets").agg(pl.len())
+        dt1 = dt1.rename({"len": YVar})
         dt1 = dt1.sort("Buckets")
 
 
       # Define data elements
       Buckets = dt1['Buckets'].to_list()
-      YVar = dt1[YVar].to_list()
+      YVal = dt1[YVar].to_list()
       
       # Create plot
       c = Bar(init_opts = opts.InitOpts(theme = Theme))
       c = c.add_xaxis(Buckets)
-      c = c.add_yaxis('YVar', YVar, stack = "stack1", category_gap = CategoryGap)
+      c = c.add_yaxis(YVar, YVal, stack = "stack1", category_gap = CategoryGap)
 
       # Global Options
       GlobalOptions = {}
@@ -433,12 +435,14 @@ def Histogram(dt = None,
           dt2 = dt2.with_columns(Buckets = pl.col(YVar) / acc)
           dt2 = dt2.with_columns(Buckets = dt2['Buckets'].round() * acc)
           dt2 = dt2.group_by("Buckets").agg(pl.len())
+          dt2 = dt2.rename({"len": YVar})
           dt2 = dt2.sort("Buckets")
         else:
           acc = math.ceil(Range / NumberBins)
           dt2 = dt2.with_columns(Buckets = pl.col(YVar) / acc)
           dt2 = dt2.with_columns(Buckets = dt2['Buckets'].round() * acc)
           dt2 = dt2.group_by("Buckets").agg(pl.len())
+          dt2 = dt2.rename({"len": YVar})
           dt2 = dt2.sort("Buckets")
        
         # Define data elements
@@ -634,25 +638,27 @@ def Density(dt = None,
         dt1 = dt1.with_columns(Buckets = pl.col(YVar) / acc)
         dt1 = dt1.with_columns(Buckets = dt1['Buckets'].round() * acc)
         dt1 = dt1.group_by("Buckets").agg(pl.len())
+        dt1 = dt1.rename({"len": YVar})
         dt1 = dt1.sort("Buckets")
       else:
         acc = math.ceil(Range / NumberBins)
         dt1 = dt1.with_columns(Buckets = pl.col(YVar) / acc)
         dt1 = dt1.with_columns(Buckets = dt1['Buckets'].round() * acc)
         dt1 = dt1.group_by("Buckets").agg(pl.len())
+        dt1 = dt1.rename({"len": YVar})
         dt1 = dt1.sort("Buckets")
 
 
       # Define data elements
       Buckets = dt1['Buckets'].to_list()
-      YVar = dt1[YVar].to_list()
+      YVal = dt1[YVar].to_list()
       
       # Create plot
       c = Line(init_opts = opts.InitOpts(theme = Theme))
       c = c.add_xaxis(Buckets)
       c = c.add_yaxis(
-        'YVar',
         YVar,
+        YVal,
         is_smooth = True,
         linestyle_opts = opts.LineStyleOpts(width = LineWidth),
         areastyle_opts = opts.AreaStyleOpts(opacity = FillOpacity))
@@ -738,12 +744,14 @@ def Density(dt = None,
           dt2 = dt2.with_columns(Buckets = pl.col(YVar) / acc)
           dt2 = dt2.with_columns(Buckets = dt2['Buckets'].round() * acc)
           dt2 = dt2.group_by("Buckets").agg(pl.len())
+          dt2 = dt2.rename({"len": YVar})
           dt2 = dt2.sort("Buckets")
         else:
           acc = math.ceil(Range / NumberBins)
           dt2 = dt2.with_columns(Buckets = pl.col(YVar) / acc)
           dt2 = dt2.with_columns(Buckets = dt2['Buckets'].round() * acc)
           dt2 = dt2.group_by("Buckets").agg(pl.len())
+          dt2 = dt2.rename({"len": YVar})
           dt2 = dt2.sort("Buckets")
        
         # Define data elements
@@ -754,7 +762,7 @@ def Density(dt = None,
         plot_dict[i] = Line(init_opts = opts.InitOpts(theme = Theme))
         plot_dict[i] = plot_dict[i].add_xaxis(Buckets)
         plot_dict[i] = plot_dict[i].add_yaxis(
-          'YVar',
+          YVar,
           YVal,
           is_smooth = True,
           linestyle_opts = opts.LineStyleOpts(width = LineWidth),
