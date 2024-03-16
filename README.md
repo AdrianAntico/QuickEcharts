@@ -92,7 +92,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Histogram Plot in Jupyter Lab
+# Create Density Plot in Jupyter Lab
 p1 = Charts.Density(
   dt = data,
   SampleSize = 100000,
@@ -105,7 +105,7 @@ p1 = Charts.Density(
   LineWidth = 1,
   FillOpacity = 0.75,
   RenderHTML = False,
-  Title = 'Histogram Plot',
+  Title = 'Density Plot',
   TitleColor = "#fff",
   TitleFontSize = 20,
   SubTitle = None,
@@ -147,7 +147,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Histogram Plot in Jupyter Lab
+# Create Density Plot in Jupyter Lab
 p1 = Charts.Density(
   dt = data,
   SampleSize = 100000,
@@ -160,7 +160,7 @@ p1 = Charts.Density(
   LineWidth = 1,
   FillOpacity = 0.75,
   RenderHTML = False,
-  Title = 'Histogram Plot',
+  Title = 'Density Plot',
   TitleColor = "#fff",
   TitleFontSize = 20,
   SubTitle = None,

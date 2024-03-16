@@ -225,8 +225,8 @@ def Histogram(dt = None,
     """
     # Parameters
     dt: polars dataframe
-    YVar: numeric variable for histogram
-    GroupVar: grouping variable for histogram
+    YVar: numeric variable
+    GroupVar: grouping variable
     FacetRows: Number of rows in facet grid
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
@@ -522,8 +522,8 @@ def Density(dt = None,
     """
     # Parameters
     dt: polars dataframe
-    YVar: numeric variable for histogram
-    GroupVar: grouping variable for histogram
+    YVar: numeric variable
+    GroupVar: grouping variable
     FacetRows: Number of rows in facet grid
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
@@ -594,6 +594,8 @@ def Density(dt = None,
     # HorizonalLine = 500
     # HorizonalLineName = 'Yo Yo Daddyo'
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
+    
+    NumberBins = 20
     
     if XAxisTitle == None:
       XAxisTitle = YVar
@@ -816,8 +818,8 @@ def Pie(dt = None,
     # Parameters
     dt: polars dataframe
     PreAgg: Set to True if your data is already aggregated. Default is False
-    YVar: numeric variable for histogram
-    GroupVar: grouping variable for histogram
+    YVar: numeric variable
+    GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
@@ -958,8 +960,8 @@ def Rosetype(dt = None,
     # Parameters
     dt: polars dataframe
     PreAgg: Set to True if your data is already aggregated. Default is False
-    YVar: numeric variable for histogram
-    GroupVar: grouping variable for histogram
+    YVar: numeric variable
+    GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
@@ -1105,8 +1107,8 @@ def Donut(dt = None,
     # Parameters
     dt: polars dataframe
     PreAgg: Set to True if your data is already aggregated. Default is False
-    YVar: numeric variable for histogram
-    GroupVar: grouping variable for histogram
+    YVar: numeric variable
+    GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
@@ -1258,8 +1260,8 @@ def BoxPlot(dt = None,
     """
     # Parameters
     dt: polars dataframe
-    YVar: numeric variable for histogram
-    GroupVar: grouping variable for histogram
+    YVar: numeric variable
+    GroupVar: grouping variable
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Title: title of plot in quotes
@@ -1445,7 +1447,7 @@ def WordCloud(dt = None,
     """
     # Parameters
     dt: polars dataframe
-    YVar: numeric variable for histogram
+    YVar: numeric variable
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     SymbolType: 'diamond','arrow','rect','triangle', 'roundRect'
     Title: title of plot in quotes
@@ -1553,8 +1555,8 @@ def Radar(dt = None,
     """
     # Parameters
     dt: polars dataframe
-    YVar: numeric variable for histogram
-    GroupVar: grouping variable for histogram
+    YVar: numeric variable
+    GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
@@ -1681,27 +1683,29 @@ def Radar(dt = None,
 #################################################################################################
 
 
-def Line(dt = None,
+def Line(dt = data,
          PreAgg = False,
-         YVar = None,
+         YVar = 'Daily Liters',
+         XVar = 'Date',
          GroupVar = None,
          FacetRows = 1,
          FacetCols = 1,
          FacetLevels = None,
-         AggMethod = 'count',
+         AggMethod = 'mean',
          YVarTrans = "Identity",
          RenderHTML = False,
-         Title = 'Donut Chart',
+         SmoothLine = True,
+         Title = 'Line Plot',
          TitleColor = "#fff",
          TitleFontSize = 20,
          SubTitle = None,
          SubTitleColor = "#fff",
          SubTitleFontSize = 12,
          AxisPointerType = 'cross',
-         YAxisTitle = None,
+         YAxisTitle = 'Daily Liters',
          YAxisNameLocation = 'middle',
-         YAxisNameGap = 42,
-         XAxisTitle = None,
+         YAxisNameGap = 70,
+         XAxisTitle = 'Date',
          XAxisNameLocation = 'middle',
          XAxisNameGap = 42,
          Theme = 'wonderland',
@@ -1720,14 +1724,16 @@ def Line(dt = None,
     # Parameters
     dt: polars dataframe
     PreAgg: Set to True if your data is already aggregated. Default is False
-    YVar: numeric variable for histogram
-    GroupVar: grouping variable for histogram
+    YVar: numeric variable
+    XVar: date variable
+    GroupVar: grouping variable
     FacetRows: Number of rows in facet grid
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    SmoothLine: Logical
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
     TitleFontSize: Font text size. Default 20
@@ -1737,7 +1743,7 @@ def Line(dt = None,
     AxisPointerType: 'cross' 'line', 'shadow', or None
     YAxisTitle: Title for the YAxis. If none, then YVar will be the Title
     YAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
-    YAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
+    YAxisNameGap: offsetting where the title ends up. For 'middle', default is 15
     XAxisTitle: Title for the XAxis. If none, then YVar will be the Title
     XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
     XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
@@ -1756,20 +1762,20 @@ def Line(dt = None,
 
     # Load environment
     from pyecharts import options as opts
-    from pyecharts.charts import Pie
+    from pyecharts.charts import Line
     import polars as pl
     import math
 
     # PreAgg = False
     # YVar = 'Daily Liters'
-    # GroupVar = 'Brand'
+    # XVar = 'Date'
+    # GroupVar = None 'Brand'
     # AggMethod = 'count'
     # FacetRows = 2
     # FacetCols = 2
     # FacetLevels = None
     # YVarTrans = "Identity"
-    # Type = 'radius' # 'area'
-    # Radius = "55%"
+    # SmoothLine = True
     # RenderHTML = False
     # Title = 'Pie Plot'
     # TitleColor = 'fff'
@@ -1777,11 +1783,19 @@ def Line(dt = None,
     # SubTitle = 'Subtitle'
     # SubTitleColor = 'fff'
     # SubTitleFontSize = 12
-    # YVarTrans = "Identity"
+    # AxisPointerType = 'cross'
+    # YAxisTitle = 'Daily Liters'
+    # YAxisNameLocation = 'end' 'middle' 'start'
+    # YAxisNameGap = 15
+    # XAxisTitle = 'Date'
+    # XAxisNameLocation = 'middle' 'start' 'end'
+    # XAxisNameGap = 42
     # Theme = 'wonderland'
     # Legend = None
     # LegendPosRight = '0%'
     # LegendPosTop = '5%'
+    # HorizontalLine = None
+    # VerticalLine = None
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Define Plotting Variable
@@ -1789,7 +1803,10 @@ def Line(dt = None,
       return NULL
 
     # Subset Columns
-    dt1 = dt.select([pl.col(YVar), pl.col(GroupVar)])
+    if not GroupVar is None:
+      dt1 = dt.select([pl.col(YVar), pl.col(XVar), pl.col(GroupVar)])
+    else:
+      dt1 = dt.select([pl.col(YVar), pl.col(XVar)])
 
     # Transformation
     trans = YVarTrans.lower()
@@ -1798,56 +1815,96 @@ def Line(dt = None,
   
     # Agg Data
     if not PreAgg:
-      dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = None)
+      dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = XVar)
+      dt1 = dt1.sort(XVar)
 
-    # Define data elements
-    GroupVals = dt1[GroupVar].to_list()
-    YVal = dt1[YVar].to_list()
-    data_pair = [list(z) for z in zip(GroupVals, YVal)]
-    data_pair.sort(key=lambda x: x[1])
-    
-    # Create plot
-    c = Pie(init_opts = opts.InitOpts(theme = Theme))
-    c = c.add(
-        series_name = YVar,
-        data_pair = data_pair,
-        radius = ["40%","70%"],
-        center = ["50%", "50%"],
-        label_opts = opts.LabelOpts(is_show=False, position="center"),
-    )
-
-    # Global Options
-    GlobalOptions = {}
-    if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
-    elif Legend == 'top':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
-    else:
-      GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
-
-    if not Title is None:
-      GlobalOptions['title_opts'] = opts.TitleOpts(
-          title = Title, subtitle = SubTitle,
-          title_textstyle_opts = opts.TextStyleOpts(
-            color = TitleColor,
-            font_size = TitleFontSize,
-          ),
-          subtitle_textstyle_opts = opts.TextStyleOpts(
-            color = SubTitleColor,
-            font_size = SubTitleFontSize,
-          )
+    if GroupVar is None:
+      YVal = dt1[YVar].to_list()
+      XVal = dt1[XVar].to_list()
+      
+      # Create plot
+      c = Line(init_opts = opts.InitOpts(theme = Theme))
+      c = c.add_xaxis(xaxis_data = XVal)
+      c = c.add_yaxis(
+          series_name = YVar,
+          is_smooth = SmoothLine,
+          symbol = "emptyCircle",
+          is_symbol_show = False,
+          color = "#d14a61",
+          y_axis = YVal,
+          linestyle_opts = opts.LineStyleOpts(width = 2),
+          label_opts = opts.LabelOpts(is_show = False, position="center"),
       )
 
-    c = c.set_series_opts(
-      tooltip_opts = opts.TooltipOpts(
-        trigger = "item", 
-        formatter="{a} <br/>{b}: {c} ({d}%)"
-      ),
-      label_opts = opts.LabelOpts(color="rgba(255, 255, 255, 0.3)"),
-    )
+      # Global Options
+      GlobalOptions = {}
+      if Legend == 'right':
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop)
+      elif Legend == 'top':
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
+      else:
+        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+  
+      if not Title is None:
+        GlobalOptions['title_opts'] = opts.TitleOpts(
+            title = Title, subtitle = SubTitle,
+            title_textstyle_opts = opts.TextStyleOpts(
+              color = TitleColor,
+              font_size = TitleFontSize,
+            ),
+            subtitle_textstyle_opts = opts.TextStyleOpts(
+              color = SubTitleColor,
+              font_size = SubTitleFontSize,
+            )
+        )
+
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+      GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
+  
+      if ToolBox:
+        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+      
+      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
+  
+      if Brush:
+        GlobalOptions['brush_opts'] = opts.BrushOpts()
+  
+      if DataZoom:
+        GlobalOptions['datazoom_opts'] = [
+            opts.DataZoomOpts(
+              range_start = 0,
+              range_end = 100),
+            opts.DataZoomOpts(
+              type_="inside")]
+
+      # Final Setting of Global Options
+      c = c.set_global_opts(**GlobalOptions)
+  
+      # Series Options
+      if not HorizontalLine is None or not VerticalLine is None:
+        MarkLineDict = {}
+        if not HorizontalLine is None and not VerticalLine is None:
+          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+        elif HorizontalLine is None:
+          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+        else:
+          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+
+        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+        
+      # Render html
+      if RenderHTML:
+        c.render()
     
-    # Final Setting of Global Options
-    c = c.set_global_opts(**GlobalOptions)
+      return c
+      
+    else:
+      YVal = dt1[YVar].to_list()
+      XVal = dt1[XVar].to_list()
+      GroupVals = dt1[GroupVar].to_list()
+
+
+  
 
     # Render html
     if RenderHTML:
@@ -1856,4 +1913,19 @@ def Line(dt = None,
     return c
 
 
+#################################################################################################
 
+
+def JS_GradientAreaBackground():
+  background_color_js = (
+    "new echarts.graphic.LinearGradient(0, 0, 0, 1, "
+    "[{offset: 0, color: '#c86589'}, {offset: 1, color: '#06a7ff'}], false)"
+  )
+  return background_color_js
+
+def JS_GradientAreaFill():
+  area_color_js = (
+    "new echarts.graphic.LinearGradient(0, 0, 0, 1, "
+    "[{offset: 0, color: '#64f8fb'}, {offset: 1, color: '#3f42ff0d'}], false)"
+  )
+  return area_color_js
