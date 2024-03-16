@@ -1926,7 +1926,7 @@ def Line(dt = None,
       if FacetCols == 1 and FacetRows == 1:
         
         yvar_dict = {}
-        GroupLevels = dt1[GroupVar].unique().to_list()
+        GroupLevels = dt1[GroupVar].unique().sort().to_list()
         for gv in GroupLevels:
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
@@ -1940,7 +1940,7 @@ def Line(dt = None,
           ShowSymbol = True
         else:
           ShowSymbol = False
-        for yvar in yvar_dict.keys():# yvar_dict.keys()
+        for yvar in GroupLevels:# yvar_dict.keys()
           c = c.add_yaxis(
             series_name = yvar,
             is_smooth = SmoothLine,
@@ -2018,7 +2018,11 @@ def Line(dt = None,
         
         yvar_dict = {}
         plot_dict = {}
-        GroupLevels = dt1[GroupVar].unique().to_list()
+        if GroupLevels is None:
+          GroupLevels = dt1[GroupVar].unique().sort().to_list()
+          GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
+        else:
+          GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
         for gv in GroupLevels:
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
@@ -2030,7 +2034,7 @@ def Line(dt = None,
           ShowSymbol = True
         else:
           ShowSymbol = False
-        for yvar in yvar_dict.keys():# yvar = 'Yellow-Yum'
+        for yvar in GroupLevels:# yvar = 'Yellow-Yum'
           plot_dict[yvar] = Line(init_opts = opts.InitOpts(theme = Theme))
           plot_dict[yvar] = plot_dict[yvar].add_xaxis(xaxis_data = XVal)
           plot_dict[yvar] = plot_dict[yvar].add_yaxis(
@@ -2059,7 +2063,7 @@ def Line(dt = None,
           Legend = Legend,
           LegendSpace = 10)
         counter = -1
-        for i in yvar_dict.keys(): # i = Levs[0]
+        for i in GroupLevels: # i = Levs[0]
           counter += 1
           grid = grid.add(
             plot_dict[i],
@@ -2319,7 +2323,7 @@ def Step(dt = None,
       if FacetCols == 1 and FacetRows == 1:
         
         yvar_dict = {}
-        GroupLevels = dt1[GroupVar].unique().to_list()
+        GroupLevels = dt1[GroupVar].unique().sort().to_list()
         for gv in GroupLevels:
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
@@ -2411,7 +2415,11 @@ def Step(dt = None,
         
         yvar_dict = {}
         plot_dict = {}
-        GroupLevels = dt1[GroupVar].unique().to_list()
+        if GroupLevels is None:
+          GroupLevels = dt1[GroupVar].unique().sort().to_list()
+          GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
+        else:
+          GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
         for gv in GroupLevels:
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
@@ -2423,7 +2431,7 @@ def Step(dt = None,
           ShowSymbol = True
         else:
           ShowSymbol = False
-        for yvar in yvar_dict.keys():# yvar = 'Yellow-Yum'
+        for yvar in GroupLevels:# yvar = 'Yellow-Yum'
           plot_dict[yvar] = Line(init_opts = opts.InitOpts(theme = Theme))
           plot_dict[yvar] = plot_dict[yvar].add_xaxis(xaxis_data = XVal)
           plot_dict[yvar] = plot_dict[yvar].add_yaxis(
@@ -2452,7 +2460,7 @@ def Step(dt = None,
           Legend = Legend,
           LegendSpace = 10)
         counter = -1
-        for i in yvar_dict.keys(): # ['Yellow-Yum', 'Elves']: #
+        for i in GroupLevels: # ['Yellow-Yum', 'Elves']: #
           counter += 1
           grid = grid.add(
             plot_dict[i],
