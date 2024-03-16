@@ -265,7 +265,7 @@ def Histogram(dt = None,
 
     # SampleSize = 100000
     # YVar = 'Daily Liters'
-    # GroupVar = 'Brand'
+    # GroupVar = None 'Brand'
     # FacetRows = 2
     # FacetCols = 2
     # FacetLevels = None
@@ -333,13 +333,13 @@ def Histogram(dt = None,
         acc = round(Range / NumberBins, ndigits = 2)
         dt1 = dt1.with_columns(Buckets = pl.col(YVar) / acc)
         dt1 = dt1.with_columns(Buckets = dt1['Buckets'].round() * acc)
-        dt1 = dt1.group_by("Buckets").agg(pl.len(YVar))
+        dt1 = dt1.group_by("Buckets").agg(pl.len())
         dt1 = dt1.sort("Buckets")
       else:
         acc = math.ceil(Range / NumberBins)
         dt1 = dt1.with_columns(Buckets = pl.col(YVar) / acc)
         dt1 = dt1.with_columns(Buckets = dt1['Buckets'].round() * acc)
-        dt1 = dt1.group_by("Buckets").agg(pl.len(YVar))
+        dt1 = dt1.group_by("Buckets").agg(pl.len())
         dt1 = dt1.sort("Buckets")
 
 
@@ -432,13 +432,13 @@ def Histogram(dt = None,
           acc = round(Range / NumberBins, ndigits = 2)
           dt2 = dt2.with_columns(Buckets = pl.col(YVar) / acc)
           dt2 = dt2.with_columns(Buckets = dt2['Buckets'].round() * acc)
-          dt2 = dt2.group_by("Buckets").agg(pl.len(YVar))
+          dt2 = dt2.group_by("Buckets").agg(pl.len())
           dt2 = dt2.sort("Buckets")
         else:
           acc = math.ceil(Range / NumberBins)
           dt2 = dt2.with_columns(Buckets = pl.col(YVar) / acc)
           dt2 = dt2.with_columns(Buckets = dt2['Buckets'].round() * acc)
-          dt2 = dt2.group_by("Buckets").agg(pl.len(YVar))
+          dt2 = dt2.group_by("Buckets").agg(pl.len())
           dt2 = dt2.sort("Buckets")
        
         # Define data elements
@@ -633,13 +633,13 @@ def Density(dt = None,
         acc = round(Range / NumberBins, ndigits = 2)
         dt1 = dt1.with_columns(Buckets = pl.col(YVar) / acc)
         dt1 = dt1.with_columns(Buckets = dt1['Buckets'].round() * acc)
-        dt1 = dt1.group_by("Buckets").agg(pl.len(YVar))
+        dt1 = dt1.group_by("Buckets").agg(pl.len())
         dt1 = dt1.sort("Buckets")
       else:
         acc = math.ceil(Range / NumberBins)
         dt1 = dt1.with_columns(Buckets = pl.col(YVar) / acc)
         dt1 = dt1.with_columns(Buckets = dt1['Buckets'].round() * acc)
-        dt1 = dt1.group_by("Buckets").agg(pl.len(YVar))
+        dt1 = dt1.group_by("Buckets").agg(pl.len())
         dt1 = dt1.sort("Buckets")
 
 
@@ -737,13 +737,13 @@ def Density(dt = None,
           acc = round(Range / NumberBins, ndigits = 2)
           dt2 = dt2.with_columns(Buckets = pl.col(YVar) / acc)
           dt2 = dt2.with_columns(Buckets = dt2['Buckets'].round() * acc)
-          dt2 = dt2.group_by("Buckets").agg(pl.len(YVar))
+          dt2 = dt2.group_by("Buckets").agg(pl.len())
           dt2 = dt2.sort("Buckets")
         else:
           acc = math.ceil(Range / NumberBins)
           dt2 = dt2.with_columns(Buckets = pl.col(YVar) / acc)
           dt2 = dt2.with_columns(Buckets = dt2['Buckets'].round() * acc)
-          dt2 = dt2.group_by("Buckets").agg(pl.len(YVar))
+          dt2 = dt2.group_by("Buckets").agg(pl.len())
           dt2 = dt2.sort("Buckets")
        
         # Define data elements
