@@ -2059,7 +2059,7 @@ def Line(dt = None,
           Legend = Legend,
           LegendSpace = 10)
         counter = -1
-        for i in ['Yellow-Yum', 'Elves']: #yvar_dict.keys(): # i = Levs[0]
+        for i in yvar_dict.keys(): # i = Levs[0]
           counter += 1
           grid = grid.add(
             plot_dict[i],
@@ -2452,7 +2452,7 @@ def Step(dt = None,
           Legend = Legend,
           LegendSpace = 10)
         counter = -1
-        for i in ['Yellow-Yum', 'Elves']: #yvar_dict.keys(): # i = Levs[0]
+        for i in yvar_dict.keys(): # ['Yellow-Yum', 'Elves']: #
           counter += 1
           grid = grid.add(
             plot_dict[i],
