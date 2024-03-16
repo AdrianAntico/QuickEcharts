@@ -2786,7 +2786,7 @@ def Area(dt = None,
         for yvar in yvar_dict.keys():# yvar_dict.keys()
           c = c.add_yaxis(
             series_name = yvar,
-            areastyle_opts = opts.AreaStyleOpts(opacity = Opacity)
+            areastyle_opts = opts.AreaStyleOpts(opacity = Opacity),
             symbol = Symbol,
             is_symbol_show = ShowSymbol,
             y_axis = yvar_dict[yvar],
@@ -2882,7 +2882,7 @@ def Area(dt = None,
           plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = XVal)
           plot_dict[i] = plot_dict[i].add_yaxis(
             series_name = i,
-            areastyle_opts = opts.AreaStyleOpts(opacity = Opacity)
+            areastyle_opts = opts.AreaStyleOpts(opacity = Opacity),
             symbol = Symbol,
             is_symbol_show = ShowSymbol,
             y_axis = yvar_dict[i],
