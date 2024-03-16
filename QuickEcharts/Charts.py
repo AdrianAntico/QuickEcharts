@@ -2052,7 +2052,7 @@ def Line(dt = None,
             GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
   
           if not XAxisTitle is None:
-            GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}")
+            GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}", position = "right")
       
           # Final Setting of Global Options
           plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
@@ -2452,10 +2452,8 @@ def Step(dt = None,
             GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
   
           if not XAxisTitle is None:
-            GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}")
+            GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}", position = "right")
   
-          plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
-      
           # Final Setting of Global Options
           plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
 
