@@ -2695,6 +2695,8 @@ def Area(dt = None,
         if isinstance(YVar, list):
           if len(YVar) == 1:
             yaxis_options['areastyle_opts'] = opts.AreaStyleOpts(color = JsCode(JS_GradientAreaFill(GradientColor1, GradientColor2)), opacity=1)
+          else:
+            yaxis_options['areastyle_opts'] = opts.AreaStyleOpts(opacity = 0.5)
         else:
           yaxis_options['areastyle_opts'] = opts.AreaStyleOpts(color = JsCode(JS_GradientAreaFill(GradientColor1, GradientColor2)), opacity=1)
 
@@ -2787,13 +2789,14 @@ def Area(dt = None,
           c = c.add_yaxis(
             series_name = yvar,
             symbol = Symbol,
+            is_smooth = True,
             is_symbol_show = ShowSymbol,
             y_axis = yvar_dict[yvar],
             linestyle_opts = opts.LineStyleOpts(width = LineWidth),
             label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
           )
           
-          c = c.set_series_opts(areastyle_opts = opts.AreaStyleOpts(opacity = Opacity)),
+        c = c.set_series_opts(areastyle_opts = opts.AreaStyleOpts(opacity = Opacity)),
   
         # Global Options
         GlobalOptions = {}
@@ -2883,6 +2886,7 @@ def Area(dt = None,
           plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = XVal)
           plot_dict[i] = plot_dict[i].add_yaxis(
             series_name = i,
+            is_smooth = True,
             symbol = Symbol,
             is_symbol_show = ShowSymbol,
             y_axis = yvar_dict[i],
