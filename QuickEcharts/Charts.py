@@ -1770,7 +1770,7 @@ def Line(dt = None,
 
     # Load environment
     from pyecharts import options as opts
-    from pyecharts.charts import Line
+    from pyecharts.charts import Line, Grid
     import polars as pl
     import math
 
@@ -2164,7 +2164,7 @@ def Step(dt = None,
 
     # Load environment
     from pyecharts import options as opts
-    from pyecharts.charts import Line
+    from pyecharts.charts import Line, Grid
     import polars as pl
     import math
 
