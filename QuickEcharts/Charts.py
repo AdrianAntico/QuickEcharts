@@ -2034,26 +2034,28 @@ def Line(dt = None,
           ShowSymbol = True
         else:
           ShowSymbol = False
-        for yvar in GroupLevels:# yvar = 'Yellow-Yum'
-          plot_dict[yvar] = Line(init_opts = opts.InitOpts(theme = Theme))
-          plot_dict[yvar] = plot_dict[yvar].add_xaxis(xaxis_data = XVal)
-          plot_dict[yvar] = plot_dict[yvar].add_yaxis(
-            series_name = yvar,
+        for i in GroupLevels:# i = 'Yellow-Yum'
+          plot_dict[i] = Line(init_opts = opts.InitOpts(theme = Theme))
+          plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = XVal)
+          plot_dict[i] = plot_dict[i].add_yaxis(
+            series_name = i,
             is_smooth = SmoothLine,
             symbol = Symbol,
             is_symbol_show = ShowSymbol,
-            y_axis = yvar_dict[yvar],
+            y_axis = i_dict[i],
             linestyle_opts = opts.LineStyleOpts(width = LineWidth),
             label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
           )
 
-          # Global Options
           GlobalOptions = {}
-          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = "end", name_gap = XAxisNameGap)
-          GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = "end", name_gap = YAxisNameGap)
+          if not Title is None:
+            GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
+  
+          if not XAxisTitle is None:
+            GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}")
       
           # Final Setting of Global Options
-          plot_dict[yvar] = plot_dict[yvar].set_global_opts(**GlobalOptions)
+          plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
 
         # Setup Grid Output
         grid = Grid()
@@ -2431,26 +2433,31 @@ def Step(dt = None,
           ShowSymbol = True
         else:
           ShowSymbol = False
-        for yvar in GroupLevels:# yvar = 'Yellow-Yum'
-          plot_dict[yvar] = Line(init_opts = opts.InitOpts(theme = Theme))
-          plot_dict[yvar] = plot_dict[yvar].add_xaxis(xaxis_data = XVal)
-          plot_dict[yvar] = plot_dict[yvar].add_yaxis(
-            series_name = yvar,
+        for i in GroupLevels:# i = 'Yellow-Yum'
+          plot_dict[i] = Line(init_opts = opts.InitOpts(theme = Theme))
+          plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = XVal)
+          plot_dict[i] = plot_dict[i].add_yaxis(
+            series_name = i,
             is_step = True,
             symbol = Symbol,
             is_symbol_show = ShowSymbol,
-            y_axis = yvar_dict[yvar],
+            y_axis = i_dict[i],
             linestyle_opts = opts.LineStyleOpts(width = LineWidth),
             label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
           )
 
           # Global Options
           GlobalOptions = {}
-          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = "end", name_gap = XAxisNameGap)
-          GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = "end", name_gap = YAxisNameGap)
+          if not Title is None:
+            GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
+  
+          if not XAxisTitle is None:
+            GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}")
+  
+          plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
       
           # Final Setting of Global Options
-          plot_dict[yvar] = plot_dict[yvar].set_global_opts(**GlobalOptions)
+          plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
 
         # Setup Grid Output
         grid = Grid()
