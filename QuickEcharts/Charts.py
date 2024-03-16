@@ -2882,7 +2882,7 @@ def Area(dt = None,
           plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = XVal)
           plot_dict[i] = plot_dict[i].add_yaxis(
             series_name = i,
-            is_step = True,
+            areastyle_opts = opts.AreaStyleOpts(opacity = Opacity)
             symbol = Symbol,
             is_symbol_show = ShowSymbol,
             y_axis = yvar_dict[i],
