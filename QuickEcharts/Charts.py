@@ -2890,12 +2890,11 @@ def Area(dt = None,
             symbol = Symbol,
             is_symbol_show = ShowSymbol,
             y_axis = yvar_dict[i],
+            areastyle_opts = opts.AreaStyleOpts(opacity = Opacity),
             linestyle_opts = opts.LineStyleOpts(width = LineWidth),
             label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
           )
           
-          plot_dict[i] = plot_dict[i].set_series_opts(areastyle_opts = opts.AreaStyleOpts(opacity = Opacity)),
-
           # Global Options
           GlobalOptions = {}
           if not Title is None:
