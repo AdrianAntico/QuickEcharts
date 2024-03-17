@@ -79,7 +79,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Area.PNG" align="center" width="800" />
 
 
@@ -144,7 +143,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Area_GroupVar.PNG" align="center" width="800" />
 
 ```python
@@ -208,7 +206,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Area_Facet.PNG" align="center" width="800" />
 
 </details>
@@ -969,7 +966,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/StackedArea.PNG" align="center" width="800" />
 
 </details>
@@ -1039,7 +1035,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/StackedLine.PNG" align="center" width="800" />
 
 </details>
@@ -1109,7 +1104,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/StackedStep.PNG" align="center" width="800" />
 
 </details>
