@@ -2,7 +2,7 @@
 
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Logo.PNG" align="center" width="800" />
 
-Plot echarts quickly, with a simple API, and to allow polars to do the data wrangling under the hood, saving you valuable time.
+Plot Echarts quickly, with a simple API, and to allow polars to do the data wrangling under the hood, saving you valuable time.
 
 # Installation
 ```
