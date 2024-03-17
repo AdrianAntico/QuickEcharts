@@ -212,7 +212,7 @@ p1.render_notebook()
 
 <br>
 
-## Bar Plot
+## Bar
 
 <details><summary>Click for code example</summary>
 
