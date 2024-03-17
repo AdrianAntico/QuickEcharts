@@ -2,7 +2,7 @@
 
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Logo.PNG" align="center" width="800" />
 
-QuickEcharts is in the early stages. The idea is to design it similar to my R package AutoPlots. The goal is to make plotting echarts quick, easy, and to allow polars to do the data wrangling under the hood, saving the end user valuable time.
+Plot echarts quickly, with a simple API, and to allow polars to do the data wrangling under the hood, saving you valuable time.
 
 # Installation
 ```
