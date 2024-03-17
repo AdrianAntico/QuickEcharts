@@ -94,7 +94,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
 data = pl.read_csv(FilePath)
 
-# Create Histogram Plot in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Area(
   dt = data,
   PreAgg = False,
@@ -157,7 +157,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
 data = pl.read_csv(FilePath)
 
-# Create Histogram Plot in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Area(
   dt = data,
   PreAgg = False,
@@ -228,7 +228,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create BoxPlot in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Bar(
   dt = data,
   PreAgg = False,
@@ -287,7 +287,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create BoxPlot in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Bar(
   dt = data,
   PreAgg = False,
@@ -347,7 +347,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create BoxPlot in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Bar(
   dt = data,
   PreAgg = False,
@@ -414,7 +414,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create BoxPlot in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.BoxPlot(
   dt = data,
   SampleSize = 100000,
@@ -474,7 +474,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Density Plot in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Density(
   dt = data,
   SampleSize = 100000,
@@ -529,7 +529,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Density Plot in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Density(
   dt = data,
   SampleSize = 100000,
@@ -590,7 +590,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create RoseType Chart Plot in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Donut(
   dt = data,
   PreAgg = False,
@@ -623,6 +623,69 @@ p1.render_notebook()
 <br>
 
 
+## Heatmap
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Pull Data from Package
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+# Create Plot in Jupyter Lab
+p1 = Heatmap(
+  dt = data,
+  PreAgg = False,
+  YVar = 'Brand',
+  XVar = 'Category',
+  MeasureVar = 'Daily Liters',
+  AggMethod = 'mean',
+  MeasureVarTrans = "Identity",
+  RenderHTML = False,
+  ShowLabels = False,
+  LabelPosition = "top",
+  LabelColor = "#fff",
+  Title = 'Heatmap',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  AxisPointerType = 'cross',
+  YAxisTitle = 'Brand',
+  YAxisNameLocation = 'end',
+  YAxisNameGap = 10,
+  XAxisTitle = 'Category',
+  XAxisNameLocation = 'middle',
+  XAxisNameGap = 42,
+  Theme = 'purple-passion',
+  Legend = 'top',
+  LegendPosRight = '0%',
+  LegendPosTop = '5%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True)
+
+# Needed to display
+p1.load_javascript()
+p1.render_notebook()
+```
+
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Heatmap.PNG" align="center" width="800" />
+
+</details>
+
+
+<br>
+
+
 ## Histogram
 
 <details><summary>Click for code example</summary>
@@ -639,7 +702,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
 data = pl.read_csv(FilePath)
 
-# Create Histogram Plot in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Histogram(
   dt = data,
   SampleSize = 100000,
@@ -693,7 +756,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
 data = pl.read_csv(FilePath)
 
-# Create Histogram Plot in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Histogram(
   Notebook = 'jupyter_lab',
   dt = data,
@@ -755,6 +818,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
 data = pl.read_csv(FilePath)
 
+# Create Plot in Jupyter Lab
 p1 = Charts.Line(
   dt = data,
   PreAgg = False,
@@ -817,7 +881,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
 data = pl.read_csv(FilePath)
 
-# Create Histogram Plot in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Line(
   dt = data,
   PreAgg = False,
@@ -879,7 +943,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
 data = pl.read_csv(FilePath)
 
-# Create Histogram Plot in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Line(
   dt = data,
   PreAgg = False,
@@ -951,7 +1015,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Pie Chart in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Pie(
   dt = data,
   PreAgg = False,
@@ -998,6 +1062,7 @@ import polars as pl
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
+# Create Plot in Jupyter Lab
 p1 = Charts.Radar(
   dt = data,
   YVar = 'Daily Liters',
@@ -1044,7 +1109,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create RoseType Chart Plot in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Rosetype(
   dt = data,
   PreAgg = False,
@@ -1094,10 +1159,7 @@ import polars as pl
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-import polars as pl
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
-data = pl.read_csv(FilePath)
-
+# Create Plot in Jupyter Lab
 p1 = Charts.StackedArea(
   dt = data,
   PreAgg = False,
@@ -1163,10 +1225,7 @@ import polars as pl
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-import polars as pl
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
-data = pl.read_csv(FilePath)
-
+# Create Plot in Jupyter Lab
 p1 = Charts.StackedBar(
   dt = data,
   PreAgg = False,
@@ -1231,10 +1290,7 @@ import polars as pl
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-import polars as pl
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
-data = pl.read_csv(FilePath)
-
+# Create Plot in Jupyter Lab
 p1 = Charts.StackedLine(
   dt = data,
   PreAgg = False,
@@ -1300,10 +1356,7 @@ import polars as pl
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-import polars as pl
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
-data = pl.read_csv(FilePath)
-
+# Create Plot in Jupyter Lab
 p1 = Charts.StackedStep(
   dt = data,
   PreAgg = False,
@@ -1369,6 +1422,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
 data = pl.read_csv(FilePath)
 
+# Create Plot in Jupyter Lab
 p1 = Charts.Step(
   dt = data,
   PreAgg = False,
@@ -1430,7 +1484,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
 data = pl.read_csv(FilePath)
 
-# Create Histogram Plot in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Step(
   dt = data,
   PreAgg = False,
@@ -1491,7 +1545,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
 data = pl.read_csv(FilePath)
 
-# Create Histogram Plot in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Step(
   dt = data,
   PreAgg = False,
@@ -1562,6 +1616,7 @@ import polars as pl
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
+# Create Plot in Jupyter Lab
 p1 = Charts.WordCloud(
   dt = data,
   SampleSize = 100000,

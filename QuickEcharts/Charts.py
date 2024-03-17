@@ -3978,7 +3978,7 @@ def Bar(dt = None,
     dt: polars dataframe
     PreAgg: Set to True if your data is already aggregated. Default is False
     YVar: numeric variable
-    XVar: date variable
+    XVar: date or categorical variable
     GroupVar: grouping variable
     FacetRows: Number of rows in facet grid
     FacetCols: Number of columns in facet grid
@@ -4351,7 +4351,7 @@ def StackedBar(dt = None,
     dt: polars dataframe
     PreAgg: Set to True if your data is already aggregated. Default is False
     YVar: numeric variable
-    XVar: date variable
+    XVar: date or categorical variable
     GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
@@ -4621,3 +4621,214 @@ def StackedBar(dt = None,
 #################################################################################################
 
 
+
+def Heatmap(dt = None,
+            PreAgg = False,
+            YVar = None,
+            XVar = None,
+            MeasureVar = None,
+            AggMethod = 'mean',
+            MeasureVarTrans = "Identity",
+            RenderHTML = False,
+            ShowLabels = False,
+            LabelPosition = "top",
+            LabelColor = "#fff",
+            Title = 'Stacked Area',
+            TitleColor = "#fff",
+            TitleFontSize = 20,
+            SubTitle = None,
+            SubTitleColor = "#fff",
+            SubTitleFontSize = 12,
+            AxisPointerType = 'cross',
+            YAxisTitle = None,
+            YAxisNameLocation = 'middle',
+            YAxisNameGap = 70,
+            XAxisTitle = None,
+            XAxisNameLocation = 'middle',
+            XAxisNameGap = 42,
+            Theme = 'wonderland',
+            Legend = None,
+            LegendPosRight = '0%',
+            LegendPosTop = '5%',
+            ToolBox = True,
+            Brush = True,
+            DataZoom = True):
+    
+    """
+    # Parameters
+    dt: polars dataframe
+    PreAgg: Set to True if your data is already aggregated. Default is False
+    YVar: categorical variable
+    XVar: categorical variable
+    MeasureVar: numeric variable
+    AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
+    MeasureVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    ShowLabels: Default False
+    LabelColor = "#fff"
+    LabelPosition: "top", "center", "left", "right", "bottom"
+    Title: title of plot in quotes
+    TitleColor: Color of title in hex. Default "#fff"
+    TitleFontSize: Font text size. Default 20
+    SubTitle: text underneath main title
+    SubTitleColor: Subtitle color of text. Default "#fff"
+    SubTitleFontSize: Font text size. Default 12
+    AxisPointerType: 'cross' 'line', 'shadow', or None
+    YAxisTitle: Title for the YAxis. If none, then YVar will be the Title
+    YAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
+    YAxisNameGap: offsetting where the title ends up. For 'middle', default is 15
+    XAxisTitle: Title for the XAxis. If none, then YVar will be the Title
+    XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
+    XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
+    Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    Legend: Choose from None, 'right', 'top'
+    LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
+    LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
+    ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
+    Brush: Logical. Select True for addition ToolBox functionality. Default is True
+    DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    """
+
+    # Load environment
+    from pyecharts import options as opts
+    from pyecharts.charts import HeatMap
+    from pyecharts.commons.utils import JsCode
+    import polars as pl
+    import math
+
+    # PreAgg = False
+    # YVar = 'Brand'
+    # XVar = 'Category'
+    # MeasureVar = 'Daily Liters'
+    # AggMethod = 'mean'
+    # MeasureVarTrans = "Identity"
+    # LabelPosition = "top"
+    # RenderHTML = False
+    # Title = 'Pie Plot'
+    # TitleColor = 'fff'
+    # TitleFontSize = 20
+    # SubTitle = 'Subtitle'
+    # SubTitleColor = 'fff'
+    # SubTitleFontSize = 12
+    # AxisPointerType = 'cross'
+    # YAxisTitle = 'Daily Liters'
+    # YAxisNameLocation = 'end' 'middle' 'start'
+    # YAxisNameGap = 15
+    # XAxisTitle = 'Date'
+    # XAxisNameLocation = 'middle' 'start' 'end'
+    # XAxisNameGap = 42
+    # Theme = 'wonderland'
+    # Legend = None
+    # LegendPosRight = '0%'
+    # LegendPosTop = '5%'
+    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
+
+    # Define Plotting Variable
+    if YVar == None:
+      return None
+    
+    if XVar == None:
+      return None
+    
+    if MeasureVar == None:
+      return None
+
+    # Subset Columns
+    dt1 = dt.select([pl.col(YVar), pl.col(XVar), pl.col(MeasureVar)])
+
+    # Transformation
+    trans = MeasureVarTrans.lower()
+    if trans != "identity":
+      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+  
+    # Agg Data
+    if not PreAgg:
+      dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = MeasureVar, GroupVariable = [YVar, XVar], DateVariable = None)
+      dt1 = dt1.sort(YVar)
+
+    # Variable Creation
+    xvar_unique = dt1[XVar].unique().sort().to_list()
+    yvar_unique = dt1[YVar].unique().sort().to_list()
+    measurevar_unique = dt1[MeasureVar].unique().sort().to_list()
+    
+    # Creating Cross Join from lists
+    total_len = len(yvar_unique) * len(xvar_unique)
+    dt2 = pl.DataFrame({
+      YVar: yvar_unique * len(xvar_unique),
+      XVar: xvar_unique * len(yvar_unique)
+    })
+    
+    dt2 = dt2.sort(YVar)
+    dt2 = dt2.join(dt1, on = [YVar, XVar], how = "left")
+
+    max_counter = dt2.shape[0]
+    data = [[0,0,0]] * max_counter
+    counter = -1
+    for i in range(xvar_len):# counter = 75
+      temp_xval = dt1[XVar][i]
+      for j in range(yvar_len):
+        counter += 1
+        if dt2[MeasureVar][counter] is None:
+          data[counter] = [i, j, 0]
+        else:
+          data[counter] = [i, j, dt2[MeasureVar][counter]]
+
+    # Create plot
+    c = HeatMap(init_opts = opts.InitOpts(theme = Theme))
+    c = c.add_xaxis(xvar_unique)
+    c = c.add_yaxis(
+      series_name = MeasureVar,
+      yaxis_data = yvar_unique,
+      value = data,
+      label_opts = opts.LabelOpts(
+        is_show = ShowLabels,
+        color = "#fff",
+        position = LabelPosition,
+        horizontal_align = "50%")
+    )
+
+    # Global Options
+    GlobalOptions = {}
+    if Legend == 'right':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical")
+    elif Legend == 'top':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
+    else:
+      GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+
+    if not Title is None:
+      GlobalOptions['title_opts'] = opts.TitleOpts(
+          title = Title, subtitle = SubTitle,
+          title_textstyle_opts = opts.TextStyleOpts(
+            color = TitleColor,
+            font_size = TitleFontSize,
+          ),
+          subtitle_textstyle_opts = opts.TextStyleOpts(
+            color = SubTitleColor,
+            font_size = SubTitleFontSize,
+          )
+      )
+
+    GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+    GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
+    GlobalOptions['visualmap_opts'] = opts.VisualMapOpts(),
+ 
+    if DataZoom:
+      GlobalOptions['datazoom_opts'] = [
+          opts.DataZoomOpts(
+            range_start = 0,
+            range_end = 100),
+          opts.DataZoomOpts(
+            type_="inside")]
+
+    # Final Setting of Global Options
+    c = c.set_global_opts(**GlobalOptions)
+
+    # Render html
+    if RenderHTML:
+      c.render()
+  
+    return c
+
+
+#################################################################################################
