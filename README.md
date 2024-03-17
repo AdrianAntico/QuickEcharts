@@ -210,6 +210,191 @@ p1.render_notebook()
 
 </details>
 
+<br>
+
+## Bar Plot
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Pull Data from Package
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+# Create BoxPlot in Jupyter Lab
+p1 = Bar(
+  dt = data,
+  PreAgg = False,
+  YVar = 'Daily Liters',
+  XVar = 'Date',
+  GroupVar = None,
+  FacetCols = 1,
+  FacetRows = 1,
+  AggMethod = 'sum',
+  YVarTrans = "Identity",
+  RenderHTML = False,
+  ShowLabels = False,
+  LabelPosition = "top",
+  Title = 'Bar Plot',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  AxisPointerType = 'cross',
+  YAxisTitle = 'Daily Liters',
+  YAxisNameLocation = 'middle',
+  YAxisNameGap = 70,
+  XAxisTitle = 'Date',
+  XAxisNameLocation = 'middle',
+  XAxisNameGap = 42,
+  Theme = 'wonderland',
+  Legend = 'top',
+  LegendPosRight = '0%',
+  LegendPosTop = '15%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  VerticalLine = None,
+  VerticalLineName = 'Line Name',
+  HorizontalLine = None,
+  HorizontalLineName = 'Line Name')
+
+# Needed to display
+p1.load_javascript()
+p1.render_notebook()
+```
+
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Bar.PNG" align="center" width="800" />
+
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Pull Data from Package
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+# Create BoxPlot in Jupyter Lab
+p1 = Bar(
+  dt = data,
+  PreAgg = False,
+  YVar = 'Daily Liters',
+  XVar = 'Date',
+  GroupVar = 'Brand',
+  FacetCols = 1,
+  FacetRows = 1,
+  AggMethod = 'sum',
+  YVarTrans = "Identity",
+  RenderHTML = False,
+  ShowLabels = False,
+  LabelPosition = "top",
+  Title = 'Bar Plot',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  AxisPointerType = 'cross',
+  YAxisTitle = 'Daily Liters',
+  YAxisNameLocation = 'middle',
+  YAxisNameGap = 70,
+  XAxisTitle = 'Date',
+  XAxisNameLocation = 'middle',
+  XAxisNameGap = 42,
+  Theme = 'wonderland',
+  Legend = 'top',
+  LegendPosRight = '0%',
+  LegendPosTop = '15%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  VerticalLine = None,
+  VerticalLineName = 'Line Name',
+  HorizontalLine = None,
+  HorizontalLineName = 'Line Name')
+
+# Needed to display
+p1.load_javascript()
+p1.render_notebook()
+```
+
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Bar_GroupVar.PNG" align="center" width="800" />
+
+
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Pull Data from Package
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+# Create BoxPlot in Jupyter Lab
+p1 = Bar(
+  dt = data,
+  PreAgg = False,
+  YVar = 'Daily Liters',
+  XVar = 'Date',
+  GroupVar = 'Brand',
+  FacetCols = 2,
+  FacetRows = 2,
+  AggMethod = 'sum',
+  YVarTrans = "Identity",
+  RenderHTML = False,
+  ShowLabels = False,
+  LabelPosition = "top",
+  Title = 'Bar Plot',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  AxisPointerType = 'cross',
+  YAxisTitle = 'Daily Liters',
+  YAxisNameLocation = 'middle',
+  YAxisNameGap = 70,
+  XAxisTitle = 'Date',
+  XAxisNameLocation = 'middle',
+  XAxisNameGap = 42,
+  Theme = 'wonderland',
+  Legend = 'top',
+  LegendPosRight = '0%',
+  LegendPosTop = '15%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  VerticalLine = None,
+  VerticalLineName = 'Line Name',
+  HorizontalLine = None,
+  HorizontalLineName = 'Line Name')
+
+# Needed to display
+p1.load_javascript()
+p1.render_notebook()
+```
+
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Bar_Facet.PNG" align="center" width="800" />
+
+</details>
+
 
 <br>
 

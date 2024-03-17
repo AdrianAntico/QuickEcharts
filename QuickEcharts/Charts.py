@@ -3933,3 +3933,380 @@ def StackedArea(dt = None,
 
 
 #################################################################################################
+
+
+def Bar(dt = None,
+        PreAgg = False,
+        YVar = None,
+        XVar = None,
+        GroupVar = None,
+        FacetRows = 1,
+        FacetCols = 1,
+        FacetLevels = None,
+        AggMethod = 'mean',
+        YVarTrans = "Identity",
+        RenderHTML = False,
+        ShowLabels = False,
+        LabelPosition = "top",
+        Title = 'Line Plot',
+        TitleColor = "#fff",
+        TitleFontSize = 20,
+        SubTitle = None,
+        SubTitleColor = "#fff",
+        SubTitleFontSize = 12,
+        AxisPointerType = 'cross',
+        YAxisTitle = None,
+        YAxisNameLocation = 'middle',
+        YAxisNameGap = 70,
+        XAxisTitle = None,
+        XAxisNameLocation = 'middle',
+        XAxisNameGap = 42,
+        Theme = 'wonderland',
+        Legend = None,
+        LegendPosRight = '0%',
+        LegendPosTop = '5%',
+        ToolBox = True,
+        Brush = True,
+        DataZoom = True,
+        VerticalLine = None,
+        VerticalLineName = 'Line Name',
+        HorizontalLine = None,
+        HorizontalLineName = 'Line Name'):
+    
+    """
+    # Parameters
+    dt: polars dataframe
+    PreAgg: Set to True if your data is already aggregated. Default is False
+    YVar: numeric variable
+    XVar: date variable
+    GroupVar: grouping variable
+    FacetRows: Number of rows in facet grid
+    FacetCols: Number of columns in facet grid
+    FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
+    AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    ShowLabels: Default False
+    LabelPosition: "top", "center", "left", "right", "bottom"
+    Title: title of plot in quotes
+    TitleColor: Color of title in hex. Default "#fff"
+    TitleFontSize: Font text size. Default 20
+    SubTitle: text underneath main title
+    SubTitleColor: Subtitle color of text. Default "#fff"
+    SubTitleFontSize: Font text size. Default 12
+    AxisPointerType: 'cross' 'line', 'shadow', or None
+    YAxisTitle: Title for the YAxis. If none, then YVar will be the Title
+    YAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
+    YAxisNameGap: offsetting where the title ends up. For 'middle', default is 15
+    XAxisTitle: Title for the XAxis. If none, then YVar will be the Title
+    XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
+    XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
+    Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    Legend: Choose from None, 'right', 'top'
+    LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
+    LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
+    ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
+    Brush: Logical. Select True for addition ToolBox functionality. Default is True
+    DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    VerticalLine: numeric. Add a vertical line on the plot at the value specified
+    VerticalLineName: add a series name for the vertical line
+    HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
+    HorizontalLineName: add a series name for the horizontal line
+    """
+
+    # Load environment
+    from pyecharts import options as opts
+    from pyecharts.charts import Bar, Grid
+    from pyecharts.commons.utils import JsCode
+    import polars as pl
+    import math
+
+    # PreAgg = False
+    # YVar = 'Daily Liters'
+    # XVar = 'Date'
+    # GroupVar = None 'Brand'
+    # AggMethod = 'mean'
+    # FacetRows = 2
+    # FacetCols = 2
+    # FacetLevels = None
+    # YVarTrans = "Identity"
+    # ShowLabels = False
+    # LabelPosition = "top"
+    # RenderHTML = False
+    # Title = 'Pie Plot'
+    # TitleColor = 'fff'
+    # TitleFontSize = 20
+    # SubTitle = 'Subtitle'
+    # SubTitleColor = 'fff'
+    # SubTitleFontSize = 12
+    # AxisPointerType = 'cross'
+    # YAxisTitle = 'Daily Liters'
+    # YAxisNameLocation = 'end' 'middle' 'start'
+    # YAxisNameGap = 15
+    # XAxisTitle = 'Date'
+    # XAxisNameLocation = 'middle' 'start' 'end'
+    # XAxisNameGap = 42
+    # Theme = 'wonderland'
+    # Legend = None
+    # LegendPosRight = '0%'
+    # LegendPosTop = '5%'
+    # HorizontalLine = None
+    # VerticalLine = None
+    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
+    
+    # Define Plotting Variable
+    if YVar == None:
+      return None
+    
+    if isinstance(YVar, list):
+      if len(YVar) > 1:
+        GroupVar = None
+
+    # Subset Columns
+    if not GroupVar is None:
+      dt1 = dt.select([pl.col(YVar), pl.col(XVar), pl.col(GroupVar)])
+    else:
+      dt1 = dt.select([pl.col(YVar), pl.col(XVar)])
+
+    # Transformation
+    trans = YVarTrans.lower()
+    if trans != "identity":
+      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+  
+    # Agg Data
+    if not PreAgg:
+      dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = XVar)
+      dt1 = dt1.sort(XVar)
+
+    if GroupVar is None:
+      yvar_dict = {}
+      if not isinstance(YVar, list):
+        YVar = [YVar]
+      for yvar in YVar:
+        yvar_dict[yvar] = dt1[yvar].to_list()
+        
+      XVal = dt1[XVar].unique().to_list()
+
+      # Create plot
+      c = Bar(init_opts = opts.InitOpts(theme = Theme))
+      c = c.add_xaxis(xaxis_data = XVal)
+      for yvar in YVar:
+        yaxis_options = {}
+        yaxis_options['series_name'] = yvar
+        yaxis_options['y_axis'] = yvar_dict[yvar]
+        yaxis_options['label_opts'] = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition)
+        
+        c = c.add_yaxis(**yaxis_options)
+
+      # Global Options
+      GlobalOptions = {}
+      if Legend == 'right':
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical")
+      elif Legend == 'top':
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
+      else:
+        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+  
+      if not Title is None:
+        GlobalOptions['title_opts'] = opts.TitleOpts(
+            title = Title, subtitle = SubTitle,
+            title_textstyle_opts = opts.TextStyleOpts(
+              color = TitleColor,
+              font_size = TitleFontSize,
+            ),
+            subtitle_textstyle_opts = opts.TextStyleOpts(
+              color = SubTitleColor,
+              font_size = SubTitleFontSize,
+            )
+        )
+
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+      GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
+  
+      if ToolBox:
+        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+      
+      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
+  
+      if Brush:
+        GlobalOptions['brush_opts'] = opts.BrushOpts()
+  
+      if DataZoom:
+        GlobalOptions['datazoom_opts'] = [
+            opts.DataZoomOpts(
+              range_start = 0,
+              range_end = 100),
+            opts.DataZoomOpts(
+              type_="inside")]
+
+      # Final Setting of Global Options
+      c = c.set_global_opts(**GlobalOptions)
+  
+      # Series Options
+      if not HorizontalLine is None or not VerticalLine is None:
+        MarkLineDict = {}
+        if not HorizontalLine is None and not VerticalLine is None:
+          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+        elif HorizontalLine is None:
+          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+        else:
+          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+
+        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+        
+      # Render html
+      if RenderHTML:
+        c.render()
+    
+      return c
+
+    # Grouping Case
+    else:
+
+      # No Facet Case
+      if FacetCols == 1 and FacetRows == 1:
+        
+        yvar_dict = {}
+        GroupLevels = dt1[GroupVar].unique().sort().to_list()
+        for gv in GroupLevels:
+          temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
+          yvar_dict[gv] = temp[YVar].to_list()
+
+        XVal = dt1[XVar].unique().to_list()
+        
+        # Create plot
+        c = Bar(init_opts = opts.InitOpts(theme = Theme))
+        c = c.add_xaxis(xaxis_data = XVal)
+        for yvar in GroupLevels:
+          c = c.add_yaxis(
+            series_name = yvar,
+            y_axis = yvar_dict[yvar],
+            label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
+          )
+
+        # Global Options
+        GlobalOptions = {}
+        if Legend == 'right':
+          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical")
+        elif Legend == 'top':
+          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
+        else:
+          GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+  
+        if not Title is None:
+          GlobalOptions['title_opts'] = opts.TitleOpts(
+              title = Title, subtitle = SubTitle,
+              title_textstyle_opts = opts.TextStyleOpts(
+                color = TitleColor,
+                font_size = TitleFontSize,
+              ),
+              subtitle_textstyle_opts = opts.TextStyleOpts(
+                color = SubTitleColor,
+                font_size = SubTitleFontSize,
+              )
+          )
+  
+        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+        GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
+    
+        if ToolBox:
+          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+        
+        GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
+    
+        if Brush:
+          GlobalOptions['brush_opts'] = opts.BrushOpts()
+    
+        if DataZoom:
+          GlobalOptions['datazoom_opts'] = [
+              opts.DataZoomOpts(
+                range_start = 0,
+                range_end = 100),
+              opts.DataZoomOpts(
+                type_="inside")]
+
+        # Final Setting of Global Options
+        c = c.set_global_opts(**GlobalOptions)
+    
+        # Series Options
+        if not HorizontalLine is None or not VerticalLine is None:
+          MarkLineDict = {}
+          if not HorizontalLine is None and not VerticalLine is None:
+            MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+          elif HorizontalLine is None:
+            MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+          else:
+            MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+  
+          c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+          
+        # Render html
+        if RenderHTML:
+          c.render()
+      
+        return c
+
+      # Facet Case
+      else:
+        
+        yvar_dict = {}
+        plot_dict = {}
+        if FacetLevels is None:
+          GroupLevels = dt1[GroupVar].unique().sort().to_list()
+          GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
+        else:
+          GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
+        for gv in GroupLevels:
+          temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
+          yvar_dict[gv] = temp[YVar].to_list()
+
+        XVal = dt1[XVar].unique().to_list()
+        
+        # Create plot
+        for i in GroupLevels:# i = 'Yellow-Yum'
+          plot_dict[i] = Bar(init_opts = opts.InitOpts(theme = Theme))
+          plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = XVal)
+          plot_dict[i] = plot_dict[i].add_yaxis(
+            series_name = i,
+            y_axis = yvar_dict[i],
+            label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
+          )
+          
+          # Global Options
+          GlobalOptions = {}
+          if not Title is None:
+            GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
+  
+          if not XAxisTitle is None:
+            GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}", position = "right")
+  
+          # Final Setting of Global Options
+          plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
+
+        # Setup Grid Output
+        grid = Grid()
+        facet_vals = FacetGridValues(
+          FacetRows = FacetRows,
+          FacetCols = FacetCols,
+          Legend = Legend,
+          LegendSpace = 10)
+        counter = -1
+        for i in GroupLevels: # ['Yellow-Yum', 'Elves']: #
+          counter += 1
+          grid = grid.add(
+            plot_dict[i],
+            grid_opts = opts.GridOpts(
+              pos_left = f"{facet_vals['left'][counter]}%",
+              pos_top = f"{facet_vals['top'][counter]}%",
+              width = f"{facet_vals['width']}%",
+              height = f"{facet_vals['height']}%"))
+
+        # Render html
+        if RenderHTML:
+          grid.render()
+
+        return grid
+
+
+#################################################################################################
+
