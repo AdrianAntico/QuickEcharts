@@ -3450,19 +3450,18 @@ def Area(dt = None,
           ShowSymbol = True
         else:
           ShowSymbol = False
-        for yvar in yvar_dict.keys():# yvar_dict.keys()
+        for yvar in GroupLevels:
           c = c.add_yaxis(
             series_name = yvar,
             symbol = Symbol,
             is_smooth = True,
             is_symbol_show = ShowSymbol,
             y_axis = yvar_dict[yvar],
+            areastyle_opts = opts.AreaStyleOpts(opacity = Opacity),
             linestyle_opts = opts.LineStyleOpts(width = LineWidth),
             label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
           )
           
-        c = c.set_series_opts(areastyle_opts = opts.AreaStyleOpts(opacity = Opacity)),
-  
         # Global Options
         GlobalOptions = {}
         if Legend == 'right':
