@@ -266,7 +266,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Boxplot.PNG" align="center" width="800" />
 
 </details>
@@ -329,7 +328,7 @@ p1.load_javascript()
 p1.render_notebook()
 
 ```
-#### Jupyter Lab View
+
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Density.PNG" align="center" width="800" />
 
 
@@ -384,7 +383,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Density_Facet.PNG" align="center" width="800" />
 
 </details>
@@ -432,7 +430,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Donut.PNG" align="center" width="800" />
 
 </details>
@@ -496,7 +493,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Histogram.PNG" align="center" width="800" />
 
 
@@ -551,7 +547,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Histogram_Facet.PNG" align="center" width="800" />
 
 </details>
@@ -622,7 +617,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Line_MultiYVar.PNG" align="center" width="800" />
 
 
@@ -686,7 +680,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Line_GroupVar.PNG" align="center" width="800" />
 
 ```python
@@ -749,7 +742,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Line_Facet.PNG" align="center" width="800" />
 
 </details>
@@ -799,7 +791,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Pie.PNG" align="center" width="800" />
 
 </details>
@@ -846,7 +837,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Radar.PNG" align="center" width="800" />
 
 </details>
@@ -896,7 +886,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Rosetype.PNG" align="center" width="800" />
 
 </details>
@@ -1173,7 +1162,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Step_MultiYVar.PNG" align="center" width="800" />
 
 
@@ -1236,7 +1224,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Step_GroupVar.PNG" align="center" width="800" />
 
 ```python
@@ -1298,7 +1285,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Step_Facet.PNG" align="center" width="800" />
 
 </details>
@@ -1341,7 +1327,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-#### Jupyter Lab View
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Wordcloud.PNG" align="center" width="800" />
 
 </details>
