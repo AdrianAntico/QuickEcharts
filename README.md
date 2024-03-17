@@ -908,6 +908,215 @@ p1.render_notebook()
 <br>
 
 
+## Stacked Area
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+import polars as pl
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+import polars as pl
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+p1 = Charts.StackedArea(
+  dt = data,
+  PreAgg = False,
+  YVar = 'Daily Liters',
+  XVar = 'Date',
+  GroupVar = 'Brand',
+  AggMethod = 'sum',
+  YVarTrans = "Identity",
+  RenderHTML = False,
+  LineWidth = 2,
+  Symbol = "emptyCircle",
+  ShowLabels = False,
+  LabelPosition = "top",
+  Title = 'Stacked Area',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  AxisPointerType = 'cross',
+  YAxisTitle = None,
+  YAxisNameLocation = 'middle',
+  YAxisNameGap = 70,
+  XAxisTitle = 'Date',
+  XAxisNameLocation = 'middle',
+  XAxisNameGap = 42,
+  Theme = 'wonderland',
+  Legend = 'right',
+  LegendPosRight = '0%',
+  LegendPosTop = '15%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  VerticalLine = None,
+  VerticalLineName = 'Line Name',
+  HorizontalLine = None,
+  HorizontalLineName = 'Line Name')
+
+p1.load_javascript()
+p1.render_notebook()
+```
+
+#### Jupyter Lab View
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/StackedArea.PNG" align="center" width="800" />
+
+</details>
+
+<br>
+
+
+
+## Stacked Line
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+import polars as pl
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+import polars as pl
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+p1 = Charts.StackedLine(
+  dt = data,
+  PreAgg = False,
+  YVar = 'Daily Liters',
+  XVar = 'Date',
+  GroupVar = 'Brand',
+  AggMethod = 'sum',
+  YVarTrans = "Identity",
+  RenderHTML = False,
+  LineWidth = 2,
+  Symbol = "emptyCircle",
+  ShowLabels = False,
+  LabelPosition = "top",
+  Title = 'Stacked Line',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  AxisPointerType = 'cross',
+  YAxisTitle = None,
+  YAxisNameLocation = 'middle',
+  YAxisNameGap = 70,
+  XAxisTitle = 'Date',
+  XAxisNameLocation = 'middle',
+  XAxisNameGap = 42,
+  Theme = 'wonderland',
+  Legend = 'right',
+  LegendPosRight = '0%',
+  LegendPosTop = '15%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  VerticalLine = None,
+  VerticalLineName = 'Line Name',
+  HorizontalLine = None,
+  HorizontalLineName = 'Line Name')
+
+p1.load_javascript()
+p1.render_notebook()
+```
+
+#### Jupyter Lab View
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/StackedLine.PNG" align="center" width="800" />
+
+</details>
+
+<br>
+
+
+
+## Stacked Step
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+import polars as pl
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+import polars as pl
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+p1 = Charts.StackedStep(
+  dt = data,
+  PreAgg = False,
+  YVar = 'Daily Liters',
+  XVar = 'Date',
+  GroupVar = 'Brand',
+  AggMethod = 'sum',
+  YVarTrans = "Identity",
+  RenderHTML = False,
+  LineWidth = 2,
+  Symbol = "emptyCircle",
+  ShowLabels = False,
+  LabelPosition = "top",
+  Title = 'Stacked Step',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  AxisPointerType = 'cross',
+  YAxisTitle = None,
+  YAxisNameLocation = 'middle',
+  YAxisNameGap = 70,
+  XAxisTitle = 'Date',
+  XAxisNameLocation = 'middle',
+  XAxisNameGap = 42,
+  Theme = 'wonderland',
+  Legend = 'right',
+  LegendPosRight = '0%',
+  LegendPosTop = '15%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  VerticalLine = None,
+  VerticalLineName = 'Line Name',
+  HorizontalLine = None,
+  HorizontalLineName = 'Line Name')
+
+p1.load_javascript()
+p1.render_notebook()
+```
+
+#### Jupyter Lab View
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/StackedStep.PNG" align="center" width="800" />
+
+</details>
+
+<br>
+
+
 ## Step
 
 <details><summary>Click for code example</summary>
