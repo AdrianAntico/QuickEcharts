@@ -391,7 +391,7 @@ def Histogram(dt = None,
               range_start = 0,
               range_end = 100),
             opts.DataZoomOpts(
-              type_="inside")]
+              type_ = "inside")]
       
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
@@ -696,7 +696,7 @@ def Density(dt = None,
               range_start = 0,
               range_end = 100),
             opts.DataZoomOpts(
-              type_="inside")]
+              type_ = "inside")]
       
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
@@ -1408,7 +1408,7 @@ def BoxPlot(dt = None,
             range_start = 0,
             range_end = 100),
           opts.DataZoomOpts(
-            type_="inside")]
+            type_ = "inside")]
     
     # Final Setting of Global Options
     c = c.set_global_opts(**GlobalOptions)
@@ -1738,7 +1738,7 @@ def Line(dt = None,
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     SmoothLine: Logical
     LineWidth: Numeric. Default 2
-    Symbol: Default "emptyCircle". "circle". "circle"
+    Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
     ShowLabels: Default False
     LabelPosition: "top", "center", "left", "right", "bottom"
     Title: title of plot in quotes
@@ -1899,7 +1899,7 @@ def Line(dt = None,
               range_start = 0,
               range_end = 100),
             opts.DataZoomOpts(
-              type_="inside")]
+              type_ = "inside")]
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
@@ -1993,7 +1993,7 @@ def Line(dt = None,
                 range_start = 0,
                 range_end = 100),
               opts.DataZoomOpts(
-                type_="inside")]
+                type_ = "inside")]
   
         # Final Setting of Global Options
         c = c.set_global_opts(**GlobalOptions)
@@ -2137,7 +2137,7 @@ def StackedLine(dt = None,
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     SmoothLine: Logical
     LineWidth: Numeric. Default 2
-    Symbol: Default "emptyCircle". "circle". "circle"
+    Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
     ShowLabels: Default False
     LabelPosition: "top", "center", "left", "right", "bottom"
     Title: title of plot in quotes
@@ -2302,7 +2302,7 @@ def StackedLine(dt = None,
               range_start = 0,
               range_end = 100),
             opts.DataZoomOpts(
-              type_="inside")]
+              type_ = "inside")]
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
@@ -2394,7 +2394,7 @@ def StackedLine(dt = None,
               range_start = 0,
               range_end = 100),
             opts.DataZoomOpts(
-              type_="inside")]
+              type_ = "inside")]
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
@@ -2475,7 +2475,7 @@ def Step(dt = None,
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     LineWidth: Numeric. Default 2
-    Symbol: Default "emptyCircle". "circle" 
+    Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
     ShowLabels: Default False
     LabelPosition: "top", "center", "left", "right", "bottom"
     Title: title of plot in quotes
@@ -2635,7 +2635,7 @@ def Step(dt = None,
               range_start = 0,
               range_end = 100),
             opts.DataZoomOpts(
-              type_="inside")]
+              type_ = "inside")]
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
@@ -2729,7 +2729,7 @@ def Step(dt = None,
                 range_start = 0,
                 range_end = 100),
               opts.DataZoomOpts(
-                type_="inside")]
+                type_ = "inside")]
   
         # Final Setting of Global Options
         c = c.set_global_opts(**GlobalOptions)
@@ -2873,7 +2873,7 @@ def StackedStep(dt = None,
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     LineWidth: Numeric. Default 2
-    Symbol: Default "emptyCircle". "circle" 
+    Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
     ShowLabels: Default False
     LabelPosition: "top", "center", "left", "right", "bottom"
     Title: title of plot in quotes
@@ -3037,7 +3037,7 @@ def StackedStep(dt = None,
               range_start = 0,
               range_end = 100),
             opts.DataZoomOpts(
-              type_="inside")]
+              type_ = "inside")]
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
@@ -3129,7 +3129,7 @@ def StackedStep(dt = None,
               range_start = 0,
               range_end = 100),
             opts.DataZoomOpts(
-              type_="inside")]
+              type_ = "inside")]
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
@@ -3237,7 +3237,7 @@ def Area(dt = None,
     GradientColor1: For non-grouping plots. Default '#c86589'
     GradientColor2: For non-grouping plots. Default '#06a7ff0d',
     LineWidth: Numeric. Default 2
-    Symbol: Default "emptyCircle". "circle" 
+    Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
     ShowLabels: Default False
     LabelPosition: "top", "center", "left", "right", "bottom"
     Title: title of plot in quotes
@@ -3406,7 +3406,7 @@ def Area(dt = None,
               range_start = 0,
               range_end = 100),
             opts.DataZoomOpts(
-              type_="inside")]
+              type_ = "inside")]
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
@@ -3501,7 +3501,7 @@ def Area(dt = None,
                 range_start = 0,
                 range_end = 100),
               opts.DataZoomOpts(
-                type_="inside")]
+                type_ = "inside")]
   
         # Final Setting of Global Options
         c = c.set_global_opts(**GlobalOptions)
@@ -3648,7 +3648,7 @@ def StackedArea(dt = None,
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Opacity: For grouping plots. Defaults to 0.5
     LineWidth: Numeric. Default 2
-    Symbol: Default "emptyCircle". "circle" 
+    Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
     ShowLabels: Default False
     LabelPosition: "top", "center", "left", "right", "bottom"
     Title: title of plot in quotes
@@ -3815,7 +3815,7 @@ def StackedArea(dt = None,
               range_start = 0,
               range_end = 100),
             opts.DataZoomOpts(
-              type_="inside")]
+              type_ = "inside")]
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
@@ -3908,7 +3908,7 @@ def StackedArea(dt = None,
               range_start = 0,
               range_end = 100),
             opts.DataZoomOpts(
-              type_="inside")]
+              type_ = "inside")]
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
@@ -4137,7 +4137,7 @@ def Bar(dt = None,
               range_start = 0,
               range_end = 100),
             opts.DataZoomOpts(
-              type_="inside")]
+              type_ = "inside")]
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
@@ -4223,7 +4223,7 @@ def Bar(dt = None,
                 range_start = 0,
                 range_end = 100),
               opts.DataZoomOpts(
-                type_="inside")]
+                type_ = "inside")]
 
         # Final Setting of Global Options
         c = c.set_global_opts(**GlobalOptions)
@@ -4510,7 +4510,7 @@ def StackedBar(dt = None,
               range_start = 0,
               range_end = 100),
             opts.DataZoomOpts(
-              type_="inside")]
+              type_ = "inside")]
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
@@ -4594,7 +4594,7 @@ def StackedBar(dt = None,
               range_start = 0,
               range_end = 100),
             opts.DataZoomOpts(
-              type_="inside")]
+              type_ = "inside")]
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
@@ -4819,7 +4819,7 @@ def Heatmap(dt = None,
             range_start = 0,
             range_end = 100),
           opts.DataZoomOpts(
-            type_="inside")]
+            type_ = "inside")]
 
     # Final Setting of Global Options
     c = c.set_global_opts(**GlobalOptions)
@@ -4832,3 +4832,4 @@ def Heatmap(dt = None,
 
 
 #################################################################################################
+
