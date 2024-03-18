@@ -475,7 +475,7 @@ FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create plot
-p1 = Copula(
+p1 = Charts.Copula(
   dt = data,
   SampleSize = 15000,
   YVar = 'Daily Liters',
@@ -536,7 +536,7 @@ FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create plot
-p1 = Copula(
+p1 = Charts.Copula(
   dt = data,
   SampleSize = 15000,
   YVar = 'Daily Liters',
@@ -597,7 +597,7 @@ FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create plot
-p1 = Copula(
+p1 = Charts.Copula(
   dt = data,
   SampleSize = 15000,
   YVar = 'Daily Liters',
