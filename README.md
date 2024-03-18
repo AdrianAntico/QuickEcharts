@@ -458,7 +458,7 @@ p1.render_notebook()
 
 <br>
 
-## Density
+## Copula
 
 <details><summary>Click for code example</summary>
 
