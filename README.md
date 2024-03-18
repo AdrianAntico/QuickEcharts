@@ -455,6 +455,198 @@ p1.render_notebook()
 
 </details>
 
+
+<br>
+
+## Density
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+import polars as pl
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+# Create plot
+p1 = Copula(
+  dt = data,
+  SampleSize = 15000,
+  YVar = 'Daily Liters',
+  XVar = 'Daily Units',
+  GroupVar = None,
+  FacetRows = 2,
+  FacetCols = 2,
+  FacetLevels = None,
+  AggMethod = 'mean',
+  RenderHTML = False,
+  LineWidth = 2,
+  Symbol = "emptyCircle",
+  SymbolSize = 2,
+  ShowLabels = False,
+  LabelPosition = "top",
+  Title = 'Copula Plot',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 10,
+  AxisPointerType = 'cross',
+  YAxisTitle = 'Daily Liters',
+  YAxisNameLocation = 'end',
+  YAxisNameGap = 15,
+  XAxisTitle = 'Daily Units',
+  XAxisNameLocation = 'end',
+  XAxisNameGap = 10,
+  Theme = 'wonderland',
+  Legend = 'top',
+  LegendPosRight = '0%',
+  LegendPosTop = '5%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  VerticalLine = None,
+  VerticalLineName = 'Line Name',
+  HorizontalLine = None,
+  HorizontalLineName = 'Line Name')
+
+c.load_javascript()
+c.render_notebook()
+```
+
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Copula.PNG" align="center" width="800" />
+
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+import polars as pl
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+# Create plot
+p1 = Copula(
+  dt = data,
+  SampleSize = 15000,
+  YVar = 'Daily Liters',
+  XVar = 'Daily Units',
+  GroupVar = 'Brand',
+  FacetRows = 1,
+  FacetCols = 1,
+  FacetLevels = None,
+  AggMethod = 'mean',
+  RenderHTML = False,
+  LineWidth = 2,
+  Symbol = "emptyCircle",
+  SymbolSize = 2,
+  ShowLabels = False,
+  LabelPosition = "top",
+  Title = 'Copula Plot',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 10,
+  AxisPointerType = 'cross',
+  YAxisTitle = 'Daily Liters',
+  YAxisNameLocation = 'end',
+  YAxisNameGap = 15,
+  XAxisTitle = 'Daily Units',
+  XAxisNameLocation = 'end',
+  XAxisNameGap = 10,
+  Theme = 'wonderland',
+  Legend = 'right',
+  LegendPosRight = '0%',
+  LegendPosTop = '5%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  VerticalLine = None,
+  VerticalLineName = 'Line Name',
+  HorizontalLine = None,
+  HorizontalLineName = 'Line Name')
+
+c.load_javascript()
+c.render_notebook()
+```
+
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Copula_GroupVar.PNG" align="center" width="800" />
+
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+import polars as pl
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+# Create plot
+p1 = Copula(
+  dt = data,
+  SampleSize = 15000,
+  YVar = 'Daily Liters',
+  XVar = 'Daily Units',
+  GroupVar = 'Brand',
+  FacetRows = 2,
+  FacetCols = 2,
+  FacetLevels = None,
+  AggMethod = 'mean',
+  RenderHTML = False,
+  LineWidth = 2,
+  Symbol = "emptyCircle",
+  SymbolSize = 2,
+  ShowLabels = False,
+  LabelPosition = "top",
+  Title = 'Copula Plot',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 10,
+  AxisPointerType = 'cross',
+  YAxisTitle = 'Daily Liters',
+  YAxisNameLocation = 'end',
+  YAxisNameGap = 15,
+  XAxisTitle = 'Daily Units',
+  XAxisNameLocation = 'end',
+  XAxisNameGap = 10,
+  Theme = 'wonderland',
+  Legend = 'top',
+  LegendPosRight = '0%',
+  LegendPosTop = '5%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  VerticalLine = None,
+  VerticalLineName = 'Line Name',
+  HorizontalLine = None,
+  HorizontalLineName = 'Line Name')
+
+c.load_javascript()
+c.render_notebook()
+```
+
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Copula_Facet.PNG" align="center" width="800" />
+
+</details>
+
+
 <br>
 
 ## Density

@@ -5,7 +5,7 @@ def NumericTransformation(dt, YVar, Trans):
   Parameters
   dt: polars dataframe
   YVar: column to transform
-  Trans: transformation method. Choose from 'sqrt', 'log', 'logmin', and 'asinh'
+  Trans: transformation method. Choose from 'sqrt', 'log', 'logmin', 'asinh', 'perc_rank'
   """
   Trans = Trans.lower()
   import math
@@ -21,6 +21,10 @@ def NumericTransformation(dt, YVar, Trans):
     dt = dt.drop(YVar)
     dt = dt.rename({"YVar": YVar})
     dt = dt.with_columns(pl.col(YVar).map_elements(math.log))
+  elif Trans == 'perc_rank':
+    perc_rank = dt[YVar].rank() / dt[YVar].count()
+    dt = dt.drop(YVar)
+    dt = dt.with_columns(perc_rank.rename(YVar))
   return dt
 
 
@@ -230,7 +234,7 @@ def Histogram(dt = None,
     FacetRows: Number of rows in facet grid
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
@@ -527,7 +531,7 @@ def Density(dt = None,
     FacetRows: Number of rows in facet grid
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     LineWidth: numeric. Default is 2
     FillOpacity: fill opacity under the line. Default 0.5
@@ -820,7 +824,7 @@ def Pie(dt = None,
     YVar: numeric variable
     GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
@@ -962,7 +966,7 @@ def Rosetype(dt = None,
     YVar: numeric variable
     GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Type: Default "radius". Otherwise, "area"
     Radius: Default "55%"
@@ -1109,7 +1113,7 @@ def Donut(dt = None,
     YVar: numeric variable
     GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
@@ -1261,7 +1265,7 @@ def BoxPlot(dt = None,
     dt: polars dataframe
     YVar: numeric variable
     GroupVar: grouping variable
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
@@ -1557,7 +1561,7 @@ def Radar(dt = None,
     YVar: numeric variable
     GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
@@ -1735,7 +1739,7 @@ def Line(dt = None,
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     SmoothLine: Logical
     LineWidth: Numeric. Default 2
@@ -2139,7 +2143,7 @@ def StackedLine(dt = None,
     XVar: date variable
     GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     SmoothLine: Logical
     LineWidth: Numeric. Default 2
@@ -2482,7 +2486,7 @@ def Step(dt = None,
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     LineWidth: Numeric. Default 2
     Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
@@ -2885,7 +2889,7 @@ def StackedStep(dt = None,
     XVar: date variable
     GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     LineWidth: Numeric. Default 2
     Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
@@ -3250,7 +3254,7 @@ def Area(dt = None,
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Opacity: For grouping plots. Defaults to 0.5
     GradientColor1: For non-grouping plots. Default '#c86589'
@@ -3669,7 +3673,7 @@ def StackedArea(dt = None,
     XVar: date variable
     GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Opacity: For grouping plots. Defaults to 0.5
     LineWidth: Numeric. Default 2
@@ -4012,7 +4016,7 @@ def Bar(dt = None,
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     ShowLabels: Default False
     LabelPosition: "top", "center", "left", "right", "bottom"
@@ -4382,7 +4386,7 @@ def StackedBar(dt = None,
     XVar: date or categorical variable
     GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     ShowLabels: Default False
     LabelPosition: "top", "center", "left", "right", "bottom"
@@ -4689,7 +4693,7 @@ def Heatmap(dt = None,
     XVar: categorical variable
     MeasureVar: numeric variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
-    MeasureVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    MeasureVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     ShowLabels: Default False
     LabelColor = "#fff"
@@ -4914,8 +4918,8 @@ def Scatter(dt = None,
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
-    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
-    XVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, and asinh
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
+    XVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
     SymbolSize: Default 6
@@ -5233,7 +5237,7 @@ def Scatter(dt = None,
           if not Title is None:
             GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
   
-          GlobalOptions['xaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), type_ = "value", name = gv, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), type_ = "value", name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
           GlobalOptions['yaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
   
           # Final Setting of Global Options
@@ -5267,3 +5271,396 @@ def Scatter(dt = None,
 #################################################################################################
 
 
+def Copula(dt = None,
+           SampleSize = 15000,
+           YVar = None,
+           XVar = None,
+           GroupVar = None,
+           FacetRows = 1,
+           FacetCols = 1,
+           FacetLevels = None,
+           AggMethod = 'mean',
+           RenderHTML = False,
+           LineWidth = 2,
+           Symbol = "emptyCircle",
+           SymbolSize = 6,
+           ShowLabels = False,
+           LabelPosition = "top",
+           Title = 'Scatter Plot',
+           TitleColor = "#fff",
+           TitleFontSize = 20,
+           SubTitle = None,
+           SubTitleColor = "#fff",
+           SubTitleFontSize = 12,
+           AxisPointerType = 'cross',
+           YAxisTitle = None,
+           YAxisNameLocation = 'middle',
+           YAxisNameGap = 70,
+           XAxisTitle = None,
+           XAxisNameLocation = 'middle',
+           XAxisNameGap = 42,
+           Theme = 'wonderland',
+           Legend = None,
+           LegendPosRight = '0%',
+           LegendPosTop = '5%',
+           ToolBox = True,
+           Brush = True,
+           DataZoom = True,
+           VerticalLine = None,
+           VerticalLineName = 'Line Name',
+           HorizontalLine = None,
+           HorizontalLineName = 'Line Name'):
+    
+    """
+    # Parameters
+    dt: polars dataframe
+    PreAgg: Set to True if your data is already aggregated. Default is False
+    YVar: numeric variable
+    XVar: numeric variable
+    GroupVar: grouping variable
+    FacetRows: Number of rows in facet grid
+    FacetCols: Number of columns in facet grid
+    FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
+    AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
+    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
+    SymbolSize: Default 6
+    ShowLabels: Default False
+    LabelPosition: "top", "center", "left", "right", "bottom"
+    Title: title of plot in quotes
+    TitleColor: Color of title in hex. Default "#fff"
+    TitleFontSize: Font text size. Default 20
+    SubTitle: text underneath main title
+    SubTitleColor: Subtitle color of text. Default "#fff"
+    SubTitleFontSize: Font text size. Default 12
+    AxisPointerType: 'cross' 'line', 'shadow', or None
+    YAxisTitle: Title for the YAxis. If none, then YVar will be the Title
+    YAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
+    YAxisNameGap: offsetting where the title ends up. For 'middle', default is 15
+    XAxisTitle: Title for the XAxis. If none, then YVar will be the Title
+    XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
+    XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
+    Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    Legend: Choose from None, 'right', 'top'
+    LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
+    LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
+    ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
+    Brush: Logical. Select True for addition ToolBox functionality. Default is True
+    DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    VerticalLine: numeric. Add a vertical line on the plot at the value specified
+    VerticalLineName: add a series name for the vertical line
+    HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
+    HorizontalLineName: add a series name for the horizontal line
+    """
+
+    # Load environment
+    from pyecharts import options as opts
+    from pyecharts.charts import Scatter, Grid
+    import polars as pl
+    import math
+
+    # SampleSize = 500
+    # YVar = 'Daily Liters'
+    # XVar = 'Daily Units'
+    # GroupVar = 'Brand' None 
+    # AggMethod = 'mean'
+    # FacetRows = 2
+    # FacetCols = 2
+    # FacetLevels = None
+    # LineWidth = 2
+    # Symbol = "emptyCircle"
+    # SymbolSize = 3
+    # ShowLabels = False
+    # LabelPosition = "top"
+    # RenderHTML = False
+    # Title = 'Pie Plot'
+    # TitleColor = 'fff'
+    # TitleFontSize = 20
+    # SubTitle = 'Subtitle'
+    # SubTitleColor = 'fff'
+    # SubTitleFontSize = 12
+    # AxisPointerType = 'cross'
+    # YAxisTitle = 'Daily Liters'
+    # YAxisNameLocation = 'end' 'middle' 'start'
+    # YAxisNameGap = 15
+    # XAxisTitle = 'Date'
+    # XAxisNameLocation = 'middle' 'start' 'end'
+    # XAxisNameGap = 42
+    # Theme = 'wonderland'
+    # Legend = None
+    # LegendPosRight = '0%'
+    # LegendPosTop = '5%'
+    # HorizontalLine = None
+    # VerticalLine = None
+    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
+    
+    # Define Plotting Variable
+    if YVar == None:
+      return None
+    
+    if isinstance(YVar, list):
+      if len(YVar) > 1:
+        GroupVar = None
+    
+    # Cap number of records and define dt1
+    if SampleSize != None:
+      if dt.shape[0] > SampleSize:
+        dt1 = dt.sample(n = SampleSize, shuffle = True)
+      else:
+        dt1 = dt.clone()
+    else:
+      dt1 = dt.clone()
+
+    # Subset Columns
+    if not GroupVar is None:
+      dt1 = dt1.select([pl.col(YVar), pl.col(XVar), pl.col(GroupVar)])
+    else:
+      dt1 = dt1.select([pl.col(YVar), pl.col(XVar)])
+
+    # Transformations
+    dt1 = NumericTransformation(dt1, YVar, Trans = 'perc_rank')
+    dt1 = NumericTransformation(dt1, XVar, Trans = 'perc_rank')
+
+    # No GroupVar
+    if GroupVar is None:
+      YVal = dt1[YVar].to_list()
+      XVal = dt1[XVar].to_list()
+      
+      # Create plot
+      c = Scatter(init_opts = opts.InitOpts(theme = Theme))
+      c = c.add_xaxis(xaxis_data = XVal)
+      if not Symbol is None:
+        ShowSymbol = True
+      else:
+        ShowSymbol = False
+      c = c.add_yaxis(
+        series_name = YVar,
+        symbol = Symbol,
+        symbol_size = SymbolSize,
+        y_axis = YVal,
+        label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
+      )
+
+      # Global Options
+      GlobalOptions = {}
+      if Legend == 'right':
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical")
+      elif Legend == 'top':
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
+      else:
+        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+  
+      if not Title is None:
+        GlobalOptions['title_opts'] = opts.TitleOpts(
+            title = Title, subtitle = SubTitle,
+            title_textstyle_opts = opts.TextStyleOpts(
+              color = TitleColor,
+              font_size = TitleFontSize,
+            ),
+            subtitle_textstyle_opts = opts.TextStyleOpts(
+              color = SubTitleColor,
+              font_size = SubTitleFontSize,
+            )
+        )
+
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), type_ = "value", name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+      GlobalOptions['yaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
+  
+      if ToolBox:
+        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+      
+      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
+  
+      if Brush:
+        GlobalOptions['brush_opts'] = opts.BrushOpts()
+  
+      if DataZoom:
+        GlobalOptions['datazoom_opts'] = [
+            opts.DataZoomOpts(
+              range_start = 0,
+              range_end = 100),
+            opts.DataZoomOpts(
+              type_ = "inside")]
+
+      # Final Setting of Global Options
+      c = c.set_global_opts(**GlobalOptions)
+  
+      # Series Options
+      if not HorizontalLine is None or not VerticalLine is None:
+        MarkLineDict = {}
+        if not HorizontalLine is None and not VerticalLine is None:
+          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+        elif HorizontalLine is None:
+          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+        else:
+          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+
+        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+        
+      # Render html
+      if RenderHTML:
+        c.render()
+    
+      return c
+
+    # Grouping Case
+    else:
+
+      # No Facet Case
+      if FacetCols == 1 and FacetRows == 1:
+        
+        yvar_dict = {}
+        xvar_dict = {}
+        GroupLevels = dt1[GroupVar].unique().sort().to_list()
+        for gv in GroupLevels:
+          temp = dt1.filter(dt1[GroupVar] == gv)
+          yvar_dict[gv] = temp[YVar].to_list()
+          xvar_dict[gv] = temp[XVar].to_list()
+
+        # Create plot
+        c = Scatter(init_opts = opts.InitOpts(theme = Theme))
+        if not Symbol is None:
+          ShowSymbol = True
+        else:
+          ShowSymbol = False
+        for gv in GroupLevels:
+          c = c.add_xaxis(xaxis_data = xvar_dict[gv])
+          c = c.add_yaxis(
+            series_name = gv,
+            symbol = Symbol,
+            symbol_size = SymbolSize,
+            y_axis = yvar_dict[gv],
+            label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
+          )
+
+        # Global Options
+        GlobalOptions = {}
+        if Legend == 'right':
+          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical")
+        elif Legend == 'top':
+          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
+        else:
+          GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+  
+        if not Title is None:
+          GlobalOptions['title_opts'] = opts.TitleOpts(
+              title = Title, subtitle = SubTitle,
+              title_textstyle_opts = opts.TextStyleOpts(
+                color = TitleColor,
+                font_size = TitleFontSize,
+              ),
+              subtitle_textstyle_opts = opts.TextStyleOpts(
+                color = SubTitleColor,
+                font_size = SubTitleFontSize,
+              )
+          )
+  
+        GlobalOptions['xaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), type_ = "value", name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+        GlobalOptions['yaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
+    
+        if ToolBox:
+          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+        
+        GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
+    
+        if Brush:
+          GlobalOptions['brush_opts'] = opts.BrushOpts()
+    
+        if DataZoom:
+          GlobalOptions['datazoom_opts'] = [
+              opts.DataZoomOpts(
+                range_start = 0,
+                range_end = 100),
+              opts.DataZoomOpts(
+                type_ = "inside")]
+  
+        # Final Setting of Global Options
+        c = c.set_global_opts(**GlobalOptions)
+    
+        # Series Options
+        if not HorizontalLine is None or not VerticalLine is None:
+          MarkLineDict = {}
+          if not HorizontalLine is None and not VerticalLine is None:
+            MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+          elif HorizontalLine is None:
+            MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+          else:
+            MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+  
+          c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+          
+        # Render html
+        if RenderHTML:
+          c.render()
+      
+        return c
+
+      # Facet Case
+      else:
+        
+        plot_dict = {}
+        if FacetLevels is None:
+          GroupLevels = dt1[GroupVar].unique().sort().to_list()
+          GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
+        else:
+          GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
+        yvar_dict = {}
+        xvar_dict = {}
+        for gv in GroupLevels:
+          temp = dt1.filter(dt1[GroupVar] == gv)
+          yvar_dict[gv] = temp[YVar].to_list()
+          xvar_dict[gv] = temp[XVar].to_list()
+
+        # Create plot
+        if not Symbol is None:
+          ShowSymbol = True
+        else:
+          ShowSymbol = False
+        for i in GroupLevels:# i = 'Yellow-Yum'
+          plot_dict[i] = Scatter(init_opts = opts.InitOpts(theme = Theme))
+          plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = xvar_dict[i])
+          plot_dict[i] = plot_dict[i].add_yaxis(
+            series_name = i,
+            symbol = Symbol,
+            symbol_size = SymbolSize,
+            y_axis = yvar_dict[i],
+            label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
+          )
+
+          # Global Options
+          GlobalOptions = {}
+          if not Title is None:
+            GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
+  
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), type_ = "value", name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+          GlobalOptions['yaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
+  
+          # Final Setting of Global Options
+          plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
+
+        # Setup Grid Output
+        grid = Grid()
+        facet_vals = FacetGridValues(
+          FacetRows = FacetRows,
+          FacetCols = FacetCols,
+          Legend = Legend,
+          LegendSpace = 10)
+        counter = -1
+        for i in GroupLevels: # ['Yellow-Yum', 'Elves']: #
+          counter += 1
+          grid = grid.add(
+            plot_dict[i],
+            grid_opts = opts.GridOpts(
+              pos_left = f"{facet_vals['left'][counter]}%",
+              pos_top = f"{facet_vals['top'][counter]}%",
+              width = f"{facet_vals['width']}%",
+              height = f"{facet_vals['height']}%"))
+
+        # Render html
+        if RenderHTML:
+          grid.render()
+
+        return grid
+
+
+#################################################################################################
