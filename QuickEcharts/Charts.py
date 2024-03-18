@@ -1696,6 +1696,7 @@ def Line(dt = None,
          SmoothLine = True,
          LineWidth = 2,
          Symbol = "emptyCircle",
+         SymbolSize = 6,
          ShowLabels = False,
          LabelPosition = "top",
          Title = 'Line Plot',
@@ -1739,6 +1740,7 @@ def Line(dt = None,
     SmoothLine: Logical
     LineWidth: Numeric. Default 2
     Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
+    SymbolSize: Default 6
     ShowLabels: Default False
     LabelPosition: "top", "center", "left", "right", "bottom"
     Title: title of plot in quotes
@@ -1854,6 +1856,7 @@ def Line(dt = None,
           series_name = yvar,
           is_smooth = SmoothLine,
           symbol = Symbol,
+          symbol_size = SymbolSize,
           is_symbol_show = ShowSymbol,
           y_axis = yvar_dict[yvar],
           linestyle_opts = opts.LineStyleOpts(width = LineWidth),
@@ -1948,6 +1951,7 @@ def Line(dt = None,
             series_name = yvar,
             is_smooth = SmoothLine,
             symbol = Symbol,
+            symbol_size = SymbolSize,
             is_symbol_show = ShowSymbol,
             y_axis = yvar_dict[yvar],
             linestyle_opts = opts.LineStyleOpts(width = LineWidth),
@@ -2044,6 +2048,7 @@ def Line(dt = None,
             series_name = i,
             is_smooth = SmoothLine,
             symbol = Symbol,
+            symbol_size = SymbolSize,
             is_symbol_show = ShowSymbol,
             y_axis = yvar_dict[i],
             linestyle_opts = opts.LineStyleOpts(width = LineWidth),
@@ -2098,6 +2103,7 @@ def StackedLine(dt = None,
                 SmoothLine = True,
                 LineWidth = 2,
                 Symbol = "emptyCircle",
+                SymbolSize = 6,
                 ShowLabels = False,
                 LabelPosition = "top",
                 Title = 'Stacked Line',
@@ -2138,6 +2144,7 @@ def StackedLine(dt = None,
     SmoothLine: Logical
     LineWidth: Numeric. Default 2
     Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
+    SymbolSize: Default 6
     ShowLabels: Default False
     LabelPosition: "top", "center", "left", "right", "bottom"
     Title: title of plot in quotes
@@ -2257,6 +2264,7 @@ def StackedLine(dt = None,
           series_name = yvar,
           is_smooth = SmoothLine,
           symbol = Symbol,
+          symbol_size = SymbolSize,
           is_symbol_show = ShowSymbol,
           y_axis = yvar_dict[yvar],
           linestyle_opts = opts.LineStyleOpts(width = LineWidth),
@@ -2349,6 +2357,7 @@ def StackedLine(dt = None,
           series_name = yvar,
           is_smooth = SmoothLine,
           symbol = Symbol,
+          symbol_size = SymbolSize,
           is_symbol_show = ShowSymbol,
           y_axis = yvar_dict[yvar],
           linestyle_opts = opts.LineStyleOpts(width = LineWidth),
@@ -2434,6 +2443,7 @@ def Step(dt = None,
          RenderHTML = False,
          LineWidth = 2,
          Symbol = "emptyCircle",
+         SymbolSize = 6,
          ShowLabels = False,
          LabelPosition = "top",
          Title = 'Line Plot',
@@ -2476,6 +2486,7 @@ def Step(dt = None,
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     LineWidth: Numeric. Default 2
     Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
+    SymbolSize: Default 6
     ShowLabels: Default False
     LabelPosition: "top", "center", "left", "right", "bottom"
     Title: title of plot in quotes
@@ -2590,6 +2601,7 @@ def Step(dt = None,
           series_name = yvar,
           is_step = True,
           symbol = Symbol,
+          symbol_size = SymbolSize,
           is_symbol_show = ShowSymbol,
           y_axis = yvar_dict[yvar],
           linestyle_opts = opts.LineStyleOpts(width = LineWidth),
@@ -2684,6 +2696,7 @@ def Step(dt = None,
             series_name = yvar,
             is_step = True,
             symbol = Symbol,
+            symbol_size = SymbolSize,
             is_symbol_show = ShowSymbol,
             y_axis = yvar_dict[yvar],
             linestyle_opts = opts.LineStyleOpts(width = LineWidth),
@@ -2780,6 +2793,7 @@ def Step(dt = None,
             series_name = i,
             is_step = True,
             symbol = Symbol,
+            symbol_size = SymbolSize,
             is_symbol_show = ShowSymbol,
             y_axis = yvar_dict[i],
             linestyle_opts = opts.LineStyleOpts(width = LineWidth),
@@ -2835,6 +2849,7 @@ def StackedStep(dt = None,
                 RenderHTML = False,
                 LineWidth = 2,
                 Symbol = "emptyCircle",
+                SymbolSize = 6,
                 ShowLabels = False,
                 LabelPosition = "top",
                 Title = 'Line Plot',
@@ -2874,6 +2889,7 @@ def StackedStep(dt = None,
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     LineWidth: Numeric. Default 2
     Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
+    SymbolSize: Default 6
     ShowLabels: Default False
     LabelPosition: "top", "center", "left", "right", "bottom"
     Title: title of plot in quotes
@@ -2992,6 +3008,7 @@ def StackedStep(dt = None,
           series_name = yvar,
           is_step = True,
           symbol = Symbol,
+          symbol_size = SymbolSize,
           is_symbol_show = ShowSymbol,
           y_axis = yvar_dict[yvar],
           linestyle_opts = opts.LineStyleOpts(width = LineWidth),
@@ -3084,6 +3101,7 @@ def StackedStep(dt = None,
           series_name = yvar,
           is_step = True,
           symbol = Symbol,
+          symbol_size = SymbolSize,
           is_symbol_show = ShowSymbol,
           y_axis = yvar_dict[yvar],
           linestyle_opts = opts.LineStyleOpts(width = LineWidth),
@@ -3193,6 +3211,7 @@ def Area(dt = None,
          GradientColor2 = '#06a7ff0d',
          LineWidth = 2,
          Symbol = "emptyCircle",
+         SymbolSize = 6,
          ShowLabels = False,
          LabelPosition = "top",
          Title = 'Line Plot',
@@ -3238,6 +3257,7 @@ def Area(dt = None,
     GradientColor2: For non-grouping plots. Default '#06a7ff0d',
     LineWidth: Numeric. Default 2
     Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
+    SymbolSize: Default 6
     ShowLabels: Default False
     LabelPosition: "top", "center", "left", "right", "bottom"
     Title: title of plot in quotes
@@ -3342,7 +3362,7 @@ def Area(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      c = Line(init_opts = opts.InitOpts(theme = Theme))
+      c = Line(init_opts = opts.InitOpts(theme = Theme), axisline_opts = opts.AxisLineOpts(is_show = ShowXAxes))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -3353,8 +3373,10 @@ def Area(dt = None,
         yaxis_options['series_name'] = yvar
         yaxis_options['is_smooth'] = True
         yaxis_options['symbol'] = Symbol
+        yaxis_options['symbol_size'] = SymbolSize,
         yaxis_options['is_symbol_show'] = ShowSymbol
         yaxis_options['y_axis'] = yvar_dict[yvar]
+        yaxis_options['axisline_opts'] = opts.AxisLineOpts(is_show = ShowYAxes),
         yaxis_options['linestyle_opts'] = opts.LineStyleOpts(width = LineWidth)
         yaxis_options['label_opts'] = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition)
         if isinstance(YVar, list):
@@ -3454,6 +3476,7 @@ def Area(dt = None,
           c = c.add_yaxis(
             series_name = yvar,
             symbol = Symbol,
+            symbol_size = SymbolSize,
             is_smooth = True,
             is_symbol_show = ShowSymbol,
             y_axis = yvar_dict[yvar],
@@ -3552,6 +3575,7 @@ def Area(dt = None,
             series_name = i,
             is_smooth = True,
             symbol = Symbol,
+            symbol_size = SymbolSize,
             is_symbol_show = ShowSymbol,
             y_axis = yvar_dict[i],
             areastyle_opts = opts.AreaStyleOpts(opacity = Opacity),
@@ -3609,6 +3633,7 @@ def StackedArea(dt = None,
                 Opacity = 0.5,
                 LineWidth = 2,
                 Symbol = "emptyCircle",
+                SymbolSize = 6,
                 ShowLabels = False,
                 LabelPosition = "top",
                 Title = 'Stacked Area',
@@ -3649,6 +3674,7 @@ def StackedArea(dt = None,
     Opacity: For grouping plots. Defaults to 0.5
     LineWidth: Numeric. Default 2
     Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
+    SymbolSize: Default 6
     ShowLabels: Default False
     LabelPosition: "top", "center", "left", "right", "bottom"
     Title: title of plot in quotes
@@ -3768,6 +3794,7 @@ def StackedArea(dt = None,
         yaxis_options['series_name'] = yvar
         yaxis_options['is_smooth'] = True
         yaxis_options['symbol'] = Symbol
+        yaxis_options['symbol_size'] = SymbolSize,
         yaxis_options['is_symbol_show'] = ShowSymbol
         yaxis_options['y_axis'] = yvar_dict[yvar]
         yaxis_options['linestyle_opts'] = opts.LineStyleOpts(width = LineWidth)
@@ -3861,6 +3888,7 @@ def StackedArea(dt = None,
           stack = "stack1",
           series_name = yvar,
           symbol = Symbol,
+          symbol_size = SymbolSize,
           is_smooth = True,
           is_symbol_show = ShowSymbol,
           y_axis = yvar_dict[yvar],
