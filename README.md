@@ -1144,6 +1144,201 @@ p1.render_notebook()
 <br>
 
 
+## Scatter
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+import polars as pl
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+p1 = Charts.Scatter(
+  dt = data,
+  SampleSize = 15000,
+  YVar = 'Daily Liters',
+  XVar = 'Daily Units',
+  GroupVar = None,
+  FacetRows = 1,
+  FacetCols = 1,
+  FacetLevels = None,
+  AggMethod = 'mean',
+  YVarTrans = "Identity",
+  XVarTrans = "Identity",
+  RenderHTML = False,
+  LineWidth = 2,
+  Symbol = "emptyCircle",
+  SymbolSize = 6,
+  ShowLabels = False,
+  LabelPosition = "top",
+  Title = 'Scatter Plot',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 5,
+  AxisPointerType = 'cross',
+  YAxisTitle = 'Daily Liters',
+  YAxisNameLocation = 'end',
+  YAxisNameGap = 15,
+  XAxisTitle = 'Daily Units',
+  XAxisNameLocation = 'end',
+  XAxisNameGap = 10,
+  Theme = 'wonderland',
+  Legend = 'right',
+  LegendPosRight = '0%',
+  LegendPosTop = '5%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  VerticalLine = None,
+  VerticalLineName = 'Line Name',
+  HorizontalLine = None,
+  HorizontalLineName = 'Line Name')
+
+p1.load_javascript()
+p1.render_notebook()
+```
+
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Scatter.PNG" align="center" width="800" />
+
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+import polars as pl
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+p1 = Charts.Scatter(
+  dt = data,
+  SampleSize = 15000,
+  YVar = 'Daily Liters',
+  XVar = 'Daily Units',
+  GroupVar = 'Brand',
+  FacetRows = 1,
+  FacetCols = 1,
+  FacetLevels = None,
+  AggMethod = 'mean',
+  YVarTrans = "Identity",
+  XVarTrans = "Identity",
+  RenderHTML = False,
+  LineWidth = 2,
+  Symbol = "emptyCircle",
+  SymbolSize = 6,
+  ShowLabels = False,
+  LabelPosition = "top",
+  Title = 'Scatter Plot',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 5,
+  AxisPointerType = 'cross',
+  YAxisTitle = 'Daily Liters',
+  YAxisNameLocation = 'end',
+  YAxisNameGap = 15,
+  XAxisTitle = 'Daily Units',
+  XAxisNameLocation = 'end',
+  XAxisNameGap = 10,
+  Theme = 'wonderland',
+  Legend = 'right',
+  LegendPosRight = '0%',
+  LegendPosTop = '5%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  VerticalLine = None,
+  VerticalLineName = 'Line Name',
+  HorizontalLine = None,
+  HorizontalLineName = 'Line Name')
+
+p1.load_javascript()
+p1.render_notebook()
+```
+
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Scatter_GroupVar.PNG" align="center" width="800" />
+
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+import polars as pl
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+p1 = Charts.Scatter(
+  dt = data,
+  SampleSize = 15000,
+  YVar = 'Daily Liters',
+  XVar = 'Daily Units',
+  GroupVar = 'Brand',
+  FacetRows = 2,
+  FacetCols = 2,
+  FacetLevels = None,
+  AggMethod = 'mean',
+  YVarTrans = "Identity",
+  XVarTrans = "Identity",
+  RenderHTML = False,
+  LineWidth = 2,
+  Symbol = "emptyCircle",
+  SymbolSize = 6,
+  ShowLabels = False,
+  LabelPosition = "top",
+  Title = 'Scatter Plot',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 5,
+  AxisPointerType = 'cross',
+  YAxisTitle = 'Daily Liters',
+  YAxisNameLocation = 'end',
+  YAxisNameGap = 15,
+  XAxisTitle = 'Daily Units',
+  XAxisNameLocation = 'end',
+  XAxisNameGap = 10,
+  Theme = 'wonderland',
+  Legend = 'right',
+  LegendPosRight = '0%',
+  LegendPosTop = '5%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  VerticalLine = None,
+  VerticalLineName = 'Line Name',
+  HorizontalLine = None,
+  HorizontalLineName = 'Line Name')
+
+p1.load_javascript()
+p1.render_notebook()
+```
+
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Scatter_Facet.PNG" align="center" width="800" />
+
+</details>
+
+
+<br>
+
+
 ## Stacked Area
 
 <details><summary>Click for code example</summary>
