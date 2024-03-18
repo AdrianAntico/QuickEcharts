@@ -2,7 +2,7 @@
 
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Logo.PNG" align="center" width="800" />
 
-Plot Echarts quickly, with a simple API, and to allow polars to do the data wrangling under the hood, saving you valuable time.
+QuickEcharts is a Python package that enables one to plot Echarts quickly. This is accomplished with a simple API for defining plotting elements and data, along with automatic data wrangling operations, using polars, to prepare the data properly and fast.
 
 # Installation
 ```
