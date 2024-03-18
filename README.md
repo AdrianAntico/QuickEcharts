@@ -1046,7 +1046,7 @@ p1.render_notebook()
 
 <br>
 
-## Radar Chart
+## Radar
 
 <details><summary>Click for code example</summary>
 
