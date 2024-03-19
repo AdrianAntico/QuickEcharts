@@ -855,7 +855,7 @@ p1.render_notebook()
 
 <br>
 
-## Heatmap
+## Funnel
 
 <details><summary>Click for code example</summary>
 
