@@ -1231,6 +1231,45 @@ p1.render_notebook()
 
 <br>
 
+## Parallel
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Pull Data from Package
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+# Create Plot in Jupyter Lab
+p1 = Charts.Parallel(
+  dt = data,
+  SampleSize = 15000,
+  Vars = ['Daily Liters', 'Daily Units', 'Daily Revenue', 'Daily Margin'],
+  VarsTrans = ['logmin'] * 4,
+  Theme = 'wonderland',
+  RenderHTML = False,
+  SymbolSize = 6,
+  Opacity = 0.05,
+  LineWidth = 0.20)
+
+# Needed to display
+p1.load_javascript()
+p1.render_notebook()
+```
+
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Parallel.PNG" align="center" width="800" />
+
+</details>
+
+<br>
+
 
 ## Pie
 

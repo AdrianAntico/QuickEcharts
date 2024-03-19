@@ -5964,3 +5964,96 @@ def Copula(dt = None,
 
 
 #################################################################################################
+
+
+def Parallel(dt = None,
+             SampleSize = 15000,
+             Vars = None,
+             VarsTrans = None,
+             Theme = 'wonderland',
+             RenderHTML = False,
+             SymbolSize = 6,
+             Opacity = 0.05,
+             LineWidth = 0.20):
+    
+    """
+    # Parameters
+    dt: polars dataframe
+    SampleSize: Reduce data size
+    Vars: numeric variables
+    VarsTrans: list of transformations
+    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    SymbolSize: Default 6
+    Opacity: Default 0.05
+    LineWidth: Default 0.20
+    """
+
+    # Load environment
+    from pyecharts import options as opts
+    from pyecharts.charts import Parallel, Grid
+    import polars as pl
+    import math
+
+    # SampleSize = 500
+    # Vars = ['Daily Liters', 'Daily Units', 'Daily Revenue', 'Daily Margin']
+    # VarsTrans = ['logmin','logmin','logmin','logmin']
+    # SymbolSize = 6
+    # RenderHTML = False
+    # Opacity = 0.05
+    # LineWidth = 0.20
+    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
+
+    # Define Plotting Variable
+    if Vars == None:
+      return None
+    
+    # Cap number of records and define dt1
+    if SampleSize != None:
+      if dt.shape[0] > SampleSize:
+        dt1 = dt.sample(n = SampleSize, shuffle = True)
+      else:
+        dt1 = dt.clone()
+    else:
+      dt1 = dt.clone()
+
+    # Subset Columns
+    dt1 = dt1.select(Vars)
+
+    # Transformations
+    if not VarsTrans is None:
+      counter = -1
+      for v in Vars:
+        counter += 1
+        dt1 = NumericTransformation(dt1, v, Trans = VarsTrans[counter])
+
+    # Schema
+    parallel_axis = []
+    for dim, name in enumerate(Vars):
+      axis = {"dim": dim, "name": name}
+      parallel_axis.append(axis)
+
+    # Data Prep
+    data_dict = {}
+    for v in Vars:
+      data_dict[v] = dt1[v].to_list()
+
+    data = list(zip(*data_dict.values()))
+
+    # Create plot
+    c = Parallel(init_opts = opts.InitOpts(theme = Theme))
+    c = c.add_schema(schema = parallel_axis)
+    c = c.add(
+        series_name = "",
+        data = data,
+        linestyle_opts = opts.LineStyleOpts(width = LineWidth, opacity = Opacity),
+    )
+
+    # Render html
+    if RenderHTML:
+      c.render()
+
+    return c
+
+
+#################################################################################################
+
