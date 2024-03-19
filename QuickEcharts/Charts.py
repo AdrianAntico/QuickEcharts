@@ -5271,6 +5271,162 @@ def Scatter(dt = None,
 #################################################################################################
 
 
+def Scatter3D(dt = None,
+              SampleSize = 15000,
+              YVar = None,
+              XVar = None,
+              ZVar = None,
+              ColorMapVar = "ZVar",
+              AggMethod = 'mean',
+              YVarTrans = "Identity",
+              XVarTrans = "Identity",
+              ZVarTrans = "Identity",
+              RenderHTML = False,
+              SymbolSize = 6):
+    
+    """
+    # Parameters
+    dt: polars dataframe
+    SampleSize: Reduce data size
+    YVar: numeric variable
+    XVar: numeric variable
+    ZVar: numeric variable
+    ColorMapVar: Choose from default "ZVar", or "XVar", "YVar"
+    AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
+    XVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
+    ZVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
+    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    SymbolSize: Default 6
+    """
+
+    # Load environment
+    from pyecharts import options as opts
+    from pyecharts.charts import Scatter3D, Grid
+    import polars as pl
+    import math
+
+    # SampleSize = 500
+    # YVar = 'Daily Liters'
+    # XVar = 'Daily Units'
+    # ZVar = 'Daily Revenue'
+    # ColorMapVar = "ZVar"
+    # FacetRows = 2
+    # FacetCols = 2
+    # FacetLevels = None
+    # YVarTrans = 'sqrt'
+    # XVarTrans = 'sqrt'
+    # ZVarTrans = 'sqrt'
+    # SymbolSize = 6
+    # RenderHTML = False
+    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
+    
+    # Define Plotting Variable
+    if YVar == None:
+      return None
+    
+    if isinstance(YVar, list):
+      if len(YVar) > 1:
+        GroupVar = None
+    
+    # Cap number of records and define dt1
+    if SampleSize != None:
+      if dt.shape[0] > SampleSize:
+        dt1 = dt.sample(n = SampleSize, shuffle = True)
+      else:
+        dt1 = dt.clone()
+    else:
+      dt1 = dt.clone()
+
+    # Subset Columns
+    dt1 = dt1.select([pl.col(YVar), pl.col(ZVar), pl.col(XVar)])
+
+    # Transformations
+    trans = YVarTrans.lower()
+    if trans != "identity":
+      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+
+    trans = XVarTrans.lower()
+    if trans != "identity":
+      dt1 = NumericTransformation(dt1, XVar, Trans = trans)
+
+    trans = ZVarTrans.lower()
+    if trans != "identity":
+      dt1 = NumericTransformation(dt1, ZVar, Trans = trans)
+
+    # Build Plot
+    YVal = dt1[YVar].to_list()
+    XVal = dt1[XVar].to_list()
+    ZVal = dt1[XVar].to_list()
+    if ColorMapVar is None:
+      color = ZVal
+    elif ColorMapVar == "ZVar":
+      color = ZVal
+    elif ColorMapVar == "YVar":
+      color = YVar
+    elif ColorMapVar == "XVar":
+      color = XVar
+
+    symbolSize = [SymbolSize] * len(ZVal)
+    data = list(zip(YVal, XVal, ZVal, color, symbolSize))
+
+    # Create plot
+    c = Scatter3D(init_opts = opts.InitOpts(theme = Theme))
+    c = c.add(
+      series_name="",
+      data = data,
+      xaxis3d_opts = opts.Axis3DOpts(
+        name = XVar,
+        type_ = "value"
+      ),
+      yaxis3d_opts = opts.Axis3DOpts(
+        name = YVar,
+        type_ = "value"
+      ),
+      zaxis3d_opts = opts.Axis3DOpts(
+        name = ZVar,
+        type_ = "value"
+      ),
+      grid3d_opts=opts.Grid3DOpts(width=100, height=100, depth=100),
+    )
+
+    c = c.set_global_opts(
+        visualmap_opts = [
+          opts.VisualMapOpts(
+            type_ = "color",
+            is_calculable = True,
+            dimension = 3,
+            pos_top = "10",
+            max_ = max(dt1[YVar].max(), dt1[XVar].max(), dt1[ZVar].max()),
+            range_color = [
+                "#1710c0",
+                "#0b9df0",
+                "#00fea8",
+                "#00ff0d",
+                "#f5f811",
+                "#f09a09",
+                "#fe0300",
+            ],
+          ),
+          opts.VisualMapOpts(
+            type_ = "size",
+            is_calculable = True,
+            dimension = 4,
+            range_size = [min(dt1[YVar].min(), dt1[XVar].min(), dt1[ZVar].min()), max(dt1[YVar].max(), dt1[XVar].max(), dt1[ZVar].max())],
+          ),
+      ]
+    )
+
+    # Render html
+    if RenderHTML:
+      c.render()
+
+    return grid
+
+
+#################################################################################################
+
+
 def Copula(dt = None,
            SampleSize = 15000,
            YVar = None,

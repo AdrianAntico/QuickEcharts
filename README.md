@@ -2,7 +2,7 @@
 
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Logo.PNG" align="center" width="800" />
 
-QuickEcharts is a Python package that enables one to plot Echarts quickly. It piggybacks off of the pyecharts package that pipes into Apache Echarts. The pyecharts is a great package for fully customizing plots but is quite a challenge to make use of quickly. QuickEcharts solves this with a simple API for defining plotting elements and data, along with automatic data wrangling operations, using polars, to prepare the data properly and fast.
+QuickEcharts is a Python package that enables one to plot Echarts quickly. It piggybacks off of the pyecharts package that pipes into Apache Echarts. Pyecharts is a great package for fully customizing plots but is quite a challenge to make use of quickly. QuickEcharts solves this with a simple API for defining plotting elements and data, along with automatic data wrangling operations, using polars, to prepare the data properly and fast.
 
 # Installation
 ```
@@ -398,7 +398,7 @@ p1.render_notebook()
 
 <br>
 
-## Box Plot
+## Box
 
 <details><summary>Click for code example</summary>
 
@@ -1524,6 +1524,50 @@ p1.render_notebook()
 ```
 
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Scatter_Facet.PNG" align="center" width="800" />
+
+</details>
+
+
+<br>
+
+
+## Scatter3D
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Get data
+import polars as pl
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+# Build Plot
+p1 = Charts.Scatter3D(
+  dt = data,
+  SampleSize = 15000,
+  YVar = 'Daily Liters',
+  XVar = 'Daily Units',
+  ZVar = 'Daily Margin',
+  ColorMapVar = "ZVar",
+  AggMethod = 'mean',
+  YVarTrans = "logmin",
+  XVarTrans = "logmin",
+  ZVarTrans = "logmin",
+  RenderHTML = False,
+  SymbolSize = 6)
+
+p1.load_javascript()
+p1.render_notebook()
+```
+
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Scatter3D.PNG" align="center" width="800" />
 
 </details>
 
