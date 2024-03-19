@@ -6057,3 +6057,78 @@ def Parallel(dt = None,
 
 #################################################################################################
 
+
+def Funnel(dt = None,
+           CategoryVar = None,
+           ValuesVar = None,
+           SeriesLabel = "Funnel Data",
+           SortStyle = 'decending',
+           Theme = 'wonderland',
+           Title = "Funnel",
+           TitleColor = "#fff",
+           TitleFontSize = 20,
+           Legend = None,
+           LegendPosRight = '0%',
+           LegendPosTop = '5%',
+           RenderHTML = False):
+    
+    """
+    # Parameters
+    dt: polars dataframe
+    CategoryVar: List. Category labels for funnel
+    ValuesVar: List. Values for the funnel
+    SortStyle: Default "decending". Otherwise, "ascending"
+    Theme: For plot
+    Title: Plot title
+    TitleColor: Font color. Default "#fff" 
+    TitleFontSize: Font size. Default = 20
+    SeriesLabel: For hover data
+    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    """
+
+    # Load environment
+    from pyecharts import options as opts
+    from pyecharts.charts import Funnel, Grid
+    import polars as pl
+    import math
+
+    # CategoryVar = ['Daily Liters', 'Daily Units', 'Daily Revenue', 'Daily Margin']
+    # ValuesVar = [100,80,60,40]
+    # Title = "Funnel"
+    # TitleColor = "#fff"
+    # TitleFontSize = 20
+    # Theme = 'wonderland'
+    # RenderHTML = False
+    
+    c = (
+      Funnel(init_opts = opts.InitOpts(theme = Theme))
+      .add(SeriesLabel, [list(z) for z in zip(CategoryVar, ValuesVar)], label_opts = opts.LabelOpts(position="inside"), sort_ = SortStyle)
+    )
+
+    # Global Options
+    GlobalOptions = {}
+    if Legend == 'right':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical")
+    elif Legend == 'top':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
+    else:
+      GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+
+    GlobalOptions['title_opts'] = opts.TitleOpts(
+      title = Title,
+      title_textstyle_opts = opts.TextStyleOpts(
+        color = TitleColor,
+        font_size = TitleFontSize
+      )
+    )
+ 
+    c = c.set_global_opts(**GlobalOptions)
+
+    # Render html
+    if RenderHTML:
+      c.render()
+
+    return c
+
+
+#################################################################################################

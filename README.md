@@ -855,6 +855,87 @@ p1.render_notebook()
 
 <br>
 
+## Heatmap
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Pull Data from Package
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+# Create Plot in Jupyter Lab
+p1 = Charts.Funnel(
+  dt = data,
+  CategoryVar = ['Daily Units', 'Daily Revenue', 'Daily Margin', 'Daily Liters'],
+  ValuesVar = [100, 80, 60, 40],
+  SeriesLabel = "Funnel Data",
+  SortStyle = 'decending',
+  Theme = 'wonderland',
+  Title = "Funnel Plot",
+  TitleColor = "#fff",
+  TitleFontSize = 40,
+  Legend = 'right',
+  LegendPosRight = '0%',
+  LegendPosTop = '5%',
+  RenderHTML = False)
+
+# Needed to display
+p1.load_javascript()
+p1.render_notebook()
+```
+
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Funnel_Descending.PNG" align="center" width="800" />
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Pull Data from Package
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+# Create Plot in Jupyter Lab
+p1 = Charts.Funnel(
+  dt = data,
+  CategoryVar = ['Daily Units', 'Daily Revenue', 'Daily Margin', 'Daily Liters'],
+  ValuesVar = [100, 80, 60, 40],
+  SeriesLabel = "Funnel Data",
+  SortStyle = 'ascending',
+  Theme = 'wonderland',
+  Title = "Funnel Plot",
+  TitleColor = "#fff",
+  TitleFontSize = 40,
+  Legend = 'right',
+  LegendPosRight = '0%',
+  LegendPosTop = '5%',
+  RenderHTML = False)
+
+# Needed to display
+p1.load_javascript()
+p1.render_notebook()
+```
+
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Funnel_Ascending.PNG" align="center" width="800" />
+
+
+</details>
+
+
+<br>
+
+
 
 ## Heatmap
 
