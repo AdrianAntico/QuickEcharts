@@ -649,6 +649,47 @@ c.render_notebook()
 
 <br>
 
+
+## Copula3D
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Get data
+import polars as pl
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+# Build Plot
+p1 = Charts.Copula3D(
+  dt = data,
+  SampleSize = 15000,
+  YVar = 'Daily Liters',
+  XVar = 'Daily Units',
+  ZVar = 'Daily Margin',
+  ColorMapVar = "ZVar",
+  AggMethod = 'mean',
+  RenderHTML = False,
+  SymbolSize = 6)
+
+p1.load_javascript()
+p1.render_notebook()
+```
+
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Copula3D.PNG" align="center" width="800" />
+
+</details>
+
+
+<br>
+
 ## Density
 
 <details><summary>Click for code example</summary>
