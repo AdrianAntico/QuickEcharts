@@ -1501,6 +1501,102 @@ p1.render_notebook()
 
 <br>
 
+
+## River
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+import polars as pl
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+# Create Plot in Jupyter Lab
+p1 = Charts.River(
+  dt = data,
+  PreAgg = False,
+  YVars = ['Daily Liters', 'Daily Units', 'Daily Revenue', 'Daily Margin'],
+  DateVar = 'Date',
+  GroupVar = None,
+  AggMethod = "sum",
+  YVarTrans = None,
+  Theme = 'wonderland',
+  AxisPointerType = "cross",
+  Title = "River Plot",
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  Legend = 'top',
+  LegendPosRight = '0%',
+  LegendPosTop = '10%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  RenderHTML = False)
+
+p1.load_javascript()
+p1.render_notebook()
+```
+
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/River_MultiYVar.PNG" align="center" width="800" />
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+import polars as pl
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+# Create Plot in Jupyter Lab
+p1 = Charts.River(
+  dt = data,
+  PreAgg = False,
+  YVars = 'Daily Liters',
+  DateVar = 'Date',
+  GroupVar = 'Brand',
+  AggMethod = "sum",
+  YVarTrans = None,
+  Theme = 'wonderland',
+  AxisPointerType = "cross",
+  Title = "River Plot",
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  Legend = 'top',
+  LegendPosRight = '0%',
+  LegendPosTop = '10%',
+  ToolBox = True,
+  Brush = True,
+  DataZoom = True,
+  RenderHTML = False)
+
+p1.load_javascript()
+p1.render_notebook()
+```
+
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/River_GroupVar.PNG" align="center" width="800" />
+
+</details>
+
+<br>
+
+
 ## Rosetype
 
 <details><summary>Click for code example</summary>

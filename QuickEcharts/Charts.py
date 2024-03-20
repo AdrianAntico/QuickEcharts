@@ -200,7 +200,7 @@ def Histogram(dt = None,
               FacetRows = 1,
               FacetCols = 1,
               FacetLevels = None,
-              YVarTrans = "Identity", # Log, Sqrt, Asinh
+              YVarTrans = None,
               RenderHTML = False,
               Title = 'Histogram',
               TitleColor = "#fff",
@@ -273,7 +273,7 @@ def Histogram(dt = None,
     # FacetRows = 2
     # FacetCols = 2
     # FacetLevels = None
-    # YVarTrans = "Identity"
+    # YVarTrans = None
     # XAxisTitle = YVar
     # XAxisNameLocation = 'middle'
     # AxisPointerType = 'cross' # 'line', 'shadow'
@@ -284,8 +284,6 @@ def Histogram(dt = None,
     # SubTitle = 'Subtitle'
     # SubTitleColor = 'fff'
     # SubTitleFontSize = 12
-    # YVarTrans = "Identity"
-    # XVarTrans = "Identity"
     # Theme = 'wonderland'
     # NumberBins = 20
     # CategoryGap = "10%"
@@ -324,9 +322,8 @@ def Histogram(dt = None,
       dt1 = dt1.select([pl.col(YVar), pl.col(GroupVar)])
 
     # Transformation
-    trans = YVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
     # Single Histogram, no grouping
     if GroupVar == None:
@@ -497,7 +494,7 @@ def Density(dt = None,
             FacetRows = 1,
             FacetCols = 1,
             FacetLevels = None,
-            YVarTrans = "Identity", # Log, Sqrt, Asinh
+            YVarTrans = None,
             RenderHTML = False,
             LineWidth = 2,
             FillOpacity = 0.5,
@@ -570,7 +567,7 @@ def Density(dt = None,
     # FacetRows = 2
     # FacetCols = 2
     # FacetLevels = None
-    # YVarTrans = "Identity"
+    # YVarTrans = None
     # XAxisTitle = YVar
     # XAxisNameLocation = 'middle'
     # AxisPointerType = 'cross' # 'line', 'shadow'
@@ -583,8 +580,8 @@ def Density(dt = None,
     # SubTitle = 'Subtitle'
     # SubTitleColor = 'fff'
     # SubTitleFontSize = 12
-    # YVarTrans = "Identity"
-    # XVarTrans = "Identity"
+    # YVarTrans = None
+    # XVarTrans = None
     # Theme = 'wonderland'
     # NumberBins = 20
     # Legend = None
@@ -624,9 +621,8 @@ def Density(dt = None,
       dt1 = dt1.select([pl.col(YVar), pl.col(GroupVar)])
 
     # Transformation
-    trans = YVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
     # Single Histogram, no grouping
     if GroupVar == None:
@@ -804,7 +800,7 @@ def Pie(dt = None,
         YVar = None,
         GroupVar = None,
         AggMethod = 'count',
-        YVarTrans = "Identity",
+        YVarTrans = None,
         RenderHTML = False,
         Title = 'Pie Chart',
         TitleColor = "#fff",
@@ -848,7 +844,7 @@ def Pie(dt = None,
     # YVar = 'Daily Liters'
     # GroupVar = 'Brand'
     # AggMethod = 'count'
-    # YVarTrans = "Identity"
+    # YVarTrans = None
     # RenderHTML = False
     # Title = 'Pie Plot'
     # TitleColor = 'fff'
@@ -856,8 +852,8 @@ def Pie(dt = None,
     # SubTitle = 'Subtitle'
     # SubTitleColor = 'fff'
     # SubTitleFontSize = 12
-    # YVarTrans = "Identity"
-    # XVarTrans = "Identity"
+    # YVarTrans = None
+    # XVarTrans = None
     # Theme = 'wonderland'
     # NumberBins = 20
     # Legend = None
@@ -873,9 +869,8 @@ def Pie(dt = None,
     dt1 = dt.select([pl.col(YVar), pl.col(GroupVar)])
 
     # Transformation
-    trans = YVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
@@ -944,7 +939,7 @@ def Rosetype(dt = None,
              YVar = None,
              GroupVar = None,
              AggMethod = 'count',
-             YVarTrans = "Identity",
+             YVarTrans = None,
              RenderHTML = False,
              Type = "radius",
              Radius = "55%",
@@ -995,7 +990,7 @@ def Rosetype(dt = None,
     # FacetRows = 2
     # FacetCols = 2
     # FacetLevels = None
-    # YVarTrans = "Identity"
+    # YVarTrans = None
     # Type = 'radius' # 'area'
     # Radius = "55%"
     # RenderHTML = False
@@ -1005,7 +1000,7 @@ def Rosetype(dt = None,
     # SubTitle = 'Subtitle'
     # SubTitleColor = 'fff'
     # SubTitleFontSize = 12
-    # YVarTrans = "Identity"
+    # YVarTrans = None
     # Theme = 'wonderland'
     # Legend = None
     # LegendPosRight = '0%'
@@ -1020,9 +1015,8 @@ def Rosetype(dt = None,
     dt1 = dt.select([pl.col(YVar), pl.col(GroupVar)])
 
     # Transformation
-    trans = YVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
@@ -1093,7 +1087,7 @@ def Donut(dt = None,
           YVar = None,
           GroupVar = None,
           AggMethod = 'count',
-          YVarTrans = "Identity",
+          YVarTrans = None,
           RenderHTML = False,
           Title = 'Donut Chart',
           TitleColor = "#fff",
@@ -1140,7 +1134,7 @@ def Donut(dt = None,
     # FacetRows = 2
     # FacetCols = 2
     # FacetLevels = None
-    # YVarTrans = "Identity"
+    # YVarTrans = None
     # Type = 'radius' # 'area'
     # Radius = "55%"
     # RenderHTML = False
@@ -1150,7 +1144,7 @@ def Donut(dt = None,
     # SubTitle = 'Subtitle'
     # SubTitleColor = 'fff'
     # SubTitleFontSize = 12
-    # YVarTrans = "Identity"
+    # YVarTrans = None
     # Theme = 'wonderland'
     # Legend = None
     # LegendPosRight = '0%'
@@ -1165,9 +1159,8 @@ def Donut(dt = None,
     dt1 = dt.select([pl.col(YVar), pl.col(GroupVar)])
 
     # Transformation
-    trans = YVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
@@ -1235,7 +1228,7 @@ def BoxPlot(dt = None,
             SampleSize = None,
             YVar = None,
             GroupVar = None,
-            YVarTrans = "Identity",
+            YVarTrans = None,
             RenderHTML = False,
             Title = 'Box Plot',
             TitleColor = "#fff",
@@ -1300,7 +1293,7 @@ def BoxPlot(dt = None,
     # SampleSize = 100000
     # YVar = 'Daily Liters'
     # GroupVar = 'Brand'
-    # YVarTrans = "Identity"
+    # YVarTrans = None
     # XAxisTitle = YVar
     # XAxisNameLocation = 'end'
     # YAxisNameGap = 15
@@ -1315,8 +1308,8 @@ def BoxPlot(dt = None,
     # SubTitle = 'Subtitle'
     # SubTitleColor = 'fff'
     # SubTitleFontSize = 12
-    # YVarTrans = "Identity"
-    # XVarTrans = "Identity"
+    # YVarTrans = None
+    # XVarTrans = None
     # Theme = 'wonderland'
     # Legend = None
     # LegendPosRight = '0%'
@@ -1351,9 +1344,8 @@ def BoxPlot(dt = None,
       dt1 = dt1.select([pl.col(YVar), pl.col(GroupVar)])
 
     # Transformation
-    trans = YVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
 
     # Define data elements
     YVal = [dt1[YVar].to_list()]
@@ -1540,7 +1532,7 @@ def Radar(dt = None,
           YVar = None,
           GroupVar = None,
           AggMethod = 'mean',
-          YVarTrans = "Identity",
+          YVarTrans = None,
           RenderHTML = False,
           Title = 'Radar Chart',
           TitleColor = "#fff",
@@ -1586,7 +1578,7 @@ def Radar(dt = None,
     # YVar = 'Daily Liters'
     # GroupVar = 'Brand'
     # AggMethod = 'mean'
-    # YVarTrans = "Identity"
+    # YVarTrans = None
     # RenderHTML = False
     # Title = 'Hist Plot'
     # TitleColor = 'fff'
@@ -1594,7 +1586,7 @@ def Radar(dt = None,
     # SubTitle = 'Subtitle'
     # SubTitleColor = 'fff'
     # SubTitleFontSize = 12
-    # YVarTrans = "Identity"
+    # YVarTrans = None
     # Theme = 'wonderland'
     # LabelColor = '#fff'
     # LineColors = ["#213f7f", "#00a6fb", "#22c0df", "#8e5fa8", "#ed1690"]
@@ -1611,9 +1603,8 @@ def Radar(dt = None,
     dt1 = dt.select([pl.col(YVar), pl.col(GroupVar)])
 
     # Transformation
-    trans = YVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
 
     # Define data elements
     vals_dict = {}
@@ -1695,7 +1686,7 @@ def Line(dt = None,
          FacetCols = 1,
          FacetLevels = None,
          AggMethod = 'mean',
-         YVarTrans = "Identity",
+         YVarTrans = None,
          RenderHTML = False,
          SmoothLine = True,
          LineWidth = 2,
@@ -1787,7 +1778,7 @@ def Line(dt = None,
     # FacetRows = 2
     # FacetCols = 2
     # FacetLevels = None
-    # YVarTrans = "Identity"
+    # YVarTrans = None
     # SmoothLine = True
     # LineWidth = 2
     # Symbol = "emptyCircle"
@@ -1830,9 +1821,8 @@ def Line(dt = None,
       dt1 = dt.select([pl.col(YVar), pl.col(XVar)])
 
     # Transformation
-    trans = YVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
@@ -2102,7 +2092,7 @@ def StackedLine(dt = None,
                 XVar = None,
                 GroupVar = None,
                 AggMethod = 'mean',
-                YVarTrans = "Identity",
+                YVarTrans = None,
                 RenderHTML = False,
                 SmoothLine = True,
                 LineWidth = 2,
@@ -2188,7 +2178,7 @@ def StackedLine(dt = None,
     # XVar = 'Date'
     # GroupVar = None 'Brand'
     # AggMethod = 'mean'
-    # YVarTrans = "Identity"
+    # YVarTrans = None
     # SmoothLine = True
     # LineWidth = 2
     # Symbol = "emptyCircle"
@@ -2237,9 +2227,8 @@ def StackedLine(dt = None,
       dt1 = dt.select([pl.col(YVar), pl.col(XVar)])
 
     # Transformation
-    trans = YVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
@@ -2443,7 +2432,7 @@ def Step(dt = None,
          FacetCols = 1,
          FacetLevels = None,
          AggMethod = 'mean',
-         YVarTrans = "Identity",
+         YVarTrans = None,
          RenderHTML = False,
          LineWidth = 2,
          Symbol = "emptyCircle",
@@ -2533,7 +2522,7 @@ def Step(dt = None,
     # FacetRows = 2
     # FacetCols = 2
     # FacetLevels = None
-    # YVarTrans = "Identity"
+    # YVarTrans = None
     # LineWidth = 2
     # Symbol = "emptyCircle"
     # ShowLabels = False
@@ -2575,9 +2564,8 @@ def Step(dt = None,
       dt1 = dt.select([pl.col(YVar), pl.col(XVar)])
 
     # Transformation
-    trans = YVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
@@ -2849,7 +2837,7 @@ def StackedStep(dt = None,
                 XVar = None,
                 GroupVar = None,
                 AggMethod = 'mean',
-                YVarTrans = "Identity",
+                YVarTrans = None,
                 RenderHTML = False,
                 LineWidth = 2,
                 Symbol = "emptyCircle",
@@ -2933,7 +2921,7 @@ def StackedStep(dt = None,
     # XVar = 'Date'
     # GroupVar = None 'Brand'
     # AggMethod = 'mean'
-    # YVarTrans = "Identity"
+    # YVarTrans = None
     # LineWidth = 2
     # Symbol = "emptyCircle"
     # ShowLabels = False
@@ -2981,9 +2969,8 @@ def StackedStep(dt = None,
       dt1 = dt.select([pl.col(YVar), pl.col(XVar)])
 
     # Transformation
-    trans = YVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
@@ -3208,7 +3195,7 @@ def Area(dt = None,
          FacetCols = 1,
          FacetLevels = None,
          AggMethod = 'mean',
-         YVarTrans = "Identity",
+         YVarTrans = None,
          RenderHTML = False,
          Opacity = 0.5,
          GradientColor1 = '#c86589',
@@ -3305,7 +3292,7 @@ def Area(dt = None,
     # FacetRows = 2
     # FacetCols = 2
     # FacetLevels = None
-    # YVarTrans = "Identity"
+    # YVarTrans = None
     # LineWidth = 2
     # Symbol = "emptyCircle"
     # ShowLabels = False
@@ -3347,9 +3334,8 @@ def Area(dt = None,
       dt1 = dt.select([pl.col(YVar), pl.col(XVar)])
 
     # Transformation
-    trans = YVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
@@ -3632,7 +3618,7 @@ def StackedArea(dt = None,
                 XVar = None,
                 GroupVar = None,
                 AggMethod = 'mean',
-                YVarTrans = "Identity",
+                YVarTrans = None,
                 RenderHTML = False,
                 Opacity = 0.5,
                 LineWidth = 2,
@@ -3719,7 +3705,7 @@ def StackedArea(dt = None,
     # XVar = 'Date'
     # GroupVar = 'Brand'
     # AggMethod = 'mean'
-    # YVarTrans = "Identity"
+    # YVarTrans = None
     # LineWidth = 2
     # Symbol = "emptyCircle"
     # ShowLabels = False
@@ -3767,9 +3753,8 @@ def StackedArea(dt = None,
       dt1 = dt.select([pl.col(YVar), pl.col(XVar)])
 
     # Transformation
-    trans = YVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
@@ -3976,7 +3961,7 @@ def Bar(dt = None,
         FacetCols = 1,
         FacetLevels = None,
         AggMethod = 'mean',
-        YVarTrans = "Identity",
+        YVarTrans = None,
         RenderHTML = False,
         ShowLabels = False,
         LabelPosition = "top",
@@ -4061,7 +4046,7 @@ def Bar(dt = None,
     # FacetRows = 2
     # FacetCols = 2
     # FacetLevels = None
-    # YVarTrans = "Identity"
+    # YVarTrans = None
     # ShowLabels = False
     # LabelPosition = "top"
     # RenderHTML = False
@@ -4101,9 +4086,8 @@ def Bar(dt = None,
       dt1 = dt.select([pl.col(YVar), pl.col(XVar)])
 
     # Transformation
-    trans = YVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
@@ -4349,7 +4333,7 @@ def StackedBar(dt = None,
                XVar = None,
                GroupVar = None,
                AggMethod = 'mean',
-               YVarTrans = "Identity",
+               YVarTrans = None,
                RenderHTML = False,
                ShowLabels = False,
                LabelPosition = "top",
@@ -4428,7 +4412,7 @@ def StackedBar(dt = None,
     # XVar = 'Date'
     # GroupVar = 'Brand'
     # AggMethod = 'mean'
-    # YVarTrans = "Identity"
+    # YVarTrans = None
     # LabelPosition = "top"
     # RenderHTML = False
     # Title = 'Pie Plot'
@@ -4473,9 +4457,8 @@ def StackedBar(dt = None,
       dt1 = dt.select([pl.col(YVar), pl.col(XVar)])
 
     # Transformation
-    trans = YVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
@@ -4768,9 +4751,8 @@ def Heatmap(dt = None,
     dt1 = dt.select([pl.col(YVar), pl.col(XVar), pl.col(MeasureVar)])
 
     # Transformation
-    trans = MeasureVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+    if not MeasureVarTrans is None:
+      dt1 = NumericTransformation(dt1, MeasureVarTrans = MeasureVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
@@ -4874,8 +4856,8 @@ def Scatter(dt = None,
             FacetCols = 1,
             FacetLevels = None,
             AggMethod = 'mean',
-            YVarTrans = "Identity",
-            XVarTrans = "Identity",
+            YVarTrans = None,
+            YVarTrans = None,
             RenderHTML = False,
             LineWidth = 2,
             Symbol = "emptyCircle",
@@ -5018,13 +5000,11 @@ def Scatter(dt = None,
       dt1 = dt1.select([pl.col(YVar), pl.col(XVar)])
 
     # Transformations
-    trans = YVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
 
-    trans = XVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, XVar, Trans = trans)
+    if not XVarTrans is None:
+      dt1 = NumericTransformation(dt1, XVar, Trans = XVarTrans.lower())
 
     # No GroupVar
     if GroupVar is None:
@@ -5279,9 +5259,9 @@ def Scatter3D(dt = None,
               ColorMapVar = "ZVar",
               AggMethod = 'mean',
               Theme = 'wonderland',
-              YVarTrans = "Identity",
-              XVarTrans = "Identity",
-              ZVarTrans = "Identity",
+              YVarTrans = None,
+              YVarTrans = None,
+              YVarTrans = None,
               RenderHTML = False,
               SymbolSize = 6):
     
@@ -5343,17 +5323,14 @@ def Scatter3D(dt = None,
     dt1 = dt1.select([pl.col(YVar), pl.col(ZVar), pl.col(XVar)])
 
     # Transformations
-    trans = YVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, YVar, Trans = trans)
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
 
-    trans = XVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, XVar, Trans = trans)
+    if not XVarTrans is None:
+      dt1 = NumericTransformation(dt1, XVar, Trans = XVarTrans.lower())
 
-    trans = ZVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, ZVar, Trans = trans)
+    if not ZVarTrans is None:
+      dt1 = NumericTransformation(dt1, ZVar, Trans = ZVarTrans.lower())
 
     # Build Plot
     YVal = dt1[YVar].to_list()
@@ -6078,7 +6055,7 @@ def Funnel(dt = None,
     CategoryVar: List. Category labels for funnel
     ValuesVar: List. Values for the funnel
     SortStyle: Default "decending". Otherwise, "ascending"
-    Theme: For plot
+    Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
     Title: Plot title
     TitleColor: Font color. Default "#fff" 
     TitleFontSize: Font size. Default = 20
@@ -6140,7 +6117,7 @@ def Bar3D(dt = None,
           XVar = None,
           ZVar = None,
           AggMethod = 'mean',
-          ZVarTrans = "Identity",
+          YVarTrans = None,
           RenderHTML = False,
           Title = 'Bar3D Plot',
           TitleColor = "#fff",
@@ -6192,7 +6169,7 @@ def Bar3D(dt = None,
     # XVar = 'Brand'
     # ZVar = 'Daily Liters'
     # AggMethod = 'mean'
-    # ZVarTrans = "Identity"
+    # ZVarTrans = None
     # RenderHTML = False
     # Title = 'Bar3D Plot'
     # TitleColor = 'fff'
@@ -6214,9 +6191,9 @@ def Bar3D(dt = None,
     dt1 = dt.select([pl.col(YVar), pl.col(XVar), pl.col(ZVar)])
     
     # Transformation
-    trans = ZVarTrans.lower()
-    if trans != "identity":
-      dt1 = NumericTransformation(dt1, ZVar, Trans = trans)
+    
+    if not ZVarTrans is None:
+      dt1 = NumericTransformation(dt1, ZVar, Trans = ZVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
@@ -6303,6 +6280,178 @@ def Bar3D(dt = None,
     if RenderHTML:
       c.render()
   
+    return c
+
+
+#################################################################################################
+
+
+def River(dt = None,
+          PreAgg = False,
+          YVars = None,
+          DateVar = None,
+          GroupVar = None,
+          AggMethod = "sum",
+          YVarTrans = None,
+          Theme = 'wonderland',
+          AxisPointerType = "cross",
+          Title = "River Plot",
+          TitleColor = "#fff",
+          TitleFontSize = 20,
+          SubTitle = None,
+          SubTitleColor = "#fff",
+          SubTitleFontSize = 12,
+          Legend = None,
+          LegendPosRight = '0%',
+          LegendPosTop = '5%',
+          ToolBox = True,
+          Brush = True,
+          DataZoom = True,
+          RenderHTML = False):
+    
+    """
+    # Parameters
+    dt: polars dataframe
+    PreAgg: Set to True if your data is already aggregated. Default is False
+    YVars: Numeric variables
+    DateVar: XAxis variable
+    GroupVar: Optional categorical variable. Will be ignored if multiple YVars are passed
+    YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank. Provide a list if you have multiple YVars and want transformations for each of them
+    AxisPointerType: 'cross' 'line', 'shadow', or None
+    Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    Title: Plot title
+    TitleColor: Font color. Default "#fff" 
+    TitleFontSize: Font size. Default = 20
+    SubTitle: text underneath main title
+    SubTitleColor: Subtitle color of text. Default "#fff"
+    SubTitleFontSize: Font text size. Default 12
+    Legend: Plot legend position. "top", "right", or None
+    ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
+    Brush: Logical. Select True for addition ToolBox functionality. Default is True
+    DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    """
+
+    # Load environment
+    from pyecharts import options as opts
+    from pyecharts.charts import ThemeRiver, Grid
+    import polars as pl
+    import math
+    from itertools import chain
+
+    # YVars = 'Daily Liters' # ['Daily Liters', 'Daily Units', 'Daily Revenue', 'Daily Margin']
+    # DateVar = 'Date'
+    # GroupVar = 'Brand'
+    # YVarTrans = 'logmin'
+    # Title = "River Plot"
+    # TitleColor = "#fff"
+    # TitleFontSize = 20
+    # SubTitle = "coolio"
+    # SubTitleColor = "#fff"
+    # SubTitleFontSize = 12
+    # Legend = 'top'
+    # LegendPosRight = '0%'
+    # LegendPosTop = '5%'
+    # Theme = 'wonderland'
+    # RenderHTML = False
+    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
+    
+    # Subset Columns
+    if isinstance(YVars, list):
+      cols = YVars.copy()
+    else:
+      cols = [YVars]
+    cols.append(DateVar)      
+    if not GroupVar is None:
+      cols.append(GroupVar)
+
+    dt1 = dt.select(cols)
+    if not PreAgg:
+      dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVars, GroupVariable = GroupVar, DateVariable = DateVar)
+
+    # Transformation
+    if not YVarTrans is None:
+      if isinstance(YVars, list):
+        counter = -1
+        for t in YVarTrans:
+          counter += 1
+          dt1 = NumericTransformation(dt1, YVars[counter], Trans = t.lower())
+      else:
+        dt1 = NumericTransformation(dt1, YVars, Trans = YVarTrans.lower())
+
+    if isinstance(YVars, list):
+      if len(YVars) > 1:
+        x_data = YVars
+        dt2 = dt1.melt(id_vars = DateVar, value_vars = YVars)
+        dt2 = dt2.rename({"variable": "Series", "value": "Values"})
+        DateVal = dt2[DateVar].to_list()
+        SeriesVal = dt2["Series"].to_list()
+        ValuesVal = dt2["Values"].to_list()
+        data = [[DateVal[i], ValuesVal[i], SeriesVal[i]] for i in range(min(len(DateVal), len(ValuesVal), len(SeriesVal)))]
+      else:
+        x_data = dt1[GroupVar].unique().sort().to_list()
+        DateVal = dt1[DateVar].to_list()
+        GroupVal = dt1[GroupVar].to_list()
+        YVal = dt1[YVars].to_list()
+        data = [[DateVal[i], YVal[i], GroupVal[i]] for i in range(min(len(DateVal), len(YVal), len(GroupVal)))]
+    else:
+      x_data = dt1[GroupVar].unique().sort().to_list()
+      DateVal = dt1[DateVar].to_list()
+      GroupVal = dt1[GroupVar].to_list()
+      YVal = dt1[YVars].to_list()
+      data = [[DateVal[i], YVal[i], GroupVal[i]] for i in range(min(len(DateVal), len(YVal), len(GroupVal)))]
+
+    c = ThemeRiver()
+    c = c.add(
+      series_name = x_data,
+      data = data,
+      singleaxis_opts = opts.SingleAxisOpts(
+          pos_top = "50", pos_bottom = "50", type_ = "time"
+      )
+    )
+
+    # Global Options
+    GlobalOptions = {}
+    GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
+    if Legend == 'right':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical")
+    elif Legend == 'top':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
+    else:
+      GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+
+    GlobalOptions['title_opts'] = opts.TitleOpts(
+      title = Title, subtitle = SubTitle,
+      title_textstyle_opts = opts.TextStyleOpts(
+        color = TitleColor,
+        font_size = TitleFontSize
+      ),
+      subtitle_textstyle_opts = opts.TextStyleOpts(
+        color = SubTitleColor,
+        font_size = SubTitleFontSize,
+      )
+    )
+
+    if ToolBox:
+      GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+
+    if Brush:
+      GlobalOptions['brush_opts'] = opts.BrushOpts()
+
+    if DataZoom:
+      GlobalOptions['datazoom_opts'] = [
+          opts.DataZoomOpts(
+            range_start = 0,
+            range_end = 100),
+          opts.DataZoomOpts(
+            type_ = "inside")]
+
+    c = c.set_global_opts(**GlobalOptions)
+
+    # Render html
+    if RenderHTML:
+      c.render()
+
     return c
 
 
