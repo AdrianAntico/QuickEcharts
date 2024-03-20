@@ -3980,7 +3980,7 @@ def Bar(dt = None,
         RenderHTML = False,
         ShowLabels = False,
         LabelPosition = "top",
-        Title = 'Line Plot',
+        Title = 'Bar Plot',
         TitleColor = "#fff",
         TitleFontSize = 20,
         SubTitle = None,
@@ -4353,7 +4353,7 @@ def StackedBar(dt = None,
                RenderHTML = False,
                ShowLabels = False,
                LabelPosition = "top",
-               Title = 'Stacked Area',
+               Title = 'Stacked Bar',
                TitleColor = "#fff",
                TitleFontSize = 20,
                SubTitle = None,
@@ -4664,7 +4664,7 @@ def Heatmap(dt = None,
             ShowLabels = False,
             LabelPosition = "top",
             LabelColor = "#fff",
-            Title = 'Stacked Area',
+            Title = 'Heatmap Plot',
             TitleColor = "#fff",
             TitleFontSize = 20,
             SubTitle = None,
@@ -4778,9 +4778,9 @@ def Heatmap(dt = None,
       dt1 = dt1.sort(YVar)
 
     # Variable Creation
-    xvar_unique = dt1[XVar].unique().sort().to_list()
-    yvar_unique = dt1[YVar].unique().sort().to_list()
-    measurevar_unique = dt1[MeasureVar].unique().sort().to_list()
+    xvar_unique = dt1[XVar].unique().to_list()
+    yvar_unique = dt1[YVar].unique().to_list()
+    measurevar_unique = dt1[MeasureVar].unique().to_list()
     
     # Creating Cross Join from lists
     total_len = len(yvar_unique) * len(xvar_unique)
@@ -5586,7 +5586,7 @@ def Copula(dt = None,
            SymbolSize = 6,
            ShowLabels = False,
            LabelPosition = "top",
-           Title = 'Scatter Plot',
+           Title = 'Copula Plot',
            TitleColor = "#fff",
            TitleFontSize = 20,
            SubTitle = None,
@@ -6132,3 +6132,179 @@ def Funnel(dt = None,
 
 
 #################################################################################################
+
+
+def Bar3D(dt = None,
+          PreAgg = False,
+          YVar = None,
+          XVar = None,
+          ZVar = None,
+          AggMethod = 'mean',
+          ZVarTrans = "Identity",
+          RenderHTML = False,
+          Title = 'Bar3D Plot',
+          TitleColor = "#fff",
+          TitleFontSize = 20,
+          SubTitle = None,
+          SubTitleColor = "#fff",
+          SubTitleFontSize = 12,
+          ToolBox = True,
+          Legend = 'top',
+          LegendPosRight = '0%',
+          LegendPosTop = '5%',
+          Brush = True,
+          DataZoom = True,
+          Theme = 'wonderland'):
+    
+    """
+    # Parameters
+    dt: polars dataframe
+    PreAgg: Set to True if your data is already aggregated. Default is False
+    YVar: Categorical variable
+    XVar: Categorical variable
+    ZVar: Numeric variable
+    AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
+    ZVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
+    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    Title: title of plot in quotes
+    TitleColor: Color of title in hex. Default "#fff"
+    TitleFontSize: Font text size. Default 20
+    SubTitle: text underneath main title
+    SubTitleColor: Subtitle color of text. Default "#fff"
+    SubTitleFontSize: Font text size. Default 12
+    Legend: Choose from None, 'right', 'top'
+    LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
+    LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
+    ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
+    Brush: Logical. Select True for addition ToolBox functionality. Default is True
+    DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    """
+
+    # Load environment
+    from pyecharts import options as opts
+    from pyecharts.charts import Bar3D
+    import polars as pl
+    import math
+
+    # PreAgg = False
+    # YVar = 'Category'
+    # XVar = 'Brand'
+    # ZVar = 'Daily Liters'
+    # AggMethod = 'mean'
+    # ZVarTrans = "Identity"
+    # RenderHTML = False
+    # Title = 'Bar3D Plot'
+    # TitleColor = 'fff'
+    # TitleFontSize = 20
+    # SubTitle = 'Subtitle'
+    # SubTitleColor = 'fff'
+    # SubTitleFontSize = 12
+    # AxisPointerType = 'cross'
+    # YAxisTitle = 'Daily Liters'
+    # YAxisNameLocation = 'end' 'middle' 'start'
+    # YAxisNameGap = 15
+    # XAxisTitle = 'Date'
+    # XAxisNameLocation = 'middle' 'start' 'end'
+    # XAxisNameGap = 42
+    # Theme = 'wonderland'
+    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
+    
+    # Subset Columns
+    dt1 = dt.select([pl.col(YVar), pl.col(XVar), pl.col(ZVar)])
+    
+    # Transformation
+    trans = ZVarTrans.lower()
+    if trans != "identity":
+      dt1 = NumericTransformation(dt1, ZVar, Trans = trans)
+  
+    # Agg Data
+    if not PreAgg:
+      dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = ZVar, GroupVariable = [YVar, XVar], DateVariable = None)
+      dt1 = dt1.sort(YVar)
+
+    XVal = dt1[XVar].unique().to_list()
+    YVal = dt1[YVar].unique().to_list()
+
+    # Creating Cross Join from lists
+    total_len = len(YVal) * len(XVal)
+    dt2 = pl.DataFrame({
+      YVar: YVal * len(XVal),
+      XVar: XVal * len(YVal)
+    })
+
+    dt2 = dt2.sort(YVar)
+    dt2 = dt2.join(dt1, on = [YVar, XVar], how = "left")
+
+    max_counter = dt2.shape[0]
+    data = [[0,0,0]] * max_counter
+    counter = -1
+    for i in range(len(XVal)):# counter = 75
+      temp_xval = dt1[XVar][i]
+      for j in range(len(YVal)):
+        counter += 1
+        if dt2[ZVar][counter] is None:
+          data[counter] = [i, j, 0]
+        else:
+          data[counter] = [i, j, dt2[ZVar][counter]]
+
+
+    # Create plot
+    c = Bar3D(init_opts = opts.InitOpts(theme = Theme))
+    c = c.add(
+        "Bar3D Data",
+        data,
+        xaxis3d_opts = opts.Axis3DOpts(XVal, type_ = "category"),
+        yaxis3d_opts = opts.Axis3DOpts(YVal, type_ = "category"),
+        zaxis3d_opts = opts.Axis3DOpts(type_ = "value"),
+    )
+
+    # Global Options
+    GlobalOptions = {}
+    GlobalOptions['visualmap_opts'] = opts.VisualMapOpts(max_ = dt1[ZVar].max())
+    if Legend == 'right':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical")
+    elif Legend == 'top':
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop)
+    else:
+      GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+
+    if not Title is None:
+      GlobalOptions['title_opts'] = opts.TitleOpts(
+          title = Title, subtitle = SubTitle,
+          title_textstyle_opts = opts.TextStyleOpts(
+            color = TitleColor,
+            font_size = TitleFontSize,
+          ),
+          subtitle_textstyle_opts = opts.TextStyleOpts(
+            color = SubTitleColor,
+            font_size = SubTitleFontSize,
+          )
+      )
+
+    if ToolBox:
+      GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+
+    if Brush:
+      GlobalOptions['brush_opts'] = opts.BrushOpts()
+
+    if DataZoom:
+      GlobalOptions['datazoom_opts'] = [
+          opts.DataZoomOpts(
+            range_start = 0,
+            range_end = 100),
+          opts.DataZoomOpts(
+            type_ = "inside")]
+
+    # Final Setting of Global Options
+    c = c.set_global_opts(**GlobalOptions)
+      
+    # Render html
+    if RenderHTML:
+      c.render()
+  
+    return c
+
+
+#################################################################################################
+

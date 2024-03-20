@@ -398,6 +398,61 @@ p1.render_notebook()
 
 <br>
 
+
+## Bar3D
+
+<details><summary>Click for code example</summary>
+
+```python
+# Environment
+import pkg_resources
+import polars as pl
+from QuickEcharts import Charts
+from pyecharts.globals import CurrentConfig, NotebookType 
+CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
+
+# Get data
+import polars as pl
+FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+data = pl.read_csv(FilePath)
+
+# Build Plot
+p1 = Charts.Bar3D(
+  dt = data,
+  PreAgg = False,
+  YVar = 'Brand',
+  XVar = 'Category',
+  ZVar = 'Daily Liters',
+  AggMethod = 'mean',
+  ZVarTrans = "logmin",
+  RenderHTML = False,
+  Title = 'Bar3D Plot',
+  TitleColor = "#fff",
+  TitleFontSize = 20,
+  SubTitle = None,
+  SubTitleColor = "#fff",
+  SubTitleFontSize = 12,
+  ToolBox = True,
+  Legend = 'top',
+  LegendPosRight = '0%',
+  LegendPosTop = '5%',
+  Brush = True,
+  DataZoom = True,
+  Theme = 'wonderland')
+
+p1.load_javascript()
+p1.render_notebook()
+```
+
+<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Bar3D.PNG" align="center" width="800" />
+
+</details>
+
+
+<br>
+
+
+
 ## Box
 
 <details><summary>Click for code example</summary>
