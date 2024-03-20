@@ -1497,7 +1497,7 @@ def WordCloud(dt = None,
     data_pair.sort(key=lambda x: x[1])
 
     # Create plot
-    c = WordCloud(init_opts = opts.InitOpts(theme = Theme), shape = SymbolType)
+    c = WordCloud(init_opts = opts.InitOpts(theme = Theme))
     c = c.add(series_name = YVar, data_pair = data_pair, word_size_range=[6, 66])
 
     # Global Options
