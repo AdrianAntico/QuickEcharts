@@ -1,5 +1,3 @@
-import QuickEcharts
-
 def NumericTransformation(dt, YVar, Trans):
   """
   Parameters
@@ -31,7 +29,6 @@ def NumericTransformation(dt, YVar, Trans):
 def PolarsAggregation(dt, AggMethod, NumericVariable, GroupVariable, DateVariable):
   import polars as pl
   import math
-  from scipy.stats import skew, kurtosis
   if AggMethod == "count":
     if not GroupVariable is None and not DateVariable is None:
       dt = dt.group_by(GroupVariable, DateVariable).agg(pl.col(NumericVariable).len())
