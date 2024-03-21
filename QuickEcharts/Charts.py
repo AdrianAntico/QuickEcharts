@@ -68,24 +68,19 @@ def PolarsAggregation(dt, AggMethod, NumericVariable, GroupVariable, DateVariabl
     else:
       dt = dt.group_by(DateVariable).agg(pl.col(NumericVariable).std())
   elif AggMethod == "skewness":
-    def Skewness_Calc():
-      return map(lambda x: skew(x), values)
-
     if not GroupVariable is None and not DateVariable is None:
-      dt = dt.group_by(GroupVariable, DateVariable).agg(pl.col(NumericVariable).map_elements(Skewness_Calc))
+      dt = dt.group_by([GroupVariable, DateVariable]).agg([pl.all().skew()])
     elif not GroupVariable is None:
-      dt = dt.group_by(GroupVariable).agg(pl.col(NumericVariable).map_elements(Skewness_Calc))
+      dt = dt.group_by(GroupVariable).agg([pl.all().skew()])
     else:
-      dt = dt.group_by(DateVariable).agg(pl.col(NumericVariable).map_elements(Skewness_Calc))
+      dt = dt.group_by(DateVariable).agg([pl.all().skew()])
   elif AggMethod == "kurtosis":
-    def Kurtosis_Calc():
-      return map(lambda x: kurtosis(x), values)
     if not GroupVariable is None and not DateVariable is None:
-      dt = dt.group_by(GroupVariable, DateVariable).agg(pl.col(NumericVariable).map_elements(Kurtosis_Calc))
+      dt = dt.group_by([GroupVariable, DateVariable]).agg([pl.all().kurtosis()])
     elif not GroupVariable is None:
-      dt = dt.group_by(GroupVariable).agg(pl.col(NumericVariable).map_elements(Kurtosis_Calc))
+      dt = dt.group_by(GroupVariable).agg([pl.all().kurtosis()])
     else:
-      dt = dt.group_by(DateVariable).agg(pl.col(NumericVariable).map_elements(Kurtosis_Calc))
+      dt = dt.group_by(DateVariable).agg([pl.all().kurtosis()])
   elif AggMethod == "CoeffVar":
     if not GroupVariable is None and not DateVariable is None:
       mean = dt.group_by(GroupVariable, DateVariable).agg(pl.col(NumericVariable).mean())
