@@ -3352,7 +3352,7 @@ def Area(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      c = Line(init_opts = opts.InitOpts(theme = Theme), axisline_opts = opts.AxisLineOpts(is_show = ShowXAxes))
+      c = Line(init_opts = opts.InitOpts(theme = Theme))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -3366,7 +3366,6 @@ def Area(dt = None,
         yaxis_options['symbol_size'] = SymbolSize,
         yaxis_options['is_symbol_show'] = ShowSymbol
         yaxis_options['y_axis'] = yvar_dict[yvar]
-        yaxis_options['axisline_opts'] = opts.AxisLineOpts(is_show = ShowYAxes),
         yaxis_options['linestyle_opts'] = opts.LineStyleOpts(width = LineWidth)
         yaxis_options['label_opts'] = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition)
         if isinstance(YVar, list):
@@ -4725,6 +4724,7 @@ def Heatmap(dt = None,
     # SubTitleColor = 'fff'
     # SubTitleFontSize = 12
     # AxisPointerType = 'cross'
+    # ShowLabels = True
     # YAxisTitle = 'Daily Liters'
     # YAxisNameLocation = 'end' 'middle' 'start'
     # YAxisNameGap = 15
@@ -4770,16 +4770,16 @@ def Heatmap(dt = None,
       YVar: yvar_unique * len(xvar_unique),
       XVar: xvar_unique * len(yvar_unique)
     })
-    
+
     dt2 = dt2.sort(YVar)
     dt2 = dt2.join(dt1, on = [YVar, XVar], how = "left")
 
     max_counter = dt2.shape[0]
     data = [[0,0,0]] * max_counter
     counter = -1
-    for i in range(xvar_len):# counter = 75
+    for i in range(len(xvar_unique)):# counter = 75
       temp_xval = dt1[XVar][i]
-      for j in range(yvar_len):
+      for j in range(len(yvar_unique)):
         counter += 1
         if dt2[MeasureVar][counter] is None:
           data[counter] = [i, j, 0]
