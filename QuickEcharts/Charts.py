@@ -212,6 +212,7 @@ def Histogram(dt = None,
               LegendPosRight = '0%',
               LegendPosTop = '5%',
               LegendBorderSize = 1,
+              LegendTextColor = "#fff",
               ToolBox = True,
               Brush = True,
               DataZoom = True,
@@ -257,7 +258,7 @@ def Histogram(dt = None,
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
     LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
-    LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
+    LegendTextColor: Text color of legend labels. Default '#fff'
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
@@ -404,9 +405,9 @@ def Histogram(dt = None,
       # Global Options
       GlobalOptions = {}
       if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       else:
         GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
@@ -423,7 +424,6 @@ def Histogram(dt = None,
             )
         )
   
-      
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
   
       if ToolBox:
@@ -562,6 +562,7 @@ def Density(dt = None,
             LegendPosRight = '0%',
             LegendPosTop = '5%',
             LegendBorderSize = 1,
+            LegendTextColor = "#fff",
             ToolBox = True,
             Brush = True,
             DataZoom = True,
@@ -607,7 +608,7 @@ def Density(dt = None,
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
     LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
-    LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
+    LegendTextColor: Text color of legend labels. Default '#fff'
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
@@ -764,9 +765,9 @@ def Density(dt = None,
       # Global Options
       GlobalOptions = {}
       if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       else:
         GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
@@ -918,6 +919,7 @@ def Pie(dt = None,
         LegendPosRight = '0%',
         LegendPosTop = '5%',
         LegendBorderSize = 1,
+        LegendTextColor = "#fff",
         Width = None,
         Height = None,
         animation_threshold = 2000,
@@ -949,7 +951,7 @@ def Pie(dt = None,
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
     LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
-    LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
+    LegendTextColor: Text color of legend labels. Default '#fff'
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
     animation_threshold: Default 2000
@@ -1054,9 +1056,9 @@ def Pie(dt = None,
     # Global Options
     GlobalOptions = {}
     if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     elif Legend == 'top':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     else:
       GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
 
@@ -1115,6 +1117,7 @@ def Rosetype(dt = None,
              LegendPosRight = '0%',
              LegendPosTop = '5%',
              LegendBorderSize = 1,
+             LegendTextColor = "#fff",
              Width = None,
              Height = None,
              animation_threshold = 2000,
@@ -1148,7 +1151,7 @@ def Rosetype(dt = None,
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
     LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
-    LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
+    LegendTextColor: Text color of legend labels. Default '#fff'
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
     animation_threshold: Default 2000
@@ -1258,9 +1261,9 @@ def Rosetype(dt = None,
     # Global Options
     GlobalOptions = {}
     if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     elif Legend == 'top':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     else:
       GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
 
@@ -1317,6 +1320,7 @@ def Donut(dt = None,
           LegendPosRight = '0%',
           LegendPosTop = '5%',
           LegendBorderSize = 1,
+          LegendTextColor = "#fff",
           Width = None,
           Height = None,
           animation_threshold = 2000,
@@ -1348,6 +1352,7 @@ def Donut(dt = None,
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
     LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
+    LegendTextColor: Text color of legend labels. Default '#fff'
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
     animation_threshold: Default 2000
@@ -1456,9 +1461,9 @@ def Donut(dt = None,
     # Global Options
     GlobalOptions = {}
     if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     elif Legend == 'top':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     else:
       GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
 
@@ -1520,6 +1525,7 @@ def BoxPlot(dt = None,
             LegendPosRight = '0%',
             LegendPosTop = '5%',
             LegendBorderSize = 1,
+            LegendTextColor = "#fff",
             ToolBox = True,
             Brush = True,
             DataZoom = True,
@@ -1561,6 +1567,7 @@ def BoxPlot(dt = None,
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
     LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
+    LegendTextColor: Text color of legend labels. Default '#fff'
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
@@ -1694,9 +1701,9 @@ def BoxPlot(dt = None,
     # Global Options
     GlobalOptions = {}
     if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     elif Legend == 'top':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     else:
       GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
 
@@ -1927,6 +1934,7 @@ def Radar(dt = None,
           LegendPosRight = '0%',
           LegendPosTop = '5%',
           LegendBorderSize = 1,
+          LegendTextColor = "#fff",
           Width = None,
           Height = None,
           animation_threshold = 2000,
@@ -1959,6 +1967,7 @@ def Radar(dt = None,
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
     LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
+    LegendTextColor: Text color of legend labels. Default '#fff'
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
     animation_threshold: Default 2000
@@ -2079,9 +2088,9 @@ def Radar(dt = None,
     # Global Options
     GlobalOptions = {}
     if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     elif Legend == 'top':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     else:
       GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
 
@@ -2147,6 +2156,7 @@ def Line(dt = None,
          LegendPosRight = '0%',
          LegendPosTop = '5%',
          LegendBorderSize = 1,
+         LegendTextColor = "#fff",
          ToolBox = True,
          Brush = True,
          DataZoom = True,
@@ -2202,6 +2212,7 @@ def Line(dt = None,
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
     LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
+    LegendTextColor: Text color of legend labels. Default '#fff'
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
@@ -2349,9 +2360,9 @@ def Line(dt = None,
       # Global Options
       GlobalOptions = {}
       if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       else:
         GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
@@ -2470,9 +2481,9 @@ def Line(dt = None,
         # Global Options
         GlobalOptions = {}
         if Legend == 'right':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
         elif Legend == 'top':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
         else:
           GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
@@ -2634,6 +2645,7 @@ def StackedLine(dt = None,
                 LegendPosRight = '0%',
                 LegendPosTop = '5%',
                 LegendBorderSize = 1,
+                LegendTextColor = "#fff",
                 ToolBox = True,
                 Brush = True,
                 DataZoom = True,
@@ -2686,6 +2698,7 @@ def StackedLine(dt = None,
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
     LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
+    LegendTextColor: Text color of legend labels. Default '#fff'
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
@@ -2837,9 +2850,9 @@ def StackedLine(dt = None,
       # Global Options
       GlobalOptions = {}
       if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       else:
         GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
@@ -2956,9 +2969,9 @@ def StackedLine(dt = None,
       # Global Options
       GlobalOptions = {}
       if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       else:
         GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
 
@@ -3054,6 +3067,7 @@ def Step(dt = None,
          LegendPosRight = '0%',
          LegendPosTop = '5%',
          LegendBorderSize = 1,
+         LegendTextColor = "#fff",
          ToolBox = True,
          Brush = True,
          DataZoom = True,
@@ -3108,6 +3122,7 @@ def Step(dt = None,
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
     LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
+    LegendTextColor: Text color of legend labels. Default '#fff'
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
@@ -3254,9 +3269,9 @@ def Step(dt = None,
       # Global Options
       GlobalOptions = {}
       if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       else:
         GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
@@ -3375,9 +3390,9 @@ def Step(dt = None,
         # Global Options
         GlobalOptions = {}
         if Legend == 'right':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
         elif Legend == 'top':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
         else:
           GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
@@ -3540,6 +3555,7 @@ def StackedStep(dt = None,
                 LegendPosRight = '0%',
                 LegendPosTop = '5%',
                 LegendBorderSize = 1,
+                LegendTextColor = "#fff",
                 ToolBox = True,
                 Brush = True,
                 DataZoom = True,
@@ -3591,6 +3607,7 @@ def StackedStep(dt = None,
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
     LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
+    LegendTextColor: Text color of legend labels. Default '#fff'
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
@@ -3741,9 +3758,9 @@ def StackedStep(dt = None,
       # Global Options
       GlobalOptions = {}
       if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       else:
         GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
@@ -3860,9 +3877,9 @@ def StackedStep(dt = None,
       # Global Options
       GlobalOptions = {}
       if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       else:
         GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
 
@@ -3982,6 +3999,7 @@ def Area(dt = None,
          LegendPosRight = '0%',
          LegendPosTop = '5%',
          LegendBorderSize = 1,
+         LegendTextColor = "#fff",
          ToolBox = True,
          Brush = True,
          DataZoom = True,
@@ -4039,6 +4057,7 @@ def Area(dt = None,
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
     LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
+    LegendTextColor: Text color of legend labels. Default '#fff'
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
@@ -4194,9 +4213,9 @@ def Area(dt = None,
       # Global Options
       GlobalOptions = {}
       if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       else:
         GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
@@ -4316,9 +4335,9 @@ def Area(dt = None,
         # Global Options
         GlobalOptions = {}
         if Legend == 'right':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
         elif Legend == 'top':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
         else:
           GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
@@ -4483,6 +4502,7 @@ def StackedArea(dt = None,
                 LegendPosRight = '0%',
                 LegendPosTop = '5%',
                 LegendBorderSize = 1,
+                LegendTextColor = "#fff",
                 ToolBox = True,
                 Brush = True,
                 DataZoom = True,
@@ -4535,6 +4555,7 @@ def StackedArea(dt = None,
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
     LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
+    LegendTextColor: Text color of legend labels. Default '#fff'
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
@@ -4688,9 +4709,9 @@ def StackedArea(dt = None,
       # Global Options
       GlobalOptions = {}
       if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       else:
         GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
@@ -4808,9 +4829,9 @@ def StackedArea(dt = None,
       # Global Options
       GlobalOptions = {}
       if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       else:
         GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
 
@@ -4903,6 +4924,7 @@ def Bar(dt = None,
         LegendPosRight = '0%',
         LegendPosTop = '5%',
         LegendBorderSize = 1,
+        LegendTextColor = "#fff",
         ToolBox = True,
         Brush = True,
         DataZoom = True,
@@ -4954,6 +4976,7 @@ def Bar(dt = None,
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
     LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
+    LegendTextColor: Text color of legend labels. Default '#fff'
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
@@ -5091,9 +5114,9 @@ def Bar(dt = None,
       # Global Options
       GlobalOptions = {}
       if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       else:
         GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
@@ -5202,9 +5225,9 @@ def Bar(dt = None,
         # Global Options
         GlobalOptions = {}
         if Legend == 'right':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
         elif Legend == 'top':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
         else:
           GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
@@ -5355,6 +5378,7 @@ def StackedBar(dt = None,
                LegendPosRight = '0%',
                LegendPosTop = '5%',
                LegendBorderSize = 1,
+               LegendTextColor = "#fff",
                ToolBox = True,
                Brush = True,
                DataZoom = True,
@@ -5403,6 +5427,7 @@ def StackedBar(dt = None,
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
     LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
+    LegendTextColor: Text color of legend labels. Default '#fff'
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
@@ -5543,9 +5568,9 @@ def StackedBar(dt = None,
       # Global Options
       GlobalOptions = {}
       if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       else:
         GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
@@ -5653,9 +5678,9 @@ def StackedBar(dt = None,
       # Global Options
       GlobalOptions = {}
       if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       else:
         GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
 
@@ -5746,6 +5771,7 @@ def Heatmap(dt = None,
             LegendPosRight = '0%',
             LegendPosTop = '5%',
             LegendBorderSize = 1,
+            LegendTextColor = "#fff",
             ToolBox = True,
             Brush = True,
             DataZoom = True,
@@ -5791,6 +5817,7 @@ def Heatmap(dt = None,
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
     LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
+    LegendTextColor: Text color of legend labels. Default '#fff'
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
@@ -5939,9 +5966,9 @@ def Heatmap(dt = None,
     # Global Options
     GlobalOptions = {}
     if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     elif Legend == 'top':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     else:
       GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
 
@@ -6019,6 +6046,7 @@ def Scatter(dt = None,
             LegendPosRight = '0%',
             LegendPosTop = '5%',
             LegendBorderSize = 1,
+            LegendTextColor = "#fff",
             ToolBox = True,
             Brush = True,
             DataZoom = True,
@@ -6073,6 +6101,7 @@ def Scatter(dt = None,
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
     LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
+    LegendTextColor: Text color of legend labels. Default '#fff'
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
@@ -6220,9 +6249,9 @@ def Scatter(dt = None,
       # Global Options
       GlobalOptions = {}
       if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       else:
         GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
@@ -6338,9 +6367,9 @@ def Scatter(dt = None,
         # Global Options
         GlobalOptions = {}
         if Legend == 'right':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
         elif Legend == 'top':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
         else:
           GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
@@ -6908,6 +6937,7 @@ def Copula(dt = None,
            LegendPosRight = '0%',
            LegendPosTop = '5%',
            LegendBorderSize = 1,
+           LegendTextColor = "#fff",
            ToolBox = True,
            Brush = True,
            DataZoom = True,
@@ -6960,6 +6990,7 @@ def Copula(dt = None,
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
     LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
+    LegendTextColor: Text color of legend labels. Default '#fff'
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
@@ -7102,9 +7133,9 @@ def Copula(dt = None,
       # Global Options
       GlobalOptions = {}
       if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
       else:
         GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
@@ -7220,9 +7251,9 @@ def Copula(dt = None,
         # Global Options
         GlobalOptions = {}
         if Legend == 'right':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
         elif Legend == 'top':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
         else:
           GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
   
@@ -7508,6 +7539,7 @@ def Funnel(dt = None,
            LegendPosRight = '0%',
            LegendPosTop = '5%',
            LegendBorderSize = 1,
+           LegendTextColor = "#fff",
            RenderHTML = False,
            Width = None,
            Height = None,
@@ -7599,9 +7631,9 @@ def Funnel(dt = None,
     # Global Options
     GlobalOptions = {}
     if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     elif Legend == 'top':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     else:
       GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
 
@@ -7644,6 +7676,7 @@ def Bar3D(dt = None,
           LegendPosRight = '0%',
           LegendPosTop = '5%',
           LegendBorderSize = 1,
+          LegendTextColor = "#fff",
           Brush = True,
           DataZoom = True,
           Width = None,
@@ -7677,6 +7710,7 @@ def Bar3D(dt = None,
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
     LegendBorderSize: Numeric. Default is 1. Choose 0 to not show one
+    LegendTextColor: Text color of legend labels. Default '#fff'
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
@@ -7807,9 +7841,9 @@ def Bar3D(dt = None,
     GlobalOptions = {}
     GlobalOptions['visualmap_opts'] = opts.VisualMapOpts(max_ = dt1[ZVar].max())
     if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     elif Legend == 'top':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     else:
       GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
 
@@ -7873,6 +7907,7 @@ def River(dt = None,
           LegendPosRight = '0%',
           LegendPosTop = '5%',
           LegendBorderSize = 1,
+          LegendTextColor = "#fff",
           ToolBox = True,
           Brush = True,
           DataZoom = True,
@@ -8036,9 +8071,9 @@ def River(dt = None,
     GlobalOptions = {}
     GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
     if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     elif Legend == 'top':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize)
+      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     else:
       GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
 
