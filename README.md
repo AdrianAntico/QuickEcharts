@@ -31,6 +31,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
 data = pl.read_csv(FilePath)
 
+# Create Plot in Jupyter Lab
 p1 = Charts.Area(
   dt = data,
   PreAgg = False,
@@ -90,6 +91,8 @@ p1 = Charts.Area(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -168,6 +171,8 @@ p1 = Charts.Area(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -245,6 +250,8 @@ p1 = Charts.Area(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -323,6 +330,8 @@ p1 = Bar(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -394,6 +403,8 @@ p1 = Bar(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -466,6 +477,8 @@ p1 = Bar(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -489,8 +502,7 @@ from QuickEcharts import Charts
 from pyecharts.globals import CurrentConfig, NotebookType 
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
-# Get data
-import polars as pl
+# Pull Data from Package
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
@@ -529,7 +541,10 @@ p1 = Charts.Bar3D(
   AnimationEasingUpdate = "cubicOut",
   AnimationDelayUpdate = 0)
 
+# Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -602,6 +617,8 @@ p1 = Charts.BoxPlot(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -624,7 +641,7 @@ from QuickEcharts import Charts
 from pyecharts.globals import CurrentConfig, NotebookType 
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
-import polars as pl
+# Pull Data from Package
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
@@ -682,8 +699,11 @@ p1 = Charts.Copula(
   AnimationEasingUpdate = "cubicOut",
   AnimationDelayUpdate = 0)
 
-c.load_javascript()
-c.render_notebook()
+# Needed to display
+p1.load_javascript()
+
+# In new cell
+p1.render_notebook()
 ```
 
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Copula.PNG" align="center" width="800" />
@@ -697,7 +717,7 @@ from QuickEcharts import Charts
 from pyecharts.globals import CurrentConfig, NotebookType 
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
-import polars as pl
+# Pull Data from Package
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
@@ -755,8 +775,11 @@ p1 = Charts.Copula(
   AnimationEasingUpdate = "cubicOut",
   AnimationDelayUpdate = 0)
 
-c.load_javascript()
-c.render_notebook()
+# Needed to display
+p1.load_javascript()
+
+# In new cell
+p1.render_notebook()
 ```
 
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Copula_GroupVar.PNG" align="center" width="800" />
@@ -770,7 +793,7 @@ from QuickEcharts import Charts
 from pyecharts.globals import CurrentConfig, NotebookType 
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
-import polars as pl
+# Pull Data from Package
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
@@ -828,8 +851,11 @@ p1 = Charts.Copula(
   AnimationEasingUpdate = "cubicOut",
   AnimationDelayUpdate = 0)
 
-c.load_javascript()
-c.render_notebook()
+# Needed to display
+p1.load_javascript()
+
+# In new cell
+p1.render_notebook()
 ```
 
 <img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Copula_Facet.PNG" align="center" width="800" />
@@ -852,8 +878,7 @@ from QuickEcharts import Charts
 from pyecharts.globals import CurrentConfig, NotebookType 
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
-# Get data
-import polars as pl
+# Pull Data from Package
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
@@ -880,7 +905,10 @@ p1 = Charts.Copula3D(
   AnimationEasingUpdate = "cubicOut",
   AnimationDelayUpdate = 0)
 
+# Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -957,6 +985,8 @@ p1 = Charts.Density(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 
 ```
@@ -1025,6 +1055,8 @@ p1 = Charts.Density(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -1084,6 +1116,8 @@ p1 = Charts.Donut(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -1115,19 +1149,33 @@ p1 = Charts.Funnel(
   dt = data,
   CategoryVar = ['Daily Units', 'Daily Revenue', 'Daily Margin', 'Daily Liters'],
   ValuesVar = [100, 80, 60, 40],
+  RenderHTML = False,
   SeriesLabel = "Funnel Data",
   SortStyle = 'decending',
   Theme = 'wonderland',
-  Title = "Funnel Plot",
+  BackgroundColor = None,
+  Width = None,
+  Height = None,
+  Title = "Funnel",
   TitleColor = "#fff",
-  TitleFontSize = 40,
-  Legend = 'right',
+  TitleFontSize = 20,
+  Legend = None,
   LegendPosRight = '0%',
   LegendPosTop = '5%',
-  RenderHTML = False)
+  LegendBorderSize = 1,
+  LegendTextColor = "#fff",
+  AnimationThreshold = 2000,
+  AnimationDuration = 1000,
+  AnimationEasing = "cubicOut",
+  AnimationDelay = 0,
+  AnimationDurationUpdate = 300,
+  AnimationEasingUpdate = "cubicOut",
+  AnimationDelayUpdate = 0)
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -1150,19 +1198,33 @@ p1 = Charts.Funnel(
   dt = data,
   CategoryVar = ['Daily Units', 'Daily Revenue', 'Daily Margin', 'Daily Liters'],
   ValuesVar = [100, 80, 60, 40],
+  RenderHTML = False,
   SeriesLabel = "Funnel Data",
-  SortStyle = 'ascending',
+  SortStyle = 'decending',
   Theme = 'wonderland',
-  Title = "Funnel Plot",
+  BackgroundColor = None,
+  Width = None,
+  Height = None,
+  Title = "Funnel",
   TitleColor = "#fff",
-  TitleFontSize = 40,
-  Legend = 'right',
+  TitleFontSize = 20,
+  Legend = None,
   LegendPosRight = '0%',
   LegendPosTop = '5%',
-  RenderHTML = False)
+  LegendBorderSize = 1,
+  LegendTextColor = "#fff",
+  AnimationThreshold = 2000,
+  AnimationDuration = 1000,
+  AnimationEasing = "cubicOut",
+  AnimationDelay = 0,
+  AnimationDurationUpdate = 300,
+  AnimationEasingUpdate = "cubicOut",
+  AnimationDelayUpdate = 0)
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -1240,6 +1302,8 @@ p1 = Heatmap(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -1316,6 +1380,8 @@ p1 = Charts.Histogram(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -1383,6 +1449,8 @@ p1 = Charts.Histogram(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -1467,6 +1535,8 @@ p1 = Charts.Line(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -1543,6 +1613,8 @@ p1 = Charts.Line(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -1618,6 +1690,8 @@ p1 = Charts.Line(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -1669,6 +1743,8 @@ p1 = Charts.Parallel(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -1729,6 +1805,8 @@ p1 = Charts.Pie(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -1750,7 +1828,7 @@ from QuickEcharts import Charts
 from pyecharts.globals import CurrentConfig, NotebookType 
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
-import polars as pl
+# Pull Data from Package
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
@@ -1787,7 +1865,10 @@ p1 = Charts.Radar(
   AnimationEasingUpdate = "cubicOut",
   AnimationDelayUpdate = 0)
 
+# Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -1810,7 +1891,7 @@ from QuickEcharts import Charts
 from pyecharts.globals import CurrentConfig, NotebookType 
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
-import polars as pl
+# Pull Data from Package
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
@@ -1851,7 +1932,10 @@ p1 = Charts.River(
   AnimationEasingUpdate = "cubicOut",
   AnimationDelayUpdate = 0)
 
+# Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -1865,7 +1949,7 @@ from QuickEcharts import Charts
 from pyecharts.globals import CurrentConfig, NotebookType 
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
-import polars as pl
+# Pull Data from Package
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
@@ -1906,7 +1990,10 @@ p1 = Charts.River(
   AnimationEasingUpdate = "cubicOut",
   AnimationDelayUpdate = 0)
 
+# Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -1969,6 +2056,8 @@ p1 = Charts.Rosetype(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -1992,7 +2081,7 @@ from QuickEcharts import Charts
 from pyecharts.globals import CurrentConfig, NotebookType 
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
-import polars as pl
+# Pull Data from Package
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
@@ -2051,7 +2140,10 @@ p1 = Charts.Scatter(
   AnimationEasingUpdate = "cubicOut",
   AnimationDelayUpdate = 0)
 
+# Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -2066,7 +2158,7 @@ from QuickEcharts import Charts
 from pyecharts.globals import CurrentConfig, NotebookType 
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
-import polars as pl
+# Pull Data from Package
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
@@ -2124,7 +2216,10 @@ p1 = Charts.Scatter(
   AnimationEasingUpdate = "cubicOut",
   AnimationDelayUpdate = 0)
 
+# Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -2139,7 +2234,7 @@ from QuickEcharts import Charts
 from pyecharts.globals import CurrentConfig, NotebookType 
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
-import polars as pl
+# Pull Data from Package
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
@@ -2197,7 +2292,10 @@ p1 = Charts.Scatter(
   AnimationEasingUpdate = "cubicOut",
   AnimationDelayUpdate = 0)
 
+# Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -2221,8 +2319,7 @@ from QuickEcharts import Charts
 from pyecharts.globals import CurrentConfig, NotebookType 
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
-# Get data
-import polars as pl
+# Pull Data from Package
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
@@ -2252,7 +2349,10 @@ p1 = Charts.Scatter3D(
   AnimationEasingUpdate = "cubicOut",
   AnimationDelayUpdate = 0)
 
+# Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -2275,7 +2375,7 @@ from QuickEcharts import Charts
 from pyecharts.globals import CurrentConfig, NotebookType 
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
-import polars as pl
+# Pull Data from Package
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
@@ -2332,7 +2432,10 @@ p1 = Charts.StackedArea(
   AnimationEasingUpdate = "cubicOut",
   AnimationDelayUpdate = 0)
 
+# Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -2355,7 +2458,7 @@ from QuickEcharts import Charts
 from pyecharts.globals import CurrentConfig, NotebookType 
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
-import polars as pl
+# Pull Data from Package
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
@@ -2408,7 +2511,10 @@ p1 = Charts.StackedBar(
   AnimationEasingUpdate = "cubicOut",
   AnimationDelayUpdate = 0)
 
+# Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -2432,7 +2538,7 @@ from QuickEcharts import Charts
 from pyecharts.globals import CurrentConfig, NotebookType 
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
-import polars as pl
+# Pull Data from Package
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
@@ -2489,7 +2595,10 @@ p1 = Charts.StackedLine(
   AnimationEasingUpdate = "cubicOut",
   AnimationDelayUpdate = 0)
 
+# Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -2512,7 +2621,7 @@ from QuickEcharts import Charts
 from pyecharts.globals import CurrentConfig, NotebookType 
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
-import polars as pl
+# Pull Data from Package
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
@@ -2568,7 +2677,10 @@ p1 = Charts.StackedStep(
   AnimationEasingUpdate = "cubicOut",
   AnimationDelayUpdate = 0)
 
+# Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -2652,6 +2764,8 @@ p1 = Charts.Step(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -2727,6 +2841,8 @@ p1 = Charts.Step(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -2801,6 +2917,8 @@ p1 = Charts.Step(
 
 # Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
@@ -2824,7 +2942,7 @@ from QuickEcharts import Charts
 from pyecharts.globals import CurrentConfig, NotebookType 
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
-import polars as pl
+# Pull Data from Package
 FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
@@ -2843,7 +2961,10 @@ p1 = Charts.WordCloud(
   SubTitleFontSize = 12,
   Theme = 'wonderland')
 
+# Needed to display
 p1.load_javascript()
+
+# In new cell
 p1.render_notebook()
 ```
 
