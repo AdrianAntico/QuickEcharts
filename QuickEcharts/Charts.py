@@ -188,11 +188,12 @@ def FacetGridValues(FacetRows = 1, FacetCols = 1, Legend = 'top', LegendSpace = 
 def Histogram(dt = None,
               SampleSize = None,
               YVar = None,
+              YVarTrans = None,
               GroupVar = None,
               FacetRows = 1,
               FacetCols = 1,
               FacetLevels = None,
-              YVarTrans = None,
+              NumberBins = 20,
               RenderHTML = False,
               Title = 'Histogram',
               TitleColor = "#fff",
@@ -206,7 +207,8 @@ def Histogram(dt = None,
               XAxisNameGap = 42,
               Theme = 'wonderland',
               BackgroundColor = None,
-              NumberBins = 20,
+              Width = None,
+              Height = None,
               CategoryGap = "10%",
               Legend = None,
               LegendPosRight = '0%',
@@ -216,19 +218,17 @@ def Histogram(dt = None,
               ToolBox = True,
               Brush = True,
               DataZoom = True,
-              Width = None,
-              Height = None,
               VerticalLine = None,
               VerticalLineName = 'Line Name',
               HorizontalLine = None,
               HorizontalLineName = 'Line Name',
-              animation_threshold = 2000,
-              animation_duration = 1000,
-              animation_easing = "cubicOut",
-              animation_delay = 0,
-              animation_duration_update = 300,
-              animation_easing_update = "cubicOut",
-              animation_delay_update = 0):
+              AnimationThreshold = 2000,
+              AnimationDuration = 1000,
+              AnimationEasing = "cubicOut",
+              AnimationDelay = 0,
+              AnimationDurationUpdate = 300,
+              AnimationEasingUpdate = "cubicOut",
+              AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -268,13 +268,13 @@ def Histogram(dt = None,
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
     HorizontalLineName: add a series name for the horizontal line
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -315,13 +315,13 @@ def Histogram(dt = None,
     # VerticalLineName = 'bla'
     # HorizonalLine = 500
     # HorizonalLineName = 'Yo Yo Daddyo'
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     if XAxisTitle == None:
@@ -389,13 +389,13 @@ def Histogram(dt = None,
       InitOptions['is_horizontal_center'] = True
       
       AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = animation_threshold
-      AnimationOptions['animation_duration'] = animation_duration
-      AnimationOptions['animation_easing'] = animation_easing
-      AnimationOptions['animation_delay'] = animation_delay
-      AnimationOptions['animation_duration_update'] = animation_duration_update
-      AnimationOptions['animation_easing_update'] = animation_easing_update
-      AnimationOptions['animation_delay_update'] = animation_delay_update
+      AnimationOptions['animation_threshold'] = AnimationThreshold
+      AnimationOptions['animation_duration'] = AnimationDuration
+      AnimationOptions['animation_easing'] = AnimationEasing
+      AnimationOptions['animation_delay'] = AnimationDelay
+      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
       InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
       c = Bar(init_opts = opts.InitOpts(**InitOptions))
@@ -572,13 +572,13 @@ def Density(dt = None,
             VerticalLineName = 'Line Name',
             HorizontalLine = None,
             HorizontalLineName = 'Line Name',
-            animation_threshold = 2000,
-            animation_duration = 1000,
-            animation_easing = "cubicOut",
-            animation_delay = 0,
-            animation_duration_update = 300,
-            animation_easing_update = "cubicOut",
-            animation_delay_update = 0):
+            AnimationThreshold = 2000,
+            AnimationDuration = 1000,
+            AnimationEasing = "cubicOut",
+            AnimationDelay = 0,
+            AnimationDurationUpdate = 300,
+            AnimationEasingUpdate = "cubicOut",
+            AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -618,13 +618,13 @@ def Density(dt = None,
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
     HorizontalLineName: add a series name for the horizontal line
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -666,13 +666,13 @@ def Density(dt = None,
     # VerticalLineName = 'bla'
     # HorizonalLine = 500
     # HorizonalLineName = 'Yo Yo Daddyo'
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     NumberBins = 20
@@ -743,13 +743,13 @@ def Density(dt = None,
       InitOptions['is_horizontal_center'] = True
 
       AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = animation_threshold
-      AnimationOptions['animation_duration'] = animation_duration
-      AnimationOptions['animation_easing'] = animation_easing
-      AnimationOptions['animation_delay'] = animation_delay
-      AnimationOptions['animation_duration_update'] = animation_duration_update
-      AnimationOptions['animation_easing_update'] = animation_easing_update
-      AnimationOptions['animation_delay_update'] = animation_delay_update
+      AnimationOptions['animation_threshold'] = AnimationThreshold
+      AnimationOptions['animation_duration'] = AnimationDuration
+      AnimationOptions['animation_easing'] = AnimationEasing
+      AnimationOptions['animation_delay'] = AnimationDelay
+      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
       InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
       # Create plot
@@ -922,13 +922,13 @@ def Pie(dt = None,
         LegendTextColor = "#fff",
         Width = None,
         Height = None,
-        animation_threshold = 2000,
-        animation_duration = 1000,
-        animation_easing = "cubicOut",
-        animation_delay = 0,
-        animation_duration_update = 300,
-        animation_easing_update = "cubicOut",
-        animation_delay_update = 0):
+        AnimationThreshold = 2000,
+        AnimationDuration = 1000,
+        AnimationEasing = "cubicOut",
+        AnimationDelay = 0,
+        AnimationDurationUpdate = 300,
+        AnimationEasingUpdate = "cubicOut",
+        AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -954,13 +954,13 @@ def Pie(dt = None,
     LegendTextColor: Text color of legend labels. Default '#fff'
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -988,13 +988,13 @@ def Pie(dt = None,
     # Legend = None
     # LegendPosRight = '0%'
     # LegendPosTop = '5%'
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Define Plotting Variable
@@ -1035,13 +1035,13 @@ def Pie(dt = None,
     InitOptions['is_horizontal_center'] = True
 
     AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = animation_threshold
-    AnimationOptions['animation_duration'] = animation_duration
-    AnimationOptions['animation_easing'] = animation_easing
-    AnimationOptions['animation_delay'] = animation_delay
-    AnimationOptions['animation_duration_update'] = animation_duration_update
-    AnimationOptions['animation_easing_update'] = animation_easing_update
-    AnimationOptions['animation_delay_update'] = animation_delay_update
+    AnimationOptions['animation_threshold'] = AnimationThreshold
+    AnimationOptions['animation_duration'] = AnimationDuration
+    AnimationOptions['animation_easing'] = AnimationEasing
+    AnimationOptions['animation_delay'] = AnimationDelay
+    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
     InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
     # Create plot
@@ -1120,13 +1120,13 @@ def Rosetype(dt = None,
              LegendTextColor = "#fff",
              Width = None,
              Height = None,
-             animation_threshold = 2000,
-             animation_duration = 1000,
-             animation_easing = "cubicOut",
-             animation_delay = 0,
-             animation_duration_update = 300,
-             animation_easing_update = "cubicOut",
-             animation_delay_update = 0):
+             AnimationThreshold = 2000,
+             AnimationDuration = 1000,
+             AnimationEasing = "cubicOut",
+             AnimationDelay = 0,
+             AnimationDurationUpdate = 300,
+             AnimationEasingUpdate = "cubicOut",
+             AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -1154,13 +1154,13 @@ def Rosetype(dt = None,
     LegendTextColor: Text color of legend labels. Default '#fff'
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -1191,13 +1191,13 @@ def Rosetype(dt = None,
     # Legend = None
     # LegendPosRight = '0%'
     # LegendPosTop = '5%'
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Define Plotting Variable
@@ -1238,13 +1238,13 @@ def Rosetype(dt = None,
     InitOptions['is_horizontal_center'] = True
 
     AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = animation_threshold
-    AnimationOptions['animation_duration'] = animation_duration
-    AnimationOptions['animation_easing'] = animation_easing
-    AnimationOptions['animation_delay'] = animation_delay
-    AnimationOptions['animation_duration_update'] = animation_duration_update
-    AnimationOptions['animation_easing_update'] = animation_easing_update
-    AnimationOptions['animation_delay_update'] = animation_delay_update
+    AnimationOptions['animation_threshold'] = AnimationThreshold
+    AnimationOptions['animation_duration'] = AnimationDuration
+    AnimationOptions['animation_easing'] = AnimationEasing
+    AnimationOptions['animation_delay'] = AnimationDelay
+    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
     InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
     # Create plot
@@ -1323,13 +1323,13 @@ def Donut(dt = None,
           LegendTextColor = "#fff",
           Width = None,
           Height = None,
-          animation_threshold = 2000,
-          animation_duration = 1000,
-          animation_easing = "cubicOut",
-          animation_delay = 0,
-          animation_duration_update = 300,
-          animation_easing_update = "cubicOut",
-          animation_delay_update = 0):
+          AnimationThreshold = 2000,
+          AnimationDuration = 1000,
+          AnimationEasing = "cubicOut",
+          AnimationDelay = 0,
+          AnimationDurationUpdate = 300,
+          AnimationEasingUpdate = "cubicOut",
+          AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -1355,13 +1355,13 @@ def Donut(dt = None,
     LegendTextColor: Text color of legend labels. Default '#fff'
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -1392,13 +1392,13 @@ def Donut(dt = None,
     # Legend = None
     # LegendPosRight = '0%'
     # LegendPosTop = '5%'
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Define Plotting Variable
@@ -1439,13 +1439,13 @@ def Donut(dt = None,
     InitOptions['is_horizontal_center'] = True
 
     AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = animation_threshold
-    AnimationOptions['animation_duration'] = animation_duration
-    AnimationOptions['animation_easing'] = animation_easing
-    AnimationOptions['animation_delay'] = animation_delay
-    AnimationOptions['animation_duration_update'] = animation_duration_update
-    AnimationOptions['animation_easing_update'] = animation_easing_update
-    AnimationOptions['animation_delay_update'] = animation_delay_update
+    AnimationOptions['animation_threshold'] = AnimationThreshold
+    AnimationOptions['animation_duration'] = AnimationDuration
+    AnimationOptions['animation_easing'] = AnimationEasing
+    AnimationOptions['animation_delay'] = AnimationDelay
+    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
     InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
     # Create plot
@@ -1533,13 +1533,13 @@ def BoxPlot(dt = None,
             Height = None,
             HorizontalLine = None,
             HorizontalLineName = 'Line Name',
-            animation_threshold = 2000,
-            animation_duration = 1000,
-            animation_easing = "cubicOut",
-            animation_delay = 0,
-            animation_duration_update = 300,
-            animation_easing_update = "cubicOut",
-            animation_delay_update = 0):
+            AnimationThreshold = 2000,
+            AnimationDuration = 1000,
+            AnimationEasing = "cubicOut",
+            AnimationDelay = 0,
+            AnimationDurationUpdate = 300,
+            AnimationEasingUpdate = "cubicOut",
+            AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -1575,13 +1575,13 @@ def BoxPlot(dt = None,
     Height: Default None. Otherwise, use something like this "600px"
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
     HorizontalLineName: add a series name for the horizontal line
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -1619,13 +1619,13 @@ def BoxPlot(dt = None,
     # DataZoom = True
     # HorizonalLine = 500
     # HorizonalLineName = 'Yo Yo Daddyo'
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     if XAxisTitle == None and not GroupVar is None:
@@ -1674,13 +1674,13 @@ def BoxPlot(dt = None,
     InitOptions['is_horizontal_center'] = True
 
     AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = animation_threshold
-    AnimationOptions['animation_duration'] = animation_duration
-    AnimationOptions['animation_easing'] = animation_easing
-    AnimationOptions['animation_delay'] = animation_delay
-    AnimationOptions['animation_duration_update'] = animation_duration_update
-    AnimationOptions['animation_easing_update'] = animation_easing_update
-    AnimationOptions['animation_delay_update'] = animation_delay_update
+    AnimationOptions['animation_threshold'] = AnimationThreshold
+    AnimationOptions['animation_duration'] = AnimationDuration
+    AnimationOptions['animation_easing'] = AnimationEasing
+    AnimationOptions['animation_delay'] = AnimationDelay
+    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
     InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
     # Create plot
@@ -1774,13 +1774,13 @@ def WordCloud(dt = None,
               BackgroundColor = None,
               Width = None,
               Height = None,
-              animation_threshold = 2000,
-              animation_duration = 1000,
-              animation_easing = "cubicOut",
-              animation_delay = 0,
-              animation_duration_update = 300,
-              animation_easing_update = "cubicOut",
-              animation_delay_update = 0):
+              AnimationThreshold = 2000,
+              AnimationDuration = 1000,
+              AnimationEasing = "cubicOut",
+              AnimationDelay = 0,
+              AnimationDurationUpdate = 300,
+              AnimationEasingUpdate = "cubicOut",
+              AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -1798,13 +1798,13 @@ def WordCloud(dt = None,
     BackgroundColor: background color
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -1824,13 +1824,13 @@ def WordCloud(dt = None,
     # SubTitleColor = 'fff'
     # SubTitleFontSize = 12
     # Theme = 'wonderland'
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Cap number of records and define dt1
@@ -1873,13 +1873,13 @@ def WordCloud(dt = None,
     InitOptions['is_horizontal_center'] = True
 
     AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = animation_threshold
-    AnimationOptions['animation_duration'] = animation_duration
-    AnimationOptions['animation_easing'] = animation_easing
-    AnimationOptions['animation_delay'] = animation_delay
-    AnimationOptions['animation_duration_update'] = animation_duration_update
-    AnimationOptions['animation_easing_update'] = animation_easing_update
-    AnimationOptions['animation_delay_update'] = animation_delay_update
+    AnimationOptions['animation_threshold'] = AnimationThreshold
+    AnimationOptions['animation_duration'] = AnimationDuration
+    AnimationOptions['animation_easing'] = AnimationEasing
+    AnimationOptions['animation_delay'] = AnimationDelay
+    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
     InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
     # Create plot
@@ -1937,13 +1937,13 @@ def Radar(dt = None,
           LegendTextColor = "#fff",
           Width = None,
           Height = None,
-          animation_threshold = 2000,
-          animation_duration = 1000,
-          animation_easing = "cubicOut",
-          animation_delay = 0,
-          animation_duration_update = 300,
-          animation_easing_update = "cubicOut",
-          animation_delay_update = 0):
+          AnimationThreshold = 2000,
+          AnimationDuration = 1000,
+          AnimationEasing = "cubicOut",
+          AnimationDelay = 0,
+          AnimationDurationUpdate = 300,
+          AnimationEasingUpdate = "cubicOut",
+          AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -1970,13 +1970,13 @@ def Radar(dt = None,
     LegendTextColor: Text color of legend labels. Default '#fff'
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -2003,13 +2003,13 @@ def Radar(dt = None,
     # Legend = None
     # LegendPosRight = '0%'
     # LegendPosTop = '5%'
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Define Plotting Variable
@@ -2054,13 +2054,13 @@ def Radar(dt = None,
     InitOptions['is_horizontal_center'] = True
 
     AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = animation_threshold
-    AnimationOptions['animation_duration'] = animation_duration
-    AnimationOptions['animation_easing'] = animation_easing
-    AnimationOptions['animation_delay'] = animation_delay
-    AnimationOptions['animation_duration_update'] = animation_duration_update
-    AnimationOptions['animation_easing_update'] = animation_easing_update
-    AnimationOptions['animation_delay_update'] = animation_delay_update
+    AnimationOptions['animation_threshold'] = AnimationThreshold
+    AnimationOptions['animation_duration'] = AnimationDuration
+    AnimationOptions['animation_easing'] = AnimationEasing
+    AnimationOptions['animation_delay'] = AnimationDelay
+    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
     InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
     # Create plot
@@ -2166,13 +2166,13 @@ def Line(dt = None,
          VerticalLineName = 'Line Name',
          HorizontalLine = None,
          HorizontalLineName = 'Line Name',
-         animation_threshold = 2000,
-         animation_duration = 1000,
-         animation_easing = "cubicOut",
-         animation_delay = 0,
-         animation_duration_update = 300,
-         animation_easing_update = "cubicOut",
-         animation_delay_update = 0):
+         AnimationThreshold = 2000,
+         AnimationDuration = 1000,
+         AnimationEasing = "cubicOut",
+         AnimationDelay = 0,
+         AnimationDurationUpdate = 300,
+         AnimationEasingUpdate = "cubicOut",
+         AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -2222,13 +2222,13 @@ def Line(dt = None,
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
     HorizontalLineName: add a series name for the horizontal line
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -2271,13 +2271,13 @@ def Line(dt = None,
     # LegendPosTop = '5%'
     # HorizontalLine = None
     # VerticalLine = None
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Define Plotting Variable
@@ -2329,13 +2329,13 @@ def Line(dt = None,
       InitOptions['is_horizontal_center'] = True
 
       AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = animation_threshold
-      AnimationOptions['animation_duration'] = animation_duration
-      AnimationOptions['animation_easing'] = animation_easing
-      AnimationOptions['animation_delay'] = animation_delay
-      AnimationOptions['animation_duration_update'] = animation_duration_update
-      AnimationOptions['animation_easing_update'] = animation_easing_update
-      AnimationOptions['animation_delay_update'] = animation_delay_update
+      AnimationOptions['animation_threshold'] = AnimationThreshold
+      AnimationOptions['animation_duration'] = AnimationDuration
+      AnimationOptions['animation_easing'] = AnimationEasing
+      AnimationOptions['animation_delay'] = AnimationDelay
+      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
       InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
       # Create plot
@@ -2450,13 +2450,13 @@ def Line(dt = None,
         InitOptions['is_horizontal_center'] = True
 
         AnimationOptions = {}
-        AnimationOptions['animation_threshold'] = animation_threshold
-        AnimationOptions['animation_duration'] = animation_duration
-        AnimationOptions['animation_easing'] = animation_easing
-        AnimationOptions['animation_delay'] = animation_delay
-        AnimationOptions['animation_duration_update'] = animation_duration_update
-        AnimationOptions['animation_easing_update'] = animation_easing_update
-        AnimationOptions['animation_delay_update'] = animation_delay_update
+        AnimationOptions['animation_threshold'] = AnimationThreshold
+        AnimationOptions['animation_duration'] = AnimationDuration
+        AnimationOptions['animation_easing'] = AnimationEasing
+        AnimationOptions['animation_delay'] = AnimationDelay
+        AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+        AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+        AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
         InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
         # Create plot
@@ -2655,13 +2655,13 @@ def StackedLine(dt = None,
                 VerticalLineName = 'Line Name',
                 HorizontalLine = None,
                 HorizontalLineName = 'Line Name',
-                animation_threshold = 2000,
-                animation_duration = 1000,
-                animation_easing = "cubicOut",
-                animation_delay = 0,
-                animation_duration_update = 300,
-                animation_easing_update = "cubicOut",
-                animation_delay_update = 0):
+                AnimationThreshold = 2000,
+                AnimationDuration = 1000,
+                AnimationEasing = "cubicOut",
+                AnimationDelay = 0,
+                AnimationDurationUpdate = 300,
+                AnimationEasingUpdate = "cubicOut",
+                AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -2708,13 +2708,13 @@ def StackedLine(dt = None,
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
     HorizontalLineName: add a series name for the horizontal line
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -2754,13 +2754,13 @@ def StackedLine(dt = None,
     # LegendPosTop = '5%'
     # HorizontalLine = None
     # VerticalLine = None
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Define Plotting Variable
@@ -2818,13 +2818,13 @@ def StackedLine(dt = None,
       InitOptions['is_horizontal_center'] = True
 
       AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = animation_threshold
-      AnimationOptions['animation_duration'] = animation_duration
-      AnimationOptions['animation_easing'] = animation_easing
-      AnimationOptions['animation_delay'] = animation_delay
-      AnimationOptions['animation_duration_update'] = animation_duration_update
-      AnimationOptions['animation_easing_update'] = animation_easing_update
-      AnimationOptions['animation_delay_update'] = animation_delay_update
+      AnimationOptions['animation_threshold'] = AnimationThreshold
+      AnimationOptions['animation_duration'] = AnimationDuration
+      AnimationOptions['animation_easing'] = AnimationEasing
+      AnimationOptions['animation_delay'] = AnimationDelay
+      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
       InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
       # Create plot
@@ -2937,13 +2937,13 @@ def StackedLine(dt = None,
       InitOptions['is_horizontal_center'] = True
 
       AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = animation_threshold
-      AnimationOptions['animation_duration'] = animation_duration
-      AnimationOptions['animation_easing'] = animation_easing
-      AnimationOptions['animation_delay'] = animation_delay
-      AnimationOptions['animation_duration_update'] = animation_duration_update
-      AnimationOptions['animation_easing_update'] = animation_easing_update
-      AnimationOptions['animation_delay_update'] = animation_delay_update
+      AnimationOptions['animation_threshold'] = AnimationThreshold
+      AnimationOptions['animation_duration'] = AnimationDuration
+      AnimationOptions['animation_easing'] = AnimationEasing
+      AnimationOptions['animation_delay'] = AnimationDelay
+      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
       InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
       # Create plot
@@ -3077,13 +3077,13 @@ def Step(dt = None,
          VerticalLineName = 'Line Name',
          HorizontalLine = None,
          HorizontalLineName = 'Line Name',
-         animation_threshold = 2000,
-         animation_duration = 1000,
-         animation_easing = "cubicOut",
-         animation_delay = 0,
-         animation_duration_update = 300,
-         animation_easing_update = "cubicOut",
-         animation_delay_update = 0):
+         AnimationThreshold = 2000,
+         AnimationDuration = 1000,
+         AnimationEasing = "cubicOut",
+         AnimationDelay = 0,
+         AnimationDurationUpdate = 300,
+         AnimationEasingUpdate = "cubicOut",
+         AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -3132,13 +3132,13 @@ def Step(dt = None,
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
     HorizontalLineName: add a series name for the horizontal line
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -3180,13 +3180,13 @@ def Step(dt = None,
     # LegendPosTop = '5%'
     # HorizontalLine = None
     # VerticalLine = None
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Define Plotting Variable
@@ -3238,13 +3238,13 @@ def Step(dt = None,
       InitOptions['is_horizontal_center'] = True
 
       AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = animation_threshold
-      AnimationOptions['animation_duration'] = animation_duration
-      AnimationOptions['animation_easing'] = animation_easing
-      AnimationOptions['animation_delay'] = animation_delay
-      AnimationOptions['animation_duration_update'] = animation_duration_update
-      AnimationOptions['animation_easing_update'] = animation_easing_update
-      AnimationOptions['animation_delay_update'] = animation_delay_update
+      AnimationOptions['animation_threshold'] = AnimationThreshold
+      AnimationOptions['animation_duration'] = AnimationDuration
+      AnimationOptions['animation_easing'] = AnimationEasing
+      AnimationOptions['animation_delay'] = AnimationDelay
+      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
       InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
       # Create plot
@@ -3359,13 +3359,13 @@ def Step(dt = None,
         InitOptions['is_horizontal_center'] = True
 
         AnimationOptions = {}
-        AnimationOptions['animation_threshold'] = animation_threshold
-        AnimationOptions['animation_duration'] = animation_duration
-        AnimationOptions['animation_easing'] = animation_easing
-        AnimationOptions['animation_delay'] = animation_delay
-        AnimationOptions['animation_duration_update'] = animation_duration_update
-        AnimationOptions['animation_easing_update'] = animation_easing_update
-        AnimationOptions['animation_delay_update'] = animation_delay_update
+        AnimationOptions['animation_threshold'] = AnimationThreshold
+        AnimationOptions['animation_duration'] = AnimationDuration
+        AnimationOptions['animation_easing'] = AnimationEasing
+        AnimationOptions['animation_delay'] = AnimationDelay
+        AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+        AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+        AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
         InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
         # Create plot
@@ -3565,13 +3565,13 @@ def StackedStep(dt = None,
                 VerticalLineName = 'Line Name',
                 HorizontalLine = None,
                 HorizontalLineName = 'Line Name',
-                animation_threshold = 2000,
-                animation_duration = 1000,
-                animation_easing = "cubicOut",
-                animation_delay = 0,
-                animation_duration_update = 300,
-                animation_easing_update = "cubicOut",
-                animation_delay_update = 0):
+                AnimationThreshold = 2000,
+                AnimationDuration = 1000,
+                AnimationEasing = "cubicOut",
+                AnimationDelay = 0,
+                AnimationDurationUpdate = 300,
+                AnimationEasingUpdate = "cubicOut",
+                AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -3617,13 +3617,13 @@ def StackedStep(dt = None,
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
     HorizontalLineName: add a series name for the horizontal line
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -3662,13 +3662,13 @@ def StackedStep(dt = None,
     # LegendPosTop = '5%'
     # HorizontalLine = None
     # VerticalLine = None
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Define Plotting Variable
@@ -3726,13 +3726,13 @@ def StackedStep(dt = None,
       InitOptions['is_horizontal_center'] = True
 
       AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = animation_threshold
-      AnimationOptions['animation_duration'] = animation_duration
-      AnimationOptions['animation_easing'] = animation_easing
-      AnimationOptions['animation_delay'] = animation_delay
-      AnimationOptions['animation_duration_update'] = animation_duration_update
-      AnimationOptions['animation_easing_update'] = animation_easing_update
-      AnimationOptions['animation_delay_update'] = animation_delay_update
+      AnimationOptions['animation_threshold'] = AnimationThreshold
+      AnimationOptions['animation_duration'] = AnimationDuration
+      AnimationOptions['animation_easing'] = AnimationEasing
+      AnimationOptions['animation_delay'] = AnimationDelay
+      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
       InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
       # Create plot
@@ -3845,13 +3845,13 @@ def StackedStep(dt = None,
       InitOptions['is_horizontal_center'] = True
 
       AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = animation_threshold
-      AnimationOptions['animation_duration'] = animation_duration
-      AnimationOptions['animation_easing'] = animation_easing
-      AnimationOptions['animation_delay'] = animation_delay
-      AnimationOptions['animation_duration_update'] = animation_duration_update
-      AnimationOptions['animation_easing_update'] = animation_easing_update
-      AnimationOptions['animation_delay_update'] = animation_delay_update
+      AnimationOptions['animation_threshold'] = AnimationThreshold
+      AnimationOptions['animation_duration'] = AnimationDuration
+      AnimationOptions['animation_easing'] = AnimationEasing
+      AnimationOptions['animation_delay'] = AnimationDelay
+      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
       InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
       # Create plot
@@ -4009,13 +4009,13 @@ def Area(dt = None,
          VerticalLineName = 'Line Name',
          HorizontalLine = None,
          HorizontalLineName = 'Line Name',
-         animation_threshold = 2000,
-         animation_duration = 1000,
-         animation_easing = "cubicOut",
-         animation_delay = 0,
-         animation_duration_update = 300,
-         animation_easing_update = "cubicOut",
-         animation_delay_update = 0):
+         AnimationThreshold = 2000,
+         AnimationDuration = 1000,
+         AnimationEasing = "cubicOut",
+         AnimationDelay = 0,
+         AnimationDurationUpdate = 300,
+         AnimationEasingUpdate = "cubicOut",
+         AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -4067,13 +4067,13 @@ def Area(dt = None,
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
     HorizontalLineName: add a series name for the horizontal line
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -4116,13 +4116,13 @@ def Area(dt = None,
     # LegendPosTop = '5%'
     # HorizontalLine = None
     # VerticalLine = None
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Define Plotting Variable
@@ -4174,13 +4174,13 @@ def Area(dt = None,
       InitOptions['is_horizontal_center'] = True
 
       AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = animation_threshold
-      AnimationOptions['animation_duration'] = animation_duration
-      AnimationOptions['animation_easing'] = animation_easing
-      AnimationOptions['animation_delay'] = animation_delay
-      AnimationOptions['animation_duration_update'] = animation_duration_update
-      AnimationOptions['animation_easing_update'] = animation_easing_update
-      AnimationOptions['animation_delay_update'] = animation_delay_update
+      AnimationOptions['animation_threshold'] = AnimationThreshold
+      AnimationOptions['animation_duration'] = AnimationDuration
+      AnimationOptions['animation_easing'] = AnimationEasing
+      AnimationOptions['animation_delay'] = AnimationDelay
+      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
       InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
       # Create plot
@@ -4303,13 +4303,13 @@ def Area(dt = None,
         InitOptions['is_horizontal_center'] = True
 
         AnimationOptions = {}
-        AnimationOptions['animation_threshold'] = animation_threshold
-        AnimationOptions['animation_duration'] = animation_duration
-        AnimationOptions['animation_easing'] = animation_easing
-        AnimationOptions['animation_delay'] = animation_delay
-        AnimationOptions['animation_duration_update'] = animation_duration_update
-        AnimationOptions['animation_easing_update'] = animation_easing_update
-        AnimationOptions['animation_delay_update'] = animation_delay_update
+        AnimationOptions['animation_threshold'] = AnimationThreshold
+        AnimationOptions['animation_duration'] = AnimationDuration
+        AnimationOptions['animation_easing'] = AnimationEasing
+        AnimationOptions['animation_delay'] = AnimationDelay
+        AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+        AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+        AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
         InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
         # Create plot
@@ -4512,13 +4512,13 @@ def StackedArea(dt = None,
                 VerticalLineName = 'Line Name',
                 HorizontalLine = None,
                 HorizontalLineName = 'Line Name',
-                animation_threshold = 2000,
-                animation_duration = 1000,
-                animation_easing = "cubicOut",
-                animation_delay = 0,
-                animation_duration_update = 300,
-                animation_easing_update = "cubicOut",
-                animation_delay_update = 0):
+                AnimationThreshold = 2000,
+                AnimationDuration = 1000,
+                AnimationEasing = "cubicOut",
+                AnimationDelay = 0,
+                AnimationDurationUpdate = 300,
+                AnimationEasingUpdate = "cubicOut",
+                AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -4565,13 +4565,13 @@ def StackedArea(dt = None,
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
     HorizontalLineName: add a series name for the horizontal line
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -4611,13 +4611,13 @@ def StackedArea(dt = None,
     # LegendPosTop = '5%'
     # HorizontalLine = None
     # VerticalLine = None
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Define Plotting Variable
@@ -4675,13 +4675,13 @@ def StackedArea(dt = None,
       InitOptions['is_horizontal_center'] = True
 
       AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = animation_threshold
-      AnimationOptions['animation_duration'] = animation_duration
-      AnimationOptions['animation_easing'] = animation_easing
-      AnimationOptions['animation_delay'] = animation_delay
-      AnimationOptions['animation_duration_update'] = animation_duration_update
-      AnimationOptions['animation_easing_update'] = animation_easing_update
-      AnimationOptions['animation_delay_update'] = animation_delay_update
+      AnimationOptions['animation_threshold'] = AnimationThreshold
+      AnimationOptions['animation_duration'] = AnimationDuration
+      AnimationOptions['animation_easing'] = AnimationEasing
+      AnimationOptions['animation_delay'] = AnimationDelay
+      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
       InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
       # Create plot
@@ -4796,13 +4796,13 @@ def StackedArea(dt = None,
       InitOptions['is_horizontal_center'] = True
 
       AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = animation_threshold
-      AnimationOptions['animation_duration'] = animation_duration
-      AnimationOptions['animation_easing'] = animation_easing
-      AnimationOptions['animation_delay'] = animation_delay
-      AnimationOptions['animation_duration_update'] = animation_duration_update
-      AnimationOptions['animation_easing_update'] = animation_easing_update
-      AnimationOptions['animation_delay_update'] = animation_delay_update
+      AnimationOptions['animation_threshold'] = AnimationThreshold
+      AnimationOptions['animation_duration'] = AnimationDuration
+      AnimationOptions['animation_easing'] = AnimationEasing
+      AnimationOptions['animation_delay'] = AnimationDelay
+      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
       InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
       # Create plot
@@ -4934,13 +4934,13 @@ def Bar(dt = None,
         VerticalLineName = 'Line Name',
         HorizontalLine = None,
         HorizontalLineName = 'Line Name',
-        animation_threshold = 2000,
-        animation_duration = 1000,
-        animation_easing = "cubicOut",
-        animation_delay = 0,
-        animation_duration_update = 300,
-        animation_easing_update = "cubicOut",
-        animation_delay_update = 0):
+        AnimationThreshold = 2000,
+        AnimationDuration = 1000,
+        AnimationEasing = "cubicOut",
+        AnimationDelay = 0,
+        AnimationDurationUpdate = 300,
+        AnimationEasingUpdate = "cubicOut",
+        AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -4986,13 +4986,13 @@ def Bar(dt = None,
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
     HorizontalLineName: add a series name for the horizontal line
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -5033,13 +5033,13 @@ def Bar(dt = None,
     # LegendPosTop = '5%'
     # HorizontalLine = None
     # VerticalLine = None
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Define Plotting Variable
@@ -5091,13 +5091,13 @@ def Bar(dt = None,
       InitOptions['is_horizontal_center'] = True
 
       AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = animation_threshold
-      AnimationOptions['animation_duration'] = animation_duration
-      AnimationOptions['animation_easing'] = animation_easing
-      AnimationOptions['animation_delay'] = animation_delay
-      AnimationOptions['animation_duration_update'] = animation_duration_update
-      AnimationOptions['animation_easing_update'] = animation_easing_update
-      AnimationOptions['animation_delay_update'] = animation_delay_update
+      AnimationOptions['animation_threshold'] = AnimationThreshold
+      AnimationOptions['animation_duration'] = AnimationDuration
+      AnimationOptions['animation_easing'] = AnimationEasing
+      AnimationOptions['animation_delay'] = AnimationDelay
+      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
       InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
       # Create plot
@@ -5203,13 +5203,13 @@ def Bar(dt = None,
         InitOptions['is_horizontal_center'] = True
 
         AnimationOptions = {}
-        AnimationOptions['animation_threshold'] = animation_threshold
-        AnimationOptions['animation_duration'] = animation_duration
-        AnimationOptions['animation_easing'] = animation_easing
-        AnimationOptions['animation_delay'] = animation_delay
-        AnimationOptions['animation_duration_update'] = animation_duration_update
-        AnimationOptions['animation_easing_update'] = animation_easing_update
-        AnimationOptions['animation_delay_update'] = animation_delay_update
+        AnimationOptions['animation_threshold'] = AnimationThreshold
+        AnimationOptions['animation_duration'] = AnimationDuration
+        AnimationOptions['animation_easing'] = AnimationEasing
+        AnimationOptions['animation_delay'] = AnimationDelay
+        AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+        AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+        AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
         InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
         # Create plot
@@ -5388,13 +5388,13 @@ def StackedBar(dt = None,
                VerticalLineName = 'Line Name',
                HorizontalLine = None,
                HorizontalLineName = 'Line Name',
-               animation_threshold = 2000,
-               animation_duration = 1000,
-               animation_easing = "cubicOut",
-               animation_delay = 0,
-               animation_duration_update = 300,
-               animation_easing_update = "cubicOut",
-               animation_delay_update = 0):
+               AnimationThreshold = 2000,
+               AnimationDuration = 1000,
+               AnimationEasing = "cubicOut",
+               AnimationDelay = 0,
+               AnimationDurationUpdate = 300,
+               AnimationEasingUpdate = "cubicOut",
+               AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -5437,13 +5437,13 @@ def StackedBar(dt = None,
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
     HorizontalLineName: add a series name for the horizontal line
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -5480,13 +5480,13 @@ def StackedBar(dt = None,
     # LegendPosTop = '5%'
     # HorizontalLine = None
     # VerticalLine = None
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Define Plotting Variable
@@ -5544,13 +5544,13 @@ def StackedBar(dt = None,
       InitOptions['is_horizontal_center'] = True
 
       AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = animation_threshold
-      AnimationOptions['animation_duration'] = animation_duration
-      AnimationOptions['animation_easing'] = animation_easing
-      AnimationOptions['animation_delay'] = animation_delay
-      AnimationOptions['animation_duration_update'] = animation_duration_update
-      AnimationOptions['animation_easing_update'] = animation_easing_update
-      AnimationOptions['animation_delay_update'] = animation_delay_update
+      AnimationOptions['animation_threshold'] = AnimationThreshold
+      AnimationOptions['animation_duration'] = AnimationDuration
+      AnimationOptions['animation_easing'] = AnimationEasing
+      AnimationOptions['animation_delay'] = AnimationDelay
+      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
       InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
       # Create plot
@@ -5655,13 +5655,13 @@ def StackedBar(dt = None,
       InitOptions['is_horizontal_center'] = True
 
       AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = animation_threshold
-      AnimationOptions['animation_duration'] = animation_duration
-      AnimationOptions['animation_easing'] = animation_easing
-      AnimationOptions['animation_delay'] = animation_delay
-      AnimationOptions['animation_duration_update'] = animation_duration_update
-      AnimationOptions['animation_easing_update'] = animation_easing_update
-      AnimationOptions['animation_delay_update'] = animation_delay_update
+      AnimationOptions['animation_threshold'] = AnimationThreshold
+      AnimationOptions['animation_duration'] = AnimationDuration
+      AnimationOptions['animation_easing'] = AnimationEasing
+      AnimationOptions['animation_delay'] = AnimationDelay
+      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
       InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
       # Create plot
@@ -5777,13 +5777,13 @@ def Heatmap(dt = None,
             DataZoom = True,
             Width = None,
             Height = None,
-            animation_threshold = 2000,
-            animation_duration = 1000,
-            animation_easing = "cubicOut",
-            animation_delay = 0,
-            animation_duration_update = 300,
-            animation_easing_update = "cubicOut",
-            animation_delay_update = 0):
+            AnimationThreshold = 2000,
+            AnimationDuration = 1000,
+            AnimationEasing = "cubicOut",
+            AnimationDelay = 0,
+            AnimationDurationUpdate = 300,
+            AnimationEasingUpdate = "cubicOut",
+            AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -5823,13 +5823,13 @@ def Heatmap(dt = None,
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -5865,13 +5865,13 @@ def Heatmap(dt = None,
     # Legend = None
     # LegendPosRight = '0%'
     # LegendPosTop = '5%'
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
 
     # Define Plotting Variable
@@ -5940,13 +5940,13 @@ def Heatmap(dt = None,
     InitOptions['is_horizontal_center'] = True
 
     AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = animation_threshold
-    AnimationOptions['animation_duration'] = animation_duration
-    AnimationOptions['animation_easing'] = animation_easing
-    AnimationOptions['animation_delay'] = animation_delay
-    AnimationOptions['animation_duration_update'] = animation_duration_update
-    AnimationOptions['animation_easing_update'] = animation_easing_update
-    AnimationOptions['animation_delay_update'] = animation_delay_update
+    AnimationOptions['animation_threshold'] = AnimationThreshold
+    AnimationOptions['animation_duration'] = AnimationDuration
+    AnimationOptions['animation_easing'] = AnimationEasing
+    AnimationOptions['animation_delay'] = AnimationDelay
+    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
     InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
     # Create plot
@@ -6056,13 +6056,13 @@ def Scatter(dt = None,
             VerticalLineName = 'Line Name',
             HorizontalLine = None,
             HorizontalLineName = 'Line Name',
-            animation_threshold = 2000,
-            animation_duration = 1000,
-            animation_easing = "cubicOut",
-            animation_delay = 0,
-            animation_duration_update = 300,
-            animation_easing_update = "cubicOut",
-            animation_delay_update = 0):
+            AnimationThreshold = 2000,
+            AnimationDuration = 1000,
+            AnimationEasing = "cubicOut",
+            AnimationDelay = 0,
+            AnimationDurationUpdate = 300,
+            AnimationEasingUpdate = "cubicOut",
+            AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -6111,13 +6111,13 @@ def Scatter(dt = None,
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
     HorizontalLineName: add a series name for the horizontal line
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -6161,13 +6161,13 @@ def Scatter(dt = None,
     # LegendPosTop = '5%'
     # HorizontalLine = None
     # VerticalLine = None
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Define Plotting Variable
@@ -6222,13 +6222,13 @@ def Scatter(dt = None,
       InitOptions['is_horizontal_center'] = True
 
       AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = animation_threshold
-      AnimationOptions['animation_duration'] = animation_duration
-      AnimationOptions['animation_easing'] = animation_easing
-      AnimationOptions['animation_delay'] = animation_delay
-      AnimationOptions['animation_duration_update'] = animation_duration_update
-      AnimationOptions['animation_easing_update'] = animation_easing_update
-      AnimationOptions['animation_delay_update'] = animation_delay_update
+      AnimationOptions['animation_threshold'] = AnimationThreshold
+      AnimationOptions['animation_duration'] = AnimationDuration
+      AnimationOptions['animation_easing'] = AnimationEasing
+      AnimationOptions['animation_delay'] = AnimationDelay
+      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
       InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
       # Create plot
@@ -6339,13 +6339,13 @@ def Scatter(dt = None,
         InitOptions['is_horizontal_center'] = True
 
         AnimationOptions = {}
-        AnimationOptions['animation_threshold'] = animation_threshold
-        AnimationOptions['animation_duration'] = animation_duration
-        AnimationOptions['animation_easing'] = animation_easing
-        AnimationOptions['animation_delay'] = animation_delay
-        AnimationOptions['animation_duration_update'] = animation_duration_update
-        AnimationOptions['animation_easing_update'] = animation_easing_update
-        AnimationOptions['animation_delay_update'] = animation_delay_update
+        AnimationOptions['animation_threshold'] = AnimationThreshold
+        AnimationOptions['animation_duration'] = AnimationDuration
+        AnimationOptions['animation_easing'] = AnimationEasing
+        AnimationOptions['animation_delay'] = AnimationDelay
+        AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+        AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+        AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
         InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
         # Create plot
@@ -6513,13 +6513,13 @@ def Scatter3D(dt = None,
               SymbolSize = 6,
               Width = None,
               Height = None,
-              animation_threshold = 2000,
-              animation_duration = 1000,
-              animation_easing = "cubicOut",
-              animation_delay = 0,
-              animation_duration_update = 300,
-              animation_easing_update = "cubicOut",
-              animation_delay_update = 0):
+              AnimationThreshold = 2000,
+              AnimationDuration = 1000,
+              AnimationEasing = "cubicOut",
+              AnimationDelay = 0,
+              AnimationDurationUpdate = 300,
+              AnimationEasingUpdate = "cubicOut",
+              AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -6537,13 +6537,13 @@ def Scatter3D(dt = None,
     SymbolSize: Default 6
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -6567,20 +6567,20 @@ def Scatter3D(dt = None,
     # RenderHTML = False
     # Width = "1000px"
     # Height = "600px"
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Define Plotting Variable
@@ -6642,13 +6642,13 @@ def Scatter3D(dt = None,
     InitOptions['is_horizontal_center'] = True
 
     AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = animation_threshold
-    AnimationOptions['animation_duration'] = animation_duration
-    AnimationOptions['animation_easing'] = animation_easing
-    AnimationOptions['animation_delay'] = animation_delay
-    AnimationOptions['animation_duration_update'] = animation_duration_update
-    AnimationOptions['animation_easing_update'] = animation_easing_update
-    AnimationOptions['animation_delay_update'] = animation_delay_update
+    AnimationOptions['animation_threshold'] = AnimationThreshold
+    AnimationOptions['animation_duration'] = AnimationDuration
+    AnimationOptions['animation_easing'] = AnimationEasing
+    AnimationOptions['animation_delay'] = AnimationDelay
+    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
     InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
     # Create plot
@@ -6721,13 +6721,13 @@ def Copula3D(dt = None,
              SymbolSize = 6,
              Width = None,
              Height = None,
-             animation_threshold = 2000,
-             animation_duration = 1000,
-             animation_easing = "cubicOut",
-             animation_delay = 0,
-             animation_duration_update = 300,
-             animation_easing_update = "cubicOut",
-             animation_delay_update = 0):
+             AnimationThreshold = 2000,
+             AnimationDuration = 1000,
+             AnimationEasing = "cubicOut",
+             AnimationDelay = 0,
+             AnimationDurationUpdate = 300,
+             AnimationEasingUpdate = "cubicOut",
+             AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -6742,13 +6742,13 @@ def Copula3D(dt = None,
     SymbolSize: Default 6
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -6770,13 +6770,13 @@ def Copula3D(dt = None,
     # ZVarTrans = 'sqrt'
     # SymbolSize = 6
     # RenderHTML = False
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Define Plotting Variable
@@ -6837,13 +6837,13 @@ def Copula3D(dt = None,
     InitOptions['is_horizontal_center'] = True
 
     AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = animation_threshold
-    AnimationOptions['animation_duration'] = animation_duration
-    AnimationOptions['animation_easing'] = animation_easing
-    AnimationOptions['animation_delay'] = animation_delay
-    AnimationOptions['animation_duration_update'] = animation_duration_update
-    AnimationOptions['animation_easing_update'] = animation_easing_update
-    AnimationOptions['animation_delay_update'] = animation_delay_update
+    AnimationOptions['animation_threshold'] = AnimationThreshold
+    AnimationOptions['animation_duration'] = AnimationDuration
+    AnimationOptions['animation_easing'] = AnimationEasing
+    AnimationOptions['animation_delay'] = AnimationDelay
+    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
     InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
     # Create plot
@@ -6947,13 +6947,13 @@ def Copula(dt = None,
            VerticalLineName = 'Line Name',
            HorizontalLine = None,
            HorizontalLineName = 'Line Name',
-           animation_threshold = 2000,
-           animation_duration = 1000,
-           animation_easing = "cubicOut",
-           animation_delay = 0,
-           animation_duration_update = 300,
-           animation_easing_update = "cubicOut",
-           animation_delay_update = 0):
+           AnimationThreshold = 2000,
+           AnimationDuration = 1000,
+           AnimationEasing = "cubicOut",
+           AnimationDelay = 0,
+           AnimationDurationUpdate = 300,
+           AnimationEasingUpdate = "cubicOut",
+           AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -7000,13 +7000,13 @@ def Copula(dt = None,
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
     HorizontalLineName: add a series name for the horizontal line
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -7048,13 +7048,13 @@ def Copula(dt = None,
     # LegendPosTop = '5%'
     # HorizontalLine = None
     # VerticalLine = None
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Define Plotting Variable
@@ -7106,13 +7106,13 @@ def Copula(dt = None,
       InitOptions['is_horizontal_center'] = True
 
       AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = animation_threshold
-      AnimationOptions['animation_duration'] = animation_duration
-      AnimationOptions['animation_easing'] = animation_easing
-      AnimationOptions['animation_delay'] = animation_delay
-      AnimationOptions['animation_duration_update'] = animation_duration_update
-      AnimationOptions['animation_easing_update'] = animation_easing_update
-      AnimationOptions['animation_delay_update'] = animation_delay_update
+      AnimationOptions['animation_threshold'] = AnimationThreshold
+      AnimationOptions['animation_duration'] = AnimationDuration
+      AnimationOptions['animation_easing'] = AnimationEasing
+      AnimationOptions['animation_delay'] = AnimationDelay
+      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
       InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
       # Create plot
@@ -7223,13 +7223,13 @@ def Copula(dt = None,
         InitOptions['is_horizontal_center'] = True
 
         AnimationOptions = {}
-        AnimationOptions['animation_threshold'] = animation_threshold
-        AnimationOptions['animation_duration'] = animation_duration
-        AnimationOptions['animation_easing'] = animation_easing
-        AnimationOptions['animation_delay'] = animation_delay
-        AnimationOptions['animation_duration_update'] = animation_duration_update
-        AnimationOptions['animation_easing_update'] = animation_easing_update
-        AnimationOptions['animation_delay_update'] = animation_delay_update
+        AnimationOptions['animation_threshold'] = AnimationThreshold
+        AnimationOptions['animation_duration'] = AnimationDuration
+        AnimationOptions['animation_easing'] = AnimationEasing
+        AnimationOptions['animation_delay'] = AnimationDelay
+        AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+        AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+        AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
         InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
         # Create plot
@@ -7393,13 +7393,13 @@ def Parallel(dt = None,
              LineWidth = 0.20,
              Width = None,
              Height = None,
-             animation_threshold = 2000,
-             animation_duration = 1000,
-             animation_easing = "cubicOut",
-             animation_delay = 0,
-             animation_duration_update = 300,
-             animation_easing_update = "cubicOut",
-             animation_delay_update = 0):
+             AnimationThreshold = 2000,
+             AnimationDuration = 1000,
+             AnimationEasing = "cubicOut",
+             AnimationDelay = 0,
+             AnimationDurationUpdate = 300,
+             AnimationEasingUpdate = "cubicOut",
+             AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -7413,13 +7413,13 @@ def Parallel(dt = None,
     LineWidth: Default 0.20
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -7435,13 +7435,13 @@ def Parallel(dt = None,
     # RenderHTML = False
     # Opacity = 0.05
     # LineWidth = 0.20
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
 
     # Define Plotting Variable
@@ -7497,13 +7497,13 @@ def Parallel(dt = None,
     InitOptions['is_horizontal_center'] = True
 
     AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = animation_threshold
-    AnimationOptions['animation_duration'] = animation_duration
-    AnimationOptions['animation_easing'] = animation_easing
-    AnimationOptions['animation_delay'] = animation_delay
-    AnimationOptions['animation_duration_update'] = animation_duration_update
-    AnimationOptions['animation_easing_update'] = animation_easing_update
-    AnimationOptions['animation_delay_update'] = animation_delay_update
+    AnimationOptions['animation_threshold'] = AnimationThreshold
+    AnimationOptions['animation_duration'] = AnimationDuration
+    AnimationOptions['animation_easing'] = AnimationEasing
+    AnimationOptions['animation_delay'] = AnimationDelay
+    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
     InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
     # Create plot
@@ -7543,13 +7543,13 @@ def Funnel(dt = None,
            RenderHTML = False,
            Width = None,
            Height = None,
-           animation_threshold = 2000,
-           animation_duration = 1000,
-           animation_easing = "cubicOut",
-           animation_delay = 0,
-           animation_duration_update = 300,
-           animation_easing_update = "cubicOut",
-           animation_delay_update = 0):
+           AnimationThreshold = 2000,
+           AnimationDuration = 1000,
+           AnimationEasing = "cubicOut",
+           AnimationDelay = 0,
+           AnimationDurationUpdate = 300,
+           AnimationEasingUpdate = "cubicOut",
+           AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -7566,13 +7566,13 @@ def Funnel(dt = None,
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -7588,13 +7588,13 @@ def Funnel(dt = None,
     # TitleFontSize = 20
     # Theme = 'wonderland'
     # RenderHTML = False
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     
     # Create plot
     InitOptions = {}
@@ -7613,13 +7613,13 @@ def Funnel(dt = None,
     InitOptions['is_horizontal_center'] = True
 
     AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = animation_threshold
-    AnimationOptions['animation_duration'] = animation_duration
-    AnimationOptions['animation_easing'] = animation_easing
-    AnimationOptions['animation_delay'] = animation_delay
-    AnimationOptions['animation_duration_update'] = animation_duration_update
-    AnimationOptions['animation_easing_update'] = animation_easing_update
-    AnimationOptions['animation_delay_update'] = animation_delay_update
+    AnimationOptions['animation_threshold'] = AnimationThreshold
+    AnimationOptions['animation_duration'] = AnimationDuration
+    AnimationOptions['animation_easing'] = AnimationEasing
+    AnimationOptions['animation_delay'] = AnimationDelay
+    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
     InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
     # Create plot
@@ -7682,13 +7682,13 @@ def Bar3D(dt = None,
           Width = None,
           Height = None,
           Theme = 'wonderland',
-          animation_threshold = 2000,
-          animation_duration = 1000,
-          animation_easing = "cubicOut",
-          animation_delay = 0,
-          animation_duration_update = 300,
-          animation_easing_update = "cubicOut",
-          animation_delay_update = 0):
+          AnimationThreshold = 2000,
+          AnimationDuration = 1000,
+          AnimationEasing = "cubicOut",
+          AnimationDelay = 0,
+          AnimationDurationUpdate = 300,
+          AnimationEasingUpdate = "cubicOut",
+          AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -7718,13 +7718,13 @@ def Bar3D(dt = None,
     Height: Default None. Otherwise, use something like this "600px"
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
     BackgroundColor: background color
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -7754,13 +7754,13 @@ def Bar3D(dt = None,
     # XAxisNameLocation = 'middle' 'start' 'end'
     # XAxisNameGap = 42
     # Theme = 'wonderland'
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Subset Columns
@@ -7818,13 +7818,13 @@ def Bar3D(dt = None,
     InitOptions['is_horizontal_center'] = True
 
     AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = animation_threshold
-    AnimationOptions['animation_duration'] = animation_duration
-    AnimationOptions['animation_easing'] = animation_easing
-    AnimationOptions['animation_delay'] = animation_delay
-    AnimationOptions['animation_duration_update'] = animation_duration_update
-    AnimationOptions['animation_easing_update'] = animation_easing_update
-    AnimationOptions['animation_delay_update'] = animation_delay_update
+    AnimationOptions['animation_threshold'] = AnimationThreshold
+    AnimationOptions['animation_duration'] = AnimationDuration
+    AnimationOptions['animation_easing'] = AnimationEasing
+    AnimationOptions['animation_delay'] = AnimationDelay
+    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
     InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
     # Create plot
@@ -7914,13 +7914,13 @@ def River(dt = None,
           Width = None,
           Height = None,
           RenderHTML = False,
-          animation_threshold = 2000,
-          animation_duration = 1000,
-          animation_easing = "cubicOut",
-          animation_delay = 0,
-          animation_duration_update = 300,
-          animation_easing_update = "cubicOut",
-          animation_delay_update = 0):
+          AnimationThreshold = 2000,
+          AnimationDuration = 1000,
+          AnimationEasing = "cubicOut",
+          AnimationDelay = 0,
+          AnimationDurationUpdate = 300,
+          AnimationEasingUpdate = "cubicOut",
+          AnimationDelayUpdate = 0):
     
     """
     # Parameters
@@ -7946,13 +7946,13 @@ def River(dt = None,
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
-    animation_threshold: Default 2000
-    animation_duration: Default 1000
-    animation_easing: Default "cubicOut"
-    animation_delay: Default 0
-    animation_duration_update: Default 300
-    animation_easing_update: Default "cubicOut"
-    animation_delay_update: Default 0
+    AnimationThreshold: Default 2000
+    AnimationDuration: Default 1000
+    AnimationEasing: Default "cubicOut"
+    AnimationDelay: Default 0
+    AnimationDurationUpdate: Default 300
+    AnimationEasingUpdate: Default "cubicOut"
+    AnimationDelayUpdate: Default 0
     """
 
     # Load environment
@@ -7978,13 +7978,13 @@ def River(dt = None,
     # LegendPosTop = '5%'
     # Theme = 'wonderland'
     # RenderHTML = False
-    # animation_threshold = 2000
-    # animation_duration = 1000
-    # animation_easing = "cubicOut"
-    # animation_delay = 0
-    # animation_duration_update = 300
-    # animation_easing_update = "cubicOut"
-    # animation_delay_update = 0
+    # AnimationThreshold = 2000
+    # AnimationDuration = 1000
+    # AnimationEasing = "cubicOut"
+    # AnimationDelay = 0
+    # AnimationDurationUpdate = 300
+    # AnimationEasingUpdate = "cubicOut"
+    # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Subset Columns
@@ -8049,13 +8049,13 @@ def River(dt = None,
     InitOptions['is_horizontal_center'] = True
 
     AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = animation_threshold
-    AnimationOptions['animation_duration'] = animation_duration
-    AnimationOptions['animation_easing'] = animation_easing
-    AnimationOptions['animation_delay'] = animation_delay
-    AnimationOptions['animation_duration_update'] = animation_duration_update
-    AnimationOptions['animation_easing_update'] = animation_easing_update
-    AnimationOptions['animation_delay_update'] = animation_delay_update
+    AnimationOptions['animation_threshold'] = AnimationThreshold
+    AnimationOptions['animation_duration'] = AnimationDuration
+    AnimationOptions['animation_easing'] = AnimationEasing
+    AnimationOptions['animation_delay'] = AnimationDelay
+    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
     InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
     c = ThemeRiver(init_opts = opts.InitOpts(**InitOptions))
