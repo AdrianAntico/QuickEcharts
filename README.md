@@ -28,7 +28,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -108,7 +108,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -187,7 +187,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -274,7 +274,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -347,7 +347,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -421,7 +421,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -503,7 +503,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Build Plot
@@ -570,7 +570,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -642,7 +642,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create plot
@@ -718,7 +718,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create plot
@@ -794,7 +794,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create plot
@@ -879,7 +879,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Build Plot
@@ -933,7 +933,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -1003,7 +1003,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -1079,7 +1079,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -1141,7 +1141,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -1190,7 +1190,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -1251,7 +1251,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -1328,7 +1328,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -1397,7 +1397,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -1474,7 +1474,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -1552,7 +1552,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -1629,7 +1629,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -1715,7 +1715,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -1768,7 +1768,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -1829,7 +1829,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -1892,7 +1892,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -1950,7 +1950,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -2017,7 +2017,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -2082,7 +2082,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 p1 = Charts.Scatter(
@@ -2159,7 +2159,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 p1 = Charts.Scatter(
@@ -2235,7 +2235,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 p1 = Charts.Scatter(
@@ -2320,7 +2320,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Build Plot
@@ -2376,7 +2376,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -2459,7 +2459,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -2539,7 +2539,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -2622,7 +2622,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -2704,7 +2704,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -2781,7 +2781,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -2857,7 +2857,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = pkg_resources.resource_filename('QuickEcharts', 'datasets/FakeBevData.csv')
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
@@ -2943,7 +2943,7 @@ from pyecharts.globals import CurrentConfig, NotebookType
 CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 
 # Pull Data from Package
-FilePath = "C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv"
+FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
 # Create Plot in Jupyter Lab
