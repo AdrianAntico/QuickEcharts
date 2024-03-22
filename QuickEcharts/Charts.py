@@ -213,6 +213,8 @@ def Histogram(dt = None,
               ToolBox = True,
               Brush = True,
               DataZoom = True,
+              Width = None, # "1000px",
+              Height = None, # "600px"
               VerticalLine = None,
               VerticalLineName = 'Line Name',
               HorizontalLine = None,
@@ -247,6 +249,8 @@ def Histogram(dt = None,
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     VerticalLine: numeric. Add a vertical line on the plot at the value specified
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
@@ -285,6 +289,8 @@ def Histogram(dt = None,
     # ToolBox = True
     # Brush = True
     # DataZoom = True
+    # Width = "1000px"
+    # Height = "600px"
     # VerticalLine = 35
     # VerticalLineName = 'bla'
     # HorizonalLine = 500
@@ -335,13 +341,22 @@ def Histogram(dt = None,
         dt1 = dt1.group_by("Buckets").agg(pl.len().alias(YVar))
         dt1 = dt1.sort("Buckets")
 
-
       # Define data elements
       Buckets = dt1['Buckets'].to_list()
       YVal = dt1[YVar].to_list()
       
       # Create plot
-      c = Bar(init_opts = opts.InitOpts(theme = Theme))
+      InitOptions = {}
+      if not Theme is None:
+        InitOptions['theme'] = Theme
+
+      if not Width is None:
+        InitOptions['width'] = Width
+
+      if not Width is None:
+        InitOptions['height'] = Height
+
+      c = Bar(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(Buckets)
       c = c.add_yaxis(YVar, YVal, stack = "stack1", category_gap = CategoryGap)
 
@@ -507,6 +522,8 @@ def Density(dt = None,
             ToolBox = True,
             Brush = True,
             DataZoom = True,
+            Width = None,
+            Height = None,
             VerticalLine = None,
             VerticalLineName = 'Line Name',
             HorizontalLine = None,
@@ -541,6 +558,8 @@ def Density(dt = None,
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     VerticalLine: numeric. Add a vertical line on the plot at the value specified
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
@@ -638,9 +657,20 @@ def Density(dt = None,
       # Define data elements
       Buckets = dt1['Buckets'].to_list()
       YVal = dt1[YVar].to_list()
-      
+
       # Create plot
-      c = Line(init_opts = opts.InitOpts(theme = Theme))
+      InitOptions = {}
+      if not Theme is None:
+        InitOptions['theme'] = Theme
+
+      if not Width is None:
+        InitOptions['width'] = Width
+
+      if not Width is None:
+        InitOptions['height'] = Height
+
+      # Create plot
+      c = Line(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(Buckets)
       c = c.add_yaxis(
         YVar,
@@ -803,7 +833,9 @@ def Pie(dt = None,
         Theme = 'wonderland',
         Legend = None,
         LegendPosRight = '0%',
-        LegendPosTop = '5%'):
+        LegendPosTop = '5%',
+        Width = None,
+        Height = None):
     
     """
     # Parameters
@@ -824,6 +856,8 @@ def Pie(dt = None,
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     """
 
     # Load environment
@@ -873,14 +907,25 @@ def Pie(dt = None,
     YVal = dt1[YVar].to_list()
     data_pair = [list(z) for z in zip(GroupVals, YVal)]
     data_pair.sort(key=lambda x: x[1])
-    
+
     # Create plot
-    c = Pie(init_opts = opts.InitOpts(theme = Theme))
+    InitOptions = {}
+    if not Theme is None:
+      InitOptions['theme'] = Theme
+
+    if not Width is None:
+      InitOptions['width'] = Width
+
+    if not Width is None:
+      InitOptions['height'] = Height
+
+    # Create plot
+    c = Pie(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
         series_name = YVar,
         data_pair = data_pair,
         center = ["50%", "50%"],
-        label_opts = opts.LabelOpts(is_show=False, position="center"),
+        label_opts = opts.LabelOpts(is_show = False, position = "center"),
     )
 
     # Global Options
@@ -944,7 +989,9 @@ def Rosetype(dt = None,
              Theme = 'wonderland',
              Legend = None,
              LegendPosRight = '0%',
-             LegendPosTop = '5%'):
+             LegendPosTop = '5%',
+             Width = None,
+             Height = None):
     
     """
     # Parameters
@@ -967,6 +1014,8 @@ def Rosetype(dt = None,
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     """
 
     # Load environment
@@ -1019,9 +1068,20 @@ def Rosetype(dt = None,
     YVal = dt1[YVar].to_list()
     data_pair = [list(z) for z in zip(GroupVals, YVal)]
     data_pair.sort(key=lambda x: x[1])
-    
+
     # Create plot
-    c = Pie(init_opts = opts.InitOpts(theme = Theme))
+    InitOptions = {}
+    if not Theme is None:
+      InitOptions['theme'] = Theme
+      
+    if not Width is None:
+      InitOptions['width'] = Width
+
+    if not Width is None:
+      InitOptions['height'] = Height
+
+    # Create plot
+    c = Pie(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
         series_name = YVar,
         data_pair = data_pair,
@@ -1090,7 +1150,9 @@ def Donut(dt = None,
           Theme = 'wonderland',
           Legend = None,
           LegendPosRight = '0%',
-          LegendPosTop = '5%'):
+          LegendPosTop = '5%',
+          Width = None,
+          Height = None):
     
     """
     # Parameters
@@ -1111,6 +1173,8 @@ def Donut(dt = None,
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     """
 
     # Load environment
@@ -1165,7 +1229,18 @@ def Donut(dt = None,
     data_pair.sort(key=lambda x: x[1])
     
     # Create plot
-    c = Pie(init_opts = opts.InitOpts(theme = Theme))
+    InitOptions = {}
+    if not Theme is None:
+      InitOptions['theme'] = Theme
+
+    if not Width is None:
+      InitOptions['width'] = Width
+
+    if not Width is None:
+      InitOptions['height'] = Height
+
+    # Create plot
+    c = Pie(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
         series_name = YVar,
         data_pair = data_pair,
@@ -1242,6 +1317,8 @@ def BoxPlot(dt = None,
             ToolBox = True,
             Brush = True,
             DataZoom = True,
+            Width = None,
+            Height = None,
             HorizontalLine = None,
             HorizontalLineName = 'Line Name'):
     
@@ -1272,6 +1349,8 @@ def BoxPlot(dt = None,
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
     HorizontalLineName: add a series name for the horizontal line
     """
@@ -1341,9 +1420,20 @@ def BoxPlot(dt = None,
 
     # Define data elements
     YVal = [dt1[YVar].to_list()]
-    
+
     # Create plot
-    c = Boxplot(init_opts = opts.InitOpts(theme = Theme))
+    InitOptions = {}
+    if not Theme is None:
+      InitOptions['theme'] = Theme
+
+    if not Width is None:
+      InitOptions['width'] = Width
+
+    if not Width is None:
+      InitOptions['height'] = Height
+
+    # Create plot
+    c = Boxplot(init_opts = opts.InitOpts(**InitOptions))
     if not GroupVar is None:
       Buckets = dt1[GroupVar].unique().to_list()
       Buckets.sort()
@@ -1429,7 +1519,9 @@ def WordCloud(dt = None,
               SubTitle = None,
               SubTitleColor = "#fff",
               SubTitleFontSize = 12,
-              Theme = 'wonderland'):
+              Theme = 'wonderland',
+              Width = None,
+              Height = None):
     
     """
     # Parameters
@@ -1444,6 +1536,8 @@ def WordCloud(dt = None,
     SubTitleColor: Subtitle color of text. Default "#fff"
     SubTitleFontSize: Font text size. Default 12
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     """
 
     # Load environment
@@ -1489,7 +1583,18 @@ def WordCloud(dt = None,
     data_pair.sort(key=lambda x: x[1])
 
     # Create plot
-    c = WordCloud(init_opts = opts.InitOpts(theme = Theme))
+    InitOptions = {}
+    if not Theme is None:
+      InitOptions['theme'] = Theme
+
+    if not Width is None:
+      InitOptions['width'] = Width
+
+    if not Width is None:
+      InitOptions['height'] = Height
+
+    # Create plot
+    c = WordCloud(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(series_name = YVar, data_pair = data_pair, word_size_range=[6, 66])
 
     # Global Options
@@ -1537,7 +1642,9 @@ def Radar(dt = None,
           LineColors = ["#213f7f", "#00a6fb", "#22c0df", "#8e5fa8", "#ed1690"],
           Legend = None,
           LegendPosRight = '0%',
-          LegendPosTop = '5%'):
+          LegendPosTop = '5%',
+          Width = None,
+          Height = None):
     
     """
     # Parameters
@@ -1559,6 +1666,8 @@ def Radar(dt = None,
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     """
 
     # Load environment
@@ -1613,7 +1722,18 @@ def Radar(dt = None,
     group_levels = dt1[GroupVar].unique()
 
     # Create plot
-    c = Radar(init_opts = opts.InitOpts(theme = Theme))
+    InitOptions = {}
+    if not Theme is None:
+      InitOptions['theme'] = Theme
+
+    if not Width is None:
+      InitOptions['width'] = Width
+
+    if not Width is None:
+      InitOptions['height'] = Height
+
+    # Create plot
+    c = Radar(init_opts = opts.InitOpts(**InitOptions))
     schema = []
     for gv in group_levels:
       schema.append(opts.RadarIndicatorItem(name = gv))
@@ -1706,6 +1826,8 @@ def Line(dt = None,
          ToolBox = True,
          Brush = True,
          DataZoom = True,
+         Width = None,
+         Height = None,
          VerticalLine = None,
          VerticalLineName = 'Line Name',
          HorizontalLine = None,
@@ -1750,6 +1872,8 @@ def Line(dt = None,
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     VerticalLine: numeric. Add a vertical line on the plot at the value specified
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
@@ -1829,9 +1953,20 @@ def Line(dt = None,
         yvar_dict[yvar] = dt1[yvar].to_list()
         
       XVal = dt1[XVar].unique().to_list()
-      
+
       # Create plot
-      c = Line(init_opts = opts.InitOpts(theme = Theme))
+      InitOptions = {}
+      if not Theme is None:
+        InitOptions['theme'] = Theme
+
+      if not Width is None:
+        InitOptions['width'] = Width
+
+      if not Width is None:
+        InitOptions['height'] = Height
+
+      # Create plot
+      c = Line(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -1924,9 +2059,20 @@ def Line(dt = None,
           yvar_dict[gv] = temp[YVar].to_list()
   
         XVal = dt1[XVar].unique().to_list()
-        
+
         # Create plot
-        c = Line(init_opts = opts.InitOpts(theme = Theme))
+        InitOptions = {}
+        if not Theme is None:
+          InitOptions['theme'] = Theme
+
+        if not Width is None:
+          InitOptions['width'] = Width
+
+        if not Width is None:
+          InitOptions['height'] = Height
+  
+        # Create plot
+        c = Line(init_opts = opts.InitOpts(**InitOptions))
         c = c.add_xaxis(xaxis_data = XVal)
         if not Symbol is None:
           ShowSymbol = True
@@ -2112,6 +2258,8 @@ def StackedLine(dt = None,
                 ToolBox = True,
                 Brush = True,
                 DataZoom = True,
+                Width = None,
+                Height = None,
                 VerticalLine = None,
                 VerticalLineName = 'Line Name',
                 HorizontalLine = None,
@@ -2153,6 +2301,8 @@ def StackedLine(dt = None,
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     VerticalLine: numeric. Add a vertical line on the plot at the value specified
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
@@ -2235,9 +2385,20 @@ def StackedLine(dt = None,
         yvar_dict[yvar] = dt1[yvar].to_list()
         
       XVal = dt1[XVar].unique().to_list()
-      
+
       # Create plot
-      c = Line(init_opts = opts.InitOpts(theme = Theme))
+      InitOptions = {}
+      if not Theme is None:
+        InitOptions['theme'] = Theme
+
+      if not Width is None:
+        InitOptions['width'] = Width
+
+      if not Width is None:
+        InitOptions['height'] = Height
+
+      # Create plot
+      c = Line(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -2328,9 +2489,20 @@ def StackedLine(dt = None,
         yvar_dict[gv] = temp[YVar].to_list()
 
       XVal = dt1[XVar].unique().to_list()
-      
+
       # Create plot
-      c = Line(init_opts = opts.InitOpts(theme = Theme))
+      InitOptions = {}
+      if not Theme is None:
+        InitOptions['theme'] = Theme
+
+      if not Width is None:
+        InitOptions['width'] = Width
+
+      if not Width is None:
+        InitOptions['height'] = Height
+
+      # Create plot
+      c = Line(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -2451,6 +2623,8 @@ def Step(dt = None,
          ToolBox = True,
          Brush = True,
          DataZoom = True,
+         Width = None,
+         Height = None,
          VerticalLine = None,
          VerticalLineName = 'Line Name',
          HorizontalLine = None,
@@ -2494,6 +2668,8 @@ def Step(dt = None,
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     VerticalLine: numeric. Add a vertical line on the plot at the value specified
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
@@ -2572,9 +2748,20 @@ def Step(dt = None,
         yvar_dict[yvar] = dt1[yvar].to_list()
         
       XVal = dt1[XVar].unique().to_list()
-      
+
       # Create plot
-      c = Line(init_opts = opts.InitOpts(theme = Theme))
+      InitOptions = {}
+      if not Theme is None:
+        InitOptions['theme'] = Theme
+
+      if not Width is None:
+        InitOptions['width'] = Width
+
+      if not Width is None:
+        InitOptions['height'] = Height
+
+      # Create plot
+      c = Line(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -2667,9 +2854,20 @@ def Step(dt = None,
           yvar_dict[gv] = temp[YVar].to_list()
   
         XVal = dt1[XVar].unique().to_list()
-        
+
         # Create plot
-        c = Line(init_opts = opts.InitOpts(theme = Theme))
+        InitOptions = {}
+        if not Theme is None:
+          InitOptions['theme'] = Theme
+
+        if not Width is None:
+          InitOptions['width'] = Width
+
+        if not Width is None:
+          InitOptions['height'] = Height
+  
+        # Create plot
+        c = Line(init_opts = opts.InitOpts(**InitOptions))
         c = c.add_xaxis(xaxis_data = XVal)
         if not Symbol is None:
           ShowSymbol = True
@@ -2856,6 +3054,8 @@ def StackedStep(dt = None,
                 ToolBox = True,
                 Brush = True,
                 DataZoom = True,
+                Width = None,
+                Height = None,
                 VerticalLine = None,
                 VerticalLineName = 'Line Name',
                 HorizontalLine = None,
@@ -2896,6 +3096,8 @@ def StackedStep(dt = None,
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     VerticalLine: numeric. Add a vertical line on the plot at the value specified
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
@@ -2977,9 +3179,20 @@ def StackedStep(dt = None,
         yvar_dict[yvar] = dt1[yvar].to_list()
         
       XVal = dt1[XVar].unique().to_list()
-      
+
       # Create plot
-      c = Line(init_opts = opts.InitOpts(theme = Theme))
+      InitOptions = {}
+      if not Theme is None:
+        InitOptions['theme'] = Theme
+
+      if not Width is None:
+        InitOptions['width'] = Width
+
+      if not Width is None:
+        InitOptions['height'] = Height
+
+      # Create plot
+      c = Line(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -3070,9 +3283,20 @@ def StackedStep(dt = None,
         yvar_dict[gv] = temp[YVar].to_list()
 
       XVal = dt1[XVar].unique().to_list()
-      
+
       # Create plot
-      c = Line(init_opts = opts.InitOpts(theme = Theme))
+      InitOptions = {}
+      if not Theme is None:
+        InitOptions['theme'] = Theme
+
+      if not Width is None:
+        InitOptions['width'] = Width
+
+      if not Width is None:
+        InitOptions['height'] = Height
+
+      # Create plot
+      c = Line(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -3217,6 +3441,8 @@ def Area(dt = None,
          ToolBox = True,
          Brush = True,
          DataZoom = True,
+         Width = None,
+         Height = None,
          VerticalLine = None,
          VerticalLineName = 'Line Name',
          HorizontalLine = None,
@@ -3263,6 +3489,8 @@ def Area(dt = None,
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     VerticalLine: numeric. Add a vertical line on the plot at the value specified
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
@@ -3344,7 +3572,18 @@ def Area(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      c = Line(init_opts = opts.InitOpts(theme = Theme))
+      InitOptions = {}
+      if not Theme is None:
+        InitOptions['theme'] = Theme
+
+      if not Width is None:
+        InitOptions['width'] = Width
+
+      if not Width is None:
+        InitOptions['height'] = Height
+
+      # Create plot
+      c = Line(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -3445,9 +3684,20 @@ def Area(dt = None,
           yvar_dict[gv] = temp[YVar].to_list()
   
         XVal = dt1[XVar].unique().to_list()
-        
+
         # Create plot
-        c = Line(init_opts = opts.InitOpts(theme = Theme))
+        InitOptions = {}
+        if not Theme is None:
+          InitOptions['theme'] = Theme
+
+        if not Width is None:
+          InitOptions['width'] = Width
+
+        if not Width is None:
+          InitOptions['height'] = Height
+  
+        # Create plot
+        c = Line(init_opts = opts.InitOpts(**InitOptions))
         c = c.add_xaxis(xaxis_data = XVal)
         if not Symbol is None:
           ShowSymbol = True
@@ -3637,6 +3887,8 @@ def StackedArea(dt = None,
                 ToolBox = True,
                 Brush = True,
                 DataZoom = True,
+                Width = None,
+                Height = None,
                 VerticalLine = None,
                 VerticalLineName = 'Line Name',
                 HorizontalLine = None,
@@ -3678,6 +3930,8 @@ def StackedArea(dt = None,
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     VerticalLine: numeric. Add a vertical line on the plot at the value specified
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
@@ -3762,7 +4016,18 @@ def StackedArea(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      c = Line(init_opts = opts.InitOpts(theme = Theme))
+      InitOptions = {}
+      if not Theme is None:
+        InitOptions['theme'] = Theme
+
+      if not Width is None:
+        InitOptions['width'] = Width
+
+      if not Width is None:
+        InitOptions['height'] = Height
+
+      # Create plot
+      c = Line(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -3857,7 +4122,18 @@ def StackedArea(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      c = Line(init_opts = opts.InitOpts(theme = Theme))
+      InitOptions = {}
+      if not Theme is None:
+        InitOptions['theme'] = Theme
+
+      if not Width is None:
+        InitOptions['width'] = Width
+
+      if not Width is None:
+        InitOptions['height'] = Height
+
+      # Create plot
+      c = Line(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -3976,6 +4252,8 @@ def Bar(dt = None,
         ToolBox = True,
         Brush = True,
         DataZoom = True,
+        Width = None,
+        Height = None,
         VerticalLine = None,
         VerticalLineName = 'Line Name',
         HorizontalLine = None,
@@ -4016,6 +4294,8 @@ def Bar(dt = None,
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     VerticalLine: numeric. Add a vertical line on the plot at the value specified
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
@@ -4095,7 +4375,18 @@ def Bar(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      c = Bar(init_opts = opts.InitOpts(theme = Theme))
+      InitOptions = {}
+      if not Theme is None:
+        InitOptions['theme'] = Theme
+
+      if not Width is None:
+        InitOptions['width'] = Width
+
+      if not Width is None:
+        InitOptions['height'] = Height
+
+      # Create plot
+      c = Bar(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       for yvar in YVar:
         yaxis_options = {}
@@ -4180,9 +4471,19 @@ def Bar(dt = None,
           yvar_dict[gv] = temp[YVar].to_list()
 
         XVal = dt1[XVar].unique().to_list()
-        
+
+        InitOptions = {}
+        if not Theme is None:
+          InitOptions['theme'] = Theme
+
+        if not Width is None:
+          InitOptions['width'] = Width
+
+        if not Width is None:
+          InitOptions['height'] = Height
+  
         # Create plot
-        c = Bar(init_opts = opts.InitOpts(theme = Theme))
+        c = Bar(init_opts = opts.InitOpts(**InitOptions))
         c = c.add_xaxis(xaxis_data = XVal)
         for yvar in GroupLevels:
           c = c.add_yaxis(
@@ -4348,6 +4649,8 @@ def StackedBar(dt = None,
                ToolBox = True,
                Brush = True,
                DataZoom = True,
+               Width = None,
+               Height = None,
                VerticalLine = None,
                VerticalLineName = 'Line Name',
                HorizontalLine = None,
@@ -4385,6 +4688,8 @@ def StackedBar(dt = None,
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     VerticalLine: numeric. Add a vertical line on the plot at the value specified
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
@@ -4466,7 +4771,18 @@ def StackedBar(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      c = Bar(init_opts = opts.InitOpts(theme = Theme))
+      InitOptions = {}
+      if not Theme is None:
+        InitOptions['theme'] = Theme
+
+      if not Width is None:
+        InitOptions['width'] = Width
+
+      if not Width is None:
+        InitOptions['height'] = Height
+
+      # Create plot
+      c = Bar(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       for yvar in YVar:
         yaxis_options = {}
@@ -4551,7 +4867,18 @@ def StackedBar(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      c = Bar(init_opts = opts.InitOpts(theme = Theme))
+      InitOptions = {}
+      if not Theme is None:
+        InitOptions['theme'] = Theme
+
+      if not Width is None:
+        InitOptions['width'] = Width
+
+      if not Width is None:
+        InitOptions['height'] = Height
+
+      # Create plot
+      c = Bar(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       for yvar in GroupLevels:
         c = c.add_yaxis(
@@ -4657,7 +4984,9 @@ def Heatmap(dt = None,
             LegendPosTop = '5%',
             ToolBox = True,
             Brush = True,
-            DataZoom = True):
+            DataZoom = True,
+            Width = None,
+            Height = None):
     
     """
     # Parameters
@@ -4692,6 +5021,8 @@ def Heatmap(dt = None,
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     """
 
     # Load environment
@@ -4779,7 +5110,18 @@ def Heatmap(dt = None,
           data[counter] = [i, j, dt2[MeasureVar][counter]]
 
     # Create plot
-    c = HeatMap(init_opts = opts.InitOpts(theme = Theme))
+    InitOptions = {}
+    if not Theme is None:
+      InitOptions['theme'] = Theme
+
+    if not Width is None:
+      InitOptions['width'] = Width
+
+    if not Width is None:
+      InitOptions['height'] = Height
+
+    # Create plot
+    c = HeatMap(init_opts = opts.InitOpts(**InitOptions))
     c = c.add_xaxis(xvar_unique)
     c = c.add_yaxis(
       series_name = MeasureVar,
@@ -4876,6 +5218,8 @@ def Scatter(dt = None,
             ToolBox = True,
             Brush = True,
             DataZoom = True,
+            Width = None,
+            Height = None,
             VerticalLine = None,
             VerticalLineName = 'Line Name',
             HorizontalLine = None,
@@ -4919,6 +5263,8 @@ def Scatter(dt = None,
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     VerticalLine: numeric. Add a vertical line on the plot at the value specified
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
@@ -5002,9 +5348,20 @@ def Scatter(dt = None,
     if GroupVar is None:
       YVal = dt1[YVar].to_list()
       XVal = dt1[XVar].to_list()
-      
+
       # Create plot
-      c = Scatter(init_opts = opts.InitOpts(theme = Theme))
+      InitOptions = {}
+      if not Theme is None:
+        InitOptions['theme'] = Theme
+
+      if not Width is None:
+        InitOptions['width'] = Width
+
+      if not Width is None:
+        InitOptions['height'] = Height
+
+      # Create plot
+      c = Scatter(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -5095,7 +5452,18 @@ def Scatter(dt = None,
           xvar_dict[gv] = temp[XVar].to_list()
 
         # Create plot
-        c = Scatter(init_opts = opts.InitOpts(theme = Theme))
+        InitOptions = {}
+        if not Theme is None:
+          InitOptions['theme'] = Theme
+
+        if not Width is None:
+          InitOptions['width'] = Width
+
+        if not Width is None:
+          InitOptions['height'] = Height
+
+        # Create plot
+        c = Scatter(init_opts = opts.InitOpts(**InitOptions))
         if not Symbol is None:
           ShowSymbol = True
         else:
@@ -5255,7 +5623,9 @@ def Scatter3D(dt = None,
               XVarTrans = None,
               ZVarTrans = None,
               RenderHTML = False,
-              SymbolSize = 6):
+              SymbolSize = 6,
+              Width = None,
+              Height = None):
     
     """
     # Parameters
@@ -5271,6 +5641,8 @@ def Scatter3D(dt = None,
     ZVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     SymbolSize: Default 6
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     """
 
     # Load environment
@@ -5292,15 +5664,13 @@ def Scatter3D(dt = None,
     # ZVarTrans = 'sqrt'
     # SymbolSize = 6
     # RenderHTML = False
+    # Width = "1000px"
+    # Height = "600px"
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
     # Define Plotting Variable
     if YVar == None:
       return None
-    
-    if isinstance(YVar, list):
-      if len(YVar) > 1:
-        GroupVar = None
     
     # Cap number of records and define dt1
     if SampleSize != None:
@@ -5341,7 +5711,18 @@ def Scatter3D(dt = None,
     data = list(zip(YVal, XVal, ZVal, color, symbolSize))
 
     # Create plot
-    c = Scatter3D(init_opts = opts.InitOpts(theme = Theme))
+    InitOptions = {}
+    if not Theme is None:
+      InitOptions['theme'] = Theme
+
+    if not Width is None:
+      InitOptions['width'] = Width
+
+    if not Width is None:
+      InitOptions['height'] = Height
+
+    # Create plot
+    c = Scatter3D(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
       series_name="",
       data = data,
@@ -5361,29 +5742,29 @@ def Scatter3D(dt = None,
     )
 
     c = c.set_global_opts(
-        visualmap_opts = [
-          opts.VisualMapOpts(
-            type_ = "color",
-            is_calculable = True,
-            dimension = 3,
-            pos_top = "10",
-            max_ = max(dt1[YVar].max(), dt1[XVar].max(), dt1[ZVar].max()),
-            range_color = [
-                "#1710c0",
-                "#0b9df0",
-                "#00fea8",
-                "#00ff0d",
-                "#f5f811",
-                "#f09a09",
-                "#fe0300",
-            ],
-          ),
-          opts.VisualMapOpts(
-            type_ = "size",
-            is_calculable = True,
-            dimension = 4,
-            range_size = [min(dt1[YVar].min(), dt1[XVar].min(), dt1[ZVar].min()), max(dt1[YVar].max(), dt1[XVar].max(), dt1[ZVar].max())],
-          ),
+      visualmap_opts = [
+        opts.VisualMapOpts(
+          type_ = "color",
+          is_calculable = True,
+          dimension = 3,
+          pos_top = "10",
+          max_ = max(dt1[YVar].max(), dt1[XVar].max(), dt1[ZVar].max()),
+          range_color = [
+            "#1710c0",
+            "#0b9df0",
+            "#00fea8",
+            "#00ff0d",
+            "#f5f811",
+            "#f09a09",
+            "#fe0300",
+          ],
+        ),
+        opts.VisualMapOpts(
+          type_ = "size",
+          is_calculable = True,
+          dimension = 4,
+          range_size = [min(dt1[YVar].min(), dt1[XVar].min(), dt1[ZVar].min()), max(dt1[YVar].max(), dt1[XVar].max(), dt1[ZVar].max())],
+        ),
       ]
     )
 
@@ -5406,7 +5787,9 @@ def Copula3D(dt = None,
              AggMethod = 'mean',
              Theme = 'wonderland',
              RenderHTML = False,
-             SymbolSize = 6):
+             SymbolSize = 6,
+             Width = None,
+             Height = None):
     
     """
     # Parameters
@@ -5419,6 +5802,8 @@ def Copula3D(dt = None,
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     SymbolSize: Default 6
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     """
 
     # Load environment
@@ -5484,7 +5869,18 @@ def Copula3D(dt = None,
     data = list(zip(YVal, XVal, ZVal, color, symbolSize))
 
     # Create plot
-    c = Scatter3D(init_opts = opts.InitOpts(theme = Theme))
+    InitOptions = {}
+    if not Theme is None:
+      InitOptions['theme'] = Theme
+
+    if not Width is None:
+      InitOptions['width'] = Width
+
+    if not Width is None:
+      InitOptions['height'] = Height
+
+    # Create plot
+    c = Scatter3D(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
       series_name="",
       data = data,
@@ -5575,6 +5971,8 @@ def Copula(dt = None,
            ToolBox = True,
            Brush = True,
            DataZoom = True,
+           Width = None,
+           Height = None,
            VerticalLine = None,
            VerticalLineName = 'Line Name',
            HorizontalLine = None,
@@ -5616,6 +6014,8 @@ def Copula(dt = None,
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     VerticalLine: numeric. Add a vertical line on the plot at the value specified
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
@@ -5696,7 +6096,18 @@ def Copula(dt = None,
       XVal = dt1[XVar].to_list()
       
       # Create plot
-      c = Scatter(init_opts = opts.InitOpts(theme = Theme))
+      InitOptions = {}
+      if not Theme is None:
+        InitOptions['theme'] = Theme
+  
+      if not Width is None:
+        InitOptions['width'] = Width
+  
+      if not Width is None:
+        InitOptions['height'] = Height
+  
+      # Create plot
+      c = Scatter(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -5787,7 +6198,18 @@ def Copula(dt = None,
           xvar_dict[gv] = temp[XVar].to_list()
 
         # Create plot
-        c = Scatter(init_opts = opts.InitOpts(theme = Theme))
+        InitOptions = {}
+        if not Theme is None:
+          InitOptions['theme'] = Theme
+    
+        if not Width is None:
+          InitOptions['width'] = Width
+    
+        if not Width is None:
+          InitOptions['height'] = Height
+    
+        # Create plot
+        c = Scatter(init_opts = opts.InitOpts(**InitOptions))
         if not Symbol is None:
           ShowSymbol = True
         else:
@@ -5943,7 +6365,9 @@ def Parallel(dt = None,
              RenderHTML = False,
              SymbolSize = 6,
              Opacity = 0.05,
-             LineWidth = 0.20):
+             LineWidth = 0.20,
+             Width = None,
+             Height = None):
     
     """
     # Parameters
@@ -5955,6 +6379,8 @@ def Parallel(dt = None,
     SymbolSize: Default 6
     Opacity: Default 0.05
     LineWidth: Default 0.20
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     """
 
     # Load environment
@@ -6009,7 +6435,18 @@ def Parallel(dt = None,
     data = list(zip(*data_dict.values()))
 
     # Create plot
-    c = Parallel(init_opts = opts.InitOpts(theme = Theme))
+    InitOptions = {}
+    if not Theme is None:
+      InitOptions['theme'] = Theme
+
+    if not Width is None:
+      InitOptions['width'] = Width
+
+    if not Width is None:
+      InitOptions['height'] = Height
+
+    # Create plot
+    c = Parallel(init_opts = opts.InitOpts(**InitOptions))
     c = c.add_schema(schema = parallel_axis)
     c = c.add(
         series_name = "",
@@ -6039,7 +6476,9 @@ def Funnel(dt = None,
            Legend = None,
            LegendPosRight = '0%',
            LegendPosTop = '5%',
-           RenderHTML = False):
+           RenderHTML = False,
+           Width = None,
+           Height = None):
     
     """
     # Parameters
@@ -6053,6 +6492,8 @@ def Funnel(dt = None,
     TitleFontSize: Font size. Default = 20
     SeriesLabel: For hover data
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     """
 
     # Load environment
@@ -6069,8 +6510,20 @@ def Funnel(dt = None,
     # Theme = 'wonderland'
     # RenderHTML = False
     
+    # Create plot
+    InitOptions = {}
+    if not Theme is None:
+      InitOptions['theme'] = Theme
+
+    if not Width is None:
+      InitOptions['width'] = Width
+
+    if not Width is None:
+      InitOptions['height'] = Height
+
+    # Create plot
     c = (
-      Funnel(init_opts = opts.InitOpts(theme = Theme))
+      Funnel(init_opts = opts.InitOpts(**InitOptions))
       .add(SeriesLabel, [list(z) for z in zip(CategoryVar, ValuesVar)], label_opts = opts.LabelOpts(position="inside"), sort_ = SortStyle)
     )
 
@@ -6123,6 +6576,8 @@ def Bar3D(dt = None,
           LegendPosTop = '5%',
           Brush = True,
           DataZoom = True,
+          Width = None,
+          Height = None,
           Theme = 'wonderland'):
     
     """
@@ -6147,6 +6602,8 @@ def Bar3D(dt = None,
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
     """
 
@@ -6217,9 +6674,19 @@ def Bar3D(dt = None,
         else:
           data[counter] = [i, j, dt2[ZVar][counter]]
 
+    # Create plot
+    InitOptions = {}
+    if not Theme is None:
+      InitOptions['theme'] = Theme
+
+    if not Width is None:
+      InitOptions['width'] = Width
+
+    if not Width is None:
+      InitOptions['height'] = Height
 
     # Create plot
-    c = Bar3D(init_opts = opts.InitOpts(theme = Theme))
+    c = Bar3D(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
         "Bar3D Data",
         data,
@@ -6299,6 +6766,8 @@ def River(dt = None,
           ToolBox = True,
           Brush = True,
           DataZoom = True,
+          Width = None,
+          Height = None,
           RenderHTML = False):
     
     """
@@ -6321,6 +6790,8 @@ def River(dt = None,
     ToolBox: Logical. Select True to enable toolbox for zooming and other functionality
     Brush: Logical. Select True for addition ToolBox functionality. Default is True
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
+    Width: Default None. Otherwise, use something like this "1000px"
+    Height: Default None. Otherwise, use something like this "600px"
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     """
 
@@ -6335,6 +6806,7 @@ def River(dt = None,
     # DateVar = 'Date'
     # GroupVar = 'Brand'
     # YVarTrans = 'logmin'
+    # AggMethod = "sum"
     # Title = "River Plot"
     # TitleColor = "#fff"
     # TitleFontSize = 20
@@ -6393,7 +6865,18 @@ def River(dt = None,
       YVal = dt1[YVars].to_list()
       data = [[DateVal[i], YVal[i], GroupVal[i]] for i in range(min(len(DateVal), len(YVal), len(GroupVal)))]
 
-    c = ThemeRiver()
+    # Create plot
+    InitOptions = {}
+    if not Theme is None:
+      InitOptions['theme'] = Theme
+
+    if not Width is None:
+      InitOptions['width'] = Width
+
+    if not Width is None:
+      InitOptions['height'] = Height
+
+    c = ThemeRiver(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
       series_name = x_data,
       data = data,
