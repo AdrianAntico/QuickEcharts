@@ -205,6 +205,7 @@ def Histogram(dt = None,
               XAxisNameLocation = 'middle',
               XAxisNameGap = 42,
               Theme = 'wonderland',
+              BackgroundColor = None,
               NumberBins = 20,
               CategoryGap = "10%",
               Legend = None,
@@ -213,8 +214,8 @@ def Histogram(dt = None,
               ToolBox = True,
               Brush = True,
               DataZoom = True,
-              Width = None, # "1000px",
-              Height = None, # "600px"
+              Width = None,
+              Height = None,
               VerticalLine = None,
               VerticalLineName = 'Line Name',
               HorizontalLine = None,
@@ -241,6 +242,7 @@ def Histogram(dt = None,
     XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
     XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     NumberBins: number of histogram bins. Default is 20
     CategoryGap: amount of spacing between bars
     Legend: Choose from None, 'right', 'top'
@@ -355,6 +357,11 @@ def Histogram(dt = None,
 
       if not Width is None:
         InitOptions['height'] = Height
+
+      if not BackgroundColor is None:
+        InitOptions['bg_color'] = BackgroundColor
+
+      InitOptions['is_horizontal_center'] = True
 
       c = Bar(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(Buckets)
@@ -516,6 +523,7 @@ def Density(dt = None,
             XAxisNameLocation = 'middle',
             XAxisNameGap = 42,
             Theme = 'wonderland',
+            BackgroundColor = None,
             Legend = None,
             LegendPosRight = '0%',
             LegendPosTop = '5%',
@@ -552,6 +560,7 @@ def Density(dt = None,
     XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
     XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
@@ -668,6 +677,11 @@ def Density(dt = None,
 
       if not Width is None:
         InitOptions['height'] = Height
+
+      if not BackgroundColor is None:
+        InitOptions['bg_color'] = BackgroundColor
+
+      InitOptions['is_horizontal_center'] = True
 
       # Create plot
       c = Line(init_opts = opts.InitOpts(**InitOptions))
@@ -831,6 +845,7 @@ def Pie(dt = None,
         SubTitleColor = "#fff",
         SubTitleFontSize = 12,
         Theme = 'wonderland',
+        BackgroundColor = None,
         Legend = None,
         LegendPosRight = '0%',
         LegendPosTop = '5%',
@@ -853,6 +868,7 @@ def Pie(dt = None,
     SubTitleColor: Subtitle color of text. Default "#fff"
     SubTitleFontSize: Font text size. Default 12
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
@@ -918,6 +934,11 @@ def Pie(dt = None,
 
     if not Width is None:
       InitOptions['height'] = Height
+
+    if not BackgroundColor is None:
+      InitOptions['bg_color'] = BackgroundColor
+
+    InitOptions['is_horizontal_center'] = True
 
     # Create plot
     c = Pie(init_opts = opts.InitOpts(**InitOptions))
@@ -987,6 +1008,7 @@ def Rosetype(dt = None,
              SubTitleColor = "#fff",
              SubTitleFontSize = 12,
              Theme = 'wonderland',
+             BackgroundColor = None,
              Legend = None,
              LegendPosRight = '0%',
              LegendPosTop = '5%',
@@ -1011,6 +1033,7 @@ def Rosetype(dt = None,
     SubTitleColor: Subtitle color of text. Default "#fff"
     SubTitleFontSize: Font text size. Default 12
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
@@ -1080,6 +1103,11 @@ def Rosetype(dt = None,
     if not Width is None:
       InitOptions['height'] = Height
 
+    if not BackgroundColor is None:
+      InitOptions['bg_color'] = BackgroundColor
+
+    InitOptions['is_horizontal_center'] = True
+
     # Create plot
     c = Pie(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
@@ -1148,6 +1176,7 @@ def Donut(dt = None,
           SubTitleColor = "#fff",
           SubTitleFontSize = 12,
           Theme = 'wonderland',
+          BackgroundColor = None,
           Legend = None,
           LegendPosRight = '0%',
           LegendPosTop = '5%',
@@ -1170,6 +1199,7 @@ def Donut(dt = None,
     SubTitleColor: Subtitle color of text. Default "#fff"
     SubTitleFontSize: Font text size. Default 12
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
@@ -1239,14 +1269,19 @@ def Donut(dt = None,
     if not Width is None:
       InitOptions['height'] = Height
 
+    if not BackgroundColor is None:
+      InitOptions['bg_color'] = BackgroundColor
+
+    InitOptions['is_horizontal_center'] = True
+
     # Create plot
     c = Pie(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
-        series_name = YVar,
-        data_pair = data_pair,
-        radius = ["40%","70%"],
-        center = ["50%", "50%"],
-        label_opts = opts.LabelOpts(is_show=False, position="center"),
+      series_name = YVar,
+      data_pair = data_pair,
+      radius = ["40%","70%"],
+      center = ["50%", "50%"],
+      label_opts = opts.LabelOpts(is_show=False, position="center"),
     )
 
     # Global Options
@@ -1311,6 +1346,7 @@ def BoxPlot(dt = None,
             XAxisNameLocation = 'middle',
             XAxisNameGap = 42,
             Theme = 'wonderland',
+            BackgroundColor = None,
             Legend = None,
             LegendPosRight = '0%',
             LegendPosTop = '5%',
@@ -1343,6 +1379,7 @@ def BoxPlot(dt = None,
     XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
     XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
@@ -1432,6 +1469,11 @@ def BoxPlot(dt = None,
     if not Width is None:
       InitOptions['height'] = Height
 
+    if not BackgroundColor is None:
+      InitOptions['bg_color'] = BackgroundColor
+
+    InitOptions['is_horizontal_center'] = True
+
     # Create plot
     c = Boxplot(init_opts = opts.InitOpts(**InitOptions))
     if not GroupVar is None:
@@ -1520,6 +1562,7 @@ def WordCloud(dt = None,
               SubTitleColor = "#fff",
               SubTitleFontSize = 12,
               Theme = 'wonderland',
+              BackgroundColor = None,
               Width = None,
               Height = None):
     
@@ -1536,6 +1579,7 @@ def WordCloud(dt = None,
     SubTitleColor: Subtitle color of text. Default "#fff"
     SubTitleFontSize: Font text size. Default 12
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
     """
@@ -1593,6 +1637,11 @@ def WordCloud(dt = None,
     if not Width is None:
       InitOptions['height'] = Height
 
+    if not BackgroundColor is None:
+      InitOptions['bg_color'] = BackgroundColor
+
+    InitOptions['is_horizontal_center'] = True
+
     # Create plot
     c = WordCloud(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(series_name = YVar, data_pair = data_pair, word_size_range=[6, 66])
@@ -1638,6 +1687,7 @@ def Radar(dt = None,
           SubTitleColor = "#fff",
           SubTitleFontSize = 12,
           Theme = 'wonderland',
+          BackgroundColor = None,
           LabelColor = '#fff',
           LineColors = ["#213f7f", "#00a6fb", "#22c0df", "#8e5fa8", "#ed1690"],
           Legend = None,
@@ -1661,6 +1711,7 @@ def Radar(dt = None,
     SubTitleColor: Subtitle color of text. Default "#fff"
     SubTitleFontSize: Font text size. Default 12
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     LabelColor: color for the radar category labels. Default is '#fff'
     LineColors: Default list ["#213f7f", "#00a6fb", "#22c0df", "#8e5fa8", "#ed1690"]. If you need more add more.
     Legend: Choose from None, 'right', 'top'
@@ -1731,6 +1782,11 @@ def Radar(dt = None,
 
     if not Width is None:
       InitOptions['height'] = Height
+
+    if not BackgroundColor is None:
+      InitOptions['bg_color'] = BackgroundColor
+
+    InitOptions['is_horizontal_center'] = True
 
     # Create plot
     c = Radar(init_opts = opts.InitOpts(**InitOptions))
@@ -1820,6 +1876,7 @@ def Line(dt = None,
          XAxisNameLocation = 'middle',
          XAxisNameGap = 42,
          Theme = 'wonderland',
+         BackgroundColor = None,
          Legend = None,
          LegendPosRight = '0%',
          LegendPosTop = '5%',
@@ -1866,6 +1923,7 @@ def Line(dt = None,
     XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
     XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
@@ -1964,6 +2022,11 @@ def Line(dt = None,
 
       if not Width is None:
         InitOptions['height'] = Height
+
+      if not BackgroundColor is None:
+        InitOptions['bg_color'] = BackgroundColor
+  
+      InitOptions['is_horizontal_center'] = True
 
       # Create plot
       c = Line(init_opts = opts.InitOpts(**InitOptions))
@@ -2070,7 +2133,12 @@ def Line(dt = None,
 
         if not Width is None:
           InitOptions['height'] = Height
-  
+
+        if not BackgroundColor is None:
+          InitOptions['bg_color'] = BackgroundColor
+    
+        InitOptions['is_horizontal_center'] = True
+
         # Create plot
         c = Line(init_opts = opts.InitOpts(**InitOptions))
         c = c.add_xaxis(xaxis_data = XVal)
@@ -2252,6 +2320,7 @@ def StackedLine(dt = None,
                 XAxisNameLocation = 'middle',
                 XAxisNameGap = 42,
                 Theme = 'wonderland',
+                BackgroundColor = None,
                 Legend = None,
                 LegendPosRight = '0%',
                 LegendPosTop = '5%',
@@ -2295,6 +2364,7 @@ def StackedLine(dt = None,
     XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
     XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
@@ -2396,6 +2466,11 @@ def StackedLine(dt = None,
 
       if not Width is None:
         InitOptions['height'] = Height
+
+      if not BackgroundColor is None:
+        InitOptions['bg_color'] = BackgroundColor
+  
+      InitOptions['is_horizontal_center'] = True
 
       # Create plot
       c = Line(init_opts = opts.InitOpts(**InitOptions))
@@ -2500,6 +2575,11 @@ def StackedLine(dt = None,
 
       if not Width is None:
         InitOptions['height'] = Height
+
+      if not BackgroundColor is None:
+        InitOptions['bg_color'] = BackgroundColor
+  
+      InitOptions['is_horizontal_center'] = True
 
       # Create plot
       c = Line(init_opts = opts.InitOpts(**InitOptions))
@@ -2617,6 +2697,7 @@ def Step(dt = None,
          XAxisNameLocation = 'middle',
          XAxisNameGap = 42,
          Theme = 'wonderland',
+         BackgroundColor = None,
          Legend = None,
          LegendPosRight = '0%',
          LegendPosTop = '5%',
@@ -2662,6 +2743,7 @@ def Step(dt = None,
     XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
     XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
@@ -2759,6 +2841,11 @@ def Step(dt = None,
 
       if not Width is None:
         InitOptions['height'] = Height
+
+      if not BackgroundColor is None:
+        InitOptions['bg_color'] = BackgroundColor
+  
+      InitOptions['is_horizontal_center'] = True
 
       # Create plot
       c = Line(init_opts = opts.InitOpts(**InitOptions))
@@ -2866,6 +2953,11 @@ def Step(dt = None,
         if not Width is None:
           InitOptions['height'] = Height
   
+        if not BackgroundColor is None:
+          InitOptions['bg_color'] = BackgroundColor
+    
+        InitOptions['is_horizontal_center'] = True
+
         # Create plot
         c = Line(init_opts = opts.InitOpts(**InitOptions))
         c = c.add_xaxis(xaxis_data = XVal)
@@ -3048,6 +3140,7 @@ def StackedStep(dt = None,
                 XAxisNameLocation = 'middle',
                 XAxisNameGap = 42,
                 Theme = 'wonderland',
+                BackgroundColor = None,
                 Legend = None,
                 LegendPosRight = '0%',
                 LegendPosTop = '5%',
@@ -3090,6 +3183,7 @@ def StackedStep(dt = None,
     XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
     XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
@@ -3190,6 +3284,11 @@ def StackedStep(dt = None,
 
       if not Width is None:
         InitOptions['height'] = Height
+
+      if not BackgroundColor is None:
+        InitOptions['bg_color'] = BackgroundColor
+  
+      InitOptions['is_horizontal_center'] = True
 
       # Create plot
       c = Line(init_opts = opts.InitOpts(**InitOptions))
@@ -3294,6 +3393,11 @@ def StackedStep(dt = None,
 
       if not Width is None:
         InitOptions['height'] = Height
+
+      if not BackgroundColor is None:
+        InitOptions['bg_color'] = BackgroundColor
+  
+      InitOptions['is_horizontal_center'] = True
 
       # Create plot
       c = Line(init_opts = opts.InitOpts(**InitOptions))
@@ -3435,6 +3539,7 @@ def Area(dt = None,
          XAxisNameLocation = 'middle',
          XAxisNameGap = 42,
          Theme = 'wonderland',
+         BackgroundColor = None,
          Legend = None,
          LegendPosRight = '0%',
          LegendPosTop = '5%',
@@ -3483,6 +3588,7 @@ def Area(dt = None,
     XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
     XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
@@ -3581,6 +3687,11 @@ def Area(dt = None,
 
       if not Width is None:
         InitOptions['height'] = Height
+
+      if not BackgroundColor is None:
+        InitOptions['bg_color'] = BackgroundColor
+  
+      InitOptions['is_horizontal_center'] = True
 
       # Create plot
       c = Line(init_opts = opts.InitOpts(**InitOptions))
@@ -3696,6 +3807,11 @@ def Area(dt = None,
         if not Width is None:
           InitOptions['height'] = Height
   
+        if not BackgroundColor is None:
+          InitOptions['bg_color'] = BackgroundColor
+    
+        InitOptions['is_horizontal_center'] = True
+
         # Create plot
         c = Line(init_opts = opts.InitOpts(**InitOptions))
         c = c.add_xaxis(xaxis_data = XVal)
@@ -3881,6 +3997,7 @@ def StackedArea(dt = None,
                 XAxisNameLocation = 'middle',
                 XAxisNameGap = 42,
                 Theme = 'wonderland',
+                BackgroundColor = None,
                 Legend = None,
                 LegendPosRight = '0%',
                 LegendPosTop = '5%',
@@ -3924,6 +4041,7 @@ def StackedArea(dt = None,
     XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
     XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
@@ -4025,6 +4143,11 @@ def StackedArea(dt = None,
 
       if not Width is None:
         InitOptions['height'] = Height
+
+      if not BackgroundColor is None:
+        InitOptions['bg_color'] = BackgroundColor
+  
+      InitOptions['is_horizontal_center'] = True
 
       # Create plot
       c = Line(init_opts = opts.InitOpts(**InitOptions))
@@ -4131,6 +4254,11 @@ def StackedArea(dt = None,
 
       if not Width is None:
         InitOptions['height'] = Height
+
+      if not BackgroundColor is None:
+        InitOptions['bg_color'] = BackgroundColor
+  
+      InitOptions['is_horizontal_center'] = True
 
       # Create plot
       c = Line(init_opts = opts.InitOpts(**InitOptions))
@@ -4246,6 +4374,7 @@ def Bar(dt = None,
         XAxisNameLocation = 'middle',
         XAxisNameGap = 42,
         Theme = 'wonderland',
+        BackgroundColor = None,
         Legend = None,
         LegendPosRight = '0%',
         LegendPosTop = '5%',
@@ -4288,6 +4417,7 @@ def Bar(dt = None,
     XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
     XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
@@ -4384,6 +4514,11 @@ def Bar(dt = None,
 
       if not Width is None:
         InitOptions['height'] = Height
+
+      if not BackgroundColor is None:
+        InitOptions['bg_color'] = BackgroundColor
+  
+      InitOptions['is_horizontal_center'] = True
 
       # Create plot
       c = Bar(init_opts = opts.InitOpts(**InitOptions))
@@ -4482,6 +4617,11 @@ def Bar(dt = None,
         if not Width is None:
           InitOptions['height'] = Height
   
+        if not BackgroundColor is None:
+          InitOptions['bg_color'] = BackgroundColor
+    
+        InitOptions['is_horizontal_center'] = True
+
         # Create plot
         c = Bar(init_opts = opts.InitOpts(**InitOptions))
         c = c.add_xaxis(xaxis_data = XVal)
@@ -4643,6 +4783,7 @@ def StackedBar(dt = None,
                XAxisNameLocation = 'middle',
                XAxisNameGap = 42,
                Theme = 'wonderland',
+               BackgroundColor = None,
                Legend = None,
                LegendPosRight = '0%',
                LegendPosTop = '5%',
@@ -4682,6 +4823,7 @@ def StackedBar(dt = None,
     XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
     XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
@@ -4781,6 +4923,11 @@ def StackedBar(dt = None,
       if not Width is None:
         InitOptions['height'] = Height
 
+      if not BackgroundColor is None:
+        InitOptions['bg_color'] = BackgroundColor
+  
+      InitOptions['is_horizontal_center'] = True
+
       # Create plot
       c = Bar(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
@@ -4876,6 +5023,11 @@ def StackedBar(dt = None,
 
       if not Width is None:
         InitOptions['height'] = Height
+
+      if not BackgroundColor is None:
+        InitOptions['bg_color'] = BackgroundColor
+  
+      InitOptions['is_horizontal_center'] = True
 
       # Create plot
       c = Bar(init_opts = opts.InitOpts(**InitOptions))
@@ -4979,6 +5131,7 @@ def Heatmap(dt = None,
             XAxisNameLocation = 'middle',
             XAxisNameGap = 42,
             Theme = 'wonderland',
+            BackgroundColor = None,
             Legend = None,
             LegendPosRight = '0%',
             LegendPosTop = '5%',
@@ -5015,6 +5168,7 @@ def Heatmap(dt = None,
     XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
     XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
@@ -5120,6 +5274,11 @@ def Heatmap(dt = None,
     if not Width is None:
       InitOptions['height'] = Height
 
+    if not BackgroundColor is None:
+      InitOptions['bg_color'] = BackgroundColor
+
+    InitOptions['is_horizontal_center'] = True
+
     # Create plot
     c = HeatMap(init_opts = opts.InitOpts(**InitOptions))
     c = c.add_xaxis(xvar_unique)
@@ -5212,6 +5371,7 @@ def Scatter(dt = None,
             XAxisNameLocation = 'middle',
             XAxisNameGap = 42,
             Theme = 'wonderland',
+            BackgroundColor = None,
             Legend = None,
             LegendPosRight = '0%',
             LegendPosTop = '5%',
@@ -5257,6 +5417,7 @@ def Scatter(dt = None,
     XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
     XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
@@ -5360,6 +5521,11 @@ def Scatter(dt = None,
       if not Width is None:
         InitOptions['height'] = Height
 
+      if not BackgroundColor is None:
+        InitOptions['bg_color'] = BackgroundColor
+  
+      InitOptions['is_horizontal_center'] = True
+
       # Create plot
       c = Scatter(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
@@ -5461,6 +5627,11 @@ def Scatter(dt = None,
 
         if not Width is None:
           InitOptions['height'] = Height
+
+        if not BackgroundColor is None:
+          InitOptions['bg_color'] = BackgroundColor
+    
+        InitOptions['is_horizontal_center'] = True
 
         # Create plot
         c = Scatter(init_opts = opts.InitOpts(**InitOptions))
@@ -5619,6 +5790,7 @@ def Scatter3D(dt = None,
               ColorMapVar = "ZVar",
               AggMethod = 'mean',
               Theme = 'wonderland',
+              BackgroundColor = None,
               YVarTrans = None,
               XVarTrans = None,
               ZVarTrans = None,
@@ -5721,6 +5893,11 @@ def Scatter3D(dt = None,
     if not Width is None:
       InitOptions['height'] = Height
 
+    if not BackgroundColor is None:
+      InitOptions['bg_color'] = BackgroundColor
+
+    InitOptions['is_horizontal_center'] = True
+
     # Create plot
     c = Scatter3D(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
@@ -5786,6 +5963,7 @@ def Copula3D(dt = None,
              ColorMapVar = "ZVar",
              AggMethod = 'mean',
              Theme = 'wonderland',
+             BackgroundColor = None,
              RenderHTML = False,
              SymbolSize = 6,
              Width = None,
@@ -5879,6 +6057,11 @@ def Copula3D(dt = None,
     if not Width is None:
       InitOptions['height'] = Height
 
+    if not BackgroundColor is None:
+      InitOptions['bg_color'] = BackgroundColor
+
+    InitOptions['is_horizontal_center'] = True
+
     # Create plot
     c = Scatter3D(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
@@ -5965,6 +6148,7 @@ def Copula(dt = None,
            XAxisNameLocation = 'middle',
            XAxisNameGap = 42,
            Theme = 'wonderland',
+           BackgroundColor = None,
            Legend = None,
            LegendPosRight = '0%',
            LegendPosTop = '5%',
@@ -6008,6 +6192,7 @@ def Copula(dt = None,
     XAxisNameLocation: Where the label resides. 'end', 'middle', 'start'
     XAxisNameGap: offsetting where the title ends up. For 'middle', default is 42
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     Legend: Choose from None, 'right', 'top'
     LegendPosRight: If Legend == 'right' you can specify location from right border. Default is '0%'
     LegendPosTop: If Legen == 'right' or 'top' you can specify distance from the top border. Default is '5%'
@@ -6105,7 +6290,12 @@ def Copula(dt = None,
   
       if not Width is None:
         InitOptions['height'] = Height
+
+      if not BackgroundColor is None:
+        InitOptions['bg_color'] = BackgroundColor
   
+      InitOptions['is_horizontal_center'] = True
+
       # Create plot
       c = Scatter(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
@@ -6207,7 +6397,12 @@ def Copula(dt = None,
     
         if not Width is None:
           InitOptions['height'] = Height
+
+        if not BackgroundColor is None:
+          InitOptions['bg_color'] = BackgroundColor
     
+        InitOptions['is_horizontal_center'] = True
+
         # Create plot
         c = Scatter(init_opts = opts.InitOpts(**InitOptions))
         if not Symbol is None:
@@ -6362,6 +6557,7 @@ def Parallel(dt = None,
              Vars = None,
              VarsTrans = None,
              Theme = 'wonderland',
+             BackgroundColor = None,
              RenderHTML = False,
              SymbolSize = 6,
              Opacity = 0.05,
@@ -6445,6 +6641,11 @@ def Parallel(dt = None,
     if not Width is None:
       InitOptions['height'] = Height
 
+    if not BackgroundColor is None:
+      InitOptions['bg_color'] = BackgroundColor
+
+    InitOptions['is_horizontal_center'] = True
+
     # Create plot
     c = Parallel(init_opts = opts.InitOpts(**InitOptions))
     c = c.add_schema(schema = parallel_axis)
@@ -6470,6 +6671,7 @@ def Funnel(dt = None,
            SeriesLabel = "Funnel Data",
            SortStyle = 'decending',
            Theme = 'wonderland',
+           BackgroundColor = None,
            Title = "Funnel",
            TitleColor = "#fff",
            TitleFontSize = 20,
@@ -6487,6 +6689,7 @@ def Funnel(dt = None,
     ValuesVar: List. Values for the funnel
     SortStyle: Default "decending". Otherwise, "ascending"
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     Title: Plot title
     TitleColor: Font color. Default "#fff" 
     TitleFontSize: Font size. Default = 20
@@ -6520,6 +6723,11 @@ def Funnel(dt = None,
 
     if not Width is None:
       InitOptions['height'] = Height
+
+    if not BackgroundColor is None:
+      InitOptions['bg_color'] = BackgroundColor
+
+    InitOptions['is_horizontal_center'] = True
 
     # Create plot
     c = (
@@ -6605,6 +6813,7 @@ def Bar3D(dt = None,
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     """
 
     # Load environment
@@ -6685,6 +6894,11 @@ def Bar3D(dt = None,
     if not Width is None:
       InitOptions['height'] = Height
 
+    if not BackgroundColor is None:
+      InitOptions['bg_color'] = BackgroundColor
+
+    InitOptions['is_horizontal_center'] = True
+
     # Create plot
     c = Bar3D(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
@@ -6753,6 +6967,7 @@ def River(dt = None,
           AggMethod = "sum",
           YVarTrans = None,
           Theme = 'wonderland',
+          BackgroundColor = None,
           AxisPointerType = "cross",
           Title = "River Plot",
           TitleColor = "#fff",
@@ -6780,6 +6995,7 @@ def River(dt = None,
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank. Provide a list if you have multiple YVars and want transformations for each of them
     AxisPointerType: 'cross' 'line', 'shadow', or None
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BackgroundColor: background color
     Title: Plot title
     TitleColor: Font color. Default "#fff" 
     TitleFontSize: Font size. Default = 20
@@ -6875,6 +7091,11 @@ def River(dt = None,
 
     if not Width is None:
       InitOptions['height'] = Height
+
+    if not BackgroundColor is None:
+      InitOptions['bg_color'] = BackgroundColor
+
+    InitOptions['is_horizontal_center'] = True
 
     c = ThemeRiver(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
