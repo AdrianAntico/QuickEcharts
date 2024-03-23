@@ -268,7 +268,7 @@ def Histogram(dt = None,
 
     # Load environment
     from pyecharts import options as opts
-    from pyecharts.charts import Bar, TimeLine, Grid
+    from pyecharts.charts import Bar, Grid, Timeline
     import polars as pl
     import math
 
