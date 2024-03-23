@@ -102,20 +102,7 @@ def PolarsAggregation(dt, AggMethod, NumericVariable, GroupVariable, DateVariabl
 
 
 def FacetGridValues(FacetRows = 1, FacetCols = 1, Legend = 'top', LegendSpace = 10):
-  
-  """
-  Parameters
-  FacetRows: Number of rows in the facet grid
-  FacetCols: Number of columns in the facet grid
-  Legend: 'top', 'bottom', or None
-  LegendSpace: numeric. Defautl is 10
-  """
-  
-  # FacetRows = 2
-  # FacetCols = 2
-  # Legend = 'top'
-  # LegendSpace = 10
-  
+
   # number of series
   nseries = FacetRows * FacetCols
   
@@ -193,6 +180,7 @@ def Histogram(dt = None,
               FacetRows = 1,
               FacetCols = 1,
               FacetLevels = None,
+              TimeLine = False,
               NumberBins = 20,
               RenderHTML = False,
               CategoryGap = "10%",
@@ -238,6 +226,7 @@ def Histogram(dt = None,
     FacetRows: Number of rows in facet grid
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
+    TimeLine: Logical. When True, individual plots will transition from one group level to the next
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Title: title of plot in quotes
@@ -279,16 +268,17 @@ def Histogram(dt = None,
 
     # Load environment
     from pyecharts import options as opts
-    from pyecharts.charts import Bar, Grid
+    from pyecharts.charts import Bar, TimeLine, Grid
     import polars as pl
     import math
 
     # SampleSize = 100000
     # YVar = 'Daily Liters'
-    # GroupVar = None 'Brand'
+    # GroupVar = 'Brand' # None 
     # FacetRows = 2
     # FacetCols = 2
     # FacetLevels = None
+    # TimeLine = False
     # YVarTrans = None
     # XAxisTitle = YVar
     # XAxisNameLocation = 'middle'
@@ -465,11 +455,17 @@ def Histogram(dt = None,
 
     # Group Variable Case
     else:
-      
-      if not FacetLevels is None:
-        levs = FacetLevels
+
+      # Time utilizes all levels; Facet only uses enough to fill grid
+      if not TimeLine:
+        if not FacetLevels is None:
+          levs = FacetLevels
+        else:
+          levs = dt1[GroupVar].unique().sort()[0:(FacetCols * FacetRows)]
       else:
-        levs = dt1[GroupVar].unique().sort()[0:(FacetCols * FacetRows)]
+        levs = dt1[GroupVar].unique().sort()
+
+      # Build individual plots
       plot_dict = {}
       for i in levs: # i = levs[0]
         GlobalOptions = {}
@@ -489,7 +485,7 @@ def Histogram(dt = None,
           dt2 = dt2.with_columns(Buckets = dt2['Buckets'].round() * acc)
           dt2 = dt2.group_by("Buckets").agg(pl.len().alias(YVar))
           dt2 = dt2.sort("Buckets")
-       
+
         # Define data elements
         Buckets = dt2['Buckets'].to_list().copy()
         YVal = dt2[YVar].to_list().copy()
@@ -507,29 +503,45 @@ def Histogram(dt = None,
 
         plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
 
-    # Setup Grid Output
-    grid = Grid()
-    facet_vals = FacetGridValues(
-      FacetRows = FacetRows,
-      FacetCols = FacetCols,
-      Legend = Legend,
-      LegendSpace = 10)
-    counter = -1
-    for i in levs: # i = Levs[0]
-      counter += 1
-      grid = grid.add(
-        plot_dict[i],
-        grid_opts = opts.GridOpts(
-          pos_left = f"{facet_vals['left'][counter]}%",
-          pos_top = f"{facet_vals['top'][counter]}%",
-          width = f"{facet_vals['width']}%",
-          height = f"{facet_vals['height']}%"))
+    # Facet Output
+    if not TimeLine:
+      
+      # Setup Grid Output
+      grid = Grid()
+      facet_vals = FacetGridValues(
+        FacetRows = FacetRows,
+        FacetCols = FacetCols,
+        Legend = Legend,
+        LegendSpace = 10)
+      counter = -1
+      for i in levs: # i = Levs[0]
+        counter += 1
+        grid = grid.add(
+          plot_dict[i],
+          grid_opts = opts.GridOpts(
+            pos_left = f"{facet_vals['left'][counter]}%",
+            pos_top = f"{facet_vals['top'][counter]}%",
+            width = f"{facet_vals['width']}%",
+            height = f"{facet_vals['height']}%"))
 
-    # Render html
-    if RenderHTML:
-      grid.render()
-  
-    return grid
+      # Render html
+      if RenderHTML:
+        grid.render()
+
+      return grid
+
+    # TimeLine Output
+    else:
+
+      tl = Timeline()
+      for i in levs:
+        tl.add(plot_dict[i], i)
+
+      # Render html
+      if RenderHTML:
+        tl.render()
+
+      return tl
 
 
 #################################################################################################
@@ -542,6 +554,7 @@ def Density(dt = None,
             FacetRows = 1,
             FacetCols = 1,
             FacetLevels = None,
+            TimeLine = False,
             YVarTrans = None,
             RenderHTML = False,
             LineWidth = 2,
@@ -588,6 +601,7 @@ def Density(dt = None,
     FacetRows: Number of rows in facet grid
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
+    TimeLine: Logical. When True, individual plots will transition from one group level to the next
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     LineWidth: numeric. Default is 2
@@ -629,7 +643,7 @@ def Density(dt = None,
 
     # Load environment
     from pyecharts import options as opts
-    from pyecharts.charts import Line, Grid
+    from pyecharts.charts import Line, Grid, Timeline
     import polars as pl
     import math
 
@@ -639,6 +653,7 @@ def Density(dt = None,
     # FacetRows = 2
     # FacetCols = 2
     # FacetLevels = None
+    # TimeLine = False
     # YVarTrans = None
     # XAxisTitle = YVar
     # XAxisNameLocation = 'middle'
@@ -646,7 +661,7 @@ def Density(dt = None,
     # LineWidth = 2
     # FillOpacity = 0.5
     # RenderHTML = False
-    # Title = 'Hist Plot'
+    # Title = 'Density Plot'
     # TitleColor = 'fff'
     # TitleFontSize = 20
     # SubTitle = 'Subtitle'
@@ -797,11 +812,11 @@ def Density(dt = None,
   
       if DataZoom:
         GlobalOptions['datazoom_opts'] = [
-            opts.DataZoomOpts(
-              range_start = 0,
-              range_end = 100),
-            opts.DataZoomOpts(
-              type_ = "inside")]
+          opts.DataZoomOpts(
+            range_start = 0,
+            range_end = 100),
+          opts.DataZoomOpts(
+            type_ = "inside")]
       
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
@@ -827,10 +842,15 @@ def Density(dt = None,
     # Group Variable Case
     else:
       
-      if not FacetLevels is None:
-        levs = FacetLevels
+      # Time utilizes all levels; Facet only uses enough to fill grid
+      if not TimeLine:
+        if not FacetLevels is None:
+          levs = FacetLevels
+        else:
+          levs = dt1[GroupVar].unique().sort()[0:(FacetCols * FacetRows)]
       else:
-        levs = dt1[GroupVar].unique().sort()[0:(FacetCols * FacetRows)]
+        levs = dt1[GroupVar].unique().sort()
+
       plot_dict = {}
       for i in levs: # i = levs[0]
         GlobalOptions = {}
@@ -872,29 +892,45 @@ def Density(dt = None,
 
         plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
 
-    # Setup Grid Output
-    grid = Grid()
-    facet_vals = FacetGridValues(
-      FacetRows = FacetRows,
-      FacetCols = FacetCols,
-      Legend = Legend,
-      LegendSpace = 10)
-    counter = -1
-    for i in levs: # i = Levs[0]
-      counter += 1
-      grid = grid.add(
-        plot_dict[i],
-        grid_opts = opts.GridOpts(
-          pos_left = f"{facet_vals['left'][counter]}%",
-          pos_top = f"{facet_vals['top'][counter]}%",
-          width = f"{facet_vals['width']}%",
-          height = f"{facet_vals['height']}%"))
+    # Facet Output
+    if not TimeLine:
 
-    # Render html
-    if RenderHTML:
-      grid.render()
+      # Setup Grid Output
+      grid = Grid()
+      facet_vals = FacetGridValues(
+        FacetRows = FacetRows,
+        FacetCols = FacetCols,
+        Legend = Legend,
+        LegendSpace = 10)
+      counter = -1
+      for i in levs: # i = Levs[0]
+        counter += 1
+        grid = grid.add(
+          plot_dict[i],
+          grid_opts = opts.GridOpts(
+            pos_left = f"{facet_vals['left'][counter]}%",
+            pos_top = f"{facet_vals['top'][counter]}%",
+            width = f"{facet_vals['width']}%",
+            height = f"{facet_vals['height']}%"))
   
-    return grid
+      # Render html
+      if RenderHTML:
+        grid.render()
+    
+      return grid
+  
+    # TimeLine Output
+    else:
+
+      tl = Timeline()
+      for i in levs:
+        tl.add(plot_dict[i], i)
+
+      # Render html
+      if RenderHTML:
+        tl.render()
+
+      return tl
 
 
 #################################################################################################
@@ -2129,6 +2165,7 @@ def Line(dt = None,
          FacetRows = 1,
          FacetCols = 1,
          FacetLevels = None,
+         TimeLine = False,
          YVarTrans = None,
          RenderHTML = False,
          SmoothLine = True,
@@ -2184,6 +2221,7 @@ def Line(dt = None,
     FacetRows: Number of rows in facet grid
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
+    TimeLine: Logical. When True, individual plots will transition from one group level to the next
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
@@ -2233,7 +2271,7 @@ def Line(dt = None,
 
     # Load environment
     from pyecharts import options as opts
-    from pyecharts.charts import Line, Grid
+    from pyecharts.charts import Line, Grid, Timeline
     import polars as pl
     import math
 
@@ -2245,14 +2283,16 @@ def Line(dt = None,
     # FacetRows = 2
     # FacetCols = 2
     # FacetLevels = None
+    # TimeLine = False
     # YVarTrans = None
     # SmoothLine = True
     # LineWidth = 2
     # Symbol = "emptyCircle"
+    # SymbolSize = 2
     # ShowLabels = False
     # LabelPosition = "top"
     # RenderHTML = False
-    # Title = 'Pie Plot'
+    # Title = 'Line Plot'
     # TitleColor = 'fff'
     # TitleFontSize = 20
     # SubTitle = 'Subtitle'
@@ -2423,14 +2463,14 @@ def Line(dt = None,
     else:
 
       # No Facet Case
-      if FacetCols == 1 and FacetRows == 1:
+      if not TimeLine and FacetCols == 1 and FacetRows == 1:
         
         yvar_dict = {}
         GroupLevels = dt1[GroupVar].unique().sort().to_list()
         for gv in GroupLevels:
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
-  
+
         XVal = dt1[XVar].unique().to_list()
 
         # Create plot
@@ -2545,11 +2585,17 @@ def Line(dt = None,
         
         yvar_dict = {}
         plot_dict = {}
-        if FacetLevels is None:
-          GroupLevels = dt1[GroupVar].unique().sort().to_list()
-          GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
+
+        # Time utilizes all levels; Facet only uses enough to fill grid
+        if not TimeLine:
+          if FacetLevels is None:
+            GroupLevels = dt1[GroupVar].unique().sort().to_list()
+            GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
+          else:
+            GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
         else:
-          GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
+          GroupLevels = dt1[GroupVar].unique().sort().to_list()
+
         for gv in GroupLevels:
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
@@ -2584,29 +2630,43 @@ def Line(dt = None,
           # Final Setting of Global Options
           plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
 
-        # Setup Grid Output
-        grid = Grid()
-        facet_vals = FacetGridValues(
-          FacetRows = FacetRows,
-          FacetCols = FacetCols,
-          Legend = Legend,
-          LegendSpace = 10)
-        counter = -1
-        for i in GroupLevels: # i = Levs[0]
-          counter += 1
-          grid = grid.add(
-            plot_dict[i],
-            grid_opts = opts.GridOpts(
-              pos_left = f"{facet_vals['left'][counter]}%",
-              pos_top = f"{facet_vals['top'][counter]}%",
-              width = f"{facet_vals['width']}%",
-              height = f"{facet_vals['height']}%"))
+        if not TimeLine:
+          
+          # Setup Grid Output
+          grid = Grid()
+          facet_vals = FacetGridValues(
+            FacetRows = FacetRows,
+            FacetCols = FacetCols,
+            Legend = Legend,
+            LegendSpace = 10)
+          counter = -1
+          for i in GroupLevels: # i = Levs[0]
+            counter += 1
+            grid = grid.add(
+              plot_dict[i],
+              grid_opts = opts.GridOpts(
+                pos_left = f"{facet_vals['left'][counter]}%",
+                pos_top = f"{facet_vals['top'][counter]}%",
+                width = f"{facet_vals['width']}%",
+                height = f"{facet_vals['height']}%"))
+  
+          # Render html
+          if RenderHTML:
+            grid.render()
 
-        # Render html
-        if RenderHTML:
-          grid.render()
+          return grid
 
-        return grid
+        # TimeLine Output
+        else:
+          tl = Timeline()
+          for i in GroupLevels:
+            tl.add(plot_dict[i], i)
+
+          # Render html
+          if RenderHTML:
+            tl.render()
+    
+          return tl
 
 
 #################################################################################################
@@ -3040,6 +3100,7 @@ def Step(dt = None,
          FacetRows = 1,
          FacetCols = 1,
          FacetLevels = None,
+         TimeLine = False,
          AggMethod = 'mean',
          YVarTrans = None,
          RenderHTML = False,
@@ -3095,6 +3156,7 @@ def Step(dt = None,
     FacetRows: Number of rows in facet grid
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
+    TimeLine: Logical. When True, individual plots will transition from one group level to the next
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
@@ -3143,7 +3205,7 @@ def Step(dt = None,
 
     # Load environment
     from pyecharts import options as opts
-    from pyecharts.charts import Line, Grid
+    from pyecharts.charts import Line, Grid, Timeline
     import polars as pl
     import math
 
@@ -3155,6 +3217,7 @@ def Step(dt = None,
     # FacetRows = 2
     # FacetCols = 2
     # FacetLevels = None
+    # TimeLine = False
     # YVarTrans = None
     # LineWidth = 2
     # Symbol = "emptyCircle"
@@ -3332,7 +3395,7 @@ def Step(dt = None,
     else:
 
       # No Facet Case
-      if FacetCols == 1 and FacetRows == 1:
+      if not TimeLine and FacetCols == 1 and FacetRows == 1:
         
         yvar_dict = {}
         GroupLevels = dt1[GroupVar].unique().sort().to_list()
@@ -3454,11 +3517,17 @@ def Step(dt = None,
         
         yvar_dict = {}
         plot_dict = {}
-        if FacetLevels is None:
-          GroupLevels = dt1[GroupVar].unique().sort().to_list()
-          GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
+
+        # Time utilizes all levels; Facet only uses enough to fill grid
+        if not TimeLine:
+          if FacetLevels is None:
+            GroupLevels = dt1[GroupVar].unique().sort().to_list()
+            GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
+          else:
+            GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
         else:
-          GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
+          GroupLevels = dt1[GroupVar].unique().sort().to_list()
+
         for gv in GroupLevels:
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
@@ -3495,29 +3564,44 @@ def Step(dt = None,
           # Final Setting of Global Options
           plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
 
-        # Setup Grid Output
-        grid = Grid()
-        facet_vals = FacetGridValues(
-          FacetRows = FacetRows,
-          FacetCols = FacetCols,
-          Legend = Legend,
-          LegendSpace = 10)
-        counter = -1
-        for i in GroupLevels: # ['Yellow-Yum', 'Elves']: #
-          counter += 1
-          grid = grid.add(
-            plot_dict[i],
-            grid_opts = opts.GridOpts(
-              pos_left = f"{facet_vals['left'][counter]}%",
-              pos_top = f"{facet_vals['top'][counter]}%",
-              width = f"{facet_vals['width']}%",
-              height = f"{facet_vals['height']}%"))
+        # Facet Output
+        if not TimeLine:
+          
+          # Setup Grid Output
+          grid = Grid()
+          facet_vals = FacetGridValues(
+            FacetRows = FacetRows,
+            FacetCols = FacetCols,
+            Legend = Legend,
+            LegendSpace = 10)
+          counter = -1
+          for i in GroupLevels:
+            counter += 1
+            grid = grid.add(
+              plot_dict[i],
+              grid_opts = opts.GridOpts(
+                pos_left = f"{facet_vals['left'][counter]}%",
+                pos_top = f"{facet_vals['top'][counter]}%",
+                width = f"{facet_vals['width']}%",
+                height = f"{facet_vals['height']}%"))
+  
+          # Render html
+          if RenderHTML:
+            grid.render()
 
-        # Render html
-        if RenderHTML:
-          grid.render()
+          return grid
 
-        return grid
+        # TimeLine Output
+        else:
+          tl = Timeline()
+          for i in GroupLevels:
+            tl.add(plot_dict[i], i)
+
+          # Render html
+          if RenderHTML:
+            tl.render()
+    
+          return tl
 
 
 #################################################################################################
@@ -3969,6 +4053,7 @@ def Area(dt = None,
          FacetRows = 1,
          FacetCols = 1,
          FacetLevels = None,
+         TimeLine = False,
          AggMethod = 'mean',
          YVarTrans = None,
          RenderHTML = False,
@@ -4027,6 +4112,7 @@ def Area(dt = None,
     FacetRows: Number of rows in facet grid
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
+    TimeLine: Logical. When True, individual plots will transition from one group level to the next
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
@@ -4078,7 +4164,7 @@ def Area(dt = None,
 
     # Load environment
     from pyecharts import options as opts
-    from pyecharts.charts import Line, Grid
+    from pyecharts.charts import Line, Grid, Timeline
     from pyecharts.commons.utils import JsCode
     import polars as pl
     import math
@@ -4086,16 +4172,20 @@ def Area(dt = None,
     # PreAgg = False
     # YVar = 'Daily Liters'
     # XVar = 'Date'
-    # GroupVar = None 'Brand'
+    # GroupVar = 'Brand'
     # AggMethod = 'mean'
     # FacetRows = 2
     # FacetCols = 2
     # FacetLevels = None
+    # TimeLine = False
     # YVarTrans = None
     # LineWidth = 2
+    # Opacity = 0.75
     # Symbol = "emptyCircle"
     # ShowLabels = False
     # LabelPosition = "top"
+    # GradientColor1 = '#c86589'
+    # GradientColor2 = '#06a7ff0d'
     # RenderHTML = False
     # Title = 'Pie Plot'
     # TitleColor = 'fff'
@@ -4148,6 +4238,7 @@ def Area(dt = None,
       dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = XVar)
       dt1 = dt1.sort(XVar)
 
+    # No GroupVar
     if GroupVar is None:
       yvar_dict = {}
       if not isinstance(YVar, list):
@@ -4276,7 +4367,7 @@ def Area(dt = None,
     else:
 
       # No Facet Case
-      if FacetCols == 1 and FacetRows == 1:
+      if not TimeLine and FacetCols == 1 and FacetRows == 1:
         
         yvar_dict = {}
         GroupLevels = dt1[GroupVar].unique().sort().to_list()
@@ -4399,37 +4490,54 @@ def Area(dt = None,
         
         yvar_dict = {}
         plot_dict = {}
-        if FacetLevels is None:
-          GroupLevels = dt1[GroupVar].unique().sort().to_list()
-          GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
+        if not TimeLine:
+          if FacetLevels is None:
+            GroupLevels = dt1[GroupVar].unique().sort().to_list()
+            GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
+          else:
+            GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
         else:
-          GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
+          GroupLevels = dt1[GroupVar].unique().sort().to_list()
+
         for gv in GroupLevels:
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
 
         XVal = dt1[XVar].unique().to_list()
-        
+
         # Create plot
         if not Symbol is None:
           ShowSymbol = True
         else:
           ShowSymbol = False
-        for i in GroupLevels:# i = 'Yellow-Yum'
+        for i in GroupLevels:
           plot_dict[i] = Line(init_opts = opts.InitOpts(theme = Theme))
           plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = XVal)
-          plot_dict[i] = plot_dict[i].add_yaxis(
-            series_name = i,
-            is_smooth = True,
-            symbol = Symbol,
-            symbol_size = SymbolSize,
-            is_symbol_show = ShowSymbol,
-            y_axis = yvar_dict[i],
-            areastyle_opts = opts.AreaStyleOpts(opacity = Opacity),
-            linestyle_opts = opts.LineStyleOpts(width = LineWidth),
-            label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
-          )
-          
+          if not TimeLine:
+            plot_dict[i] = plot_dict[i].add_yaxis(
+              series_name = i,
+              is_smooth = True,
+              symbol = Symbol,
+              symbol_size = SymbolSize,
+              is_symbol_show = ShowSymbol,
+              y_axis = yvar_dict[i],
+              areastyle_opts = opts.AreaStyleOpts(opacity = Opacity),
+              linestyle_opts = opts.LineStyleOpts(width = LineWidth),
+              label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
+            )
+          else:
+            plot_dict[i] = plot_dict[i].add_yaxis(
+              series_name = i,
+              is_smooth = True,
+              symbol = Symbol,
+              symbol_size = SymbolSize,
+              is_symbol_show = ShowSymbol,
+              y_axis = yvar_dict[i],
+              areastyle_opts = opts.AreaStyleOpts(color = JsCode(JS_GradientAreaFill(GradientColor1, GradientColor2)), opacity=1),
+              linestyle_opts = opts.LineStyleOpts(width = LineWidth),
+              label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
+            )
+
           # Global Options
           GlobalOptions = {}
           if not Title is None:
@@ -4441,29 +4549,42 @@ def Area(dt = None,
           # Final Setting of Global Options
           plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
 
-        # Setup Grid Output
-        grid = Grid()
-        facet_vals = FacetGridValues(
-          FacetRows = FacetRows,
-          FacetCols = FacetCols,
-          Legend = Legend,
-          LegendSpace = 10)
-        counter = -1
-        for i in GroupLevels: # ['Yellow-Yum', 'Elves']: #
-          counter += 1
-          grid = grid.add(
-            plot_dict[i],
-            grid_opts = opts.GridOpts(
-              pos_left = f"{facet_vals['left'][counter]}%",
-              pos_top = f"{facet_vals['top'][counter]}%",
-              width = f"{facet_vals['width']}%",
-              height = f"{facet_vals['height']}%"))
+        # Facet Output
+        if not TimeLine:
+          
+          # Setup Grid Output
+          grid = Grid()
+          facet_vals = FacetGridValues(
+            FacetRows = FacetRows,
+            FacetCols = FacetCols,
+            Legend = Legend,
+            LegendSpace = 10)
+          counter = -1
+          for i in GroupLevels:
+            counter += 1
+            grid = grid.add(
+              plot_dict[i],
+              grid_opts = opts.GridOpts(
+                pos_left = f"{facet_vals['left'][counter]}%",
+                pos_top = f"{facet_vals['top'][counter]}%",
+                width = f"{facet_vals['width']}%",
+                height = f"{facet_vals['height']}%"))
+  
+          # Render html
+          if RenderHTML:
+            grid.render()
 
-        # Render html
-        if RenderHTML:
-          grid.render()
+          return grid
 
-        return grid
+        # TimeLine Output
+        else:
+          tl = Timeline()
+          for i in GroupLevels:
+            tl.add(plot_dict[i], i)
+
+          # Render html
+          if RenderHTML:
+            tl.render()
 
 
 #################################################################################################
@@ -4900,6 +5021,7 @@ def Bar(dt = None,
         FacetRows = 1,
         FacetCols = 1,
         FacetLevels = None,
+        TimeLine = False,
         AggMethod = 'mean',
         YVarTrans = None,
         RenderHTML = False,
@@ -4952,6 +5074,7 @@ def Bar(dt = None,
     FacetRows: Number of rows in facet grid
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
+    TimeLine: Logical. When True, individual plots will transition from one group level to the next
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
@@ -4997,7 +5120,7 @@ def Bar(dt = None,
 
     # Load environment
     from pyecharts import options as opts
-    from pyecharts.charts import Bar, Grid
+    from pyecharts.charts import Bar, Grid, Timeline
     from pyecharts.commons.utils import JsCode
     import polars as pl
     import math
@@ -5005,11 +5128,12 @@ def Bar(dt = None,
     # PreAgg = False
     # YVar = 'Daily Liters'
     # XVar = 'Date'
-    # GroupVar = None 'Brand'
+    # GroupVar = 'Brand'
     # AggMethod = 'mean'
-    # FacetRows = 2
-    # FacetCols = 2
+    # FacetRows = 1
+    # FacetCols = 1
     # FacetLevels = None
+    # TimeLine = True
     # YVarTrans = None
     # ShowLabels = False
     # LabelPosition = "top"
@@ -5065,6 +5189,7 @@ def Bar(dt = None,
       dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = XVar)
       dt1 = dt1.sort(XVar)
 
+    # No GroupVar
     if GroupVar is None:
       yvar_dict = {}
       if not isinstance(YVar, list):
@@ -5177,7 +5302,7 @@ def Bar(dt = None,
     else:
 
       # No Facet Case
-      if FacetCols == 1 and FacetRows == 1:
+      if not TimeLine and FacetCols == 1 and FacetRows == 1:
         
         yvar_dict = {}
         GroupLevels = dt1[GroupVar].unique().sort().to_list()
@@ -5289,11 +5414,15 @@ def Bar(dt = None,
         
         yvar_dict = {}
         plot_dict = {}
-        if FacetLevels is None:
-          GroupLevels = dt1[GroupVar].unique().sort().to_list()
-          GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
+        if not TimeLine:
+          if FacetLevels is None:
+            GroupLevels = dt1[GroupVar].unique().sort().to_list()
+            GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
+          else:
+            GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
         else:
-          GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
+          GroupLevels = dt1[GroupVar].unique().sort().to_list()
+
         for gv in GroupLevels:
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
@@ -5321,29 +5450,44 @@ def Bar(dt = None,
           # Final Setting of Global Options
           plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
 
-        # Setup Grid Output
-        grid = Grid()
-        facet_vals = FacetGridValues(
-          FacetRows = FacetRows,
-          FacetCols = FacetCols,
-          Legend = Legend,
-          LegendSpace = 10)
-        counter = -1
-        for i in GroupLevels: # ['Yellow-Yum', 'Elves']: #
-          counter += 1
-          grid = grid.add(
-            plot_dict[i],
-            grid_opts = opts.GridOpts(
-              pos_left = f"{facet_vals['left'][counter]}%",
-              pos_top = f"{facet_vals['top'][counter]}%",
-              width = f"{facet_vals['width']}%",
-              height = f"{facet_vals['height']}%"))
+        # Facet Output
+        if not TimeLine:
+          
+          # Setup Grid Output
+          grid = Grid()
+          facet_vals = FacetGridValues(
+            FacetRows = FacetRows,
+            FacetCols = FacetCols,
+            Legend = Legend,
+            LegendSpace = 10)
+          counter = -1
+          for i in GroupLevels:
+            counter += 1
+            grid = grid.add(
+              plot_dict[i],
+              grid_opts = opts.GridOpts(
+                pos_left = f"{facet_vals['left'][counter]}%",
+                pos_top = f"{facet_vals['top'][counter]}%",
+                width = f"{facet_vals['width']}%",
+                height = f"{facet_vals['height']}%"))
+  
+          # Render html
+          if RenderHTML:
+            grid.render()
 
-        # Render html
-        if RenderHTML:
-          grid.render()
+          return grid
 
-        return grid
+        # TimeLine Output
+        else:
+          tl = Timeline()
+          for i in GroupLevels:
+            tl.add(plot_dict[i], i)
+          
+          # Render html
+          if RenderHTML:
+            tl.render()
+
+          return tl
 
 
 #################################################################################################
@@ -6018,6 +6162,7 @@ def Scatter(dt = None,
             FacetRows = 1,
             FacetCols = 1,
             FacetLevels = None,
+            TimeLine = False,
             AggMethod = 'mean',
             YVarTrans = None,
             XVarTrans = None,
@@ -6074,6 +6219,7 @@ def Scatter(dt = None,
     FacetRows: Number of rows in facet grid
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
+    TimeLine: Logical. When True, individual plots will transition from one group level to the next
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     XVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
@@ -6122,18 +6268,19 @@ def Scatter(dt = None,
 
     # Load environment
     from pyecharts import options as opts
-    from pyecharts.charts import Scatter, Grid
+    from pyecharts.charts import Scatter, Grid, Timeline
     import polars as pl
     import math
 
     # SampleSize = 500
     # YVar = 'Daily Liters'
     # XVar = 'Daily Units'
-    # GroupVar = 'Brand' None 
+    # GroupVar = 'Brand'
     # AggMethod = 'mean'
     # FacetRows = 2
     # FacetCols = 2
     # FacetLevels = None
+    # TimeLine = False
     # YVarTrans = 'sqrt'
     # XVarTrans = 'sqrt'
     # LineWidth = 2
@@ -6169,15 +6316,15 @@ def Scatter(dt = None,
     # AnimationEasingUpdate = "cubicOut"
     # AnimationDelayUpdate = 0
     # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
-    
+
     # Define Plotting Variable
     if YVar == None:
       return None
-    
+
     if isinstance(YVar, list):
       if len(YVar) > 1:
         GroupVar = None
-    
+
     # Cap number of records and define dt1
     if SampleSize != None:
       if dt.shape[0] > SampleSize:
@@ -6312,7 +6459,7 @@ def Scatter(dt = None,
     else:
 
       # No Facet Case
-      if FacetCols == 1 and FacetRows == 1:
+      if not TimeLine and FacetCols == 1 and FacetRows == 1:
         
         yvar_dict = {}
         xvar_dict = {}
@@ -6430,11 +6577,15 @@ def Scatter(dt = None,
       else:
         
         plot_dict = {}
-        if FacetLevels is None:
-          GroupLevels = dt1[GroupVar].unique().sort().to_list()
-          GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
+        if not TimeLine:
+          if FacetLevels is None:
+            GroupLevels = dt1[GroupVar].unique().sort().to_list()
+            GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
+          else:
+            GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
         else:
-          GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
+          GroupLevels = dt1[GroupVar].unique().sort().to_list()
+
         yvar_dict = {}
         xvar_dict = {}
         for gv in GroupLevels:
@@ -6469,29 +6620,44 @@ def Scatter(dt = None,
           # Final Setting of Global Options
           plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
 
-        # Setup Grid Output
-        grid = Grid()
-        facet_vals = FacetGridValues(
-          FacetRows = FacetRows,
-          FacetCols = FacetCols,
-          Legend = Legend,
-          LegendSpace = 10)
-        counter = -1
-        for i in GroupLevels: # ['Yellow-Yum', 'Elves']: #
-          counter += 1
-          grid = grid.add(
-            plot_dict[i],
-            grid_opts = opts.GridOpts(
-              pos_left = f"{facet_vals['left'][counter]}%",
-              pos_top = f"{facet_vals['top'][counter]}%",
-              width = f"{facet_vals['width']}%",
-              height = f"{facet_vals['height']}%"))
+        # Facet Output
+        if not TimeLine:
+          
+          # Setup Grid Output
+          grid = Grid()
+          facet_vals = FacetGridValues(
+            FacetRows = FacetRows,
+            FacetCols = FacetCols,
+            Legend = Legend,
+            LegendSpace = 10)
+          counter = -1
+          for i in GroupLevels:
+            counter += 1
+            grid = grid.add(
+              plot_dict[i],
+              grid_opts = opts.GridOpts(
+                pos_left = f"{facet_vals['left'][counter]}%",
+                pos_top = f"{facet_vals['top'][counter]}%",
+                width = f"{facet_vals['width']}%",
+                height = f"{facet_vals['height']}%"))
+  
+          # Render html
+          if RenderHTML:
+            grid.render()
 
-        # Render html
-        if RenderHTML:
-          grid.render()
+          return grid
 
-        return grid
+        # TimeLine Output
+        else:
+          tl = Timeline()
+          for i in GroupLevels:
+            tl.add(plot_dict[i], i)
+
+          # Render html
+          if RenderHTML:
+            tl.render()
+
+          return tl
 
 
 #################################################################################################
@@ -6911,6 +7077,7 @@ def Copula(dt = None,
            FacetRows = 1,
            FacetCols = 1,
            FacetLevels = None,
+           TimeLine = False,
            AggMethod = 'mean',
            RenderHTML = False,
            LineWidth = 2,
@@ -6965,6 +7132,7 @@ def Copula(dt = None,
     FacetRows: Number of rows in facet grid
     FacetCols: Number of columns in facet grid
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
+    TimeLine: Logical. When True, individual plots will transition from one group level to the next
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
@@ -7011,18 +7179,19 @@ def Copula(dt = None,
 
     # Load environment
     from pyecharts import options as opts
-    from pyecharts.charts import Scatter, Grid
+    from pyecharts.charts import Scatter, Grid, Timeline
     import polars as pl
     import math
 
-    # SampleSize = 500
+    # SampleSize = 50000
     # YVar = 'Daily Liters'
     # XVar = 'Daily Units'
-    # GroupVar = 'Brand' None 
+    # GroupVar = 'Brand'
     # AggMethod = 'mean'
     # FacetRows = 2
     # FacetCols = 2
     # FacetLevels = None
+    # TimeLine = True
     # LineWidth = 2
     # Symbol = "emptyCircle"
     # SymbolSize = 3
@@ -7196,7 +7365,7 @@ def Copula(dt = None,
     else:
 
       # No Facet Case
-      if FacetCols == 1 and FacetRows == 1:
+      if not TimeLine and FacetCols == 1 and FacetRows == 1:
         
         yvar_dict = {}
         xvar_dict = {}
@@ -7314,11 +7483,15 @@ def Copula(dt = None,
       else:
         
         plot_dict = {}
-        if FacetLevels is None:
-          GroupLevels = dt1[GroupVar].unique().sort().to_list()
-          GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
+        if not TimeLine:
+          if FacetLevels is None:
+            GroupLevels = dt1[GroupVar].unique().sort().to_list()
+            GroupLevels = GroupLevels[0:(FacetCols * FacetRows)]
+          else:
+            GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
         else:
-          GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
+          GroupLevels = dt1[GroupVar].unique().sort().to_list()
+
         yvar_dict = {}
         xvar_dict = {}
         for gv in GroupLevels:
@@ -7353,29 +7526,45 @@ def Copula(dt = None,
           # Final Setting of Global Options
           plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
 
-        # Setup Grid Output
-        grid = Grid()
-        facet_vals = FacetGridValues(
-          FacetRows = FacetRows,
-          FacetCols = FacetCols,
-          Legend = Legend,
-          LegendSpace = 10)
-        counter = -1
-        for i in GroupLevels: # ['Yellow-Yum', 'Elves']: #
-          counter += 1
-          grid = grid.add(
-            plot_dict[i],
-            grid_opts = opts.GridOpts(
-              pos_left = f"{facet_vals['left'][counter]}%",
-              pos_top = f"{facet_vals['top'][counter]}%",
-              width = f"{facet_vals['width']}%",
-              height = f"{facet_vals['height']}%"))
+        # Facet Output
+        if not TimeLine:
 
-        # Render html
-        if RenderHTML:
-          grid.render()
+          # Setup Grid Output
+          grid = Grid()
+          facet_vals = FacetGridValues(
+            FacetRows = FacetRows,
+            FacetCols = FacetCols,
+            Legend = Legend,
+            LegendSpace = 10)
+          counter = -1
+          for i in GroupLevels: # i = Levs[0]
+            counter += 1
+            grid = grid.add(
+              plot_dict[i],
+              grid_opts = opts.GridOpts(
+                pos_left = f"{facet_vals['left'][counter]}%",
+                pos_top = f"{facet_vals['top'][counter]}%",
+                width = f"{facet_vals['width']}%",
+                height = f"{facet_vals['height']}%"))
 
-        return grid
+          # Render html
+          if RenderHTML:
+            grid.render()
+
+          return grid
+
+        # TimeLine Output
+        else:
+
+          tl = Timeline()
+          for i in GroupLevels:
+            tl.add(plot_dict[i], i)
+
+          # Render html
+          if RenderHTML:
+            tl.render()
+    
+          return tl
 
 
 #################################################################################################
