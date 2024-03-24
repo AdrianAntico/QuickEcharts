@@ -441,9 +441,9 @@ def Histogram(dt = None,
         if not HorizontalLine is None and not VerticalLine is None:
           MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
         elif HorizontalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+          MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
         else:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+          MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
 
         c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
 
@@ -820,16 +820,16 @@ def Density(dt = None,
       
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
-  
+
       # Series Options
       if not HorizontalLine is None or not VerticalLine is None:
         MarkLineDict = {}
         if not HorizontalLine is None and not VerticalLine is None:
           MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
         elif HorizontalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+          MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
         else:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+          MarkLineDict['data'] = [[opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]]
 
         c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
 
@@ -1781,7 +1781,7 @@ def BoxPlot(dt = None,
     # Series Options
     if not HorizontalLine is None:
       MarkLineDict = {}
-      MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+      MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
 
       c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
 
@@ -2447,9 +2447,9 @@ def Line(dt = None,
         if not HorizontalLine is None and not VerticalLine is None:
           MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
         elif HorizontalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+          MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
         else:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+          MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
 
         c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
         
@@ -2568,9 +2568,9 @@ def Line(dt = None,
           if not HorizontalLine is None and not VerticalLine is None:
             MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
           elif HorizontalLine is None:
-            MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+            MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
           else:
-            MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+            MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
   
           c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
           
@@ -3345,9 +3345,9 @@ def Step(dt = None,
         if not HorizontalLine is None and not VerticalLine is None:
           MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
         elif HorizontalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+          MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
         else:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+          MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
 
         c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
         
@@ -3466,9 +3466,9 @@ def Step(dt = None,
           if not HorizontalLine is None and not VerticalLine is None:
             MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
           elif HorizontalLine is None:
-            MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+            MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
           else:
-            MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+            MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
   
           c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
           
@@ -4283,9 +4283,9 @@ def Area(dt = None,
         if not HorizontalLine is None and not VerticalLine is None:
           MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
         elif HorizontalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+          MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
         else:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+          MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
 
         c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
         
@@ -4405,9 +4405,9 @@ def Area(dt = None,
           if not HorizontalLine is None and not VerticalLine is None:
             MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
           elif HorizontalLine is None:
-            MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+            MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
           else:
-            MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+            MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
   
           c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
           
@@ -5184,9 +5184,9 @@ def Bar(dt = None,
         if not HorizontalLine is None and not VerticalLine is None:
           MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
         elif HorizontalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+          MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
         else:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+          MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
 
         c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
         
@@ -5295,9 +5295,9 @@ def Bar(dt = None,
           if not HorizontalLine is None and not VerticalLine is None:
             MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
           elif HorizontalLine is None:
-            MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+            MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
           else:
-            MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+            MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
   
           c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
           
@@ -6307,9 +6307,9 @@ def Scatter(dt = None,
         if not HorizontalLine is None and not VerticalLine is None:
           MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
         elif HorizontalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+          MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
         else:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+          MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
 
         c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
         
@@ -6425,9 +6425,9 @@ def Scatter(dt = None,
           if not HorizontalLine is None and not VerticalLine is None:
             MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
           elif HorizontalLine is None:
-            MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+            MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
           else:
-            MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+            MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
   
           c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
           
@@ -7213,9 +7213,9 @@ def Copula(dt = None,
         if not HorizontalLine is None and not VerticalLine is None:
           MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
         elif HorizontalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+          MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
         else:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+          MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
 
         c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
         
@@ -7331,9 +7331,9 @@ def Copula(dt = None,
           if not HorizontalLine is None and not VerticalLine is None:
             MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
           elif HorizontalLine is None:
-            MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
+            MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
           else:
-            MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
+            MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
   
           c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
           
