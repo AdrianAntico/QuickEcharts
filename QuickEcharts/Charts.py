@@ -259,7 +259,7 @@ def Histogram(dt = None,
     HorizontalLineName: add a series name for the horizontal line
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -634,7 +634,7 @@ def Density(dt = None,
     HorizontalLineName: add a series name for the horizontal line
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -992,7 +992,7 @@ def Pie(dt = None,
     Height: Default None. Otherwise, use something like this "600px"
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -1192,7 +1192,7 @@ def Rosetype(dt = None,
     Height: Default None. Otherwise, use something like this "600px"
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -1393,7 +1393,7 @@ def Donut(dt = None,
     Height: Default None. Otherwise, use something like this "600px"
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -1613,7 +1613,7 @@ def BoxPlot(dt = None,
     HorizontalLineName: add a series name for the horizontal line
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -1836,7 +1836,7 @@ def WordCloud(dt = None,
     Height: Default None. Otherwise, use something like this "600px"
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -2008,7 +2008,7 @@ def Radar(dt = None,
     Height: Default None. Otherwise, use something like this "600px"
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -2262,7 +2262,7 @@ def Line(dt = None,
     HorizontalLineName: add a series name for the horizontal line
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -2762,7 +2762,7 @@ def StackedLine(dt = None,
     Height: Default None. Otherwise, use something like this "600px"
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -3162,7 +3162,7 @@ def Step(dt = None,
     HorizontalLineName: add a series name for the horizontal line
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -3661,7 +3661,7 @@ def StackedStep(dt = None,
     Height: Default None. Otherwise, use something like this "600px"
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -4087,7 +4087,7 @@ def Area(dt = None,
     HorizontalLineName: add a series name for the horizontal line
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -4612,7 +4612,7 @@ def StackedArea(dt = None,
     Height: Default None. Otherwise, use something like this "600px"
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -5009,7 +5009,7 @@ def Bar(dt = None,
     HorizontalLineName: add a series name for the horizontal line
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -5473,7 +5473,7 @@ def StackedBar(dt = None,
     Height: Default None. Otherwise, use something like this "600px"
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -5833,7 +5833,7 @@ def Heatmap(dt = None,
     Height: Default None. Otherwise, use something like this "600px"
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -6123,7 +6123,7 @@ def Scatter(dt = None,
     HorizontalLineName: add a series name for the horizontal line
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -6569,7 +6569,7 @@ def Scatter3D(dt = None,
     Height: Default None. Otherwise, use something like this "600px"
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -6774,7 +6774,7 @@ def Copula3D(dt = None,
     Height: Default None. Otherwise, use something like this "600px"
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -7034,7 +7034,7 @@ def Copula(dt = None,
     HorizontalLineName: add a series name for the horizontal line
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -7468,7 +7468,7 @@ def Parallel(dt = None,
     Height: Default None. Otherwise, use something like this "600px"
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -7621,7 +7621,7 @@ def Funnel(dt = None,
     Height: Default None. Otherwise, use something like this "600px"
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -7774,7 +7774,7 @@ def Bar3D(dt = None,
     BackgroundColor: background color
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
@@ -8002,7 +8002,7 @@ def River(dt = None,
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
-    AnimationEasing: Default "cubicOut"
+    AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
     AnimationDelay: Default 0
     AnimationDurationUpdate: Default 300
     AnimationEasingUpdate: Default "cubicOut"
