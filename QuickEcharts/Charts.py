@@ -2711,10 +2711,6 @@ def StackedLine(dt = None,
                 LegendPosTop = '5%',
                 LegendBorderSize = 1,
                 LegendTextColor = "#fff",
-                VerticalLine = None,
-                VerticalLineName = 'Line Name',
-                HorizontalLine = None,
-                HorizontalLineName = 'Line Name',
                 AnimationThreshold = 2000,
                 AnimationDuration = 1000,
                 AnimationEasing = "cubicOut",
@@ -2764,10 +2760,6 @@ def StackedLine(dt = None,
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
-    VerticalLine: numeric. Add a vertical line on the plot at the value specified
-    VerticalLineName: add a series name for the vertical line
-    HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
-    HorizontalLineName: add a series name for the horizontal line
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
     AnimationEasing: Default "cubicOut"
@@ -2812,8 +2804,6 @@ def StackedLine(dt = None,
     # Legend = None
     # LegendPosRight = '0%'
     # LegendPosTop = '5%'
-    # HorizontalLine = None
-    # VerticalLine = None
     # AnimationThreshold = 2000
     # AnimationDuration = 1000
     # AnimationEasing = "cubicOut"
@@ -2950,19 +2940,7 @@ def StackedLine(dt = None,
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
-  
-      # Series Options
-      if not HorizontalLine is None or not VerticalLine is None:
-        MarkLineDict = {}
-        if not HorizontalLine is None and not VerticalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        elif HorizontalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        else:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
 
-        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
-        
       # Render html
       if RenderHTML:
         c.render()
@@ -3069,19 +3047,7 @@ def StackedLine(dt = None,
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
-  
-      # Series Options
-      if not HorizontalLine is None or not VerticalLine is None:
-        MarkLineDict = {}
-        if not HorizontalLine is None and not VerticalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        elif HorizontalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        else:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
 
-        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
-        
       # Render html
       if RenderHTML:
         c.render()
@@ -3645,10 +3611,6 @@ def StackedStep(dt = None,
                 LegendPosTop = '5%',
                 LegendBorderSize = 1,
                 LegendTextColor = "#fff",
-                VerticalLine = None,
-                VerticalLineName = 'Line Name',
-                HorizontalLine = None,
-                HorizontalLineName = 'Line Name',
                 AnimationThreshold = 2000,
                 AnimationDuration = 1000,
                 AnimationEasing = "cubicOut",
@@ -3697,10 +3659,6 @@ def StackedStep(dt = None,
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
-    VerticalLine: numeric. Add a vertical line on the plot at the value specified
-    VerticalLineName: add a series name for the vertical line
-    HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
-    HorizontalLineName: add a series name for the horizontal line
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
     AnimationEasing: Default "cubicOut"
@@ -3744,8 +3702,6 @@ def StackedStep(dt = None,
     # Legend = None
     # LegendPosRight = '0%'
     # LegendPosTop = '5%'
-    # HorizontalLine = None
-    # VerticalLine = None
     # AnimationThreshold = 2000
     # AnimationDuration = 1000
     # AnimationEasing = "cubicOut"
@@ -3882,19 +3838,7 @@ def StackedStep(dt = None,
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
-  
-      # Series Options
-      if not HorizontalLine is None or not VerticalLine is None:
-        MarkLineDict = {}
-        if not HorizontalLine is None and not VerticalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        elif HorizontalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        else:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
 
-        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
-        
       # Render html
       if RenderHTML:
         c.render()
@@ -4001,19 +3945,7 @@ def StackedStep(dt = None,
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
-  
-      # Series Options
-      if not HorizontalLine is None or not VerticalLine is None:
-        MarkLineDict = {}
-        if not HorizontalLine is None and not VerticalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        elif HorizontalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        else:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
 
-        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
-        
       # Render html
       if RenderHTML:
         c.render()
@@ -4629,10 +4561,6 @@ def StackedArea(dt = None,
                 LegendPosTop = '5%',
                 LegendBorderSize = 1,
                 LegendTextColor = "#fff",
-                VerticalLine = None,
-                VerticalLineName = 'Line Name',
-                HorizontalLine = None,
-                HorizontalLineName = 'Line Name',
                 AnimationThreshold = 2000,
                 AnimationDuration = 1000,
                 AnimationEasing = "cubicOut",
@@ -4682,10 +4610,6 @@ def StackedArea(dt = None,
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
-    VerticalLine: numeric. Add a vertical line on the plot at the value specified
-    VerticalLineName: add a series name for the vertical line
-    HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
-    HorizontalLineName: add a series name for the horizontal line
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
     AnimationEasing: Default "cubicOut"
@@ -4730,8 +4654,6 @@ def StackedArea(dt = None,
     # Legend = None
     # LegendPosRight = '0%'
     # LegendPosTop = '5%'
-    # HorizontalLine = None
-    # VerticalLine = None
     # AnimationThreshold = 2000
     # AnimationDuration = 1000
     # AnimationEasing = "cubicOut"
@@ -4870,18 +4792,6 @@ def StackedArea(dt = None,
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
-  
-      # Series Options
-      if not HorizontalLine is None or not VerticalLine is None:
-        MarkLineDict = {}
-        if not HorizontalLine is None and not VerticalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        elif HorizontalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        else:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
-
-        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
         
       # Render html
       if RenderHTML:
@@ -4990,18 +4900,6 @@ def StackedArea(dt = None,
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
-  
-      # Series Options
-      if not HorizontalLine is None or not VerticalLine is None:
-        MarkLineDict = {}
-        if not HorizontalLine is None and not VerticalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        elif HorizontalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        else:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
-
-        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
         
       # Render html
       if RenderHTML:
@@ -5528,10 +5426,6 @@ def StackedBar(dt = None,
                LegendPosTop = '5%',
                LegendBorderSize = 1,
                LegendTextColor = "#fff",
-               VerticalLine = None,
-               VerticalLineName = 'Line Name',
-               HorizontalLine = None,
-               HorizontalLineName = 'Line Name',
                AnimationThreshold = 2000,
                AnimationDuration = 1000,
                AnimationEasing = "cubicOut",
@@ -5577,10 +5471,6 @@ def StackedBar(dt = None,
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
-    VerticalLine: numeric. Add a vertical line on the plot at the value specified
-    VerticalLineName: add a series name for the vertical line
-    HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
-    HorizontalLineName: add a series name for the horizontal line
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
     AnimationEasing: Default "cubicOut"
@@ -5622,8 +5512,6 @@ def StackedBar(dt = None,
     # Legend = None
     # LegendPosRight = '0%'
     # LegendPosTop = '5%'
-    # HorizontalLine = None
-    # VerticalLine = None
     # AnimationThreshold = 2000
     # AnimationDuration = 1000
     # AnimationEasing = "cubicOut"
@@ -5752,19 +5640,7 @@ def StackedBar(dt = None,
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
-  
-      # Series Options
-      if not HorizontalLine is None or not VerticalLine is None:
-        MarkLineDict = {}
-        if not HorizontalLine is None and not VerticalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        elif HorizontalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        else:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
 
-        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
-        
       # Render html
       if RenderHTML:
         c.render()
@@ -5862,19 +5738,7 @@ def StackedBar(dt = None,
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
-  
-      # Series Options
-      if not HorizontalLine is None or not VerticalLine is None:
-        MarkLineDict = {}
-        if not HorizontalLine is None and not VerticalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        elif HorizontalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        else:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)
 
-        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
-        
       # Render html
       if RenderHTML:
         c.render()
