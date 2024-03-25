@@ -2042,7 +2042,7 @@ def Radar(dt = None,
     import polars as pl
     import math
 
-    # YVar = 'Daily Liters'
+    # YVar = ['Daily Liters', 'Daily Units']
     # GroupVar = 'Brand'
     # AggMethod = 'mean'
     # YVarTrans = None
@@ -2085,7 +2085,7 @@ def Radar(dt = None,
     if not isinstance(YVar, list):
       yVar = [YVar]
     else:
-      yVar = [YVar]
+      yVar = YVar
     counter = -1
     for yvar in yVar:# yvar = yVar
       counter += 1
