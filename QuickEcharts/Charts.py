@@ -7620,6 +7620,12 @@ def Parallel(dt = None,
              BackgroundColor = None,
              Width = None,
              Height = None,
+             Title = 'Parallel Plot',
+             TitleColor = "#fff",
+             TitleFontSize = 20,
+             SubTitle = None,
+             SubTitleColor = "#fff",
+             SubTitleFontSize = 12,
              AnimationThreshold = 2000,
              AnimationDuration = 1000,
              AnimationEasing = "cubicOut",
@@ -7737,10 +7743,27 @@ def Parallel(dt = None,
     c = Parallel(init_opts = opts.InitOpts(**InitOptions))
     c = c.add_schema(schema = parallel_axis)
     c = c.add(
-        series_name = "",
-        data = data,
-        linestyle_opts = opts.LineStyleOpts(width = LineWidth, opacity = Opacity),
+      series_name = "",
+      data = data,
+      linestyle_opts = opts.LineStyleOpts(width = LineWidth, opacity = Opacity),
     )
+
+    GlobalOptions = {}
+    if not Title is None:
+      GlobalOptions['title_opts'] = opts.TitleOpts(
+        title = Title, subtitle = SubTitle,
+        title_textstyle_opts = opts.TextStyleOpts(
+          color = TitleColor,
+          font_size = TitleFontSize,
+        ),
+        subtitle_textstyle_opts = opts.TextStyleOpts(
+          color = SubTitleColor,
+          font_size = SubTitleFontSize,
+        )
+      )
+
+    # Final Setting of Global Options
+    c = c.set_global_opts(**GlobalOptions)
 
     # Render html
     if RenderHTML:
