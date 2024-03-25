@@ -526,6 +526,7 @@ p1 = Charts.Bar3D(
   ZVarTrans = "logmin",
   RenderHTML = False,
   Theme = 'wonderland',
+  BarColors = ["#00b8ff", "#0097e1", "#0876b8", "#004fa7", "#012e6d"],
   BackgroundColor = "#000",
   Width = None,
   Height = None,
