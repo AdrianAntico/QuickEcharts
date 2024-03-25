@@ -1823,7 +1823,6 @@ def WordCloud(dt = None,
               SampleSize = None,
               YVar = None,
               RenderHTML = False,
-              SymbolType = 'diamond',
               Title = 'Word Cloud',
               TitleColor = "#fff",
               TitleFontSize = 20,
@@ -1847,7 +1846,6 @@ def WordCloud(dt = None,
     dt: polars dataframe
     YVar: numeric variable
     RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
-    SymbolType: 'diamond','arrow','rect','triangle', 'roundRect'
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
     TitleFontSize: Font text size. Default 20
@@ -1876,7 +1874,6 @@ def WordCloud(dt = None,
     # SampleSize = 100000
     # YVar = 'Daily Liters'
     # RenderHTML = False
-    # SymbolType = 'arrow'
     # Title = 'Hist Plot'
     # TitleColor = 'fff'
     # TitleFontSize = 20
@@ -2130,9 +2127,9 @@ def Radar(dt = None,
       schema.append(opts.RadarIndicatorItem(name = gv))
 
     c = c.add_schema(
-        schema = schema,
-        splitarea_opt = opts.SplitAreaOpts(is_show = True, areastyle_opts = opts.AreaStyleOpts(opacity = 1)),
-        textstyle_opts = opts.TextStyleOpts(color = LabelColor),
+      schema = schema,
+      splitarea_opt = opts.SplitAreaOpts(is_show = True, areastyle_opts = opts.AreaStyleOpts(opacity = 1)),
+      textstyle_opts = opts.TextStyleOpts(color = LabelColor),
     )
 
     vals_dict_keys = list(vals_dict.keys())
@@ -2156,15 +2153,15 @@ def Radar(dt = None,
 
     if not Title is None:
       GlobalOptions['title_opts'] = opts.TitleOpts(
-          title = Title, subtitle = SubTitle,
-          title_textstyle_opts = opts.TextStyleOpts(
-            color = TitleColor,
-            font_size = TitleFontSize,
-          ),
-          subtitle_textstyle_opts = opts.TextStyleOpts(
-            color = SubTitleColor,
-            font_size = SubTitleFontSize,
-          )
+        title = Title, subtitle = SubTitle,
+        title_textstyle_opts = opts.TextStyleOpts(
+          color = TitleColor,
+          font_size = TitleFontSize,
+        ),
+        subtitle_textstyle_opts = opts.TextStyleOpts(
+          color = SubTitleColor,
+          font_size = SubTitleFontSize,
+        )
       )
 
     # Final Setting of Global Options
