@@ -1872,7 +1872,7 @@ def WordCloud(dt = None,
     import math
 
     # SampleSize = 100000
-    # YVar = 'Daily Liters'
+    # YVar = 'Brand'
     # RenderHTML = False
     # Title = 'Hist Plot'
     # TitleColor = 'fff'
@@ -7900,6 +7900,7 @@ def Bar3D(dt = None,
           ZVarTrans = None,
           RenderHTML = False,
           Theme = 'wonderland',
+          BarColors = ["#00b8ff", "#0097e1", "#0876b8", "#004fa7", "#012e6d"],
           BackgroundColor = "#000",
           Width = None,
           Height = None,
@@ -7952,6 +7953,7 @@ def Bar3D(dt = None,
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
     Theme: theme for echarts colors. Choose from: 'chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'
+    BarColors: Color scaling for bar heights
     BackgroundColor: background color
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
@@ -8065,16 +8067,16 @@ def Bar3D(dt = None,
     # Create plot
     c = Bar3D(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
-        "Bar3D Data",
-        data,
-        xaxis3d_opts = opts.Axis3DOpts(XVal, type_ = "category"),
-        yaxis3d_opts = opts.Axis3DOpts(YVal, type_ = "category"),
-        zaxis3d_opts = opts.Axis3DOpts(type_ = "value"),
+      "Bar3D Data",
+      data,
+      xaxis3d_opts = opts.Axis3DOpts(XVal, type_ = "category"),
+      yaxis3d_opts = opts.Axis3DOpts(YVal, type_ = "category"),
+      zaxis3d_opts = opts.Axis3DOpts(type_ = "value"),
     )
 
     # Global Options
     GlobalOptions = {}
-    GlobalOptions['visualmap_opts'] = opts.VisualMapOpts(max_ = dt1[ZVar].max())
+    GlobalOptions['visualmap_opts'] = opts.VisualMapOpts(max_ = dt1[ZVar].max(), range_color = BackgroundColor)
     if Legend == 'right':
       GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     elif Legend == 'top':
@@ -8084,15 +8086,15 @@ def Bar3D(dt = None,
 
     if not Title is None:
       GlobalOptions['title_opts'] = opts.TitleOpts(
-          title = Title, subtitle = SubTitle,
-          title_textstyle_opts = opts.TextStyleOpts(
-            color = TitleColor,
-            font_size = TitleFontSize,
-          ),
-          subtitle_textstyle_opts = opts.TextStyleOpts(
-            color = SubTitleColor,
-            font_size = SubTitleFontSize,
-          )
+        title = Title, subtitle = SubTitle,
+        title_textstyle_opts = opts.TextStyleOpts(
+          color = TitleColor,
+          font_size = TitleFontSize,
+        ),
+        subtitle_textstyle_opts = opts.TextStyleOpts(
+          color = SubTitleColor,
+          font_size = SubTitleFontSize,
+        )
       )
 
     if ToolBox:
@@ -8111,11 +8113,11 @@ def Bar3D(dt = None,
 
     if DataZoom:
       GlobalOptions['datazoom_opts'] = [
-          opts.DataZoomOpts(
-            range_start = 0,
-            range_end = 100),
-          opts.DataZoomOpts(
-            type_ = "inside")]
+        opts.DataZoomOpts(
+          range_start = 0,
+          range_end = 100),
+        opts.DataZoomOpts(
+          type_ = "inside")]
 
     # Final Setting of Global Options
     c = c.set_global_opts(**GlobalOptions)
