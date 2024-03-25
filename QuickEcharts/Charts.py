@@ -1941,21 +1941,21 @@ def WordCloud(dt = None,
 
     # Create plot
     c = WordCloud(init_opts = opts.InitOpts(**InitOptions))
-    c = c.add(series_name = YVar, data_pair = data_pair, word_size_range=[6, 66])
+    c = c.add(series_name = YVar, data_pair = data_pair)
 
     # Global Options
     GlobalOptions = {}
     if not Title is None:
       GlobalOptions['title_opts'] = opts.TitleOpts(
-          title = Title, subtitle = SubTitle,
-          title_textstyle_opts = opts.TextStyleOpts(
-            color = TitleColor,
-            font_size = TitleFontSize,
-          ),
-          subtitle_textstyle_opts = opts.TextStyleOpts(
-            color = SubTitleColor,
-            font_size = SubTitleFontSize,
-          )
+        title = Title, subtitle = SubTitle,
+        title_textstyle_opts = opts.TextStyleOpts(
+          color = TitleColor,
+          font_size = TitleFontSize,
+        ),
+        subtitle_textstyle_opts = opts.TextStyleOpts(
+          color = SubTitleColor,
+          font_size = SubTitleFontSize,
+        )
       )
 
     # Final Setting of Global Options
