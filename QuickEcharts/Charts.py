@@ -204,7 +204,7 @@ def Histogram(dt = None,
               Legend = None,
               LegendPosRight = '0%',
               LegendPosTop = '5%',
-              LegendBorderSize = 1,
+              LegendBorderSize = 0.25,
               LegendTextColor = "#fff",
               VerticalLine = None,
               VerticalLineName = 'Line Name',
@@ -253,7 +253,7 @@ def Histogram(dt = None,
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
-    VerticalLine: numeric. Add a vertical line on the plot at the value specified
+    VerticalLine: numeric. Add a vertical line on the plot. The number here is based on the number bucket of the histogram
     VerticalLineName: add a series name for the vertical line
     HorizontalLine: numeric. Add a horizontal line on the plot at the value specified
     HorizontalLineName: add a series name for the horizontal line
@@ -417,7 +417,15 @@ def Histogram(dt = None,
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
   
       if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+          feature = opts.ToolBoxFeatureOpts(
+            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+          )
+        )
       
       GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
   
@@ -579,7 +587,7 @@ def Density(dt = None,
             Legend = None,
             LegendPosRight = '0%',
             LegendPosTop = '5%',
-            LegendBorderSize = 1,
+            LegendBorderSize = 0.25,
             LegendTextColor = "#fff",
             VerticalLine = None,
             VerticalLineName = 'Line Name',
@@ -803,7 +811,15 @@ def Density(dt = None,
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
   
       if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+          feature = opts.ToolBoxFeatureOpts(
+            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+          )
+        )
       
       GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
   
@@ -956,7 +972,7 @@ def Pie(dt = None,
         Legend = None,
         LegendPosRight = '0%',
         LegendPosTop = '5%',
-        LegendBorderSize = 1,
+        LegendBorderSize = 0.25,
         LegendTextColor = "#fff",
         AnimationThreshold = 2000,
         AnimationDuration = 1000,
@@ -1154,7 +1170,7 @@ def Rosetype(dt = None,
              Legend = None,
              LegendPosRight = '0%',
              LegendPosTop = '5%',
-             LegendBorderSize = 1,
+             LegendBorderSize = 0.25,
              LegendTextColor = "#fff",
              AnimationThreshold = 2000,
              AnimationDuration = 1000,
@@ -1357,7 +1373,7 @@ def Donut(dt = None,
           Legend = None,
           LegendPosRight = '0%',
           LegendPosTop = '5%',
-          LegendBorderSize = 1,
+          LegendBorderSize = 0.25,
           LegendTextColor = "#fff",
           AnimationThreshold = 2000,
           AnimationDuration = 1000,
@@ -1565,7 +1581,7 @@ def BoxPlot(dt = None,
             Legend = None,
             LegendPosRight = '0%',
             LegendPosTop = '5%',
-            LegendBorderSize = 1,
+            LegendBorderSize = 0.25,
             LegendTextColor = "#fff",
             HorizontalLine = None,
             HorizontalLineName = 'Line Name',
@@ -1760,7 +1776,15 @@ def BoxPlot(dt = None,
     GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
 
     if ToolBox:
-      GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+      GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+        feature = opts.ToolBoxFeatureOpts(
+          save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+          restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+          data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+          data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+          magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+        )
+      )
     
     GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
 
@@ -1971,7 +1995,7 @@ def Radar(dt = None,
           Legend = None,
           LegendPosRight = '0%',
           LegendPosTop = '5%',
-          LegendBorderSize = 1,
+          LegendBorderSize = 0.25,
           LegendTextColor = "#fff",
           AnimationThreshold = 2000,
           AnimationDuration = 1000,
@@ -2197,7 +2221,7 @@ def Line(dt = None,
          Legend = None,
          LegendPosRight = '0%',
          LegendPosTop = '5%',
-         LegendBorderSize = 1,
+         LegendBorderSize = 0.25,
          LegendTextColor = "#fff",
          VerticalLine = None,
          VerticalLineName = 'Line Name',
@@ -2423,7 +2447,15 @@ def Line(dt = None,
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
   
       if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+          feature = opts.ToolBoxFeatureOpts(
+            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+          )
+        )
       
       GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
   
@@ -2544,7 +2576,15 @@ def Line(dt = None,
         GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
     
         if ToolBox:
-          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+            feature = opts.ToolBoxFeatureOpts(
+              save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+              restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+              data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+              data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+              magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+            )
+          )
         
         GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
     
@@ -2709,7 +2749,7 @@ def StackedLine(dt = None,
                 Legend = None,
                 LegendPosRight = '0%',
                 LegendPosTop = '5%',
-                LegendBorderSize = 1,
+                LegendBorderSize = 0.25,
                 LegendTextColor = "#fff",
                 AnimationThreshold = 2000,
                 AnimationDuration = 1000,
@@ -2923,7 +2963,15 @@ def StackedLine(dt = None,
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
   
       if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+          feature = opts.ToolBoxFeatureOpts(
+            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+          )
+        )
       
       GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
   
@@ -3030,7 +3078,15 @@ def StackedLine(dt = None,
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
   
       if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+          feature = opts.ToolBoxFeatureOpts(
+            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+          )
+        )
       
       GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
   
@@ -3098,7 +3154,7 @@ def Step(dt = None,
          Legend = None,
          LegendPosRight = '0%',
          LegendPosTop = '5%',
-         LegendBorderSize = 1,
+         LegendBorderSize = 0.25,
          LegendTextColor = "#fff",
          VerticalLine = None,
          VerticalLineName = 'Line Name',
@@ -3321,7 +3377,15 @@ def Step(dt = None,
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
   
       if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+          feature = opts.ToolBoxFeatureOpts(
+            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+          )
+        )
       
       GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
   
@@ -3442,7 +3506,15 @@ def Step(dt = None,
         GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
     
         if ToolBox:
-          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+            feature = opts.ToolBoxFeatureOpts(
+              save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+              restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+              data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+              data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+              magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+            )
+          )
         
         GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
     
@@ -3609,7 +3681,7 @@ def StackedStep(dt = None,
                 Legend = None,
                 LegendPosRight = '0%',
                 LegendPosTop = '5%',
-                LegendBorderSize = 1,
+                LegendBorderSize = 0.25,
                 LegendTextColor = "#fff",
                 AnimationThreshold = 2000,
                 AnimationDuration = 1000,
@@ -3821,7 +3893,15 @@ def StackedStep(dt = None,
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
   
       if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+          feature = opts.ToolBoxFeatureOpts(
+            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+          )
+        )
       
       GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
   
@@ -3928,7 +4008,15 @@ def StackedStep(dt = None,
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
   
       if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+          feature = opts.ToolBoxFeatureOpts(
+            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+          )
+        )
       
       GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
   
@@ -4020,7 +4108,7 @@ def Area(dt = None,
          Legend = None,
          LegendPosRight = '0%',
          LegendPosTop = '5%',
-         LegendBorderSize = 1,
+         LegendBorderSize = 0.25,
          LegendTextColor = "#fff",
          VerticalLine = None,
          VerticalLineName = 'Line Name',
@@ -4259,7 +4347,15 @@ def Area(dt = None,
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
   
       if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+          feature = opts.ToolBoxFeatureOpts(
+            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+          )
+        )
       
       GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
   
@@ -4381,7 +4477,15 @@ def Area(dt = None,
         GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
     
         if ToolBox:
-          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+            feature = opts.ToolBoxFeatureOpts(
+              save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+              restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+              data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+              data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+              magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+            )
+          )
         
         GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
     
@@ -4559,7 +4663,7 @@ def StackedArea(dt = None,
                 Legend = None,
                 LegendPosRight = '0%',
                 LegendPosTop = '5%',
-                LegendBorderSize = 1,
+                LegendBorderSize = 0.25,
                 LegendTextColor = "#fff",
                 AnimationThreshold = 2000,
                 AnimationDuration = 1000,
@@ -4775,7 +4879,15 @@ def StackedArea(dt = None,
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
   
       if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+          feature = opts.ToolBoxFeatureOpts(
+            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+          )
+        )
       
       GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
   
@@ -4883,7 +4995,15 @@ def StackedArea(dt = None,
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
   
       if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+          feature = opts.ToolBoxFeatureOpts(
+            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+          )
+        )
       
       GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
   
@@ -4948,7 +5068,7 @@ def Bar(dt = None,
         Legend = None,
         LegendPosRight = '0%',
         LegendPosTop = '5%',
-        LegendBorderSize = 1,
+        LegendBorderSize = 0.25,
         LegendTextColor = "#fff",
         VerticalLine = None,
         VerticalLineName = 'Line Name',
@@ -5160,7 +5280,15 @@ def Bar(dt = None,
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
   
       if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+          feature = opts.ToolBoxFeatureOpts(
+            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+          )
+        )
       
       GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
   
@@ -5271,7 +5399,15 @@ def Bar(dt = None,
         GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
     
         if ToolBox:
-          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+            feature = opts.ToolBoxFeatureOpts(
+              save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+              restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+              data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+              data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+              magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+            )
+          )
         
         GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
     
@@ -5424,7 +5560,7 @@ def StackedBar(dt = None,
                Legend = None,
                LegendPosRight = '0%',
                LegendPosTop = '5%',
-               LegendBorderSize = 1,
+               LegendBorderSize = 0.25,
                LegendTextColor = "#fff",
                AnimationThreshold = 2000,
                AnimationDuration = 1000,
@@ -5623,7 +5759,15 @@ def StackedBar(dt = None,
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
   
       if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+          feature = opts.ToolBoxFeatureOpts(
+            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+          )
+        )
       
       GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
   
@@ -5721,7 +5865,15 @@ def StackedBar(dt = None,
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
   
       if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+          feature = opts.ToolBoxFeatureOpts(
+            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+          )
+        )
       
       GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
   
@@ -5783,7 +5935,7 @@ def Heatmap(dt = None,
             Legend = None,
             LegendPosRight = '0%',
             LegendPosTop = '5%',
-            LegendBorderSize = 1,
+            LegendBorderSize = 0.25,
             LegendTextColor = "#fff",
             AnimationThreshold = 2000,
             AnimationDuration = 1000,
@@ -6059,7 +6211,7 @@ def Scatter(dt = None,
             Legend = None,
             LegendPosRight = '0%',
             LegendPosTop = '5%',
-            LegendBorderSize = 1,
+            LegendBorderSize = 0.25,
             LegendTextColor = "#fff",
             VerticalLine = None,
             VerticalLineName = 'Line Name',
@@ -6283,7 +6435,15 @@ def Scatter(dt = None,
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
   
       if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+          feature = opts.ToolBoxFeatureOpts(
+            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+          )
+        )
       
       GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
   
@@ -6401,7 +6561,15 @@ def Scatter(dt = None,
         GlobalOptions['yaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
     
         if ToolBox:
-          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+            feature = opts.ToolBoxFeatureOpts(
+              save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+              restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+              data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+              data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+              magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+            )
+          )
         
         GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
     
@@ -6972,7 +7140,7 @@ def Copula(dt = None,
            Legend = None,
            LegendPosRight = '0%',
            LegendPosTop = '5%',
-           LegendBorderSize = 1,
+           LegendBorderSize = 0.25,
            LegendTextColor = "#fff",
            VerticalLine = None,
            VerticalLineName = 'Line Name',
@@ -7189,7 +7357,15 @@ def Copula(dt = None,
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
   
       if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+          feature = opts.ToolBoxFeatureOpts(
+            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+          )
+        )
       
       GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
   
@@ -7307,7 +7483,15 @@ def Copula(dt = None,
         GlobalOptions['yaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
     
         if ToolBox:
-          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+            feature = opts.ToolBoxFeatureOpts(
+              save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+              restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+              data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+              data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+              magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+            )
+          )
         
         GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
     
@@ -7594,7 +7778,7 @@ def Funnel(dt = None,
            Legend = None,
            LegendPosRight = '0%',
            LegendPosTop = '5%',
-           LegendBorderSize = 1,
+           LegendBorderSize = 0.25,
            LegendTextColor = "#fff",
            AnimationThreshold = 2000,
            AnimationDuration = 1000,
@@ -7734,7 +7918,7 @@ def Bar3D(dt = None,
           Legend = 'top',
           LegendPosRight = '0%',
           LegendPosTop = '5%',
-          LegendBorderSize = 1,
+          LegendBorderSize = 0.25,
           LegendTextColor = "#fff",
           AnimationThreshold = 2000,
           AnimationDuration = 1000,
@@ -7915,7 +8099,15 @@ def Bar3D(dt = None,
       )
 
     if ToolBox:
-      GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+      GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+        feature = opts.ToolBoxFeatureOpts(
+          save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+          restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+          data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+          data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+          magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+        )
+      )
 
     if Brush:
       GlobalOptions['brush_opts'] = opts.BrushOpts()
@@ -7966,7 +8158,7 @@ def River(dt = None,
           Legend = None,
           LegendPosRight = '0%',
           LegendPosTop = '5%',
-          LegendBorderSize = 1,
+          LegendBorderSize = 0.25,
           LegendTextColor = "#fff",
           AnimationThreshold = 2000,
           AnimationDuration = 1000,
@@ -8144,7 +8336,15 @@ def River(dt = None,
     )
 
     if ToolBox:
-      GlobalOptions['toolbox_opts'] = opts.ToolboxOpts()
+      GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
+        feature = opts.ToolBoxFeatureOpts(
+          save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+          restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
+          data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
+          data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
+          magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
+        )
+      )
 
     if Brush:
       GlobalOptions['brush_opts'] = opts.BrushOpts()
