@@ -5910,6 +5910,7 @@ def Heatmap(dt = None,
             LabelPosition = "top",
             LabelColor = "#fff",
             Theme = 'wonderland',
+            RangeColor = ["#5b5b5b5d", "#00c4ff", "#9cff00"],
             BackgroundColor = None,
             Width = None,
             Height = None,
@@ -6131,28 +6132,28 @@ def Heatmap(dt = None,
 
     if not Title is None:
       GlobalOptions['title_opts'] = opts.TitleOpts(
-          title = Title, subtitle = SubTitle,
-          title_textstyle_opts = opts.TextStyleOpts(
-            color = TitleColor,
-            font_size = TitleFontSize,
-          ),
-          subtitle_textstyle_opts = opts.TextStyleOpts(
-            color = SubTitleColor,
-            font_size = SubTitleFontSize,
-          )
+        title = Title, subtitle = SubTitle,
+        title_textstyle_opts = opts.TextStyleOpts(
+          color = TitleColor,
+          font_size = TitleFontSize,
+        ),
+        subtitle_textstyle_opts = opts.TextStyleOpts(
+          color = SubTitleColor,
+          font_size = SubTitleFontSize,
+        )
       )
 
     GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
     GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-    GlobalOptions['visualmap_opts'] = opts.VisualMapOpts(),
+    GlobalOptions['visualmap_opts'] = opts.VisualMapOpts(range_color = RangeColor),
  
     if DataZoom:
       GlobalOptions['datazoom_opts'] = [
-          opts.DataZoomOpts(
-            range_start = 0,
-            range_end = 100),
-          opts.DataZoomOpts(
-            type_ = "inside")]
+        opts.DataZoomOpts(
+          range_start = 0,
+          range_end = 100),
+        opts.DataZoomOpts(
+          type_ = "inside")]
 
     # Final Setting of Global Options
     c = c.set_global_opts(**GlobalOptions)
@@ -8068,7 +8069,7 @@ def Bar3D(dt = None,
 
     # Global Options
     GlobalOptions = {}
-    GlobalOptions['visualmap_opts'] = opts.VisualMapOpts(max_ = dt1[ZVar].max(), range_color = BackgroundColor)
+    GlobalOptions['visualmap_opts'] = opts.VisualMapOpts(max_ = dt1[ZVar].max(), range_color = BarColors)
     if Legend == 'right':
       GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
     elif Legend == 'top':
