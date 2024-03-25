@@ -7002,7 +7002,7 @@ def Copula3D(dt = None,
     # Build Plot
     YVal = dt1[YVar].to_list()
     XVal = dt1[XVar].to_list()
-    ZVal = dt1[XVar].to_list()
+    ZVal = dt1[ZVar].to_list()
     if ColorMapVar is None:
       color = ZVal
     elif ColorMapVar == "ZVar":
@@ -7069,15 +7069,7 @@ def Copula3D(dt = None,
           dimension = 3,
           pos_top = "10",
           max_ = max(dt1[YVar].max(), dt1[XVar].max(), dt1[ZVar].max()),
-          range_color = [
-            "#1710c0",
-            "#0b9df0",
-            "#00fea8",
-            "#00ff0d",
-            "#f5f811",
-            "#f09a09",
-            "#fe0300",
-          ],
+          range_color = ["#00b8ff", "#0097e1", "#0876b8", "#004fa7", "#012e6d"],
         ),
         opts.VisualMapOpts(
           type_ = "size",
