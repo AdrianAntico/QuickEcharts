@@ -845,7 +845,7 @@ def Density(dt = None,
         elif HorizontalLine is None:
           MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
         else:
-          MarkLineDict['data'] = [[opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]]
+          MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
 
         c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
 
@@ -6911,7 +6911,7 @@ def Copula3D(dt = None,
              ColorMapVar = "ZVar",
              AggMethod = 'mean',
              RenderHTML = False,
-             SymbolSize = 6,
+             RangeColor = ["red", "white", "blue"],
              Theme = 'wonderland',
              BackgroundColor = None,
              Width = None,
@@ -7012,7 +7012,7 @@ def Copula3D(dt = None,
     elif ColorMapVar == "XVar":
       color = XVar
 
-    symbolSize = [SymbolSize] * len(ZVal)
+    symbolSize = 5
     data = list(zip(YVal, XVal, ZVal, color, symbolSize))
 
     # Create plot
@@ -7058,7 +7058,7 @@ def Copula3D(dt = None,
         name = ZVar,
         type_ = "value"
       ),
-      grid3d_opts=opts.Grid3DOpts(width=100, height=100, depth=100),
+      grid3d_opts = opts.Grid3DOpts(width=100, height=100, depth=100),
     )
 
     c = c.set_global_opts(
@@ -7069,7 +7069,7 @@ def Copula3D(dt = None,
           dimension = 3,
           pos_top = "10",
           max_ = max(dt1[YVar].max(), dt1[XVar].max(), dt1[ZVar].max()),
-          range_color = ["#00b8ff", "#0097e1", "#0876b8", "#004fa7", "#012e6d"],
+          range_color = RangeColor,
         ),
         opts.VisualMapOpts(
           type_ = "size",
