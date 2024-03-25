@@ -6046,7 +6046,7 @@ def Heatmap(dt = None,
 
     # Transformation
     if not MeasureVarTrans is None:
-      dt1 = NumericTransformation(dt1, MeasureVarTrans = MeasureVarTrans.lower())
+      dt1 = NumericTransformation(dt1, MeasureVar, Trans = MeasureVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
