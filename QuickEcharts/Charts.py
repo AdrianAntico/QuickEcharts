@@ -1,3 +1,9 @@
+# Module: Charts
+# Author: Adrian Antico <adrianantico@gmail.com>
+# License: APGL (>= 3)
+# Release: quickecharts 1.0.0
+# Last modified : 2024-03-26
+
 def NumericTransformation(dt, YVar, Trans):
   """
   Parameters
