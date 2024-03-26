@@ -99,7 +99,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Area.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Area.PNG)
 
 
 ```python
