@@ -31,7 +31,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Area(
   dt = data,
   PreAgg = False,
@@ -112,7 +112,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Area(
   dt = data,
   PreAgg = False,
@@ -192,7 +192,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Area(
   dt = data,
   PreAgg = False,
@@ -280,7 +280,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Bar(
   dt = data,
   PreAgg = False,
@@ -355,7 +355,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Bar(
   dt = data,
   PreAgg = False,
@@ -431,7 +431,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Bar(
   dt = data,
   PreAgg = False,
@@ -515,7 +515,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Bar3D(
   dt = data,
   PreAgg = False,
@@ -584,7 +584,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.BoxPlot(
   dt = data,
   SampleSize = 100000,
@@ -896,7 +896,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Copula3D(
   dt = data,
   SampleSize = 15000,
@@ -950,7 +950,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Density(
   dt = data,
   SampleSize = 500000,
@@ -1021,7 +1021,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Density(
   dt = data,
   SampleSize = 100000,
@@ -1098,7 +1098,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Donut(
   dt = data,
   PreAgg = False,
@@ -1160,7 +1160,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Funnel(
   dt = data,
   CategoryVar = ['Daily Units', 'Daily Revenue', 'Daily Margin', 'Daily Liters'],
@@ -1209,7 +1209,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Funnel(
   dt = data,
   CategoryVar = ['Daily Units', 'Daily Revenue', 'Daily Margin', 'Daily Liters'],
@@ -1270,7 +1270,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Heatmap(
   dt = data,
   PreAgg = False,
@@ -1348,7 +1348,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Histogram(
   dt = data,
   SampleSize = 100000,
@@ -1417,7 +1417,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Histogram(
   dt = data,
   SampleSize = 500000,
@@ -1495,7 +1495,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Line(
   dt = data,
   PreAgg = False,
@@ -1574,7 +1574,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Line(
   dt = data,
   PreAgg = False,
@@ -1652,7 +1652,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Line(
   dt = data,
   PreAgg = False,
@@ -1739,7 +1739,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Parallel(
   dt = data,
   SampleSize = 15000,
@@ -1797,7 +1797,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Pie(
   dt = data,
   PreAgg = False,
@@ -1858,7 +1858,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Radar(
   dt = data,
   YVar = 'Daily Liters',
@@ -1921,7 +1921,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.River(
   dt = data,
   PreAgg = False,
@@ -1979,7 +1979,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.River(
   dt = data,
   PreAgg = False,
@@ -2046,7 +2046,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Rosetype(
   dt = data,
   PreAgg = False,
@@ -2355,7 +2355,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Scatter3D(
   dt = data,
   SampleSize = 15000,
@@ -2412,7 +2412,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.StackedArea(
   dt = data,
   PreAgg = False,
@@ -2491,7 +2491,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.StackedBar(
   dt = data,
   PreAgg = False,
@@ -2567,7 +2567,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.StackedLine(
   dt = data,
   PreAgg = False,
@@ -2646,7 +2646,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.StackedStep(
   dt = data,
   PreAgg = False,
@@ -2724,7 +2724,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Step(
   dt = data,
   PreAgg = False,
@@ -2802,7 +2802,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Step(
   dt = data,
   PreAgg = False,
@@ -2879,7 +2879,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.Step(
   dt = data,
   PreAgg = False,
@@ -2966,7 +2966,7 @@ CurrentConfig.NOTEBOOK_TYPE = 'jupyter_lab'
 FilePath = "..FakeBevData.csv"
 data = pl.read_csv(FilePath)
 
-# Create Plot in Jupyter Lab in Jupyter Lab
+# Create Plot in Jupyter Lab
 p1 = Charts.WordCloud(
   dt = data,
   SampleSize = 100000,
