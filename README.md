@@ -1,6 +1,6 @@
 # QuickEcharts
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Logo.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Logo.PNG)
 
 QuickEcharts is a Python package that enables one to plot Echarts quickly. It piggybacks off of the pyecharts package that pipes into Apache Echarts. Pyecharts is a great package for fully customizing plots but is quite a challenge to make use of quickly. QuickEcharts solves this with a simple API for defining plotting elements and data, along with automatic data wrangling operations, using polars, to correctly structure data fast.
 
@@ -180,7 +180,8 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Area_GroupVar.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Area_GroupVar.PNG)
+
 
 ```python
 # Environment
@@ -260,7 +261,8 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Area_Facet.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Area_Facet.PNG)
+
 
 </details>
 
@@ -342,7 +344,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Bar.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Bar.PNG)
 
 
 ```python
@@ -417,8 +419,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Bar_GroupVar.PNG" align="center" width="800" />
-
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Bar_GroupVar.PNG)
 
 
 ```python
@@ -493,7 +494,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Bar_Facet.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Bar_Facet.PNG)
 
 </details>
 
@@ -561,7 +562,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Bar3D.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Bar3D.PNG)
 
 </details>
 
@@ -635,7 +636,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Boxplot.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Boxplot.PNG)
 
 </details>
 
@@ -720,7 +721,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Copula.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Copula.PNG)
 
 
 ```python
@@ -797,7 +798,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Copula_GroupVar.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Copula_GroupVar.PNG)
 
 
 ```python
@@ -874,7 +875,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Copula_Facet.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Copula_Facet.PNG)
 
 </details>
 
@@ -928,7 +929,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Copula3D.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Copula3D.PNG)
 
 </details>
 
@@ -1008,7 +1009,7 @@ p1.render_notebook()
 
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Density.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Density.PNG)
 
 
 ```python
@@ -1078,7 +1079,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Density_Facet.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Density_Facet.PNG)
 
 </details>
 
@@ -1139,7 +1140,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Donut.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Donut.PNG)
 
 </details>
 
@@ -1197,7 +1198,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Funnel_Descending.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Funnel_Descending.PNG)
 
 ```python
 # Environment
@@ -1246,7 +1247,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Funnel_Ascending.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Funnel_Ascending.PNG)
 
 
 </details>
@@ -1326,7 +1327,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Heatmap.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Heatmap.PNG)
 
 </details>
 
@@ -1404,7 +1405,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Histogram.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Histogram.PNG)
 
 
 ```python
@@ -1474,7 +1475,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Histogram_Facet.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Histogram_Facet.PNG)
 
 </details>
 
@@ -1561,7 +1562,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Line_MultiYVar.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Line_MultiYVar.PNG)
 
 
 ```python
@@ -1640,7 +1641,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Line_GroupVar.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Line_GroupVar.PNG)
 
 ```python
 # Environment
@@ -1718,7 +1719,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Line_Facet.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Line_Facet.PNG)
 
 </details>
 
@@ -1776,7 +1777,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Parallel.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Parallel.PNG)
 
 </details>
 
@@ -1838,7 +1839,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Pie.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Pie.PNG)
 
 </details>
 
@@ -1900,7 +1901,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Radar.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Radar.PNG)
 
 </details>
 
@@ -1967,7 +1968,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/River_MultiYVar.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/River_MultiYVar.PNG)
 
 ```python
 # Environment
@@ -2025,7 +2026,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/River_GroupVar.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/River_GroupVar.PNG)
 
 </details>
 
@@ -2089,7 +2090,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Rosetype.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Rosetype.PNG)
 
 </details>
 
@@ -2177,7 +2178,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Scatter.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Scatter.PNG)
 
 
 ```python
@@ -2255,7 +2256,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Scatter_GroupVar.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Scatter_GroupVar.PNG)
 
 
 ```python
@@ -2333,7 +2334,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Scatter_Facet.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Scatter_Facet.PNG)
 
 </details>
 
@@ -2391,7 +2392,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Scatter3D.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Scatter3D.PNG)
 
 </details>
 
@@ -2470,7 +2471,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/StackedArea.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/StackedArea.PNG)
 
 </details>
 
@@ -2545,7 +2546,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/StackedBar.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/StackedBar.PNG)
 
 </details>
 
@@ -2625,7 +2626,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/StackedLine.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/StackedLine.PNG)
 
 </details>
 
@@ -2703,7 +2704,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/StackedStep.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/StackedStep.PNG)
 
 </details>
 
@@ -2789,7 +2790,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Step_MultiYVar.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Step_MultiYVar.PNG)
 
 
 ```python
@@ -2867,7 +2868,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Step_GroupVar.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Step_GroupVar.PNG)
 
 ```python
 # Environment
@@ -2944,7 +2945,7 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Step_Facet.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Step_Facet.PNG)
 
 </details>
 
@@ -2990,6 +2991,6 @@ p1.load_javascript()
 p1.render_notebook()
 ```
 
-<img src="https://github.com/AdrianAntico/QuickEcharts/blob/main/QuickEcharts/Images/Wordcloud.PNG" align="center" width="800" />
+![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Wordcloud.PNG)
 
 </details>
