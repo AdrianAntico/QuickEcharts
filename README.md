@@ -8,6 +8,10 @@ For the Code Examples below, there is a dataset in the QuickEcharts/datasets fol
 
 # Installation
 ```
+pip install QuickEcharts
+
+or 
+
 pip install git+https://github.com/AdrianAntico/QuickEcharts.git#egg=quickecharts
 ```
 
