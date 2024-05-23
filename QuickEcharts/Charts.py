@@ -1712,7 +1712,6 @@ def BoxPlot(dt = None,
       dt1 = dt1.select([pl.col(YVar), pl.col(GroupVar)])
 
     # Transformation
-    print("Transformation")
     if not YVarTrans is None:
       if isinstance(YVar, list):
         for i in range(len(YVar)):# i = 1
@@ -1721,7 +1720,6 @@ def BoxPlot(dt = None,
       else:
         dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
 
-    print("Transformation Done")
     # Create plot
     InitOptions = {}
     if not Theme is None:
