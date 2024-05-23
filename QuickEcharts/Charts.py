@@ -1712,9 +1712,6 @@ def BoxPlot(dt = None,
     if not YVarTrans is None:
       dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
 
-    # Define data elements
-    YVal = [dt1[YVar].to_list()]
-
     # Create plot
     InitOptions = {}
     if not Theme is None:
@@ -1752,9 +1749,15 @@ def BoxPlot(dt = None,
         bucket_data.append(dt1.filter(dt1[GroupVar] == i)[YVar].to_list())
       c = c.add_yaxis('YVar', c.prepare_data(bucket_data))
     else:
-      YVal = [dt1[YVar].to_list()]
-      c = c.add_xaxis(['expr1'])
-      c = c.add_yaxis('YVar', c.prepare_data(YVal))
+      if isinstance(YVar, list):
+        c = c.add_xaxis(YVar)
+        bucket_data = []
+        for yvar in YVar:
+          bucket_data.append(dt1[yvar].to_list())
+        c = c.add_yaxis('YVar', c.prepare_data(bucket_data))
+      else:
+        YVal = [dt1[YVar].to_list()]
+        c = c.add_yaxis(YVar, c.prepare_data(YVal))
 
     # Global Options
     GlobalOptions = {}
@@ -1767,15 +1770,15 @@ def BoxPlot(dt = None,
 
     if not Title is None:
       GlobalOptions['title_opts'] = opts.TitleOpts(
-          title = Title, subtitle = SubTitle,
-          title_textstyle_opts = opts.TextStyleOpts(
-            color = TitleColor,
-            font_size = TitleFontSize,
-          ),
-          subtitle_textstyle_opts = opts.TextStyleOpts(
-            color = SubTitleColor,
-            font_size = SubTitleFontSize,
-          )
+        title = Title, subtitle = SubTitle,
+        title_textstyle_opts = opts.TextStyleOpts(
+          color = TitleColor,
+          font_size = TitleFontSize,
+        ),
+        subtitle_textstyle_opts = opts.TextStyleOpts(
+          color = SubTitleColor,
+          font_size = SubTitleFontSize,
+        )
       )
       
     GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
@@ -1799,11 +1802,11 @@ def BoxPlot(dt = None,
 
     if DataZoom and not GroupVar is None:
       GlobalOptions['datazoom_opts'] = [
-          opts.DataZoomOpts(
-            range_start = 0,
-            range_end = 100),
-          opts.DataZoomOpts(
-            type_ = "inside")]
+        opts.DataZoomOpts(
+          range_start = 0,
+          range_end = 100),
+        opts.DataZoomOpts(
+          type_ = "inside")]
     
     # Final Setting of Global Options
     c = c.set_global_opts(**GlobalOptions)
@@ -1812,7 +1815,6 @@ def BoxPlot(dt = None,
     if not HorizontalLine is None:
       MarkLineDict = {}
       MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
-
       c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
 
     # Render html

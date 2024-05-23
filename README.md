@@ -1868,11 +1868,11 @@ data = pl.read_csv(FilePath)
 # Create Plot in Jupyter Lab
 p1 = Charts.Radar(
   dt = data,
-  YVar = 'Daily Liters',
+  YVar = ['Daily Liters', 'Daily Margin'],
   GroupVar = 'Brand',
   AggMethod = 'mean',
   YVarTrans = None,
-  RenderHTML = False,
+  RenderHTML = True,
   LabelColor = '#fff',
   LineColors = ["#ed1690", "#8e5fa8", "#00a6fb", "#213f7f", "#22c0df"],
   Theme = 'dark',
