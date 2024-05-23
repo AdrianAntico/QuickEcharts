@@ -598,6 +598,7 @@ p1 = Charts.BoxPlot(
   YVar = 'Daily Liters',
   GroupVar = 'Brand',
   YVarTrans = "logmin",
+  RenderHTML = False,
   Theme = 'dark',
   BackgroundColor = None,
   Width = "1200px",

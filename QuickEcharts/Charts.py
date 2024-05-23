@@ -1649,9 +1649,9 @@ def BoxPlot(dt = None,
     import math
 
     # SampleSize = 100000
-    # YVar = 'Daily Liters'
-    # GroupVar = 'Brand'
-    # YVarTrans = None
+    # YVar = ['Daily Liters', 'Daily Units']
+    # GroupVar = None # 'Brand'
+    # YVarTrans = [None, 'logmin']
     # XAxisTitle = YVar
     # XAxisNameLocation = 'end'
     # YAxisNameGap = 15
@@ -1701,6 +1701,10 @@ def BoxPlot(dt = None,
     # Define Plotting Variable
     if YVar == None:
       return None
+    # YVar and GroupVar Mgt
+    if isinstance(YVar, list):
+      if len(YVar) > 1:
+        GroupVar = None
 
     # Subset Columns
     if GroupVar == None:
@@ -1710,7 +1714,12 @@ def BoxPlot(dt = None,
 
     # Transformation
     if not YVarTrans is None:
-      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
+      if isinstance(YVar, list):
+        for i in range(len(YVar)):# i = 0
+          if not YVarTrans[i] is None:
+            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
+      else:
+        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
 
     # Create plot
     InitOptions = {}
@@ -1754,6 +1763,7 @@ def BoxPlot(dt = None,
         bucket_data = []
         for yvar in YVar:
           bucket_data.append(dt1[yvar].to_list())
+
         c = c.add_yaxis('YVar', c.prepare_data(bucket_data))
       else:
         YVal = [dt1[YVar].to_list()]
@@ -2086,7 +2096,12 @@ def Radar(dt = None,
 
     # Transformation
     if not YVarTrans is None:
-      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
+      if isinstance(YVar, list):
+        for i in range(len(YVar)):# i = 0
+          if not YVarTrans[i] is None:
+            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
+      else:
+        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
 
     # Define data elements
     vals_dict = {}
@@ -2365,8 +2380,13 @@ def Line(dt = None,
 
     # Transformation
     if not YVarTrans is None:
-      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
-  
+      if isinstance(YVar, list):
+        for i in range(len(YVar)):# i = 0
+          if not YVarTrans[i] is None:
+            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
+      else:
+        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
+
     # Agg Data
     if not PreAgg:
       dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = XVar)
@@ -2880,7 +2900,12 @@ def StackedLine(dt = None,
 
     # Transformation
     if not YVarTrans is None:
-      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
+      if isinstance(YVar, list):
+        for i in range(len(YVar)):# i = 0
+          if not YVarTrans[i] is None:
+            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
+      else:
+        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
@@ -3295,7 +3320,12 @@ def Step(dt = None,
 
     # Transformation
     if not YVarTrans is None:
-      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
+      if isinstance(YVar, list):
+        for i in range(len(YVar)):# i = 0
+          if not YVarTrans[i] is None:
+            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
+      else:
+        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
@@ -3810,7 +3840,12 @@ def StackedStep(dt = None,
 
     # Transformation
     if not YVarTrans is None:
-      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
+      if isinstance(YVar, list):
+        for i in range(len(YVar)):# i = 0
+          if not YVarTrans[i] is None:
+            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
+      else:
+        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
@@ -4256,7 +4291,13 @@ def Area(dt = None,
 
     # Transformation
     if not YVarTrans is None:
-      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
+      if isinstance(YVar, list):
+        for i in range(len(YVar)):# i = 0
+          if not YVarTrans[i] is None:
+            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
+      else:
+        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
+
   
     # Agg Data
     if not PreAgg:
@@ -4794,7 +4835,12 @@ def StackedArea(dt = None,
 
     # Transformation
     if not YVarTrans is None:
-      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
+      if isinstance(YVar, list):
+        for i in range(len(YVar)):# i = 0
+          if not YVarTrans[i] is None:
+            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
+      else:
+        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
@@ -5205,7 +5251,12 @@ def Bar(dt = None,
 
     # Transformation
     if not YVarTrans is None:
-      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
+      if isinstance(YVar, list):
+        for i in range(len(YVar)):# i = 0
+          if not YVarTrans[i] is None:
+            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
+      else:
+        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
@@ -5684,7 +5735,12 @@ def StackedBar(dt = None,
 
     # Transformation
     if not YVarTrans is None:
-      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
+      if isinstance(YVar, list):
+        for i in range(len(YVar)):# i = 0
+          if not YVarTrans[i] is None:
+            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
+      else:
+        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
     # Agg Data
     if not PreAgg:
@@ -6343,9 +6399,9 @@ def Scatter(dt = None,
     if YVar == None:
       return None
 
-    if isinstance(YVar, list):
-      if len(YVar) > 1:
-        GroupVar = None
+    # Define Plotting Variable
+    if XVar == None:
+      return None
 
     # Cap number of records and define dt1
     if SampleSize != None:
@@ -6791,6 +6847,12 @@ def Scatter3D(dt = None,
     # Define Plotting Variable
     if YVar == None:
       return None
+
+    if XVar == None:
+      return None
+
+    if ZVar == None:
+      return None
     
     # Cap number of records and define dt1
     if SampleSize != None:
@@ -6979,11 +7041,13 @@ def Copula3D(dt = None,
     # Define Plotting Variable
     if YVar == None:
       return None
-    
-    if isinstance(YVar, list):
-      if len(YVar) > 1:
-        GroupVar = None
-    
+
+    if XVar == None:
+      return None
+
+    if ZVar == None:
+      return None
+
     # Cap number of records and define dt1
     if SampleSize != None:
       if dt.shape[0] > SampleSize:
@@ -7252,11 +7316,10 @@ def Copula(dt = None,
     # Define Plotting Variable
     if YVar == None:
       return None
-    
-    if isinstance(YVar, list):
-      if len(YVar) > 1:
-        GroupVar = None
-    
+
+    if XVar == None:
+      return None
+
     # Cap number of records and define dt1
     if SampleSize != None:
       if dt.shape[0] > SampleSize:
@@ -8021,7 +8084,6 @@ def Bar3D(dt = None,
     dt1 = dt.select([pl.col(YVar), pl.col(XVar), pl.col(ZVar)])
     
     # Transformation
-    
     if not ZVarTrans is None:
       dt1 = NumericTransformation(dt1, ZVar, Trans = ZVarTrans.lower())
   
@@ -8264,13 +8326,12 @@ def River(dt = None,
 
     # Transformation
     if not YVarTrans is None:
-      if isinstance(YVars, list):
-        counter = -1
-        for t in YVarTrans:
-          counter += 1
-          dt1 = NumericTransformation(dt1, YVars[counter], Trans = t.lower())
+      if isinstance(YVar, list):
+        for i in range(len(YVar)):# i = 0
+          if not YVarTrans[i] is None:
+            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
       else:
-        dt1 = NumericTransformation(dt1, YVars, Trans = YVarTrans.lower())
+        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
 
     if isinstance(YVars, list):
       if len(YVars) > 1:
