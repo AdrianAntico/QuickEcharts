@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Adrian Antico <adrianantico@gmail.com>
+# Copyright (C) 2024 Adrian Antico <adrianantico@gmail.com>
 # License: AGPL (>= 3), adrianantico@gmail.com
 
 import pathlib
@@ -15,7 +15,7 @@ with open(os.path.join(HERE, "requirements.txt")) as f:
 
 setup(
     name="QuickEcharts",
-    version="1.1.0",
+    version="1.1.1",
     description="Create Echart plots in a single simple function call, with internal data wrangling via polars",
     long_description=README,
     long_description_content_type="text/markdown",
