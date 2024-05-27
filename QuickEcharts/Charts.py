@@ -13,6 +13,7 @@ def NumericTransformation(dt, YVar, Trans):
   """
   Trans = Trans.lower()
   import numpy as np
+  import polars as pl
   if Trans == "sqrt":
     dt = dt.with_columns(pl.col(YVar).sqrt())
   elif Trans == 'log':
@@ -32,6 +33,7 @@ def NumericTransformation(dt, YVar, Trans):
 
 
 def PolarsAggregation(dt, AggMethod, NumericVariable, GroupVariable, DateVariable):
+  import polars as pl
   if AggMethod == "count":
     if not GroupVariable is None and not DateVariable is None:
       dt = dt.group_by(GroupVariable, DateVariable).agg(pl.col(NumericVariable).len())
