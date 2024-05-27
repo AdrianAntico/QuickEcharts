@@ -8324,12 +8324,12 @@ def River(dt = None,
 
     # Transformation
     if not YVarTrans is None:
-      if isinstance(YVar, list):
-        for i in range(len(YVar)):# i = 0
+      if isinstance(YVars, list):
+        for i in range(len(YVars)):# i = 0
           if not YVarTrans[i] is None:
-            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
+            dt1 = NumericTransformation(dt1, YVars[i], Trans = YVarTrans[i].lower())
       else:
-        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
+        dt1 = NumericTransformation(dt1, YVars, Trans = YVarTrans.lower())
 
     if isinstance(YVars, list):
       if len(YVars) > 1:
