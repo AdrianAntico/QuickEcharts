@@ -12,19 +12,18 @@ def NumericTransformation(dt, YVar, Trans):
   Trans: transformation method. Choose from 'sqrt', 'log', 'logmin', 'asinh', 'perc_rank'
   """
   Trans = Trans.lower()
-  import math
-  import polars as pl
+  import numpy as np
   if Trans == "sqrt":
-    dt = dt.with_columns(pl.col(YVar).map_elements(math.sqrt))
+    dt = dt.with_columns(pl.col(YVar).sqrt())
   elif Trans == 'log':
-    dt = dt.with_columns(pl.col(YVar).map_elements(math.log))
+    dt = dt.with_columns(pl.col(YVar).log())
   elif Trans == 'asinh':
-    dt = dt.with_columns(pl.col(YVar).map_elements(math.asinh))
+    dt = dt.with_columns(np.arcsinh(pl.col(YVar)))
   elif Trans == 'logmin':
     dt = dt.with_columns(YVar = dt[YVar] + 1 + dt[YVar].min())
     dt = dt.drop(YVar)
     dt = dt.rename({"YVar": YVar})
-    dt = dt.with_columns(pl.col(YVar).map_elements(math.log))
+    dt = dt.with_columns(pl.col(YVar).log())
   elif Trans == 'perc_rank':
     perc_rank = dt[YVar].rank() / dt[YVar].count()
     dt = dt.drop(YVar)
@@ -33,8 +32,6 @@ def NumericTransformation(dt, YVar, Trans):
 
 
 def PolarsAggregation(dt, AggMethod, NumericVariable, GroupVariable, DateVariable):
-  import polars as pl
-  import math
   if AggMethod == "count":
     if not GroupVariable is None and not DateVariable is None:
       dt = dt.group_by(GroupVariable, DateVariable).agg(pl.col(NumericVariable).len())
@@ -280,7 +277,7 @@ def Histogram(dt = None,
 
     # SampleSize = 100000
     # YVar = 'Daily Liters'
-    # GroupVar = 'Brand' # None 
+    # GroupVar = 'Brand' # None
     # FacetRows = 2
     # FacetCols = 2
     # FacetLevels = None
