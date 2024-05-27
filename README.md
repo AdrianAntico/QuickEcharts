@@ -1,3 +1,6 @@
+![PyPI](https://img.shields.io/pypi/v/QuickEcharts?label=pypi%20package)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/QuickEcharts)
+
 # QuickEcharts
 
 ![](https://github.com/AdrianAntico/QuickEcharts/raw/main/QuickEcharts/Images/Logo.PNG)
