@@ -105,133 +105,133 @@ def test_FacetGridValues():
 #############################################
 # Charts
 #############################################
-def Histogram_test():
+def test_Histogram():
     df = _get_data()
     x = Charts.Histogram(dt=df, YVar='integer', GroupVar='string')
     assert isinstance(x, pyecharts.charts.composite_charts.grid.Grid)
 
-def Density_test():
+def test_Density():
     df = _get_data()
     x = Charts.Density(dt=df, YVar='integer', GroupVar='string')
     assert isinstance(x, pyecharts.charts.composite_charts.grid.Grid)
 
-def Pie_test():
+def test_Pie():
     df = _get_data()
     x = Charts.Pie(dt=df, YVar='integer', GroupVar='string')
     assert isinstance(x, pyecharts.charts.basic_charts.pie.Pie)
 
-def Rosetype_test():
+def test_Rosetype():
     df = _get_data()
     x = Charts.Rosetype(dt=df, YVar='integer', GroupVar='string')
     assert isinstance(x, pyecharts.charts.basic_charts.pie.Pie)
 
-def Donut_test():
+def test_Donut():
     df = _get_data()
     x = Charts.Donut(dt=df, YVar='integer', GroupVar='string')
     assert isinstance(x, pyecharts.charts.basic_charts.pie.Pie)
 
-def BoxPlot_test():
+def test_BoxPlot():
     df = _get_data()
     df = pl.concat([df, df, df, df])
     x = Charts.BoxPlot(dt=df, YVar='integer', GroupVar='string')
     assert isinstance(x, pyecharts.charts.basic_charts.boxplot.Boxplot)
 
-def WordCloud_test():
+def test_WordCloud():
     df = _get_data()
     df = pl.concat([df, df, df, df])
     x = Charts.WordCloud(dt=df, YVar='string')
     assert isinstance(x, pyecharts.charts.basic_charts.wordcloud.WordCloud)
 
-def Radar_test():
+def test_Radar():
     df = _get_data()
     x = Charts.Radar(dt=df, YVar='integer', GroupVar='string')
     assert isinstance(x, pyecharts.charts.basic_charts.radar.Radar)
     
-def Line_test():
+def test_Line():
     df = _get_data()
     x = Charts.Line(dt=df, YVar='integer', XVar='date', GroupVar='string')
     assert isinstance(x, pyecharts.charts.basic_charts.line.Line)
 
-def StackedLine_test():
+def test_StackedLine():
     df = _get_data()
     x = Charts.StackedLine(dt=df, YVar='integer', XVar='date', GroupVar='string')
     assert isinstance(x, pyecharts.charts.basic_charts.line.Line)
 
-def Step_test():
+def test_Step():
     df = _get_data()
     x = Charts.Step(dt=df, YVar='integer', XVar='date', GroupVar='string')
     assert isinstance(x, pyecharts.charts.basic_charts.line.Line)
 
-def StackedStep_test():
+def test_StackedStep():
     df = _get_data()
     x = Charts.StackedStep(dt=df, YVar='integer', XVar='date', GroupVar='string')
     assert isinstance(x, pyecharts.charts.basic_charts.line.Line)
 
-def Area_test():
+def test_Area():
     df = _get_data()
     x = Charts.Area(dt=df, YVar='integer', XVar='date', GroupVar='string')
     assert isinstance(x, pyecharts.charts.basic_charts.line.Line)
 
-def StackedArea_test():
+def test_StackedArea():
     df = _get_data()
     x = Charts.StackedArea(dt=df, YVar='integer', XVar='date', GroupVar='string')
     assert isinstance(x, pyecharts.charts.basic_charts.line.Line)
 
-def Bar_test():
+def test_Bar():
     df = _get_data()
     x = Charts.Bar(dt=df, YVar='integer', XVar='date', GroupVar='string')
     assert isinstance(x, pyecharts.charts.basic_charts.bar.Bar)
 
-def StackedBar_test():
+def test_StackedBar():
     df = _get_data()
     x = Charts.StackedBar(dt=df, YVar='integer', XVar='date', GroupVar='string')
     assert isinstance(x, pyecharts.charts.basic_charts.bar.Bar)
 
-def Bar3D_test():
+def test_Bar3D():
     df = _get_data()
     x = Charts.StackedBar(dt=df, YVar='integer', XVar='date', GroupVar='string')
     assert isinstance(x, pyecharts.charts.basic_charts.bar.Bar)
     
-def Heatmap_test():
+def test_Heatmap():
     df = _get_data()
     x = Charts.Heatmap(dt=df, MeasureVar='integer', YVar='date', XVar='string')
     assert isinstance(x, pyecharts.charts.basic_charts.heatmap.HeatMap)
 
-def Scatter_test():
+def test_Scatter():
     df = _get_data()
     x = Charts.Scatter(dt=df, YVar='integer', XVar='float')
     assert isinstance(x, pyecharts.charts.basic_charts.scatter.Scatter)
 
-def Copula_test():
+def test_Copula():
     df = _get_data()
     x = Charts.Copula(dt=df, YVar='integer', XVar='float')
     assert isinstance(x, pyecharts.charts.basic_charts.scatter.Scatter)
     
-def Scatter3D_test():
+def test_Scatter3D():
     df = _get_data()
     df = df.with_columns(float2 = pl.col('float'))
     x = Charts.Scatter3D(dt=df, YVar='integer', XVar='float', ZVar='float2')
     assert isinstance(x, pyecharts.charts.three_axis_charts.scatter3D.Scatter3D)
 
-def Copula3D_test():
+def test_Copula3D():
     df = _get_data()
     df = df.with_columns(float2 = pl.col('float'))
     df = df.with_columns(float3 = pl.col('float'))
     x = Charts.Copula3D(dt=df, YVar='float3', XVar='float', ZVar='float2')
     assert isinstance(x, pyecharts.charts.three_axis_charts.scatter3D.Scatter3D)
 
-def Parallel_test():
+def test_Parallel():
     df = _get_data()
     df = df.with_columns(float2 = pl.col('float'))
     df = df.with_columns(float3 = pl.col('float'))
     x = Charts.Parallel(dt=df, Vars=['float3','float','float2'])
     assert isinstance(x, pyecharts.charts.basic_charts.parallel.Parallel)
 
-def Funnel_test():
+def test_Funnel():
     x = Charts.Funnel(CategoryVar=['A', 'B', 'C'], ValuesVar = [1,2,3])
     assert isinstance(x, pyecharts.charts.basic_charts.funnel.Funnel)
 
-def River_test():
+def test_River():
     df = _get_data()
     x = Charts.River(dt=df, YVars=['integer','float'], DateVar='date')
     assert isinstance(x, pyecharts.charts.basic_charts.themeriver.ThemeRiver)

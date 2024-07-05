@@ -38,6 +38,3 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
-    - name: Run tests
-      run: |
-        python tests.py
