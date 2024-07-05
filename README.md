@@ -10,7 +10,7 @@ QuickEcharts is a Python package that enables one to plot Echarts quickly. It pi
 For the Code Examples below, there is a dataset in the QuickEcharts/datasets folder named FakeBevData.csv that you can download for replication purposes.
 
 # Installation
-```
+```bash
 pip install QuickEcharts
 
 or 

@@ -6760,12 +6760,12 @@ def Scatter3D(dt = None,
               YVar = None,
               XVar = None,
               ZVar = None,
-              ColorMapVar = "ZVar",
               AggMethod = 'mean',
               YVarTrans = None,
               XVarTrans = None,
               ZVarTrans = None,
               RenderHTML = False,
+              ColorMapVar = "ZVar",
               SymbolSize = 6,
               Theme = 'wonderland',
               RangeColor = ["red", "white", "blue"],
@@ -6970,9 +6970,10 @@ def Copula3D(dt = None,
              YVar = None,
              XVar = None,
              ZVar = None,
-             ColorMapVar = "ZVar",
              AggMethod = 'mean',
              RenderHTML = False,
+             ColorMapVar = "ZVar",
+             SymbolSize = 6,
              RangeColor = ["red", "white", "blue"],
              Theme = 'wonderland',
              BackgroundColor = None,
@@ -7076,7 +7077,7 @@ def Copula3D(dt = None,
     elif ColorMapVar == "XVar":
       color = XVar
 
-    symbolSize = 5
+    symbolSize = [SymbolSize] * len(ZVal)
     data = list(zip(YVal, XVal, ZVal, color, symbolSize))
 
     # Create plot
@@ -7837,8 +7838,7 @@ def Parallel(dt = None,
 #################################################################################################
 
 
-def Funnel(dt = None,
-           CategoryVar = None,
+def Funnel(CategoryVar = None,
            ValuesVar = None,
            RenderHTML = False,
            SeriesLabel = "Funnel Data",
