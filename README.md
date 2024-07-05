@@ -1,5 +1,6 @@
 ![PyPI](https://img.shields.io/pypi/v/QuickEcharts?label=pypi%20package)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/QuickEcharts)
+![Build + Test](https://github.com/github/docs/actions/workflows/python-package.yml/badge.svg)
 
 # QuickEcharts
 
