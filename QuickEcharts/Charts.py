@@ -1,8 +1,8 @@
 # Module: Charts
 # Author: Adrian Antico <adrianantico@gmail.com>
 # License: APGL (>= 3)
-# Release: quickecharts 1.1.1
-# Last modified : 2024-03-26
+# Release: quickecharts 1.1.2
+# Last modified : 2024-07-05
 
 def NumericTransformation(dt, YVar, Trans):
   """
@@ -1024,7 +1024,6 @@ def Pie(dt = None,
     from pyecharts import options as opts
     from pyecharts.charts import Pie
     import polars as pl
-    import math
 
     # PreAgg = False
     # YVar = 'Daily Liters'
@@ -1224,7 +1223,6 @@ def Rosetype(dt = None,
     from pyecharts import options as opts
     from pyecharts.charts import Pie
     import polars as pl
-    import math
 
     # PreAgg = False
     # YVar = 'Daily Liters'
@@ -1425,7 +1423,6 @@ def Donut(dt = None,
     from pyecharts import options as opts
     from pyecharts.charts import Pie
     import polars as pl
-    import math
 
     # PreAgg = False
     # YVar = 'Daily Liters'
@@ -1645,7 +1642,6 @@ def BoxPlot(dt = None,
     from pyecharts import options as opts
     from pyecharts.charts import Boxplot
     import polars as pl
-    import math
 
     # SampleSize = 100000
     # YVar = ['Daily Liters', 'Daily Units']
@@ -1885,7 +1881,6 @@ def WordCloud(dt = None,
     from pyecharts import options as opts
     from pyecharts.charts import WordCloud
     import polars as pl
-    import math
 
     # SampleSize = 100000
     # YVar = 'Brand'
@@ -2056,7 +2051,6 @@ def Radar(dt = None,
     from pyecharts import options as opts
     from pyecharts.charts import Radar
     import polars as pl
-    import math
 
     # YVar = ['Daily Liters', 'Daily Units']
     # GroupVar = 'Brand'
@@ -2315,7 +2309,6 @@ def Line(dt = None,
     from pyecharts import options as opts
     from pyecharts.charts import Line, Grid, Timeline
     import polars as pl
-    import math
 
     # PreAgg = False
     # YVar = 'Daily Liters'
@@ -2836,7 +2829,6 @@ def StackedLine(dt = None,
     from pyecharts import options as opts
     from pyecharts.charts import Line, Grid
     import polars as pl
-    import math
 
     # PreAgg = False
     # YVar = 'Daily Liters'
@@ -3257,7 +3249,6 @@ def Step(dt = None,
     from pyecharts import options as opts
     from pyecharts.charts import Line, Grid, Timeline
     import polars as pl
-    import math
 
     # PreAgg = False
     # YVar = 'Daily Liters'
@@ -3777,7 +3768,6 @@ def StackedStep(dt = None,
     from pyecharts import options as opts
     from pyecharts.charts import Line, Grid
     import polars as pl
-    import math
 
     # PreAgg = False
     # YVar = 'Daily Liters'
@@ -4225,7 +4215,6 @@ def Area(dt = None,
     from pyecharts.charts import Line, Grid, Timeline
     from pyecharts.commons.utils import JsCode
     import polars as pl
-    import math
 
     # PreAgg = False
     # YVar = 'Daily Liters'
@@ -4772,7 +4761,6 @@ def StackedArea(dt = None,
     from pyecharts.charts import Line, Grid
     from pyecharts.commons.utils import JsCode
     import polars as pl
-    import math
 
     # PreAgg = False
     # YVar = 'Daily Liters'
@@ -5190,7 +5178,6 @@ def Bar(dt = None,
     from pyecharts.charts import Bar, Grid, Timeline
     from pyecharts.commons.utils import JsCode
     import polars as pl
-    import math
 
     # PreAgg = False
     # YVar = 'Daily Liters'
@@ -5675,7 +5662,6 @@ def StackedBar(dt = None,
     from pyecharts.charts import Bar, Grid
     from pyecharts.commons.utils import JsCode
     import polars as pl
-    import math
 
     # PreAgg = False
     # YVar = 'Daily Liters'
@@ -6057,7 +6043,6 @@ def Heatmap(dt = None,
     from pyecharts.charts import HeatMap
     from pyecharts.commons.utils import JsCode
     import polars as pl
-    import math
 
     # PreAgg = False
     # YVar = 'Brand'
@@ -6346,7 +6331,6 @@ def Scatter(dt = None,
     from pyecharts import options as opts
     from pyecharts.charts import Scatter, Grid, Timeline
     import polars as pl
-    import math
 
     # SampleSize = 500
     # YVar = 'Daily Liters'
@@ -6809,7 +6793,6 @@ def Scatter3D(dt = None,
     from pyecharts import options as opts
     from pyecharts.charts import Scatter3D, Grid
     import polars as pl
-    import math
 
     # SampleSize = 500
     # YVar = 'Daily Liters'
@@ -7013,7 +6996,6 @@ def Copula3D(dt = None,
     from pyecharts import options as opts
     from pyecharts.charts import Scatter3D, Grid
     import polars as pl
-    import math
 
     # SampleSize = 500
     # YVar = 'Daily Liters'
@@ -7267,7 +7249,6 @@ def Copula(dt = None,
     from pyecharts import options as opts
     from pyecharts.charts import Scatter, Grid, Timeline
     import polars as pl
-    import math
 
     # SampleSize = 50000
     # YVar = 'Daily Liters'
@@ -7722,7 +7703,6 @@ def Parallel(dt = None,
     from pyecharts import options as opts
     from pyecharts.charts import Parallel, Grid
     import polars as pl
-    import math
 
     # SampleSize = 500
     # Vars = ['Daily Liters', 'Daily Units', 'Daily Revenue', 'Daily Margin']
@@ -7891,7 +7871,6 @@ def Funnel(CategoryVar = None,
     from pyecharts import options as opts
     from pyecharts.charts import Funnel, Grid
     import polars as pl
-    import math
 
     # CategoryVar = ['Daily Liters', 'Daily Units', 'Daily Revenue', 'Daily Margin']
     # ValuesVar = [100,80,60,40]
@@ -8046,7 +8025,6 @@ def Bar3D(dt = None,
     from pyecharts import options as opts
     from pyecharts.charts import Bar3D
     import polars as pl
-    import math
 
     # PreAgg = False
     # YVar = 'Category'
@@ -8281,7 +8259,6 @@ def River(dt = None,
     from pyecharts import options as opts
     from pyecharts.charts import ThemeRiver, Grid
     import polars as pl
-    import math
     from itertools import chain
 
     # YVars = 'Daily Liters' # ['Daily Liters', 'Daily Units', 'Daily Revenue', 'Daily Margin']
@@ -8334,7 +8311,7 @@ def River(dt = None,
     if isinstance(YVars, list):
       if len(YVars) > 1:
         x_data = YVars
-        dt2 = dt1.melt(id_vars = DateVar, value_vars = YVars)
+        dt2 = dt1.unpivot(index = DateVar, on = YVars)
         dt2 = dt2.rename({"variable": "Series", "value": "Values"})
         DateVal = dt2[DateVar].to_list()
         SeriesVal = dt2["Series"].to_list()
