@@ -2678,6 +2678,7 @@ def Line(dt = None,
           )
 
           # Global Options
+          GlobalOptions = {}
           if Legend == 'right':
             GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
           elif Legend == 'top':
@@ -5536,6 +5537,7 @@ def Bar(dt = None,
           )
           
           # Global Options
+          GlobalOptions = {}
           if Legend == 'right':
             GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
           elif Legend == 'top':
