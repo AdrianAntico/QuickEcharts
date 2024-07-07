@@ -2677,7 +2677,14 @@ def Line(dt = None,
             label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
           )
 
-          GlobalOptions = {}
+          # Global Options
+          if Legend == 'right':
+            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
+          elif Legend == 'top':
+            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
+          else:
+            GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+
           if not Title is None:
             GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
   
@@ -3617,6 +3624,13 @@ def Step(dt = None,
 
           # Global Options
           GlobalOptions = {}
+          if Legend == 'right':
+            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
+          elif Legend == 'top':
+            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
+          else:
+            GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+
           if not Title is None:
             GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
   
@@ -4609,6 +4623,13 @@ def Area(dt = None,
 
           # Global Options
           GlobalOptions = {}
+          if Legend == 'right':
+            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
+          elif Legend == 'top':
+            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
+          else:
+            GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+
           if not Title is None:
             GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
   
@@ -5515,7 +5536,14 @@ def Bar(dt = None,
           )
           
           # Global Options
-          GlobalOptions = {}
+          if Legend == 'right':
+            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
+          elif Legend == 'top':
+            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
+          else:
+            GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+          
+          # Global Options
           if not Title is None:
             GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
   
@@ -5545,7 +5573,7 @@ def Bar(dt = None,
                 pos_top = f"{facet_vals['top'][counter]}%",
                 width = f"{facet_vals['width']}%",
                 height = f"{facet_vals['height']}%"))
-  
+
           # Render html
           if RenderHTML:
             grid.render()
@@ -6687,6 +6715,13 @@ def Scatter(dt = None,
 
           # Global Options
           GlobalOptions = {}
+          if Legend == 'right':
+            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
+          elif Legend == 'top':
+            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
+          else:
+            GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+
           if not Title is None:
             GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
   
@@ -7599,6 +7634,13 @@ def Copula(dt = None,
 
           # Global Options
           GlobalOptions = {}
+          if Legend == 'right':
+            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
+          elif Legend == 'top':
+            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
+          else:
+            GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+
           if not Title is None:
             GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
   
