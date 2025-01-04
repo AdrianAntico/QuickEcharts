@@ -1,8 +1,32 @@
 # Module: Charts
 # Author: Adrian Antico <adrianantico@gmail.com>
 # License: APGL (>= 3)
-# Release: quickecharts 1.1.2
+# Release: quickecharts 1.2.0
 # Last modified : 2024-07-05
+
+import numpy as np
+import polars as pl
+import math
+from pyecharts import options as opts
+from pyecharts.commons.utils import JsCode
+from pyecharts.charts import (
+    Timeline,
+    Line as PyLine,
+    Bar as PyBar,
+    Grid,
+    Pie as PyPie,
+    Boxplot,
+    WordCloud as PyWordCloud,
+    Radar as PyRadar,
+    HeatMap,
+    Scatter as PyScatter,
+    Scatter3D as PyScatter3D,
+    Parallel as PyParallel,
+    Funnel as PyFunnel,
+    Bar3D as PyBar3D,
+    ThemeRiver
+ )
+
 
 def NumericTransformation(dt, YVar, Trans):
   """
@@ -12,8 +36,6 @@ def NumericTransformation(dt, YVar, Trans):
   Trans: transformation method. Choose from 'sqrt', 'log', 'logmin', 'asinh', 'perc_rank'
   """
   Trans = Trans.lower()
-  import numpy as np
-  import polars as pl
   if Trans == "sqrt":
     dt = dt.with_columns(pl.col(YVar).sqrt())
   elif Trans == 'log':
@@ -33,7 +55,7 @@ def NumericTransformation(dt, YVar, Trans):
 
 
 def PolarsAggregation(dt, AggMethod, NumericVariable, GroupVariable, DateVariable):
-  import polars as pl
+  
   if AggMethod == "count":
     if not GroupVariable is None and not DateVariable is None:
       dt = dt.group_by(GroupVariable, DateVariable).agg(pl.col(NumericVariable).len())
@@ -174,6 +196,271 @@ def FacetGridValues(FacetRows = 1, FacetCols = 1, Legend = 'top', LegendSpace = 
   return {'top': top_pos_values_rep, 'left': left_pos_values_rep, 'width': width-5, 'height': height}
 
 
+def Animation(AnimationThreshold, AnimationDuration, AnimationEasing, AnimationDelay, AnimationDurationUpdate, AnimationEasingUpdate, AnimationDelayUpdate):
+  options = {}
+  options['animation_threshold'] = AnimationThreshold
+  options['animation_duration'] = AnimationDuration
+  options['animation_easing'] = AnimationEasing
+  options['animation_delay'] = AnimationDelay
+  options['animation_duration_update'] = AnimationDurationUpdate
+  options['animation_easing_update'] = AnimationEasingUpdate
+  options['animation_delay_update'] = AnimationDelayUpdate
+  return options
+
+
+def get_toolbox_options():
+    """
+    Return the standard toolbox options for plots.
+    """
+    return opts.ToolboxOpts(
+        feature=opts.ToolBoxFeatureOpts(
+            save_as_image=opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
+            restore=opts.ToolBoxFeatureRestoreOpts(title="Restore"),
+            data_view=opts.ToolBoxFeatureDataViewOpts(title="View Data", lang=["Data View", "Close", "Refresh"]),
+            data_zoom=opts.ToolBoxFeatureDataZoomOpts(zoom_title="Zoom In", back_title="Zoom Out"),
+            magic_type=opts.ToolBoxFeatureMagicTypeOpts(line_title="Line", bar_title="Bar", stack_title="Stack"),
+        )
+    )
+
+
+def get_datazoom_options():
+    """
+    Return the standard datazoom options for plots.
+    """
+    return [
+        opts.DataZoomOpts(
+            range_start=0,
+            range_end=100
+        ),
+        opts.DataZoomOpts(
+            type_="inside"
+        ),
+    ]
+
+
+def get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize):
+    """
+    Return the title options for plots.
+
+    Parameters:
+    - Title: Main title of the plot.
+    - SubTitle: Subtitle of the plot.
+    - TitleColor: Color of the main title text (default: black).
+    - SubTitleColor: Color of the subtitle text (default: gray).
+    - TitleFontSize: Font size for the main title (default: 14).
+    - SubTitleFontSize: Font size for the subtitle (default: 12).
+
+    Returns:
+    - TitleOpts: Configured title options for a chart.
+    """
+    return opts.TitleOpts(
+        title=Title,
+        subtitle=SubTitle,
+        title_textstyle_opts=opts.TextStyleOpts(
+            color=TitleColor,
+            font_size=TitleFontSize,
+        ),
+        subtitle_textstyle_opts=opts.TextStyleOpts(
+            color=SubTitleColor,
+            font_size=SubTitleFontSize,
+        ),
+    )
+
+
+def cap_records(dt, sample_size=None):
+    """
+    Cap the number of records in a DataFrame based on a given sample size.
+
+    Parameters:
+    - dt: The input DataFrame.
+    - sample_size: The maximum number of records to keep (if not None).
+
+    Returns:
+    - A DataFrame capped at the specified sample size.
+    """
+    if sample_size is not None:
+        if dt.shape[0] > sample_size:
+            return dt.sample(n=sample_size, shuffle=True)
+        else:
+            return dt.clone()
+    else:
+        return dt.clone()
+
+
+def initialize_options(
+    theme=None,
+    width=None,
+    height=None,
+    background_color=None,
+    animation_threshold=None,
+    animation_duration=None,
+    animation_easing=None,
+    animation_delay=None,
+    animation_duration_update=None,
+    animation_easing_update=None,
+    animation_delay_update=None,
+):
+    """
+    Initialize chart options for theme, dimensions, background, and animations.
+
+    Parameters:
+    - theme: Theme for the chart (e.g., light, dark).
+    - width: Width of the chart (e.g., "600px").
+    - height: Height of the chart (e.g., "400px").
+    - background_color: Background color of the chart.
+    - animation_threshold: Threshold for animations.
+    - animation_duration: Duration of the animation.
+    - animation_easing: Easing function for the animation.
+    - animation_delay: Delay before animation starts.
+    - animation_duration_update: Duration for animation updates.
+    - animation_easing_update: Easing function for updates.
+    - animation_delay_update: Delay before updates start.
+
+    Returns:
+    - A dictionary containing initialized options.
+    """
+    # Initialize options dictionary
+    init_options = {}
+
+    # Add optional parameters
+    if theme is not None:
+        init_options['theme'] = theme
+    if width is not None:
+        init_options['width'] = width
+    if height is not None:
+        init_options['height'] = height
+    if background_color is not None:
+        init_options['bg_color'] = background_color
+
+    # Add default options
+    init_options['is_horizontal_center'] = True
+
+    # Add animation options
+    animation_options = {
+        "animation_threshold": animation_threshold,
+        "animation_duration": animation_duration,
+        "animation_easing": animation_easing,
+        "animation_delay": animation_delay,
+        "animation_duration_update": animation_duration_update,
+        "animation_easing_update": animation_easing_update,
+        "animation_delay_update": animation_delay_update,
+    }
+    init_options['animation_opts'] = opts.AnimationOpts(**{k: v for k, v in animation_options.items() if v is not None})
+
+    return init_options
+
+
+def configure_legend_options(
+    legend=None,
+    legend_pos_right=None,
+    legend_pos_top=None,
+    legend_border_size=None,
+    legend_text_color=None,
+):
+    """
+    Configure the legend options for a chart.
+
+    Parameters:
+    - legend: Position of the legend ('right', 'top', or None for hidden).
+    - legend_pos_right: Position of the legend from the right (if applicable).
+    - legend_pos_top: Position of the legend from the top.
+    - legend_border_size: Border width of the legend box.
+    - legend_text_color: Color of the legend text.
+
+    Returns:
+    - A configured LegendOpts object.
+    """
+    if legend == 'right':
+        return opts.LegendOpts(
+            pos_right=legend_pos_right,
+            pos_top=legend_pos_top,
+            orient="vertical",
+            border_width=legend_border_size,
+            textstyle_opts=opts.TextStyleOpts(color=legend_text_color),
+        )
+    elif legend == 'top':
+        return opts.LegendOpts(
+            pos_top=legend_pos_top,
+            border_width=legend_border_size,
+            textstyle_opts=opts.TextStyleOpts(color=legend_text_color),
+        )
+    else:
+        return opts.LegendOpts(is_show=False)
+
+
+def configure_global_chart_options(
+    global_options,
+    axis_pointer_type="line",
+    brush=False,
+    data_zoom=False,
+    toolbox=False,
+):
+    """
+    Configure common global chart options like tooltip, brush, data zoom, and toolbox.
+
+    Parameters:
+    - global_options: The existing GlobalOptions dictionary to update.
+    - axis_pointer_type: The type of axis pointer for the tooltip (default: "line").
+    - brush: Whether to include brush options (default: False).
+    - data_zoom: Whether to include data zoom options (default: False).
+    - toolbox: Whether to include toolbox options (default: False).
+
+    Returns:
+    - The updated GlobalOptions dictionary.
+    """
+    # Add or update tooltip options
+    global_options["tooltip_opts"] = opts.TooltipOpts(trigger="axis", axis_pointer_type=axis_pointer_type)
+
+    # Add brush options if enabled
+    if brush:
+        global_options["brush_opts"] = opts.BrushOpts()
+
+    # Add data zoom options if enabled
+    if data_zoom:
+        global_options["datazoom_opts"] = get_datazoom_options()
+
+    # Add toolbox options if enabled
+    if toolbox:
+        global_options["toolbox_opts"] = get_toolbox_options()
+
+    return global_options
+
+
+def configure_marklines(
+    chart,
+    horizontal_line=None,
+    horizontal_line_name=None,
+    vertical_line=None,
+    vertical_line_name=None,
+):
+    """
+    Configure a chart with global options and add horizontal/vertical marklines.
+
+    Parameters:
+    - chart: The chart object to update.
+    - horizontal_line: The Y-coordinate for the horizontal markline (default: None).
+    - horizontal_line_name: The name/label for the horizontal markline (default: None).
+    - vertical_line: The X-coordinate for the vertical markline (default: None).
+    - vertical_line_name: The name/label for the vertical markline (default: None).
+
+    Returns:
+    - The updated chart object.
+    """
+    # Add marklines if specified
+    if horizontal_line is not None or vertical_line is not None:
+        markline_data = []
+
+        if horizontal_line is not None:
+            markline_data.append(opts.MarkLineItem(y=horizontal_line, name=horizontal_line_name))
+
+        if vertical_line is not None:
+            markline_data.append(opts.MarkLineItem(x=vertical_line, name=vertical_line_name))
+
+        chart = chart.set_series_opts(markline_opts=opts.MarkLineOpts(data=markline_data))
+
+    return chart
+
+
 #################################################################################################
 
 
@@ -187,7 +474,7 @@ def Histogram(dt = None,
               FacetLevels = None,
               TimeLine = False,
               NumberBins = 20,
-              RenderHTML = False,
+              RenderHTML = None,
               CategoryGap = "10%",
               Theme = 'wonderland',
               BackgroundColor = None,
@@ -233,7 +520,7 @@ def Histogram(dt = None,
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
     TimeLine: Logical. When True, individual plots will transition from one group level to the next
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
     TitleFontSize: Font text size. Default 20
@@ -271,65 +558,12 @@ def Histogram(dt = None,
     AnimationDelayUpdate: Default 0
     """
 
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Bar, Grid, Timeline
-    import polars as pl
-    import math
-
-    # SampleSize = 100000
-    # YVar = 'Daily Liters'
-    # GroupVar = 'Brand' # None
-    # FacetRows = 2
-    # FacetCols = 2
-    # FacetLevels = None
-    # TimeLine = False
-    # YVarTrans = None
-    # XAxisTitle = YVar
-    # XAxisNameLocation = 'middle'
-    # AxisPointerType = 'cross' # 'line', 'shadow'
-    # RenderHTML = False
-    # Title = 'Hist Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # Theme = 'wonderland'
-    # NumberBins = 20
-    # CategoryGap = "10%"
-    # Legend = None
-    # LegendPosRight = '0%'
-    # LegendPosTop = '5%'
-    # ToolBox = True
-    # Brush = True
-    # DataZoom = True
-    # Width = "1000px"
-    # Height = "600px"
-    # VerticalLine = 35
-    # VerticalLineName = 'bla'
-    # HorizonalLine = 500
-    # HorizonalLineName = 'Yo Yo Daddyo'
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
-    
+    # Set to YVar if not None
     if XAxisTitle == None:
       XAxisTitle = YVar
 
     # Cap number of records and define dt1
-    if SampleSize != None:
-      if dt.shape[0] > SampleSize:
-        dt1 = dt.sample(n = SampleSize, shuffle = True)
-      else:
-        dt1 = dt.clone()
-    else:
-      dt1 = dt.clone()
+    dt1 = cap_records(dt, sample_size=SampleSize)
 
     # Define Plotting Variable
     if YVar == None:
@@ -368,101 +602,43 @@ def Histogram(dt = None,
       YVal = dt1[YVar].to_list()
       
       # Create plot
-      InitOptions = {}
-      if not Theme is None:
-        InitOptions['theme'] = Theme
+      InitOptions = initialize_options(
+        theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+        animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+        animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+        animation_duration_update=AnimationDurationUpdate, 
+        animation_easing_update=AnimationEasingUpdate,
+        animation_delay_update=AnimationDelayUpdate)
 
-      if not Width is None:
-        InitOptions['width'] = Width
-
-      if not Width is None:
-        InitOptions['height'] = Height
-
-      if not BackgroundColor is None:
-        InitOptions['bg_color'] = BackgroundColor
-
-      InitOptions['is_horizontal_center'] = True
-      
-      AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = AnimationThreshold
-      AnimationOptions['animation_duration'] = AnimationDuration
-      AnimationOptions['animation_easing'] = AnimationEasing
-      AnimationOptions['animation_delay'] = AnimationDelay
-      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-      InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
-
-      c = Bar(init_opts = opts.InitOpts(**InitOptions))
+      c = PyBar(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(Buckets)
       c = c.add_yaxis(YVar, YVal, stack = "stack1", category_gap = CategoryGap)
 
       # Global Options
       GlobalOptions = {}
-      if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      else:
-        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+      GlobalOptions['legend_opts'] = configure_legend_options(
+        legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+        legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
   
       if not Title is None:
-        GlobalOptions['title_opts'] = opts.TitleOpts(
-            title = Title, subtitle = SubTitle,
-            title_textstyle_opts = opts.TextStyleOpts(
-              color = TitleColor,
-              font_size = TitleFontSize,
-            ),
-            subtitle_textstyle_opts = opts.TextStyleOpts(
-              color = SubTitleColor,
-              font_size = SubTitleFontSize,
-            )
-        )
+        GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
-  
-      if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-          feature = opts.ToolBoxFeatureOpts(
-            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-          )
-        )
-      
-      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-  
-      if Brush:
-        GlobalOptions['brush_opts'] = opts.BrushOpts()
-  
-      if DataZoom:
-        GlobalOptions['datazoom_opts'] = [
-          opts.DataZoomOpts(
-            range_start = 0,
-            range_end = 100),
-          opts.DataZoomOpts(
-            type_ = "inside")]
-      
+      GlobalOptions = configure_global_chart_options(
+        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+        brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
+
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
   
       # Series Options
-      if not HorizontalLine is None or not VerticalLine is None:
-        MarkLineDict = {}
-        if not HorizontalLine is None and not VerticalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        elif HorizontalLine is None:
-          MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
-        else:
-          MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
-
-        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+      c = configure_marklines(
+        chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+        vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
 
       # Render html
       if RenderHTML:
-        c.render()
+        c.render(f"{RenderHTML}.html")
     
       return c
 
@@ -504,12 +680,12 @@ def Histogram(dt = None,
         YVal = dt2[YVar].to_list().copy()
        
         # Create plot
-        plot_dict[i] = Bar(init_opts = opts.InitOpts(theme = Theme))
+        plot_dict[i] = PyBar(init_opts = opts.InitOpts(theme = Theme))
         plot_dict[i] = plot_dict[i].add_xaxis(Buckets)
         plot_dict[i] = plot_dict[i].add_yaxis(YVar, YVal, stack = "stack1", category_gap = CategoryGap)
 
         if not Title is None:
-          GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
+          GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
         if not XAxisTitle is None:
           GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}")
@@ -539,7 +715,7 @@ def Histogram(dt = None,
 
       # Render html
       if RenderHTML:
-        grid.render()
+        grid.render(f"{RenderHTML}.html")
 
       return grid
 
@@ -552,7 +728,7 @@ def Histogram(dt = None,
 
       # Render html
       if RenderHTML:
-        tl.render()
+        tl.render(f"{RenderHTML}.html")
 
       return tl
 
@@ -569,7 +745,7 @@ def Density(dt = None,
             FacetLevels = None,
             TimeLine = False,
             YVarTrans = None,
-            RenderHTML = False,
+            RenderHTML = None,
             LineWidth = 2,
             FillOpacity = 0.5,
             Theme = 'wonderland',
@@ -616,7 +792,7 @@ def Density(dt = None,
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
     TimeLine: Logical. When True, individual plots will transition from one group level to the next
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     LineWidth: numeric. Default is 2
     FillOpacity: fill opacity under the line. Default 0.5
     Title: title of plot in quotes
@@ -654,68 +830,13 @@ def Density(dt = None,
     AnimationDelayUpdate: Default 0
     """
 
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Line, Grid, Timeline
-    import polars as pl
-    import math
-
-    # SampleSize = 100000
-    # YVar = 'Daily Liters'
-    # GroupVar = 'Brand'
-    # FacetRows = 2
-    # FacetCols = 2
-    # FacetLevels = None
-    # TimeLine = False
-    # YVarTrans = None
-    # XAxisTitle = YVar
-    # XAxisNameLocation = 'middle'
-    # AxisPointerType = 'cross' # 'line', 'shadow'
-    # LineWidth = 2
-    # FillOpacity = 0.5
-    # RenderHTML = False
-    # Title = 'Density Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # YVarTrans = None
-    # XVarTrans = None
-    # Theme = 'wonderland'
-    # NumberBins = 20
-    # Legend = None
-    # LegendPosRight = '0%'
-    # LegendPosTop = '5%'
-    # ToolBox = True
-    # Brush = True
-    # DataZoom = True
-    # VerticalLine = 35
-    # VerticalLineName = 'bla'
-    # HorizonalLine = 500
-    # HorizonalLineName = 'Yo Yo Daddyo'
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
-    
     NumberBins = 20
     
     if XAxisTitle == None:
       XAxisTitle = YVar
 
     # Cap number of records and define dt1
-    if SampleSize != None:
-      if dt.shape[0] > SampleSize:
-        dt1 = dt.sample(n = SampleSize, shuffle = True)
-      else:
-        dt1 = dt.clone()
-    else:
-      dt1 = dt.clone()
+    dt1 = cap_records(dt, sample_size=SampleSize)
 
     # Define Plotting Variable
     if YVar == None:
@@ -755,33 +876,16 @@ def Density(dt = None,
       YVal = dt1[YVar].to_list()
 
       # Create plot
-      InitOptions = {}
-      if not Theme is None:
-        InitOptions['theme'] = Theme
-
-      if not Width is None:
-        InitOptions['width'] = Width
-
-      if not Width is None:
-        InitOptions['height'] = Height
-
-      if not BackgroundColor is None:
-        InitOptions['bg_color'] = BackgroundColor
-
-      InitOptions['is_horizontal_center'] = True
-
-      AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = AnimationThreshold
-      AnimationOptions['animation_duration'] = AnimationDuration
-      AnimationOptions['animation_easing'] = AnimationEasing
-      AnimationOptions['animation_delay'] = AnimationDelay
-      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-      InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+      InitOptions = initialize_options(
+        theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+        animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+        animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+        animation_duration_update=AnimationDurationUpdate, 
+        animation_easing_update=AnimationEasingUpdate,
+        animation_delay_update=AnimationDelayUpdate)
 
       # Create plot
-      c = Line(init_opts = opts.InitOpts(**InitOptions))
+      c = PyLine(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(Buckets)
       c = c.add_yaxis(
         YVar,
@@ -792,71 +896,29 @@ def Density(dt = None,
 
       # Global Options
       GlobalOptions = {}
-      if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      else:
-        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+      GlobalOptions['legend_opts'] = configure_legend_options(
+        legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+        legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
   
       if not Title is None:
-        GlobalOptions['title_opts'] = opts.TitleOpts(
-            title = Title, subtitle = SubTitle,
-            title_textstyle_opts = opts.TextStyleOpts(
-              color = TitleColor,
-              font_size = TitleFontSize,
-            ),
-            subtitle_textstyle_opts = opts.TextStyleOpts(
-              color = SubTitleColor,
-              font_size = SubTitleFontSize,
-            )
-        )
-  
-      
+        GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
+
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
-  
-      if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-          feature = opts.ToolBoxFeatureOpts(
-            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-          )
-        )
-      
-      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-  
-      if Brush:
-        GlobalOptions['brush_opts'] = opts.BrushOpts()
-  
-      if DataZoom:
-        GlobalOptions['datazoom_opts'] = [
-          opts.DataZoomOpts(
-            range_start = 0,
-            range_end = 100),
-          opts.DataZoomOpts(
-            type_ = "inside")]
+      GlobalOptions = configure_global_chart_options(
+        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+        brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
       
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
 
       # Series Options
-      if not HorizontalLine is None or not VerticalLine is None:
-        MarkLineDict = {}
-        if not HorizontalLine is None and not VerticalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        elif HorizontalLine is None:
-          MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
-        else:
-          MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
-
-        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+      c = configure_marklines(
+        chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+        vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
 
       # Render html
       if RenderHTML:
-        c.render()
+        c.render(f"{RenderHTML}.html")
     
       return c
 
@@ -897,7 +959,7 @@ def Density(dt = None,
         YVal = dt2[YVar].to_list().copy()
        
         # Create plot
-        plot_dict[i] = Line(init_opts = opts.InitOpts(theme = Theme))
+        plot_dict[i] = PyLine(init_opts = opts.InitOpts(theme = Theme))
         plot_dict[i] = plot_dict[i].add_xaxis(Buckets)
         plot_dict[i] = plot_dict[i].add_yaxis(
           YVar,
@@ -907,7 +969,7 @@ def Density(dt = None,
           areastyle_opts = opts.AreaStyleOpts(opacity = FillOpacity))
         
         if not Title is None:
-          GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
+          GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
         GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}")
 
@@ -936,7 +998,7 @@ def Density(dt = None,
   
       # Render html
       if RenderHTML:
-        grid.render()
+        grid.render(f"{RenderHTML}.html")
     
       return grid
   
@@ -949,7 +1011,7 @@ def Density(dt = None,
 
       # Render html
       if RenderHTML:
-        tl.render()
+        tl.render(f"{RenderHTML}.html")
 
       return tl
 
@@ -963,7 +1025,7 @@ def Pie(dt = None,
         GroupVar = None,
         AggMethod = 'count',
         YVarTrans = None,
-        RenderHTML = False,
+        RenderHTML = None,
         Theme = 'wonderland',
         BackgroundColor = None,
         Width = None,
@@ -995,7 +1057,7 @@ def Pie(dt = None,
     GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
     TitleFontSize: Font text size. Default 20
@@ -1020,39 +1082,7 @@ def Pie(dt = None,
     AnimationDelayUpdate: Default 0
     """
 
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Pie
-    import polars as pl
 
-    # PreAgg = False
-    # YVar = 'Daily Liters'
-    # GroupVar = 'Brand'
-    # AggMethod = 'count'
-    # YVarTrans = None
-    # RenderHTML = False
-    # Title = 'Pie Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # YVarTrans = None
-    # XVarTrans = None
-    # Theme = 'wonderland'
-    # NumberBins = 20
-    # Legend = None
-    # LegendPosRight = '0%'
-    # LegendPosTop = '5%'
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
-    
     # Define Plotting Variable
     if YVar == None:
       return None
@@ -1075,33 +1105,16 @@ def Pie(dt = None,
     data_pair.sort(key=lambda x: x[1])
 
     # Create plot
-    InitOptions = {}
-    if not Theme is None:
-      InitOptions['theme'] = Theme
-
-    if not Width is None:
-      InitOptions['width'] = Width
-
-    if not Width is None:
-      InitOptions['height'] = Height
-
-    if not BackgroundColor is None:
-      InitOptions['bg_color'] = BackgroundColor
-
-    InitOptions['is_horizontal_center'] = True
-
-    AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = AnimationThreshold
-    AnimationOptions['animation_duration'] = AnimationDuration
-    AnimationOptions['animation_easing'] = AnimationEasing
-    AnimationOptions['animation_delay'] = AnimationDelay
-    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-    InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+    InitOptions = initialize_options(
+      theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+      animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+      animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+      animation_duration_update=AnimationDurationUpdate, 
+      animation_easing_update=AnimationEasingUpdate,
+      animation_delay_update=AnimationDelayUpdate)
 
     # Create plot
-    c = Pie(init_opts = opts.InitOpts(**InitOptions))
+    c = PyPie(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
         series_name = YVar,
         data_pair = data_pair,
@@ -1111,25 +1124,12 @@ def Pie(dt = None,
 
     # Global Options
     GlobalOptions = {}
-    if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-    elif Legend == 'top':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-    else:
-      GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+    GlobalOptions['legend_opts'] = configure_legend_options(
+      legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+      legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
 
     if not Title is None:
-      GlobalOptions['title_opts'] = opts.TitleOpts(
-          title = Title, subtitle = SubTitle,
-          title_textstyle_opts = opts.TextStyleOpts(
-            color = TitleColor,
-            font_size = TitleFontSize,
-          ),
-          subtitle_textstyle_opts = opts.TextStyleOpts(
-            color = SubTitleColor,
-            font_size = SubTitleFontSize,
-          )
-      )
+      GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
     c = c.set_series_opts(
       tooltip_opts = opts.TooltipOpts(
@@ -1144,7 +1144,7 @@ def Pie(dt = None,
 
     # Render html
     if RenderHTML:
-      c.render()
+      c.render(f"{RenderHTML}.html")
   
     return c
 
@@ -1158,7 +1158,7 @@ def Rosetype(dt = None,
              GroupVar = None,
              AggMethod = 'count',
              YVarTrans = None,
-             RenderHTML = False,
+             RenderHTML = None,
              Type = "radius",
              Radius = "55%",
              Theme = 'wonderland',
@@ -1192,7 +1192,7 @@ def Rosetype(dt = None,
     GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     Type: Default "radius". Otherwise, "area"
     Radius: Default "55%"
     Title: title of plot in quotes
@@ -1218,43 +1218,8 @@ def Rosetype(dt = None,
     AnimationEasingUpdate: Default "cubicOut"
     AnimationDelayUpdate: Default 0
     """
-
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Pie
-    import polars as pl
-
-    # PreAgg = False
-    # YVar = 'Daily Liters'
-    # GroupVar = 'Brand'
-    # AggMethod = 'count'
-    # FacetRows = 2
-    # FacetCols = 2
-    # FacetLevels = None
-    # YVarTrans = None
-    # Type = 'radius' # 'area'
-    # Radius = "55%"
-    # RenderHTML = False
-    # Title = 'Pie Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # YVarTrans = None
-    # Theme = 'wonderland'
-    # Legend = None
-    # LegendPosRight = '0%'
-    # LegendPosTop = '5%'
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
+
     # Define Plotting Variable
     if YVar == None:
       return None
@@ -1277,33 +1242,16 @@ def Rosetype(dt = None,
     data_pair.sort(key=lambda x: x[1])
 
     # Create plot
-    InitOptions = {}
-    if not Theme is None:
-      InitOptions['theme'] = Theme
-      
-    if not Width is None:
-      InitOptions['width'] = Width
-
-    if not Width is None:
-      InitOptions['height'] = Height
-
-    if not BackgroundColor is None:
-      InitOptions['bg_color'] = BackgroundColor
-
-    InitOptions['is_horizontal_center'] = True
-
-    AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = AnimationThreshold
-    AnimationOptions['animation_duration'] = AnimationDuration
-    AnimationOptions['animation_easing'] = AnimationEasing
-    AnimationOptions['animation_delay'] = AnimationDelay
-    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-    InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+    InitOptions = initialize_options(
+      theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+      animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+      animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+      animation_duration_update=AnimationDurationUpdate, 
+      animation_easing_update=AnimationEasingUpdate,
+      animation_delay_update=AnimationDelayUpdate)
 
     # Create plot
-    c = Pie(init_opts = opts.InitOpts(**InitOptions))
+    c = PyPie(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
         series_name = YVar,
         data_pair = data_pair,
@@ -1315,25 +1263,12 @@ def Rosetype(dt = None,
 
     # Global Options
     GlobalOptions = {}
-    if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-    elif Legend == 'top':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-    else:
-      GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+    GlobalOptions['legend_opts'] = configure_legend_options(
+      legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+      legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
 
     if not Title is None:
-      GlobalOptions['title_opts'] = opts.TitleOpts(
-          title = Title, subtitle = SubTitle,
-          title_textstyle_opts = opts.TextStyleOpts(
-            color = TitleColor,
-            font_size = TitleFontSize,
-          ),
-          subtitle_textstyle_opts = opts.TextStyleOpts(
-            color = SubTitleColor,
-            font_size = SubTitleFontSize,
-          )
-      )
+      GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
     c = c.set_series_opts(
       tooltip_opts = opts.TooltipOpts(
@@ -1348,7 +1283,7 @@ def Rosetype(dt = None,
 
     # Render html
     if RenderHTML:
-      c.render()
+      c.render(f"{RenderHTML}.html")
   
     return c
 
@@ -1362,7 +1297,7 @@ def Donut(dt = None,
           GroupVar = None,
           AggMethod = 'count',
           YVarTrans = None,
-          RenderHTML = False,
+          RenderHTML = None,
           Theme = 'wonderland',
           BackgroundColor = None,
           Width = None,
@@ -1394,7 +1329,7 @@ def Donut(dt = None,
     GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
     TitleFontSize: Font text size. Default 20
@@ -1418,43 +1353,8 @@ def Donut(dt = None,
     AnimationEasingUpdate: Default "cubicOut"
     AnimationDelayUpdate: Default 0
     """
-
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Pie
-    import polars as pl
-
-    # PreAgg = False
-    # YVar = 'Daily Liters'
-    # GroupVar = 'Brand'
-    # AggMethod = 'count'
-    # FacetRows = 2
-    # FacetCols = 2
-    # FacetLevels = None
-    # YVarTrans = None
-    # Type = 'radius' # 'area'
-    # Radius = "55%"
-    # RenderHTML = False
-    # Title = 'Pie Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # YVarTrans = None
-    # Theme = 'wonderland'
-    # Legend = None
-    # LegendPosRight = '0%'
-    # LegendPosTop = '5%'
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
+
     # Define Plotting Variable
     if YVar == None:
       return None
@@ -1477,33 +1377,16 @@ def Donut(dt = None,
     data_pair.sort(key=lambda x: x[1])
     
     # Create plot
-    InitOptions = {}
-    if not Theme is None:
-      InitOptions['theme'] = Theme
-
-    if not Width is None:
-      InitOptions['width'] = Width
-
-    if not Width is None:
-      InitOptions['height'] = Height
-
-    if not BackgroundColor is None:
-      InitOptions['bg_color'] = BackgroundColor
-
-    InitOptions['is_horizontal_center'] = True
-
-    AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = AnimationThreshold
-    AnimationOptions['animation_duration'] = AnimationDuration
-    AnimationOptions['animation_easing'] = AnimationEasing
-    AnimationOptions['animation_delay'] = AnimationDelay
-    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-    InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+    InitOptions = initialize_options(
+      theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+      animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+      animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+      animation_duration_update=AnimationDurationUpdate, 
+      animation_easing_update=AnimationEasingUpdate,
+      animation_delay_update=AnimationDelayUpdate)
 
     # Create plot
-    c = Pie(init_opts = opts.InitOpts(**InitOptions))
+    c = PyPie(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
       series_name = YVar,
       data_pair = data_pair,
@@ -1514,25 +1397,12 @@ def Donut(dt = None,
 
     # Global Options
     GlobalOptions = {}
-    if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-    elif Legend == 'top':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-    else:
-      GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+    GlobalOptions['legend_opts'] = configure_legend_options(
+      legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+      legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
 
     if not Title is None:
-      GlobalOptions['title_opts'] = opts.TitleOpts(
-          title = Title, subtitle = SubTitle,
-          title_textstyle_opts = opts.TextStyleOpts(
-            color = TitleColor,
-            font_size = TitleFontSize,
-          ),
-          subtitle_textstyle_opts = opts.TextStyleOpts(
-            color = SubTitleColor,
-            font_size = SubTitleFontSize,
-          )
-      )
+      GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
     c = c.set_series_opts(
       tooltip_opts = opts.TooltipOpts(
@@ -1547,7 +1417,7 @@ def Donut(dt = None,
 
     # Render html
     if RenderHTML:
-      c.render()
+      c.render(f"{RenderHTML}.html")
   
     return c
 
@@ -1559,7 +1429,7 @@ def BoxPlot(dt = None,
             YVar = None,
             GroupVar = None,
             YVarTrans = None,
-            RenderHTML = False,
+            RenderHTML = None,
             Theme = 'wonderland',
             BackgroundColor = None,
             Width = None,
@@ -1601,7 +1471,7 @@ def BoxPlot(dt = None,
     YVar: numeric variable
     GroupVar: grouping variable
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
     TitleFontSize: Font text size. Default 20
@@ -1637,60 +1507,13 @@ def BoxPlot(dt = None,
     AnimationEasingUpdate: Default "cubicOut"
     AnimationDelayUpdate: Default 0
     """
-
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Boxplot
-    import polars as pl
-
-    # SampleSize = 100000
-    # YVar = ['Daily Liters', 'Daily Units']
-    # GroupVar = None # 'Brand'
-    # YVarTrans = [None, 'logmin']
-    # XAxisTitle = YVar
-    # XAxisNameLocation = 'end'
-    # YAxisNameGap = 15
-    # XAxisTitle = GroupVar
-    # XAxisNameLocation = 'middle'
-    # XAxisNameGap = 42
-    # AxisPointerType = 'cross' # 'line', 'shadow'
-    # RenderHTML = False
-    # Title = 'Hist Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # XVarTrans = None
-    # Theme = 'wonderland'
-    # Legend = None
-    # LegendPosRight = '0%'
-    # LegendPosTop = '5%'
-    # ToolBox = True
-    # Brush = True
-    # DataZoom = True
-    # HorizonalLine = 500
-    # HorizonalLineName = 'Yo Yo Daddyo'
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
+
     if XAxisTitle == None and not GroupVar is None:
       XAxisTitle = GroupVar
 
     # Cap number of records and define dt1
-    if SampleSize != None:
-      if dt.shape[0] > SampleSize:
-        dt1 = dt.sample(n = SampleSize, shuffle = True)
-      else:
-        dt1 = dt.clone()
-    else:
-      dt1 = dt.clone()
+    dt1 = cap_records(dt, sample_size=SampleSize)
 
     # Define Plotting Variable
     if YVar == None:
@@ -1716,30 +1539,13 @@ def BoxPlot(dt = None,
         dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
 
     # Create plot
-    InitOptions = {}
-    if not Theme is None:
-      InitOptions['theme'] = Theme
-
-    if not Width is None:
-      InitOptions['width'] = Width
-
-    if not Width is None:
-      InitOptions['height'] = Height
-
-    if not BackgroundColor is None:
-      InitOptions['bg_color'] = BackgroundColor
-
-    InitOptions['is_horizontal_center'] = True
-
-    AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = AnimationThreshold
-    AnimationOptions['animation_duration'] = AnimationDuration
-    AnimationOptions['animation_easing'] = AnimationEasing
-    AnimationOptions['animation_delay'] = AnimationDelay
-    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-    InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+    InitOptions = initialize_options(
+      theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+      animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+      animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+      animation_duration_update=AnimationDurationUpdate, 
+      animation_easing_update=AnimationEasingUpdate,
+      animation_delay_update=AnimationDelayUpdate)
 
     # Create plot
     c = Boxplot(init_opts = opts.InitOpts(**InitOptions))
@@ -1765,52 +1571,18 @@ def BoxPlot(dt = None,
 
     # Global Options
     GlobalOptions = {}
-    if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-    elif Legend == 'top':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-    else:
-      GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+    GlobalOptions['legend_opts'] = configure_legend_options(
+      legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+      legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
 
     if not Title is None:
-      GlobalOptions['title_opts'] = opts.TitleOpts(
-        title = Title, subtitle = SubTitle,
-        title_textstyle_opts = opts.TextStyleOpts(
-          color = TitleColor,
-          font_size = TitleFontSize,
-        ),
-        subtitle_textstyle_opts = opts.TextStyleOpts(
-          color = SubTitleColor,
-          font_size = SubTitleFontSize,
-        )
-      )
+      GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
       
     GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
     GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-
-    if ToolBox:
-      GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-        feature = opts.ToolBoxFeatureOpts(
-          save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-          restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-          data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-          data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-          magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-        )
-      )
-    
-    GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-
-    if Brush:
-      GlobalOptions['brush_opts'] = opts.BrushOpts()
-
-    if DataZoom and not GroupVar is None:
-      GlobalOptions['datazoom_opts'] = [
-        opts.DataZoomOpts(
-          range_start = 0,
-          range_end = 100),
-        opts.DataZoomOpts(
-          type_ = "inside")]
+    GlobalOptions = configure_global_chart_options(
+      global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+      brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
     
     # Final Setting of Global Options
     c = c.set_global_opts(**GlobalOptions)
@@ -1823,7 +1595,7 @@ def BoxPlot(dt = None,
 
     # Render html
     if RenderHTML:
-      c.render()
+      c.render(f"{RenderHTML}.html")
   
     return c
 
@@ -1834,7 +1606,7 @@ def BoxPlot(dt = None,
 def WordCloud(dt = None,
               SampleSize = None,
               YVar = None,
-              RenderHTML = False,
+              RenderHTML = None,
               Title = 'Word Cloud',
               TitleColor = "#fff",
               TitleFontSize = 20,
@@ -1857,7 +1629,7 @@ def WordCloud(dt = None,
     # Parameters
     dt: polars dataframe
     YVar: numeric variable
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
     TitleFontSize: Font text size. Default 20
@@ -1876,39 +1648,10 @@ def WordCloud(dt = None,
     AnimationEasingUpdate: Default "cubicOut"
     AnimationDelayUpdate: Default 0
     """
-
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import WordCloud
-    import polars as pl
-
-    # SampleSize = 100000
-    # YVar = 'Brand'
-    # RenderHTML = False
-    # Title = 'Hist Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # Theme = 'wonderland'
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
+
     # Cap number of records and define dt1
-    if SampleSize != None:
-      if dt.shape[0] > SampleSize:
-        dt1 = dt.sample(n = SampleSize, shuffle = True)
-      else:
-        dt1 = dt.clone()
-    else:
-      dt1 = dt.clone()
+    dt1 = cap_records(dt, sample_size=SampleSize)
 
     # Define Plotting Variable
     if YVar == None:
@@ -1925,56 +1668,29 @@ def WordCloud(dt = None,
     data_pair.sort(key=lambda x: x[1])
 
     # Create plot
-    InitOptions = {}
-    if not Theme is None:
-      InitOptions['theme'] = Theme
-
-    if not Width is None:
-      InitOptions['width'] = Width
-
-    if not Width is None:
-      InitOptions['height'] = Height
-
-    if not BackgroundColor is None:
-      InitOptions['bg_color'] = BackgroundColor
-
-    InitOptions['is_horizontal_center'] = True
-
-    AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = AnimationThreshold
-    AnimationOptions['animation_duration'] = AnimationDuration
-    AnimationOptions['animation_easing'] = AnimationEasing
-    AnimationOptions['animation_delay'] = AnimationDelay
-    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-    InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+    InitOptions = initialize_options(
+      theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+      animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+      animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+      animation_duration_update=AnimationDurationUpdate, 
+      animation_easing_update=AnimationEasingUpdate,
+      animation_delay_update=AnimationDelayUpdate)
 
     # Create plot
-    c = WordCloud(init_opts = opts.InitOpts(**InitOptions))
+    c = PyWordCloud(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(series_name = YVar, data_pair = data_pair)
 
     # Global Options
     GlobalOptions = {}
     if not Title is None:
-      GlobalOptions['title_opts'] = opts.TitleOpts(
-        title = Title, subtitle = SubTitle,
-        title_textstyle_opts = opts.TextStyleOpts(
-          color = TitleColor,
-          font_size = TitleFontSize,
-        ),
-        subtitle_textstyle_opts = opts.TextStyleOpts(
-          color = SubTitleColor,
-          font_size = SubTitleFontSize,
-        )
-      )
+      GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
     # Final Setting of Global Options
     c = c.set_global_opts(**GlobalOptions)
 
     # Render html
     if RenderHTML:
-      c.render()
+      c.render(f"{RenderHTML}.html")
   
     return c
 
@@ -1987,7 +1703,7 @@ def Radar(dt = None,
           GroupVar = None,
           AggMethod = 'mean',
           YVarTrans = None,
-          RenderHTML = False,
+          RenderHTML = None,
           LabelColor = '#fff',
           LineColors = ["#213f7f", "#00a6fb", "#22c0df", "#8e5fa8", "#ed1690"],
           Theme = 'wonderland',
@@ -2020,7 +1736,7 @@ def Radar(dt = None,
     GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
     TitleFontSize: Font text size. Default 20
@@ -2046,39 +1762,8 @@ def Radar(dt = None,
     AnimationEasingUpdate: Default "cubicOut"
     AnimationDelayUpdate: Default 0
     """
-
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Radar
-    import polars as pl
-
-    # YVar = ['Daily Liters', 'Daily Units']
-    # GroupVar = 'Brand'
-    # AggMethod = 'mean'
-    # YVarTrans = None
-    # RenderHTML = False
-    # Title = 'Hist Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # YVarTrans = None
-    # Theme = 'wonderland'
-    # LabelColor = '#fff'
-    # LineColors = ["#213f7f", "#00a6fb", "#22c0df", "#8e5fa8", "#ed1690"]
-    # Legend = None
-    # LegendPosRight = '0%'
-    # LegendPosTop = '5%'
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
+
     # Define Plotting Variable
     if YVar == None:
       return None
@@ -2110,33 +1795,16 @@ def Radar(dt = None,
     group_levels = dt1[GroupVar].unique()
 
     # Create plot
-    InitOptions = {}
-    if not Theme is None:
-      InitOptions['theme'] = Theme
-
-    if not Width is None:
-      InitOptions['width'] = Width
-
-    if not Width is None:
-      InitOptions['height'] = Height
-
-    if not BackgroundColor is None:
-      InitOptions['bg_color'] = BackgroundColor
-
-    InitOptions['is_horizontal_center'] = True
-
-    AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = AnimationThreshold
-    AnimationOptions['animation_duration'] = AnimationDuration
-    AnimationOptions['animation_easing'] = AnimationEasing
-    AnimationOptions['animation_delay'] = AnimationDelay
-    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-    InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+    InitOptions = initialize_options(
+      theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+      animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+      animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+      animation_duration_update=AnimationDurationUpdate, 
+      animation_easing_update=AnimationEasingUpdate,
+      animation_delay_update=AnimationDelayUpdate)
 
     # Create plot
-    c = Radar(init_opts = opts.InitOpts(**InitOptions))
+    c = PyRadar(init_opts = opts.InitOpts(**InitOptions))
     schema = []
     for gv in group_levels:
       schema.append(opts.RadarIndicatorItem(name = gv))
@@ -2159,32 +1827,19 @@ def Radar(dt = None,
 
     # Global Options
     GlobalOptions = {}
-    if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-    elif Legend == 'top':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-    else:
-      GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+    GlobalOptions['legend_opts'] = configure_legend_options(
+      legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+      legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
 
     if not Title is None:
-      GlobalOptions['title_opts'] = opts.TitleOpts(
-        title = Title, subtitle = SubTitle,
-        title_textstyle_opts = opts.TextStyleOpts(
-          color = TitleColor,
-          font_size = TitleFontSize,
-        ),
-        subtitle_textstyle_opts = opts.TextStyleOpts(
-          color = SubTitleColor,
-          font_size = SubTitleFontSize,
-        )
-      )
+      GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
     # Final Setting of Global Options
     c = c.set_global_opts(**GlobalOptions)
 
     # Render html
     if RenderHTML:
-      c.render()
+      c.render(f"{RenderHTML}.html")
 
     return c
 
@@ -2203,7 +1858,7 @@ def Line(dt = None,
          FacetLevels = None,
          TimeLine = False,
          YVarTrans = None,
-         RenderHTML = False,
+         RenderHTML = None,
          SmoothLine = True,
          LineWidth = 2,
          Symbol = "emptyCircle",
@@ -2260,7 +1915,7 @@ def Line(dt = None,
     TimeLine: Logical. When True, individual plots will transition from one group level to the next
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     SmoothLine: Logical
     LineWidth: Numeric. Default 2
     Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
@@ -2304,57 +1959,8 @@ def Line(dt = None,
     AnimationEasingUpdate: Default "cubicOut"
     AnimationDelayUpdate: Default 0
     """
-
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Line, Grid, Timeline
-    import polars as pl
-
-    # PreAgg = False
-    # YVar = 'Daily Liters'
-    # XVar = 'Date'
-    # GroupVar = None 'Brand'
-    # AggMethod = 'mean'
-    # FacetRows = 2
-    # FacetCols = 2
-    # FacetLevels = None
-    # TimeLine = False
-    # YVarTrans = None
-    # SmoothLine = True
-    # LineWidth = 2
-    # Symbol = "emptyCircle"
-    # SymbolSize = 2
-    # ShowLabels = False
-    # LabelPosition = "top"
-    # RenderHTML = False
-    # Title = 'Line Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # AxisPointerType = 'cross'
-    # YAxisTitle = 'Daily Liters'
-    # YAxisNameLocation = 'end' 'middle' 'start'
-    # YAxisNameGap = 15
-    # XAxisTitle = 'Date'
-    # XAxisNameLocation = 'middle' 'start' 'end'
-    # XAxisNameGap = 42
-    # Theme = 'wonderland'
-    # Legend = None
-    # LegendPosRight = '0%'
-    # LegendPosTop = '5%'
-    # HorizontalLine = None
-    # VerticalLine = None
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
+
     # Define Plotting Variable
     if YVar == None:
       return None
@@ -2393,33 +1999,16 @@ def Line(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      InitOptions = {}
-      if not Theme is None:
-        InitOptions['theme'] = Theme
-
-      if not Width is None:
-        InitOptions['width'] = Width
-
-      if not Width is None:
-        InitOptions['height'] = Height
-
-      if not BackgroundColor is None:
-        InitOptions['bg_color'] = BackgroundColor
-  
-      InitOptions['is_horizontal_center'] = True
-
-      AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = AnimationThreshold
-      AnimationOptions['animation_duration'] = AnimationDuration
-      AnimationOptions['animation_easing'] = AnimationEasing
-      AnimationOptions['animation_delay'] = AnimationDelay
-      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-      InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+      InitOptions = initialize_options(
+        theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+        animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+        animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+        animation_duration_update=AnimationDurationUpdate, 
+        animation_easing_update=AnimationEasingUpdate,
+        animation_delay_update=AnimationDelayUpdate)
 
       # Create plot
-      c = Line(init_opts = opts.InitOpts(**InitOptions))
+      c = PyLine(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -2439,71 +2028,30 @@ def Line(dt = None,
 
       # Global Options
       GlobalOptions = {}
-      if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      else:
-        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+      GlobalOptions['legend_opts'] = configure_legend_options(
+        legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+        legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
   
       if not Title is None:
-        GlobalOptions['title_opts'] = opts.TitleOpts(
-            title = Title, subtitle = SubTitle,
-            title_textstyle_opts = opts.TextStyleOpts(
-              color = TitleColor,
-              font_size = TitleFontSize,
-            ),
-            subtitle_textstyle_opts = opts.TextStyleOpts(
-              color = SubTitleColor,
-              font_size = SubTitleFontSize,
-            )
-        )
+        GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-  
-      if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-          feature = opts.ToolBoxFeatureOpts(
-            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-          )
-        )
-      
-      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-  
-      if Brush:
-        GlobalOptions['brush_opts'] = opts.BrushOpts()
-  
-      if DataZoom:
-        GlobalOptions['datazoom_opts'] = [
-            opts.DataZoomOpts(
-              range_start = 0,
-              range_end = 100),
-            opts.DataZoomOpts(
-              type_ = "inside")]
+      GlobalOptions = configure_global_chart_options(
+        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+        brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
   
       # Series Options
-      if not HorizontalLine is None or not VerticalLine is None:
-        MarkLineDict = {}
-        if not HorizontalLine is None and not VerticalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        elif HorizontalLine is None:
-          MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
-        else:
-          MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
-
-        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+      c = configure_marklines(
+        chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+        vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
         
       # Render html
       if RenderHTML:
-        c.render()
+        c.render(f"{RenderHTML}.html")
     
       return c
 
@@ -2522,33 +2070,16 @@ def Line(dt = None,
         XVal = dt1[XVar].unique().to_list()
 
         # Create plot
-        InitOptions = {}
-        if not Theme is None:
-          InitOptions['theme'] = Theme
-
-        if not Width is None:
-          InitOptions['width'] = Width
-
-        if not Width is None:
-          InitOptions['height'] = Height
-
-        if not BackgroundColor is None:
-          InitOptions['bg_color'] = BackgroundColor
-    
-        InitOptions['is_horizontal_center'] = True
-
-        AnimationOptions = {}
-        AnimationOptions['animation_threshold'] = AnimationThreshold
-        AnimationOptions['animation_duration'] = AnimationDuration
-        AnimationOptions['animation_easing'] = AnimationEasing
-        AnimationOptions['animation_delay'] = AnimationDelay
-        AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-        AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-        AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-        InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+        InitOptions = initialize_options(
+          theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+          animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+          animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+          animation_duration_update=AnimationDurationUpdate, 
+          animation_easing_update=AnimationEasingUpdate,
+          animation_delay_update=AnimationDelayUpdate)
 
         # Create plot
-        c = Line(init_opts = opts.InitOpts(**InitOptions))
+        c = PyLine(init_opts = opts.InitOpts(**InitOptions))
         c = c.add_xaxis(xaxis_data = XVal)
         if not Symbol is None:
           ShowSymbol = True
@@ -2568,71 +2099,30 @@ def Line(dt = None,
   
         # Global Options
         GlobalOptions = {}
-        if Legend == 'right':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-        elif Legend == 'top':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-        else:
-          GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+        GlobalOptions['legend_opts'] = configure_legend_options(
+          legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+          legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
   
         if not Title is None:
-          GlobalOptions['title_opts'] = opts.TitleOpts(
-              title = Title, subtitle = SubTitle,
-              title_textstyle_opts = opts.TextStyleOpts(
-                color = TitleColor,
-                font_size = TitleFontSize,
-              ),
-              subtitle_textstyle_opts = opts.TextStyleOpts(
-                color = SubTitleColor,
-                font_size = SubTitleFontSize,
-              )
-          )
+          GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
         GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
         GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-    
-        if ToolBox:
-          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-            feature = opts.ToolBoxFeatureOpts(
-              save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-              restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-              data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-              data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-              magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-            )
-          )
-        
-        GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-    
-        if Brush:
-          GlobalOptions['brush_opts'] = opts.BrushOpts()
-    
-        if DataZoom:
-          GlobalOptions['datazoom_opts'] = [
-              opts.DataZoomOpts(
-                range_start = 0,
-                range_end = 100),
-              opts.DataZoomOpts(
-                type_ = "inside")]
+        GlobalOptions = configure_global_chart_options(
+          global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+          brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
   
         # Final Setting of Global Options
         c = c.set_global_opts(**GlobalOptions)
     
         # Series Options
-        if not HorizontalLine is None or not VerticalLine is None:
-          MarkLineDict = {}
-          if not HorizontalLine is None and not VerticalLine is None:
-            MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-          elif HorizontalLine is None:
-            MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
-          else:
-            MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
-  
-          c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+        c = configure_marklines(
+          chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+          vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
           
         # Render html
         if RenderHTML:
-          c.render()
+          c.render(f"{RenderHTML}.html")
       
         return c
 
@@ -2664,7 +2154,7 @@ def Line(dt = None,
         else:
           ShowSymbol = False
         for i in GroupLevels:# i = 'Yellow-Yum'
-          plot_dict[i] = Line(init_opts = opts.InitOpts(theme = Theme))
+          plot_dict[i] = PyLine(init_opts = opts.InitOpts(theme = Theme))
           plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = XVal)
           plot_dict[i] = plot_dict[i].add_yaxis(
             series_name = i,
@@ -2679,15 +2169,12 @@ def Line(dt = None,
 
           # Global Options
           GlobalOptions = {}
-          if Legend == 'right':
-            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-          elif Legend == 'top':
-            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-          else:
-            GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+          GlobalOptions['legend_opts'] = configure_legend_options(
+            legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+            legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
 
           if not Title is None:
-            GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
+            GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
           GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}", position = "right")
       
@@ -2716,7 +2203,7 @@ def Line(dt = None,
   
           # Render html
           if RenderHTML:
-            grid.render()
+            grid.render(f"{RenderHTML}.html")
 
           return grid
 
@@ -2728,7 +2215,7 @@ def Line(dt = None,
 
           # Render html
           if RenderHTML:
-            tl.render()
+            tl.render(f"{RenderHTML}.html")
     
           return tl
 
@@ -2743,7 +2230,7 @@ def StackedLine(dt = None,
                 GroupVar = None,
                 AggMethod = 'mean',
                 YVarTrans = None,
-                RenderHTML = False,
+                RenderHTML = None,
                 SmoothLine = True,
                 LineWidth = 2,
                 Symbol = "emptyCircle",
@@ -2792,7 +2279,7 @@ def StackedLine(dt = None,
     GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     SmoothLine: Logical
     LineWidth: Numeric. Default 2
     Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
@@ -2832,50 +2319,8 @@ def StackedLine(dt = None,
     AnimationEasingUpdate: Default "cubicOut"
     AnimationDelayUpdate: Default 0
     """
-
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Line, Grid
-    import polars as pl
-
-    # PreAgg = False
-    # YVar = 'Daily Liters'
-    # XVar = 'Date'
-    # GroupVar = None 'Brand'
-    # AggMethod = 'mean'
-    # YVarTrans = None
-    # SmoothLine = True
-    # LineWidth = 2
-    # Symbol = "emptyCircle"
-    # ShowLabels = False
-    # LabelPosition = "top"
-    # RenderHTML = False
-    # Title = 'Pie Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # AxisPointerType = 'cross'
-    # YAxisTitle = 'Daily Liters'
-    # YAxisNameLocation = 'end' 'middle' 'start'
-    # YAxisNameGap = 15
-    # XAxisTitle = 'Date'
-    # XAxisNameLocation = 'middle' 'start' 'end'
-    # XAxisNameGap = 42
-    # Theme = 'wonderland'
-    # Legend = None
-    # LegendPosRight = '0%'
-    # LegendPosTop = '5%'
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
+
     # Define Plotting Variable
     if YVar == None:
       return None
@@ -2920,33 +2365,16 @@ def StackedLine(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      InitOptions = {}
-      if not Theme is None:
-        InitOptions['theme'] = Theme
-
-      if not Width is None:
-        InitOptions['width'] = Width
-
-      if not Width is None:
-        InitOptions['height'] = Height
-
-      if not BackgroundColor is None:
-        InitOptions['bg_color'] = BackgroundColor
-  
-      InitOptions['is_horizontal_center'] = True
-
-      AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = AnimationThreshold
-      AnimationOptions['animation_duration'] = AnimationDuration
-      AnimationOptions['animation_easing'] = AnimationEasing
-      AnimationOptions['animation_delay'] = AnimationDelay
-      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-      InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+      InitOptions = initialize_options(
+        theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+        animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+        animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+        animation_duration_update=AnimationDurationUpdate, 
+        animation_easing_update=AnimationEasingUpdate,
+        animation_delay_update=AnimationDelayUpdate)
 
       # Create plot
-      c = Line(init_opts = opts.InitOpts(**InitOptions))
+      c = PyLine(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -2967,59 +2395,25 @@ def StackedLine(dt = None,
 
       # Global Options
       GlobalOptions = {}
-      if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      else:
-        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+      GlobalOptions['legend_opts'] = configure_legend_options(
+        legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+        legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
   
       if not Title is None:
-        GlobalOptions['title_opts'] = opts.TitleOpts(
-            title = Title, subtitle = SubTitle,
-            title_textstyle_opts = opts.TextStyleOpts(
-              color = TitleColor,
-              font_size = TitleFontSize,
-            ),
-            subtitle_textstyle_opts = opts.TextStyleOpts(
-              color = SubTitleColor,
-              font_size = SubTitleFontSize,
-            )
-        )
+        GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-  
-      if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-          feature = opts.ToolBoxFeatureOpts(
-            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-          )
-        )
-      
-      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-  
-      if Brush:
-        GlobalOptions['brush_opts'] = opts.BrushOpts()
-  
-      if DataZoom:
-        GlobalOptions['datazoom_opts'] = [
-            opts.DataZoomOpts(
-              range_start = 0,
-              range_end = 100),
-            opts.DataZoomOpts(
-              type_ = "inside")]
+      GlobalOptions = configure_global_chart_options(
+        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+        brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
 
       # Render html
       if RenderHTML:
-        c.render()
+        c.render(f"{RenderHTML}.html")
     
       return c
 
@@ -3035,33 +2429,16 @@ def StackedLine(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      InitOptions = {}
-      if not Theme is None:
-        InitOptions['theme'] = Theme
-
-      if not Width is None:
-        InitOptions['width'] = Width
-
-      if not Width is None:
-        InitOptions['height'] = Height
-
-      if not BackgroundColor is None:
-        InitOptions['bg_color'] = BackgroundColor
-  
-      InitOptions['is_horizontal_center'] = True
-
-      AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = AnimationThreshold
-      AnimationOptions['animation_duration'] = AnimationDuration
-      AnimationOptions['animation_easing'] = AnimationEasing
-      AnimationOptions['animation_delay'] = AnimationDelay
-      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-      InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+      InitOptions = initialize_options(
+        theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+        animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+        animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+        animation_duration_update=AnimationDurationUpdate, 
+        animation_easing_update=AnimationEasingUpdate,
+        animation_delay_update=AnimationDelayUpdate)
 
       # Create plot
-      c = Line(init_opts = opts.InitOpts(**InitOptions))
+      c = PyLine(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -3082,59 +2459,25 @@ def StackedLine(dt = None,
 
       # Global Options
       GlobalOptions = {}
-      if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      else:
-        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+      GlobalOptions['legend_opts'] = configure_legend_options(
+        legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+        legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
 
       if not Title is None:
-        GlobalOptions['title_opts'] = opts.TitleOpts(
-            title = Title, subtitle = SubTitle,
-            title_textstyle_opts = opts.TextStyleOpts(
-              color = TitleColor,
-              font_size = TitleFontSize,
-            ),
-            subtitle_textstyle_opts = opts.TextStyleOpts(
-              color = SubTitleColor,
-              font_size = SubTitleFontSize,
-            )
-        )
+        GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-  
-      if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-          feature = opts.ToolBoxFeatureOpts(
-            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-          )
-        )
-      
-      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-  
-      if Brush:
-        GlobalOptions['brush_opts'] = opts.BrushOpts()
-  
-      if DataZoom:
-        GlobalOptions['datazoom_opts'] = [
-            opts.DataZoomOpts(
-              range_start = 0,
-              range_end = 100),
-            opts.DataZoomOpts(
-              type_ = "inside")]
+      GlobalOptions = configure_global_chart_options(
+        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+        brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
 
       # Render html
       if RenderHTML:
-        c.render()
+        c.render(f"{RenderHTML}.html")
     
       return c
 
@@ -3153,7 +2496,7 @@ def Step(dt = None,
          TimeLine = False,
          AggMethod = 'mean',
          YVarTrans = None,
-         RenderHTML = False,
+         RenderHTML = None,
          LineWidth = 2,
          Symbol = "emptyCircle",
          SymbolSize = 6,
@@ -3209,7 +2552,7 @@ def Step(dt = None,
     TimeLine: Logical. When True, individual plots will transition from one group level to the next
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     LineWidth: Numeric. Default 2
     Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
     SymbolSize: Default 6
@@ -3252,55 +2595,8 @@ def Step(dt = None,
     AnimationEasingUpdate: Default "cubicOut"
     AnimationDelayUpdate: Default 0
     """
-
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Line, Grid, Timeline
-    import polars as pl
-
-    # PreAgg = False
-    # YVar = 'Daily Liters'
-    # XVar = 'Date'
-    # GroupVar = None 'Brand'
-    # AggMethod = 'mean'
-    # FacetRows = 2
-    # FacetCols = 2
-    # FacetLevels = None
-    # TimeLine = False
-    # YVarTrans = None
-    # LineWidth = 2
-    # Symbol = "emptyCircle"
-    # ShowLabels = False
-    # LabelPosition = "top"
-    # RenderHTML = False
-    # Title = 'Pie Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # AxisPointerType = 'cross'
-    # YAxisTitle = 'Daily Liters'
-    # YAxisNameLocation = 'end' 'middle' 'start'
-    # YAxisNameGap = 15
-    # XAxisTitle = 'Date'
-    # XAxisNameLocation = 'middle' 'start' 'end'
-    # XAxisNameGap = 42
-    # Theme = 'wonderland'
-    # Legend = None
-    # LegendPosRight = '0%'
-    # LegendPosTop = '5%'
-    # HorizontalLine = None
-    # VerticalLine = None
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
+
     # Define Plotting Variable
     if YVar == None:
       return None
@@ -3339,33 +2635,16 @@ def Step(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      InitOptions = {}
-      if not Theme is None:
-        InitOptions['theme'] = Theme
-
-      if not Width is None:
-        InitOptions['width'] = Width
-
-      if not Width is None:
-        InitOptions['height'] = Height
-
-      if not BackgroundColor is None:
-        InitOptions['bg_color'] = BackgroundColor
-  
-      InitOptions['is_horizontal_center'] = True
-
-      AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = AnimationThreshold
-      AnimationOptions['animation_duration'] = AnimationDuration
-      AnimationOptions['animation_easing'] = AnimationEasing
-      AnimationOptions['animation_delay'] = AnimationDelay
-      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-      InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+      InitOptions = initialize_options(
+        theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+        animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+        animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+        animation_duration_update=AnimationDurationUpdate, 
+        animation_easing_update=AnimationEasingUpdate,
+        animation_delay_update=AnimationDelayUpdate)
 
       # Create plot
-      c = Line(init_opts = opts.InitOpts(**InitOptions))
+      c = PyLine(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -3385,71 +2664,30 @@ def Step(dt = None,
 
       # Global Options
       GlobalOptions = {}
-      if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      else:
-        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+      GlobalOptions['legend_opts'] = configure_legend_options(
+        legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+        legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
   
       if not Title is None:
-        GlobalOptions['title_opts'] = opts.TitleOpts(
-            title = Title, subtitle = SubTitle,
-            title_textstyle_opts = opts.TextStyleOpts(
-              color = TitleColor,
-              font_size = TitleFontSize,
-            ),
-            subtitle_textstyle_opts = opts.TextStyleOpts(
-              color = SubTitleColor,
-              font_size = SubTitleFontSize,
-            )
-        )
+        GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-  
-      if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-          feature = opts.ToolBoxFeatureOpts(
-            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-          )
-        )
-      
-      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-  
-      if Brush:
-        GlobalOptions['brush_opts'] = opts.BrushOpts()
-  
-      if DataZoom:
-        GlobalOptions['datazoom_opts'] = [
-            opts.DataZoomOpts(
-              range_start = 0,
-              range_end = 100),
-            opts.DataZoomOpts(
-              type_ = "inside")]
+      GlobalOptions = configure_global_chart_options(
+        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+        brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
   
       # Series Options
-      if not HorizontalLine is None or not VerticalLine is None:
-        MarkLineDict = {}
-        if not HorizontalLine is None and not VerticalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        elif HorizontalLine is None:
-          MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
-        else:
-          MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
-
-        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+      c = configure_marklines(
+        chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+        vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
         
       # Render html
       if RenderHTML:
-        c.render()
+        c.render(f"{RenderHTML}.html")
     
       return c
 
@@ -3468,33 +2706,16 @@ def Step(dt = None,
         XVal = dt1[XVar].unique().to_list()
 
         # Create plot
-        InitOptions = {}
-        if not Theme is None:
-          InitOptions['theme'] = Theme
-
-        if not Width is None:
-          InitOptions['width'] = Width
-
-        if not Width is None:
-          InitOptions['height'] = Height
-  
-        if not BackgroundColor is None:
-          InitOptions['bg_color'] = BackgroundColor
-    
-        InitOptions['is_horizontal_center'] = True
-
-        AnimationOptions = {}
-        AnimationOptions['animation_threshold'] = AnimationThreshold
-        AnimationOptions['animation_duration'] = AnimationDuration
-        AnimationOptions['animation_easing'] = AnimationEasing
-        AnimationOptions['animation_delay'] = AnimationDelay
-        AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-        AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-        AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-        InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+        InitOptions = initialize_options(
+          theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+          animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+          animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+          animation_duration_update=AnimationDurationUpdate, 
+          animation_easing_update=AnimationEasingUpdate,
+          animation_delay_update=AnimationDelayUpdate)
 
         # Create plot
-        c = Line(init_opts = opts.InitOpts(**InitOptions))
+        c = PyLine(init_opts = opts.InitOpts(**InitOptions))
         c = c.add_xaxis(xaxis_data = XVal)
         if not Symbol is None:
           ShowSymbol = True
@@ -3514,71 +2735,30 @@ def Step(dt = None,
   
         # Global Options
         GlobalOptions = {}
-        if Legend == 'right':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-        elif Legend == 'top':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-        else:
-          GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+        GlobalOptions['legend_opts'] = configure_legend_options(
+          legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+          legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
   
         if not Title is None:
-          GlobalOptions['title_opts'] = opts.TitleOpts(
-              title = Title, subtitle = SubTitle,
-              title_textstyle_opts = opts.TextStyleOpts(
-                color = TitleColor,
-                font_size = TitleFontSize,
-              ),
-              subtitle_textstyle_opts = opts.TextStyleOpts(
-                color = SubTitleColor,
-                font_size = SubTitleFontSize,
-              )
-          )
+          GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
         GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
         GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-    
-        if ToolBox:
-          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-            feature = opts.ToolBoxFeatureOpts(
-              save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-              restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-              data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-              data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-              magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-            )
-          )
-        
-        GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-    
-        if Brush:
-          GlobalOptions['brush_opts'] = opts.BrushOpts()
-    
-        if DataZoom:
-          GlobalOptions['datazoom_opts'] = [
-              opts.DataZoomOpts(
-                range_start = 0,
-                range_end = 100),
-              opts.DataZoomOpts(
-                type_ = "inside")]
+        GlobalOptions = configure_global_chart_options(
+          global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+          brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
   
         # Final Setting of Global Options
         c = c.set_global_opts(**GlobalOptions)
     
         # Series Options
-        if not HorizontalLine is None or not VerticalLine is None:
-          MarkLineDict = {}
-          if not HorizontalLine is None and not VerticalLine is None:
-            MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-          elif HorizontalLine is None:
-            MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
-          else:
-            MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
-  
-          c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+        c = configure_marklines(
+          chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+          vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
           
         # Render html
         if RenderHTML:
-          c.render()
+          c.render(f"{RenderHTML}.html")
       
         return c
 
@@ -3610,7 +2790,7 @@ def Step(dt = None,
         else:
           ShowSymbol = False
         for i in GroupLevels:# i = 'Yellow-Yum'
-          plot_dict[i] = Line(init_opts = opts.InitOpts(theme = Theme))
+          plot_dict[i] = PyLine(init_opts = opts.InitOpts(theme = Theme))
           plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = XVal)
           plot_dict[i] = plot_dict[i].add_yaxis(
             series_name = i,
@@ -3625,15 +2805,12 @@ def Step(dt = None,
 
           # Global Options
           GlobalOptions = {}
-          if Legend == 'right':
-            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-          elif Legend == 'top':
-            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-          else:
-            GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+          GlobalOptions['legend_opts'] = configure_legend_options(
+            legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+            legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
 
           if not Title is None:
-            GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
+            GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
           if not XAxisTitle is None:
             GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}", position = "right")
@@ -3664,7 +2841,7 @@ def Step(dt = None,
   
           # Render html
           if RenderHTML:
-            grid.render()
+            grid.render(f"{RenderHTML}.html")
 
           return grid
 
@@ -3676,7 +2853,7 @@ def Step(dt = None,
 
           # Render html
           if RenderHTML:
-            tl.render()
+            tl.render(f"{RenderHTML}.html")
     
           return tl
 
@@ -3691,7 +2868,7 @@ def StackedStep(dt = None,
                 GroupVar = None,
                 AggMethod = 'mean',
                 YVarTrans = None,
-                RenderHTML = False,
+                RenderHTML = None,
                 LineWidth = 2,
                 Symbol = "emptyCircle",
                 SymbolSize = 6,
@@ -3739,7 +2916,7 @@ def StackedStep(dt = None,
     GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     LineWidth: Numeric. Default 2
     Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
     SymbolSize: Default 6
@@ -3778,49 +2955,8 @@ def StackedStep(dt = None,
     AnimationEasingUpdate: Default "cubicOut"
     AnimationDelayUpdate: Default 0
     """
-
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Line, Grid
-    import polars as pl
-
-    # PreAgg = False
-    # YVar = 'Daily Liters'
-    # XVar = 'Date'
-    # GroupVar = None 'Brand'
-    # AggMethod = 'mean'
-    # YVarTrans = None
-    # LineWidth = 2
-    # Symbol = "emptyCircle"
-    # ShowLabels = False
-    # LabelPosition = "top"
-    # RenderHTML = False
-    # Title = 'Pie Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # AxisPointerType = 'cross'
-    # YAxisTitle = 'Daily Liters'
-    # YAxisNameLocation = 'end' 'middle' 'start'
-    # YAxisNameGap = 15
-    # XAxisTitle = 'Date'
-    # XAxisNameLocation = 'middle' 'start' 'end'
-    # XAxisNameGap = 42
-    # Theme = 'wonderland'
-    # Legend = None
-    # LegendPosRight = '0%'
-    # LegendPosTop = '5%'
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
+
     # Define Plotting Variable
     if YVar == None:
       return None
@@ -3865,33 +3001,16 @@ def StackedStep(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      InitOptions = {}
-      if not Theme is None:
-        InitOptions['theme'] = Theme
-
-      if not Width is None:
-        InitOptions['width'] = Width
-
-      if not Width is None:
-        InitOptions['height'] = Height
-
-      if not BackgroundColor is None:
-        InitOptions['bg_color'] = BackgroundColor
-  
-      InitOptions['is_horizontal_center'] = True
-
-      AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = AnimationThreshold
-      AnimationOptions['animation_duration'] = AnimationDuration
-      AnimationOptions['animation_easing'] = AnimationEasing
-      AnimationOptions['animation_delay'] = AnimationDelay
-      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-      InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+      InitOptions = initialize_options(
+        theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+        animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+        animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+        animation_duration_update=AnimationDurationUpdate, 
+        animation_easing_update=AnimationEasingUpdate,
+        animation_delay_update=AnimationDelayUpdate)
 
       # Create plot
-      c = Line(init_opts = opts.InitOpts(**InitOptions))
+      c = PyLine(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -3912,59 +3031,25 @@ def StackedStep(dt = None,
 
       # Global Options
       GlobalOptions = {}
-      if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      else:
-        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+      GlobalOptions['legend_opts'] = configure_legend_options(
+        legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+        legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
   
       if not Title is None:
-        GlobalOptions['title_opts'] = opts.TitleOpts(
-            title = Title, subtitle = SubTitle,
-            title_textstyle_opts = opts.TextStyleOpts(
-              color = TitleColor,
-              font_size = TitleFontSize,
-            ),
-            subtitle_textstyle_opts = opts.TextStyleOpts(
-              color = SubTitleColor,
-              font_size = SubTitleFontSize,
-            )
-        )
+        GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-  
-      if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-          feature = opts.ToolBoxFeatureOpts(
-            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-          )
-        )
-      
-      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-  
-      if Brush:
-        GlobalOptions['brush_opts'] = opts.BrushOpts()
-  
-      if DataZoom:
-        GlobalOptions['datazoom_opts'] = [
-            opts.DataZoomOpts(
-              range_start = 0,
-              range_end = 100),
-            opts.DataZoomOpts(
-              type_ = "inside")]
+      GlobalOptions = configure_global_chart_options(
+        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+        brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
 
       # Render html
       if RenderHTML:
-        c.render()
+        c.render(f"{RenderHTML}.html")
     
       return c
 
@@ -3980,33 +3065,16 @@ def StackedStep(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      InitOptions = {}
-      if not Theme is None:
-        InitOptions['theme'] = Theme
-
-      if not Width is None:
-        InitOptions['width'] = Width
-
-      if not Width is None:
-        InitOptions['height'] = Height
-
-      if not BackgroundColor is None:
-        InitOptions['bg_color'] = BackgroundColor
-  
-      InitOptions['is_horizontal_center'] = True
-
-      AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = AnimationThreshold
-      AnimationOptions['animation_duration'] = AnimationDuration
-      AnimationOptions['animation_easing'] = AnimationEasing
-      AnimationOptions['animation_delay'] = AnimationDelay
-      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-      InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+      InitOptions = initialize_options(
+        theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+        animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+        animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+        animation_duration_update=AnimationDurationUpdate, 
+        animation_easing_update=AnimationEasingUpdate,
+        animation_delay_update=AnimationDelayUpdate)
 
       # Create plot
-      c = Line(init_opts = opts.InitOpts(**InitOptions))
+      c = PyLine(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -4027,59 +3095,25 @@ def StackedStep(dt = None,
 
       # Global Options
       GlobalOptions = {}
-      if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      else:
-        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+      GlobalOptions['legend_opts'] = configure_legend_options(
+        legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+        legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
 
       if not Title is None:
-        GlobalOptions['title_opts'] = opts.TitleOpts(
-            title = Title, subtitle = SubTitle,
-            title_textstyle_opts = opts.TextStyleOpts(
-              color = TitleColor,
-              font_size = TitleFontSize,
-            ),
-            subtitle_textstyle_opts = opts.TextStyleOpts(
-              color = SubTitleColor,
-              font_size = SubTitleFontSize,
-            )
-        )
+        GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-  
-      if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-          feature = opts.ToolBoxFeatureOpts(
-            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-          )
-        )
-      
-      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-  
-      if Brush:
-        GlobalOptions['brush_opts'] = opts.BrushOpts()
-  
-      if DataZoom:
-        GlobalOptions['datazoom_opts'] = [
-            opts.DataZoomOpts(
-              range_start = 0,
-              range_end = 100),
-            opts.DataZoomOpts(
-              type_ = "inside")]
+      GlobalOptions = configure_global_chart_options(
+        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+        brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
 
       # Render html
       if RenderHTML:
-        c.render()
+        c.render(f"{RenderHTML}.html")
     
       return c
 
@@ -4095,15 +3129,27 @@ def JS_GradientAreaBackground(Color1, Color2):
 
 # JS_GradientAreaBackground('#c86589', '#06a7ff')
 
-def JS_GradientAreaFill(Color1, Color2):
-  area_color_js = (
-    "new echarts.graphic.LinearGradient(0, 0, 0, 1, "
-    f"[{{offset: 0, color: '{Color1}'}}, {{offset: 1, color: '{Color2}'}}], false)"
-  )
-  return area_color_js
+def JS_GradientAreaFill(gradient_colors):
+    """
+    Generate JavaScript code for an ECharts gradient area fill.
 
-# JS_GradientAreaFill('#c86589', '#06a7ff0d')
+    Parameters:
+    - gradient_colors: A list or tuple containing one or more color strings.
 
+    Returns:
+    - A string of JavaScript code for the gradient area fill.
+    """
+    if not gradient_colors or len(gradient_colors) < 1:
+        raise ValueError("gradient_colors must contain at least one color.")
+
+    stops = []
+    step = 1 / (len(gradient_colors) - 1) if len(gradient_colors) > 1 else 0
+
+    for i, color in enumerate(gradient_colors):
+        stops.append(f"{{offset: {i * step:.2f}, color: '{color}'}}")
+
+    area_color_js = f"new echarts.graphic.LinearGradient(0, 0, 0, 1, [{', '.join(stops)}], false)"
+    return area_color_js
 
 #################################################################################################
 
@@ -4119,10 +3165,9 @@ def Area(dt = None,
          TimeLine = False,
          AggMethod = 'mean',
          YVarTrans = None,
-         RenderHTML = False,
+         RenderHTML = None,
          Opacity = 0.5,
-         GradientColor1 = '#c86589',
-         GradientColor2 = '#06a7ff0d',
+         GradientColors = ['#c86589', '#06a7ff0d'],
          LineWidth = 2,
          Symbol = "emptyCircle",
          SymbolSize = 6,
@@ -4135,7 +3180,7 @@ def Area(dt = None,
          ToolBox = True,
          Brush = True,
          DataZoom = True,
-         Title = 'Line Plot',
+         Title = 'Area Plot',
          TitleColor = "#fff",
          TitleFontSize = 20,
          SubTitle = None,
@@ -4178,10 +3223,9 @@ def Area(dt = None,
     TimeLine: Logical. When True, individual plots will transition from one group level to the next
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     Opacity: For grouping plots. Defaults to 0.5
-    GradientColor1: For non-grouping plots. Default '#c86589'
-    GradientColor2: For non-grouping plots. Default '#06a7ff0d',
+    GradientColors: list of hex colors
     LineWidth: Numeric. Default 2
     Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
     SymbolSize: Default 6
@@ -4224,59 +3268,11 @@ def Area(dt = None,
     AnimationEasingUpdate: Default "cubicOut"
     AnimationDelayUpdate: Default 0
     """
-
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Line, Grid, Timeline
-    from pyecharts.commons.utils import JsCode
-    import polars as pl
-
-    # PreAgg = False
-    # YVar = 'Daily Liters'
-    # XVar = 'Date'
-    # GroupVar = 'Brand'
-    # AggMethod = 'mean'
-    # FacetRows = 2
-    # FacetCols = 2
-    # FacetLevels = None
-    # TimeLine = False
-    # YVarTrans = None
-    # LineWidth = 2
-    # Opacity = 0.75
-    # Symbol = "emptyCircle"
-    # ShowLabels = False
-    # LabelPosition = "top"
-    # GradientColor1 = '#c86589'
-    # GradientColor2 = '#06a7ff0d'
-    # RenderHTML = False
-    # Title = 'Pie Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # AxisPointerType = 'cross'
-    # YAxisTitle = 'Daily Liters'
-    # YAxisNameLocation = 'end' 'middle' 'start'
-    # YAxisNameGap = 15
-    # XAxisTitle = 'Date'
-    # XAxisNameLocation = 'middle' 'start' 'end'
-    # XAxisNameGap = 42
-    # Theme = 'wonderland'
-    # Legend = None
-    # LegendPosRight = '0%'
-    # LegendPosTop = '5%'
-    # HorizontalLine = None
-    # VerticalLine = None
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
+    # Ensure GradientColors is in a list
+    if not isinstance(GradientColors, list):
+      GradientColors = list(GradientColors)
+
     # Define Plotting Variable
     if YVar == None:
       return None
@@ -4300,7 +3296,7 @@ def Area(dt = None,
       else:
         dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
 
-  
+
     # Agg Data
     if not PreAgg:
       dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = XVar)
@@ -4317,33 +3313,16 @@ def Area(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      InitOptions = {}
-      if not Theme is None:
-        InitOptions['theme'] = Theme
-
-      if not Width is None:
-        InitOptions['width'] = Width
-
-      if not Width is None:
-        InitOptions['height'] = Height
-
-      if not BackgroundColor is None:
-        InitOptions['bg_color'] = BackgroundColor
-  
-      InitOptions['is_horizontal_center'] = True
-
-      AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = AnimationThreshold
-      AnimationOptions['animation_duration'] = AnimationDuration
-      AnimationOptions['animation_easing'] = AnimationEasing
-      AnimationOptions['animation_delay'] = AnimationDelay
-      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-      InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+      InitOptions = initialize_options(
+        theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+        animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+        animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+        animation_duration_update=AnimationDurationUpdate, 
+        animation_easing_update=AnimationEasingUpdate,
+        animation_delay_update=AnimationDelayUpdate)
 
       # Create plot
-      c = Line(init_opts = opts.InitOpts(**InitOptions))
+      c = PyLine(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -4361,81 +3340,40 @@ def Area(dt = None,
         yaxis_options['label_opts'] = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition)
         if isinstance(YVar, list):
           if len(YVar) == 1:
-            yaxis_options['areastyle_opts'] = opts.AreaStyleOpts(color = JsCode(JS_GradientAreaFill(GradientColor1, GradientColor2)), opacity=1)
+            yaxis_options['areastyle_opts'] = opts.AreaStyleOpts(color = JsCode(JS_GradientAreaFill(GradientColors)), opacity=Opacity)
           else:
-            yaxis_options['areastyle_opts'] = opts.AreaStyleOpts(opacity = 0.5)
+            yaxis_options['areastyle_opts'] = opts.AreaStyleOpts(opacity = Opacity)
         else:
-          yaxis_options['areastyle_opts'] = opts.AreaStyleOpts(color = JsCode(JS_GradientAreaFill(GradientColor1, GradientColor2)), opacity=1)
+          yaxis_options['areastyle_opts'] = opts.AreaStyleOpts(color = JsCode(JS_GradientAreaFill(GradientColors)), opacity=Opacity)
 
         c = c.add_yaxis(**yaxis_options)
 
       # Global Options
       GlobalOptions = {}
-      if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      else:
-        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+      GlobalOptions['legend_opts'] = configure_legend_options(
+        legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+        legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
   
       if not Title is None:
-        GlobalOptions['title_opts'] = opts.TitleOpts(
-            title = Title, subtitle = SubTitle,
-            title_textstyle_opts = opts.TextStyleOpts(
-              color = TitleColor,
-              font_size = TitleFontSize,
-            ),
-            subtitle_textstyle_opts = opts.TextStyleOpts(
-              color = SubTitleColor,
-              font_size = SubTitleFontSize,
-            )
-        )
+        GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-  
-      if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-          feature = opts.ToolBoxFeatureOpts(
-            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-          )
-        )
-      
-      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-  
-      if Brush:
-        GlobalOptions['brush_opts'] = opts.BrushOpts()
-  
-      if DataZoom:
-        GlobalOptions['datazoom_opts'] = [
-            opts.DataZoomOpts(
-              range_start = 0,
-              range_end = 100),
-            opts.DataZoomOpts(
-              type_ = "inside")]
+      GlobalOptions = configure_global_chart_options(
+        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+        brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
   
       # Series Options
-      if not HorizontalLine is None or not VerticalLine is None:
-        MarkLineDict = {}
-        if not HorizontalLine is None and not VerticalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        elif HorizontalLine is None:
-          MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
-        else:
-          MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
-
-        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+      c = configure_marklines(
+        chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+        vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
         
       # Render html
       if RenderHTML:
-        c.render()
+        c.render(f"{RenderHTML}.html")
     
       return c
 
@@ -4454,33 +3392,16 @@ def Area(dt = None,
         XVal = dt1[XVar].unique().to_list()
 
         # Create plot
-        InitOptions = {}
-        if not Theme is None:
-          InitOptions['theme'] = Theme
-
-        if not Width is None:
-          InitOptions['width'] = Width
-
-        if not Width is None:
-          InitOptions['height'] = Height
-  
-        if not BackgroundColor is None:
-          InitOptions['bg_color'] = BackgroundColor
-    
-        InitOptions['is_horizontal_center'] = True
-
-        AnimationOptions = {}
-        AnimationOptions['animation_threshold'] = AnimationThreshold
-        AnimationOptions['animation_duration'] = AnimationDuration
-        AnimationOptions['animation_easing'] = AnimationEasing
-        AnimationOptions['animation_delay'] = AnimationDelay
-        AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-        AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-        AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-        InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+        InitOptions = initialize_options(
+          theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+          animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+          animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+          animation_duration_update=AnimationDurationUpdate, 
+          animation_easing_update=AnimationEasingUpdate,
+          animation_delay_update=AnimationDelayUpdate)
 
         # Create plot
-        c = Line(init_opts = opts.InitOpts(**InitOptions))
+        c = PyLine(init_opts = opts.InitOpts(**InitOptions))
         c = c.add_xaxis(xaxis_data = XVal)
         if not Symbol is None:
           ShowSymbol = True
@@ -4501,71 +3422,30 @@ def Area(dt = None,
           
         # Global Options
         GlobalOptions = {}
-        if Legend == 'right':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-        elif Legend == 'top':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-        else:
-          GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+        GlobalOptions['legend_opts'] = configure_legend_options(
+          legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+          legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
   
         if not Title is None:
-          GlobalOptions['title_opts'] = opts.TitleOpts(
-              title = Title, subtitle = SubTitle,
-              title_textstyle_opts = opts.TextStyleOpts(
-                color = TitleColor,
-                font_size = TitleFontSize,
-              ),
-              subtitle_textstyle_opts = opts.TextStyleOpts(
-                color = SubTitleColor,
-                font_size = SubTitleFontSize,
-              )
-          )
+          GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
         GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
         GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-    
-        if ToolBox:
-          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-            feature = opts.ToolBoxFeatureOpts(
-              save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-              restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-              data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-              data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-              magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-            )
-          )
-        
-        GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-    
-        if Brush:
-          GlobalOptions['brush_opts'] = opts.BrushOpts()
-    
-        if DataZoom:
-          GlobalOptions['datazoom_opts'] = [
-              opts.DataZoomOpts(
-                range_start = 0,
-                range_end = 100),
-              opts.DataZoomOpts(
-                type_ = "inside")]
+        GlobalOptions = configure_global_chart_options(
+          global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+          brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
   
         # Final Setting of Global Options
         c = c.set_global_opts(**GlobalOptions)
     
         # Series Options
-        if not HorizontalLine is None or not VerticalLine is None:
-          MarkLineDict = {}
-          if not HorizontalLine is None and not VerticalLine is None:
-            MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-          elif HorizontalLine is None:
-            MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
-          else:
-            MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
-  
-          c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+        c = configure_marklines(
+          chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+          vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
           
         # Render html
         if RenderHTML:
-          c.render()
+          c.render(f"{RenderHTML}.html")
       
         return c
 
@@ -4595,7 +3475,7 @@ def Area(dt = None,
         else:
           ShowSymbol = False
         for i in GroupLevels:
-          plot_dict[i] = Line(init_opts = opts.InitOpts(theme = Theme))
+          plot_dict[i] = PyLine(init_opts = opts.InitOpts(theme = Theme))
           plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = XVal)
           if not TimeLine:
             plot_dict[i] = plot_dict[i].add_yaxis(
@@ -4617,22 +3497,19 @@ def Area(dt = None,
               symbol_size = SymbolSize,
               is_symbol_show = ShowSymbol,
               y_axis = yvar_dict[i],
-              areastyle_opts = opts.AreaStyleOpts(color = JsCode(JS_GradientAreaFill(GradientColor1, GradientColor2)), opacity=1),
+              areastyle_opts = opts.AreaStyleOpts(color = JsCode(JS_GradientAreaFill(GradientColors)), opacity=Opacity),
               linestyle_opts = opts.LineStyleOpts(width = LineWidth),
               label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
             )
 
           # Global Options
           GlobalOptions = {}
-          if Legend == 'right':
-            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-          elif Legend == 'top':
-            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-          else:
-            GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+          GlobalOptions['legend_opts'] = configure_legend_options(
+            legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+            legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
 
           if not Title is None:
-            GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
+            GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
           if not XAxisTitle is None:
             GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}", position = "right")
@@ -4663,7 +3540,7 @@ def Area(dt = None,
   
           # Render html
           if RenderHTML:
-            grid.render()
+            grid.render(f"{RenderHTML}.html")
 
           return grid
 
@@ -4675,7 +3552,7 @@ def Area(dt = None,
 
           # Render html
           if RenderHTML:
-            tl.render()
+            tl.render(f"{RenderHTML}.html")
 
 
 #################################################################################################
@@ -4688,7 +3565,7 @@ def StackedArea(dt = None,
                 GroupVar = None,
                 AggMethod = 'mean',
                 YVarTrans = None,
-                RenderHTML = False,
+                RenderHTML = None,
                 Opacity = 0.5,
                 LineWidth = 2,
                 Symbol = "emptyCircle",
@@ -4737,7 +3614,7 @@ def StackedArea(dt = None,
     GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     Opacity: For grouping plots. Defaults to 0.5
     LineWidth: Numeric. Default 2
     Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
@@ -4777,50 +3654,8 @@ def StackedArea(dt = None,
     AnimationEasingUpdate: Default "cubicOut"
     AnimationDelayUpdate: Default 0
     """
-
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Line, Grid
-    from pyecharts.commons.utils import JsCode
-    import polars as pl
-
-    # PreAgg = False
-    # YVar = 'Daily Liters'
-    # XVar = 'Date'
-    # GroupVar = 'Brand'
-    # AggMethod = 'mean'
-    # YVarTrans = None
-    # LineWidth = 2
-    # Symbol = "emptyCircle"
-    # ShowLabels = False
-    # LabelPosition = "top"
-    # RenderHTML = False
-    # Title = 'Pie Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # AxisPointerType = 'cross'
-    # YAxisTitle = 'Daily Liters'
-    # YAxisNameLocation = 'end' 'middle' 'start'
-    # YAxisNameGap = 15
-    # XAxisTitle = 'Date'
-    # XAxisNameLocation = 'middle' 'start' 'end'
-    # XAxisNameGap = 42
-    # Theme = 'wonderland'
-    # Legend = None
-    # LegendPosRight = '0%'
-    # LegendPosTop = '5%'
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
+
     # Define Plotting Variable
     if YVar == None:
       return None
@@ -4865,33 +3700,16 @@ def StackedArea(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      InitOptions = {}
-      if not Theme is None:
-        InitOptions['theme'] = Theme
-
-      if not Width is None:
-        InitOptions['width'] = Width
-
-      if not Width is None:
-        InitOptions['height'] = Height
-
-      if not BackgroundColor is None:
-        InitOptions['bg_color'] = BackgroundColor
-  
-      InitOptions['is_horizontal_center'] = True
-
-      AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = AnimationThreshold
-      AnimationOptions['animation_duration'] = AnimationDuration
-      AnimationOptions['animation_easing'] = AnimationEasing
-      AnimationOptions['animation_delay'] = AnimationDelay
-      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-      InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+      InitOptions = initialize_options(
+        theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+        animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+        animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+        animation_duration_update=AnimationDurationUpdate, 
+        animation_easing_update=AnimationEasingUpdate,
+        animation_delay_update=AnimationDelayUpdate)
 
       # Create plot
-      c = Line(init_opts = opts.InitOpts(**InitOptions))
+      c = PyLine(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -4914,59 +3732,25 @@ def StackedArea(dt = None,
 
       # Global Options
       GlobalOptions = {}
-      if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      else:
-        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+      GlobalOptions['legend_opts'] = configure_legend_options(
+        legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+        legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
   
       if not Title is None:
-        GlobalOptions['title_opts'] = opts.TitleOpts(
-            title = Title, subtitle = SubTitle,
-            title_textstyle_opts = opts.TextStyleOpts(
-              color = TitleColor,
-              font_size = TitleFontSize,
-            ),
-            subtitle_textstyle_opts = opts.TextStyleOpts(
-              color = SubTitleColor,
-              font_size = SubTitleFontSize,
-            )
-        )
+        GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-  
-      if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-          feature = opts.ToolBoxFeatureOpts(
-            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-          )
-        )
-      
-      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-  
-      if Brush:
-        GlobalOptions['brush_opts'] = opts.BrushOpts()
-  
-      if DataZoom:
-        GlobalOptions['datazoom_opts'] = [
-            opts.DataZoomOpts(
-              range_start = 0,
-              range_end = 100),
-            opts.DataZoomOpts(
-              type_ = "inside")]
+      GlobalOptions = configure_global_chart_options(
+        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+        brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
         
       # Render html
       if RenderHTML:
-        c.render()
+        c.render(f"{RenderHTML}.html")
     
       return c
 
@@ -4982,33 +3766,16 @@ def StackedArea(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      InitOptions = {}
-      if not Theme is None:
-        InitOptions['theme'] = Theme
-
-      if not Width is None:
-        InitOptions['width'] = Width
-
-      if not Width is None:
-        InitOptions['height'] = Height
-
-      if not BackgroundColor is None:
-        InitOptions['bg_color'] = BackgroundColor
-  
-      InitOptions['is_horizontal_center'] = True
-
-      AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = AnimationThreshold
-      AnimationOptions['animation_duration'] = AnimationDuration
-      AnimationOptions['animation_easing'] = AnimationEasing
-      AnimationOptions['animation_delay'] = AnimationDelay
-      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-      InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+      InitOptions = initialize_options(
+        theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+        animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+        animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+        animation_duration_update=AnimationDurationUpdate, 
+        animation_easing_update=AnimationEasingUpdate,
+        animation_delay_update=AnimationDelayUpdate)
 
       # Create plot
-      c = Line(init_opts = opts.InitOpts(**InitOptions))
+      c = PyLine(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -5030,59 +3797,25 @@ def StackedArea(dt = None,
 
       # Global Options
       GlobalOptions = {}
-      if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      else:
-        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+      GlobalOptions['legend_opts'] = configure_legend_options(
+        legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+        legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
 
       if not Title is None:
-        GlobalOptions['title_opts'] = opts.TitleOpts(
-            title = Title, subtitle = SubTitle,
-            title_textstyle_opts = opts.TextStyleOpts(
-              color = TitleColor,
-              font_size = TitleFontSize,
-            ),
-            subtitle_textstyle_opts = opts.TextStyleOpts(
-              color = SubTitleColor,
-              font_size = SubTitleFontSize,
-            )
-        )
+        GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-  
-      if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-          feature = opts.ToolBoxFeatureOpts(
-            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-          )
-        )
-      
-      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-  
-      if Brush:
-        GlobalOptions['brush_opts'] = opts.BrushOpts()
-  
-      if DataZoom:
-        GlobalOptions['datazoom_opts'] = [
-            opts.DataZoomOpts(
-              range_start = 0,
-              range_end = 100),
-            opts.DataZoomOpts(
-              type_ = "inside")]
+      GlobalOptions = configure_global_chart_options(
+        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+        brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
         
       # Render html
       if RenderHTML:
-        c.render()
+        c.render(f"{RenderHTML}.html")
     
       return c
 
@@ -5101,7 +3834,7 @@ def Bar(dt = None,
         TimeLine = False,
         AggMethod = 'mean',
         YVarTrans = None,
-        RenderHTML = False,
+        RenderHTML = None,
         ShowLabels = False,
         LabelPosition = "top",
         Theme = 'wonderland',
@@ -5154,7 +3887,7 @@ def Bar(dt = None,
     TimeLine: Logical. When True, individual plots will transition from one group level to the next
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     ShowLabels: Default False
     LabelPosition: "top", "center", "left", "right", "bottom"
     Title: title of plot in quotes
@@ -5196,52 +3929,11 @@ def Bar(dt = None,
     """
 
     # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Bar, Grid, Timeline
-    from pyecharts.commons.utils import JsCode
-    import polars as pl
-
-    # PreAgg = False
-    # YVar = 'Daily Liters'
-    # XVar = 'Date'
-    # GroupVar = 'Brand'
-    # AggMethod = 'mean'
-    # FacetRows = 1
-    # FacetCols = 1
-    # FacetLevels = None
-    # TimeLine = True
-    # YVarTrans = None
-    # ShowLabels = False
-    # LabelPosition = "top"
-    # RenderHTML = False
-    # Title = 'Pie Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # AxisPointerType = 'cross'
-    # YAxisTitle = 'Daily Liters'
-    # YAxisNameLocation = 'end' 'middle' 'start'
-    # YAxisNameGap = 15
-    # XAxisTitle = 'Date'
-    # XAxisNameLocation = 'middle' 'start' 'end'
-    # XAxisNameGap = 42
-    # Theme = 'wonderland'
-    # Legend = None
-    # LegendPosRight = '0%'
-    # LegendPosTop = '5%'
-    # HorizontalLine = None
-    # VerticalLine = None
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
+    
+    from pyecharts.commons.utils import JsCode
+    
+
     # Define Plotting Variable
     if YVar == None:
       return None
@@ -5281,33 +3973,16 @@ def Bar(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      InitOptions = {}
-      if not Theme is None:
-        InitOptions['theme'] = Theme
-
-      if not Width is None:
-        InitOptions['width'] = Width
-
-      if not Width is None:
-        InitOptions['height'] = Height
-
-      if not BackgroundColor is None:
-        InitOptions['bg_color'] = BackgroundColor
-  
-      InitOptions['is_horizontal_center'] = True
-
-      AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = AnimationThreshold
-      AnimationOptions['animation_duration'] = AnimationDuration
-      AnimationOptions['animation_easing'] = AnimationEasing
-      AnimationOptions['animation_delay'] = AnimationDelay
-      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-      InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+      InitOptions = initialize_options(
+        theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+        animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+        animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+        animation_duration_update=AnimationDurationUpdate, 
+        animation_easing_update=AnimationEasingUpdate,
+        animation_delay_update=AnimationDelayUpdate)
 
       # Create plot
-      c = Bar(init_opts = opts.InitOpts(**InitOptions))
+      c = PyBar(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       for yvar in YVar:
         yaxis_options = {}
@@ -5319,71 +3994,30 @@ def Bar(dt = None,
 
       # Global Options
       GlobalOptions = {}
-      if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      else:
-        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+      GlobalOptions['legend_opts'] = configure_legend_options(
+        legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+        legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
   
       if not Title is None:
-        GlobalOptions['title_opts'] = opts.TitleOpts(
-            title = Title, subtitle = SubTitle,
-            title_textstyle_opts = opts.TextStyleOpts(
-              color = TitleColor,
-              font_size = TitleFontSize,
-            ),
-            subtitle_textstyle_opts = opts.TextStyleOpts(
-              color = SubTitleColor,
-              font_size = SubTitleFontSize,
-            )
-        )
+        GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-  
-      if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-          feature = opts.ToolBoxFeatureOpts(
-            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-          )
-        )
-      
-      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-  
-      if Brush:
-        GlobalOptions['brush_opts'] = opts.BrushOpts()
-  
-      if DataZoom:
-        GlobalOptions['datazoom_opts'] = [
-            opts.DataZoomOpts(
-              range_start = 0,
-              range_end = 100),
-            opts.DataZoomOpts(
-              type_ = "inside")]
+      GlobalOptions = configure_global_chart_options(
+        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+        brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
   
       # Series Options
-      if not HorizontalLine is None or not VerticalLine is None:
-        MarkLineDict = {}
-        if not HorizontalLine is None and not VerticalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        elif HorizontalLine is None:
-          MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
-        else:
-          MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
-
-        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+      c = configure_marklines(
+        chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+        vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
         
       # Render html
       if RenderHTML:
-        c.render()
+        c.render(f"{RenderHTML}.html")
     
       return c
 
@@ -5427,7 +4061,7 @@ def Bar(dt = None,
         InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
 
         # Create plot
-        c = Bar(init_opts = opts.InitOpts(**InitOptions))
+        c = PyBar(init_opts = opts.InitOpts(**InitOptions))
         c = c.add_xaxis(xaxis_data = XVal)
         for yvar in GroupLevels:
           c = c.add_yaxis(
@@ -5438,76 +4072,60 @@ def Bar(dt = None,
 
         # Global Options
         GlobalOptions = {}
-        if Legend == 'right':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-        elif Legend == 'top':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-        else:
-          GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+        GlobalOptions['legend_opts'] = configure_legend_options(
+          legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+          legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
   
         if not Title is None:
-          GlobalOptions['title_opts'] = opts.TitleOpts(
-              title = Title, subtitle = SubTitle,
-              title_textstyle_opts = opts.TextStyleOpts(
-                color = TitleColor,
-                font_size = TitleFontSize,
-              ),
-              subtitle_textstyle_opts = opts.TextStyleOpts(
-                color = SubTitleColor,
-                font_size = SubTitleFontSize,
-              )
-          )
+          GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
         GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
         GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-    
-        if ToolBox:
-          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-            feature = opts.ToolBoxFeatureOpts(
-              save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-              restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-              data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-              data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-              magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-            )
-          )
-        
-        GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-    
-        if Brush:
-          GlobalOptions['brush_opts'] = opts.BrushOpts()
-    
-        if DataZoom:
-          GlobalOptions['datazoom_opts'] = [
-              opts.DataZoomOpts(
-                range_start = 0,
-                range_end = 100),
-              opts.DataZoomOpts(
-                type_ = "inside")]
+        GlobalOptions = configure_global_chart_options(
+          global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+          brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
 
         # Final Setting of Global Options
         c = c.set_global_opts(**GlobalOptions)
     
         # Series Options
-        if not HorizontalLine is None or not VerticalLine is None:
-          MarkLineDict = {}
-          if not HorizontalLine is None and not VerticalLine is None:
-            MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-          elif HorizontalLine is None:
-            MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
-          else:
-            MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
-  
-          c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+        c = configure_marklines(
+          chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+          vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
           
         # Render html
         if RenderHTML:
-          c.render()
+          c.render(f"{RenderHTML}.html")
       
         return c
 
       # Facet Case
       else:
+        
+        InitOptions = {}
+        if not Theme is None:
+          InitOptions['theme'] = Theme
+
+        if not Width is None:
+          InitOptions['width'] = Width
+
+        if not Width is None:
+          InitOptions['height'] = Height
+  
+        if not BackgroundColor is None:
+          InitOptions['bg_color'] = BackgroundColor
+    
+        InitOptions['is_horizontal_center'] = True
+
+        AnimationOptions = {}
+        AnimationOptions['animation_threshold'] = AnimationThreshold
+        AnimationOptions['animation_duration'] = AnimationDuration
+        AnimationOptions['animation_easing'] = AnimationEasing
+        AnimationOptions['animation_delay'] = AnimationDelay
+        AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
+        AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
+        AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
+        InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
         
         yvar_dict = {}
         plot_dict = {}
@@ -5525,10 +4143,10 @@ def Bar(dt = None,
           yvar_dict[gv] = temp[YVar].to_list()
 
         XVal = dt1[XVar].unique().to_list()
-        
+
         # Create plot
         for i in GroupLevels:# i = 'Yellow-Yum'
-          plot_dict[i] = Bar(init_opts = opts.InitOpts(theme = Theme))
+          plot_dict[i] = PyBar(init_opts = opts.InitOpts(**InitOptions))#theme = Theme))
           plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = XVal)
           plot_dict[i] = plot_dict[i].add_yaxis(
             series_name = i,
@@ -5538,16 +4156,13 @@ def Bar(dt = None,
           
           # Global Options
           GlobalOptions = {}
-          if Legend == 'right':
-            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-          elif Legend == 'top':
-            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-          else:
-            GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+          GlobalOptions['legend_opts'] = configure_legend_options(
+            legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+            legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
           
           # Global Options
           if not Title is None:
-            GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
+            GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
           if not XAxisTitle is None:
             GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}", position = "right")
@@ -5578,7 +4193,7 @@ def Bar(dt = None,
 
           # Render html
           if RenderHTML:
-            grid.render()
+            grid.render(f"{RenderHTML}.html")
 
           return grid
 
@@ -5590,7 +4205,7 @@ def Bar(dt = None,
           
           # Render html
           if RenderHTML:
-            tl.render()
+            tl.render(f"{RenderHTML}.html")
 
           return tl
 
@@ -5605,7 +4220,7 @@ def StackedBar(dt = None,
                GroupVar = None,
                AggMethod = 'mean',
                YVarTrans = None,
-               RenderHTML = False,
+               RenderHTML = None,
                ShowLabels = False,
                LabelPosition = "top",
                Theme = 'wonderland',
@@ -5650,7 +4265,7 @@ def StackedBar(dt = None,
     GroupVar: grouping variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     ShowLabels: Default False
     LabelPosition: "top", "center", "left", "right", "bottom"
     Title: title of plot in quotes
@@ -5686,47 +4301,8 @@ def StackedBar(dt = None,
     AnimationEasingUpdate: Default "cubicOut"
     AnimationDelayUpdate: Default 0
     """
-
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Bar, Grid
-    from pyecharts.commons.utils import JsCode
-    import polars as pl
-
-    # PreAgg = False
-    # YVar = 'Daily Liters'
-    # XVar = 'Date'
-    # GroupVar = 'Brand'
-    # AggMethod = 'mean'
-    # YVarTrans = None
-    # LabelPosition = "top"
-    # RenderHTML = False
-    # Title = 'Pie Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # AxisPointerType = 'cross'
-    # YAxisTitle = 'Daily Liters'
-    # YAxisNameLocation = 'end' 'middle' 'start'
-    # YAxisNameGap = 15
-    # XAxisTitle = 'Date'
-    # XAxisNameLocation = 'middle' 'start' 'end'
-    # XAxisNameGap = 42
-    # Theme = 'wonderland'
-    # Legend = None
-    # LegendPosRight = '0%'
-    # LegendPosTop = '5%'
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
+
     # Define Plotting Variable
     if YVar == None:
       return None
@@ -5771,33 +4347,16 @@ def StackedBar(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      InitOptions = {}
-      if not Theme is None:
-        InitOptions['theme'] = Theme
-
-      if not Width is None:
-        InitOptions['width'] = Width
-
-      if not Width is None:
-        InitOptions['height'] = Height
-
-      if not BackgroundColor is None:
-        InitOptions['bg_color'] = BackgroundColor
-  
-      InitOptions['is_horizontal_center'] = True
-
-      AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = AnimationThreshold
-      AnimationOptions['animation_duration'] = AnimationDuration
-      AnimationOptions['animation_easing'] = AnimationEasing
-      AnimationOptions['animation_delay'] = AnimationDelay
-      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-      InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+      InitOptions = initialize_options(
+        theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+        animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+        animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+        animation_duration_update=AnimationDurationUpdate, 
+        animation_easing_update=AnimationEasingUpdate,
+        animation_delay_update=AnimationDelayUpdate)
 
       # Create plot
-      c = Bar(init_opts = opts.InitOpts(**InitOptions))
+      c = PyBar(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       for yvar in YVar:
         yaxis_options = {}
@@ -5810,59 +4369,25 @@ def StackedBar(dt = None,
 
       # Global Options
       GlobalOptions = {}
-      if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      else:
-        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+      GlobalOptions['legend_opts'] = configure_legend_options(
+        legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+        legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
   
       if not Title is None:
-        GlobalOptions['title_opts'] = opts.TitleOpts(
-            title = Title, subtitle = SubTitle,
-            title_textstyle_opts = opts.TextStyleOpts(
-              color = TitleColor,
-              font_size = TitleFontSize,
-            ),
-            subtitle_textstyle_opts = opts.TextStyleOpts(
-              color = SubTitleColor,
-              font_size = SubTitleFontSize,
-            )
-        )
+        GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-  
-      if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-          feature = opts.ToolBoxFeatureOpts(
-            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-          )
-        )
-      
-      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-  
-      if Brush:
-        GlobalOptions['brush_opts'] = opts.BrushOpts()
-  
-      if DataZoom:
-        GlobalOptions['datazoom_opts'] = [
-            opts.DataZoomOpts(
-              range_start = 0,
-              range_end = 100),
-            opts.DataZoomOpts(
-              type_ = "inside")]
+      GlobalOptions = configure_global_chart_options(
+        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+        brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
 
       # Render html
       if RenderHTML:
-        c.render()
+        c.render(f"{RenderHTML}.html")
     
       return c
 
@@ -5878,33 +4403,16 @@ def StackedBar(dt = None,
       XVal = dt1[XVar].unique().to_list()
 
       # Create plot
-      InitOptions = {}
-      if not Theme is None:
-        InitOptions['theme'] = Theme
-
-      if not Width is None:
-        InitOptions['width'] = Width
-
-      if not Width is None:
-        InitOptions['height'] = Height
-
-      if not BackgroundColor is None:
-        InitOptions['bg_color'] = BackgroundColor
-  
-      InitOptions['is_horizontal_center'] = True
-
-      AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = AnimationThreshold
-      AnimationOptions['animation_duration'] = AnimationDuration
-      AnimationOptions['animation_easing'] = AnimationEasing
-      AnimationOptions['animation_delay'] = AnimationDelay
-      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-      InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+      InitOptions = initialize_options(
+        theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+        animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+        animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+        animation_duration_update=AnimationDurationUpdate, 
+        animation_easing_update=AnimationEasingUpdate,
+        animation_delay_update=AnimationDelayUpdate)
 
       # Create plot
-      c = Bar(init_opts = opts.InitOpts(**InitOptions))
+      c = PyBar(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       for yvar in GroupLevels:
         c = c.add_yaxis(
@@ -5916,59 +4424,25 @@ def StackedBar(dt = None,
 
       # Global Options
       GlobalOptions = {}
-      if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      else:
-        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+      GlobalOptions['legend_opts'] = configure_legend_options(
+        legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+        legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
 
       if not Title is None:
-        GlobalOptions['title_opts'] = opts.TitleOpts(
-            title = Title, subtitle = SubTitle,
-            title_textstyle_opts = opts.TextStyleOpts(
-              color = TitleColor,
-              font_size = TitleFontSize,
-            ),
-            subtitle_textstyle_opts = opts.TextStyleOpts(
-              color = SubTitleColor,
-              font_size = SubTitleFontSize,
-            )
-        )
+        GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-  
-      if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-          feature = opts.ToolBoxFeatureOpts(
-            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-          )
-        )
-      
-      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-  
-      if Brush:
-        GlobalOptions['brush_opts'] = opts.BrushOpts()
-  
-      if DataZoom:
-        GlobalOptions['datazoom_opts'] = [
-            opts.DataZoomOpts(
-              range_start = 0,
-              range_end = 100),
-            opts.DataZoomOpts(
-              type_ = "inside")]
+      GlobalOptions = configure_global_chart_options(
+        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+        brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
 
       # Render html
       if RenderHTML:
-        c.render()
+        c.render(f"{RenderHTML}.html")
     
       return c
 
@@ -5983,7 +4457,7 @@ def Heatmap(dt = None,
             MeasureVar = None,
             AggMethod = 'mean',
             MeasureVarTrans = "Identity",
-            RenderHTML = False,
+            RenderHTML = None,
             ShowLabels = False,
             LabelPosition = "top",
             LabelColor = "#fff",
@@ -6030,7 +4504,7 @@ def Heatmap(dt = None,
     MeasureVar: numeric variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     MeasureVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     ShowLabels: Default False
     LabelColor = "#fff"
     LabelPosition: "top", "center", "left", "right", "bottom"
@@ -6067,52 +4541,12 @@ def Heatmap(dt = None,
     AnimationEasingUpdate: Default "cubicOut"
     AnimationDelayUpdate: Default 0
     """
-
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import HeatMap
-    from pyecharts.commons.utils import JsCode
-    import polars as pl
-
-    # PreAgg = False
-    # YVar = 'Brand'
-    # XVar = 'Category'
-    # MeasureVar = 'Daily Liters'
-    # AggMethod = 'mean'
-    # MeasureVarTrans = "Identity"
-    # LabelPosition = "top"
-    # RenderHTML = False
-    # Title = 'Pie Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # AxisPointerType = 'cross'
-    # ShowLabels = True
-    # YAxisTitle = 'Daily Liters'
-    # YAxisNameLocation = 'end' 'middle' 'start'
-    # YAxisNameGap = 15
-    # XAxisTitle = 'Date'
-    # XAxisNameLocation = 'middle' 'start' 'end'
-    # XAxisNameGap = 42
-    # Theme = 'wonderland'
-    # Legend = None
-    # LegendPosRight = '0%'
-    # LegendPosTop = '5%'
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
+    
 
     # Define Plotting Variable
     if YVar == None:
       return None
-    
+
     if XVar == None:
       return None
     
@@ -6159,30 +4593,13 @@ def Heatmap(dt = None,
           data[counter] = [i, j, dt2[MeasureVar][counter]]
 
     # Create plot
-    InitOptions = {}
-    if not Theme is None:
-      InitOptions['theme'] = Theme
-
-    if not Width is None:
-      InitOptions['width'] = Width
-
-    if not Width is None:
-      InitOptions['height'] = Height
-
-    if not BackgroundColor is None:
-      InitOptions['bg_color'] = BackgroundColor
-
-    InitOptions['is_horizontal_center'] = True
-
-    AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = AnimationThreshold
-    AnimationOptions['animation_duration'] = AnimationDuration
-    AnimationOptions['animation_easing'] = AnimationEasing
-    AnimationOptions['animation_delay'] = AnimationDelay
-    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-    InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+    InitOptions = initialize_options(
+      theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+      animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+      animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+      animation_duration_update=AnimationDurationUpdate, 
+      animation_easing_update=AnimationEasingUpdate,
+      animation_delay_update=AnimationDelayUpdate)
 
     # Create plot
     c = HeatMap(init_opts = opts.InitOpts(**InitOptions))
@@ -6200,44 +4617,26 @@ def Heatmap(dt = None,
 
     # Global Options
     GlobalOptions = {}
-    if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-    elif Legend == 'top':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-    else:
-      GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+    GlobalOptions['legend_opts'] = configure_legend_options(
+      legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+      legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
 
     if not Title is None:
-      GlobalOptions['title_opts'] = opts.TitleOpts(
-        title = Title, subtitle = SubTitle,
-        title_textstyle_opts = opts.TextStyleOpts(
-          color = TitleColor,
-          font_size = TitleFontSize,
-        ),
-        subtitle_textstyle_opts = opts.TextStyleOpts(
-          color = SubTitleColor,
-          font_size = SubTitleFontSize,
-        )
-      )
+      GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
     GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
     GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
     GlobalOptions['visualmap_opts'] = opts.VisualMapOpts(range_color = RangeColor),
  
     if DataZoom:
-      GlobalOptions['datazoom_opts'] = [
-        opts.DataZoomOpts(
-          range_start = 0,
-          range_end = 100),
-        opts.DataZoomOpts(
-          type_ = "inside")]
+      GlobalOptions['datazoom_opts'] = get_datazoom_options()
 
     # Final Setting of Global Options
     c = c.set_global_opts(**GlobalOptions)
 
     # Render html
     if RenderHTML:
-      c.render()
+      c.render(f"{RenderHTML}.html")
   
     return c
 
@@ -6257,7 +4656,7 @@ def Scatter(dt = None,
             AggMethod = 'mean',
             YVarTrans = None,
             XVarTrans = None,
-            RenderHTML = False,
+            RenderHTML = None,
             LineWidth = 2,
             Symbol = "emptyCircle",
             SymbolSize = 6,
@@ -6314,7 +4713,7 @@ def Scatter(dt = None,
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     XVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
     SymbolSize: Default 6
     ShowLabels: Default False
@@ -6357,55 +4756,6 @@ def Scatter(dt = None,
     AnimationDelayUpdate: Default 0
     """
 
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Scatter, Grid, Timeline
-    import polars as pl
-
-    # SampleSize = 500
-    # YVar = 'Daily Liters'
-    # XVar = 'Daily Units'
-    # GroupVar = 'Brand'
-    # AggMethod = 'mean'
-    # FacetRows = 2
-    # FacetCols = 2
-    # FacetLevels = None
-    # TimeLine = False
-    # YVarTrans = 'sqrt'
-    # XVarTrans = 'sqrt'
-    # LineWidth = 2
-    # Symbol = "emptyCircle"
-    # SymbolSize = 3
-    # ShowLabels = False
-    # LabelPosition = "top"
-    # RenderHTML = False
-    # Title = 'Pie Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # AxisPointerType = 'cross'
-    # YAxisTitle = 'Daily Liters'
-    # YAxisNameLocation = 'end' 'middle' 'start'
-    # YAxisNameGap = 15
-    # XAxisTitle = 'Date'
-    # XAxisNameLocation = 'middle' 'start' 'end'
-    # XAxisNameGap = 42
-    # Theme = 'wonderland'
-    # Legend = None
-    # LegendPosRight = '0%'
-    # LegendPosTop = '5%'
-    # HorizontalLine = None
-    # VerticalLine = None
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
 
     # Define Plotting Variable
     if YVar == None:
@@ -6416,13 +4766,7 @@ def Scatter(dt = None,
       return None
 
     # Cap number of records and define dt1
-    if SampleSize != None:
-      if dt.shape[0] > SampleSize:
-        dt1 = dt.sample(n = SampleSize, shuffle = True)
-      else:
-        dt1 = dt.clone()
-    else:
-      dt1 = dt.clone()
+    dt1 = cap_records(dt, sample_size=SampleSize)
 
     # Subset Columns
     if not GroupVar is None:
@@ -6443,33 +4787,16 @@ def Scatter(dt = None,
       XVal = dt1[XVar].to_list()
 
       # Create plot
-      InitOptions = {}
-      if not Theme is None:
-        InitOptions['theme'] = Theme
-
-      if not Width is None:
-        InitOptions['width'] = Width
-
-      if not Width is None:
-        InitOptions['height'] = Height
-
-      if not BackgroundColor is None:
-        InitOptions['bg_color'] = BackgroundColor
-  
-      InitOptions['is_horizontal_center'] = True
-
-      AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = AnimationThreshold
-      AnimationOptions['animation_duration'] = AnimationDuration
-      AnimationOptions['animation_easing'] = AnimationEasing
-      AnimationOptions['animation_delay'] = AnimationDelay
-      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-      InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+      InitOptions = initialize_options(
+        theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+        animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+        animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+        animation_duration_update=AnimationDurationUpdate, 
+        animation_easing_update=AnimationEasingUpdate,
+        animation_delay_update=AnimationDelayUpdate)
 
       # Create plot
-      c = Scatter(init_opts = opts.InitOpts(**InitOptions))
+      c = PyScatter(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -6485,71 +4812,30 @@ def Scatter(dt = None,
 
       # Global Options
       GlobalOptions = {}
-      if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      else:
-        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+      GlobalOptions['legend_opts'] = configure_legend_options(
+        legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+        legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
   
       if not Title is None:
-        GlobalOptions['title_opts'] = opts.TitleOpts(
-            title = Title, subtitle = SubTitle,
-            title_textstyle_opts = opts.TextStyleOpts(
-              color = TitleColor,
-              font_size = TitleFontSize,
-            ),
-            subtitle_textstyle_opts = opts.TextStyleOpts(
-              color = SubTitleColor,
-              font_size = SubTitleFontSize,
-            )
-        )
+        GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), type_ = "value", name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-  
-      if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-          feature = opts.ToolBoxFeatureOpts(
-            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-          )
-        )
-      
-      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-  
-      if Brush:
-        GlobalOptions['brush_opts'] = opts.BrushOpts()
-  
-      if DataZoom:
-        GlobalOptions['datazoom_opts'] = [
-            opts.DataZoomOpts(
-              range_start = 0,
-              range_end = 100),
-            opts.DataZoomOpts(
-              type_ = "inside")]
+      GlobalOptions = configure_global_chart_options(
+        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+        brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
   
       # Series Options
-      if not HorizontalLine is None or not VerticalLine is None:
-        MarkLineDict = {}
-        if not HorizontalLine is None and not VerticalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        elif HorizontalLine is None:
-          MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
-        else:
-          MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
-
-        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+      c = configure_marklines(
+        chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+        vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
         
       # Render html
       if RenderHTML:
-        c.render()
+        c.render(f"{RenderHTML}.html")
     
       return c
 
@@ -6568,33 +4854,16 @@ def Scatter(dt = None,
           xvar_dict[gv] = temp[XVar].to_list()
 
         # Create plot
-        InitOptions = {}
-        if not Theme is None:
-          InitOptions['theme'] = Theme
-
-        if not Width is None:
-          InitOptions['width'] = Width
-
-        if not Width is None:
-          InitOptions['height'] = Height
-
-        if not BackgroundColor is None:
-          InitOptions['bg_color'] = BackgroundColor
-    
-        InitOptions['is_horizontal_center'] = True
-
-        AnimationOptions = {}
-        AnimationOptions['animation_threshold'] = AnimationThreshold
-        AnimationOptions['animation_duration'] = AnimationDuration
-        AnimationOptions['animation_easing'] = AnimationEasing
-        AnimationOptions['animation_delay'] = AnimationDelay
-        AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-        AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-        AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-        InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+        InitOptions = initialize_options(
+          theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+          animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+          animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+          animation_duration_update=AnimationDurationUpdate, 
+          animation_easing_update=AnimationEasingUpdate,
+          animation_delay_update=AnimationDelayUpdate)
 
         # Create plot
-        c = Scatter(init_opts = opts.InitOpts(**InitOptions))
+        c = PyScatter(init_opts = opts.InitOpts(**InitOptions))
         if not Symbol is None:
           ShowSymbol = True
         else:
@@ -6611,71 +4880,30 @@ def Scatter(dt = None,
 
         # Global Options
         GlobalOptions = {}
-        if Legend == 'right':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-        elif Legend == 'top':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-        else:
-          GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+        GlobalOptions['legend_opts'] = configure_legend_options(
+          legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+          legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
   
         if not Title is None:
-          GlobalOptions['title_opts'] = opts.TitleOpts(
-              title = Title, subtitle = SubTitle,
-              title_textstyle_opts = opts.TextStyleOpts(
-                color = TitleColor,
-                font_size = TitleFontSize,
-              ),
-              subtitle_textstyle_opts = opts.TextStyleOpts(
-                color = SubTitleColor,
-                font_size = SubTitleFontSize,
-              )
-          )
+          GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
         GlobalOptions['xaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), type_ = "value", name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
         GlobalOptions['yaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-    
-        if ToolBox:
-          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-            feature = opts.ToolBoxFeatureOpts(
-              save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-              restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-              data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-              data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-              magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-            )
-          )
-        
-        GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-    
-        if Brush:
-          GlobalOptions['brush_opts'] = opts.BrushOpts()
-    
-        if DataZoom:
-          GlobalOptions['datazoom_opts'] = [
-              opts.DataZoomOpts(
-                range_start = 0,
-                range_end = 100),
-              opts.DataZoomOpts(
-                type_ = "inside")]
+        GlobalOptions = configure_global_chart_options(
+          global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+          brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
   
         # Final Setting of Global Options
         c = c.set_global_opts(**GlobalOptions)
     
         # Series Options
-        if not HorizontalLine is None or not VerticalLine is None:
-          MarkLineDict = {}
-          if not HorizontalLine is None and not VerticalLine is None:
-            MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-          elif HorizontalLine is None:
-            MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
-          else:
-            MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
-  
-          c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+        c = configure_marklines(
+          chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+          vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
           
         # Render html
         if RenderHTML:
-          c.render()
+          c.render(f"{RenderHTML}.html")
       
         return c
 
@@ -6705,7 +4933,7 @@ def Scatter(dt = None,
         else:
           ShowSymbol = False
         for i in GroupLevels:# i = 'Yellow-Yum'
-          plot_dict[i] = Scatter(init_opts = opts.InitOpts(theme = Theme))
+          plot_dict[i] = PyScatter(init_opts = opts.InitOpts(theme = Theme))
           plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = xvar_dict[i])
           plot_dict[i] = plot_dict[i].add_yaxis(
             series_name = i,
@@ -6717,15 +4945,12 @@ def Scatter(dt = None,
 
           # Global Options
           GlobalOptions = {}
-          if Legend == 'right':
-            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-          elif Legend == 'top':
-            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-          else:
-            GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+          GlobalOptions['legend_opts'] = configure_legend_options(
+            legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+            legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
 
           if not Title is None:
-            GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
+            GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
           GlobalOptions['xaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), type_ = "value", name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
           GlobalOptions['yaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
@@ -6756,7 +4981,7 @@ def Scatter(dt = None,
   
           # Render html
           if RenderHTML:
-            grid.render()
+            grid.render(f"{RenderHTML}.html")
 
           return grid
 
@@ -6768,7 +4993,7 @@ def Scatter(dt = None,
 
           # Render html
           if RenderHTML:
-            tl.render()
+            tl.render(f"{RenderHTML}.html")
 
           return tl
 
@@ -6785,7 +5010,7 @@ def Scatter3D(dt = None,
               YVarTrans = None,
               XVarTrans = None,
               ZVarTrans = None,
-              RenderHTML = False,
+              RenderHTML = None,
               ColorMapVar = "ZVar",
               SymbolSize = 6,
               Theme = 'wonderland',
@@ -6813,7 +5038,7 @@ def Scatter3D(dt = None,
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     XVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     ZVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     SymbolSize: Default 6
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
@@ -6826,42 +5051,7 @@ def Scatter3D(dt = None,
     AnimationDelayUpdate: Default 0
     """
 
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Scatter3D, Grid
-    import polars as pl
 
-    # SampleSize = 500
-    # YVar = 'Daily Liters'
-    # XVar = 'Daily Units'
-    # ZVar = 'Daily Revenue'
-    # ColorMapVar = "ZVar"
-    # FacetRows = 2
-    # FacetCols = 2
-    # FacetLevels = None
-    # YVarTrans = 'sqrt'
-    # XVarTrans = 'sqrt'
-    # ZVarTrans = 'sqrt'
-    # SymbolSize = 6
-    # RenderHTML = False
-    # Width = "1000px"
-    # Height = "600px"
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
-    
     # Define Plotting Variable
     if YVar == None:
       return None
@@ -6873,13 +5063,7 @@ def Scatter3D(dt = None,
       return None
     
     # Cap number of records and define dt1
-    if SampleSize != None:
-      if dt.shape[0] > SampleSize:
-        dt1 = dt.sample(n = SampleSize, shuffle = True)
-      else:
-        dt1 = dt.clone()
-    else:
-      dt1 = dt.clone()
+    dt1 = cap_records(dt, sample_size=SampleSize)
 
     # Subset Columns
     dt1 = dt1.select([pl.col(YVar), pl.col(ZVar), pl.col(XVar)])
@@ -6911,33 +5095,16 @@ def Scatter3D(dt = None,
     data = list(zip(YVal, XVal, ZVal, color, symbolSize))
 
     # Create plot
-    InitOptions = {}
-    if not Theme is None:
-      InitOptions['theme'] = Theme
-
-    if not Width is None:
-      InitOptions['width'] = Width
-
-    if not Width is None:
-      InitOptions['height'] = Height
-
-    if not BackgroundColor is None:
-      InitOptions['bg_color'] = BackgroundColor
-
-    InitOptions['is_horizontal_center'] = True
-
-    AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = AnimationThreshold
-    AnimationOptions['animation_duration'] = AnimationDuration
-    AnimationOptions['animation_easing'] = AnimationEasing
-    AnimationOptions['animation_delay'] = AnimationDelay
-    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-    InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+    InitOptions = initialize_options(
+      theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+      animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+      animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+      animation_duration_update=AnimationDurationUpdate, 
+      animation_easing_update=AnimationEasingUpdate,
+      animation_delay_update=AnimationDelayUpdate)
 
     # Create plot
-    c = Scatter3D(init_opts = opts.InitOpts(**InitOptions))
+    c = PyScatter3D(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
       series_name="",
       data = data,
@@ -6977,7 +5144,7 @@ def Scatter3D(dt = None,
 
     # Render html
     if RenderHTML:
-      c.render()
+      c.render(f"{RenderHTML}.html")
 
     return c
 
@@ -6991,7 +5158,7 @@ def Copula3D(dt = None,
              XVar = None,
              ZVar = None,
              AggMethod = 'mean',
-             RenderHTML = False,
+             RenderHTML = None,
              ColorMapVar = "ZVar",
              SymbolSize = 6,
              RangeColor = ["red", "white", "blue"],
@@ -7016,7 +5183,7 @@ def Copula3D(dt = None,
     ZVar: numeric variable
     ColorMapVar: Choose from default "ZVar", or "XVar", "YVar"
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     SymbolSize: Default 6
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
@@ -7028,34 +5195,8 @@ def Copula3D(dt = None,
     AnimationEasingUpdate: Default "cubicOut"
     AnimationDelayUpdate: Default 0
     """
-
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Scatter3D, Grid
-    import polars as pl
-
-    # SampleSize = 500
-    # YVar = 'Daily Liters'
-    # XVar = 'Daily Units'
-    # ZVar = 'Daily Revenue'
-    # ColorMapVar = "ZVar"
-    # FacetRows = 2
-    # FacetCols = 2
-    # FacetLevels = None
-    # YVarTrans = 'sqrt'
-    # XVarTrans = 'sqrt'
-    # ZVarTrans = 'sqrt'
-    # SymbolSize = 6
-    # RenderHTML = False
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
+
     # Define Plotting Variable
     if YVar == None:
       return None
@@ -7067,13 +5208,7 @@ def Copula3D(dt = None,
       return None
 
     # Cap number of records and define dt1
-    if SampleSize != None:
-      if dt.shape[0] > SampleSize:
-        dt1 = dt.sample(n = SampleSize, shuffle = True)
-      else:
-        dt1 = dt.clone()
-    else:
-      dt1 = dt.clone()
+    dt1 = cap_records(dt, sample_size=SampleSize)
 
     # Subset Columns
     dt1 = dt1.select([pl.col(YVar), pl.col(ZVar), pl.col(XVar)])
@@ -7100,33 +5235,16 @@ def Copula3D(dt = None,
     data = list(zip(YVal, XVal, ZVal, color, symbolSize))
 
     # Create plot
-    InitOptions = {}
-    if not Theme is None:
-      InitOptions['theme'] = Theme
-
-    if not Width is None:
-      InitOptions['width'] = Width
-
-    if not Width is None:
-      InitOptions['height'] = Height
-
-    if not BackgroundColor is None:
-      InitOptions['bg_color'] = BackgroundColor
-
-    InitOptions['is_horizontal_center'] = True
-
-    AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = AnimationThreshold
-    AnimationOptions['animation_duration'] = AnimationDuration
-    AnimationOptions['animation_easing'] = AnimationEasing
-    AnimationOptions['animation_delay'] = AnimationDelay
-    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-    InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+    InitOptions = initialize_options(
+      theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+      animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+      animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+      animation_duration_update=AnimationDurationUpdate, 
+      animation_easing_update=AnimationEasingUpdate,
+      animation_delay_update=AnimationDelayUpdate)
 
     # Create plot
-    c = Scatter3D(init_opts = opts.InitOpts(**InitOptions))
+    c = PyScatter3D(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
       series_name="",
       data = data,
@@ -7166,7 +5284,7 @@ def Copula3D(dt = None,
 
     # Render html
     if RenderHTML:
-      c.render()
+      c.render(f"{RenderHTML}.html")
 
     return c
 
@@ -7184,7 +5302,7 @@ def Copula(dt = None,
            FacetLevels = None,
            TimeLine = False,
            AggMethod = 'mean',
-           RenderHTML = False,
+           RenderHTML = None,
            LineWidth = 2,
            Symbol = "emptyCircle",
            SymbolSize = 6,
@@ -7239,7 +5357,7 @@ def Copula(dt = None,
     FacetLevels: None or supply a list of levels that will be used. The number of levels should fit into FactetRows * FacetCols grid
     TimeLine: Logical. When True, individual plots will transition from one group level to the next
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     Symbol: Default "Circle", "EmptyCircle", "SquareEmpty", "Square", "Rounded", "Rectangle", "EmptyRounded", "Rectangle", "Triangle", "EmptyTriangle", "Diamond", "EmptyDiamond", "Pin", "EmptyPin", "Arrow", "EmptyArrow"
     SymbolSize: Default 6
     ShowLabels: Default False
@@ -7281,55 +5399,8 @@ def Copula(dt = None,
     AnimationEasingUpdate: Default "cubicOut"
     AnimationDelayUpdate: Default 0
     """
-
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Scatter, Grid, Timeline
-    import polars as pl
-
-    # SampleSize = 50000
-    # YVar = 'Daily Liters'
-    # XVar = 'Daily Units'
-    # GroupVar = 'Brand'
-    # AggMethod = 'mean'
-    # FacetRows = 2
-    # FacetCols = 2
-    # FacetLevels = None
-    # TimeLine = True
-    # LineWidth = 2
-    # Symbol = "emptyCircle"
-    # SymbolSize = 3
-    # ShowLabels = False
-    # LabelPosition = "top"
-    # RenderHTML = False
-    # Title = 'Pie Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # AxisPointerType = 'cross'
-    # YAxisTitle = 'Daily Liters'
-    # YAxisNameLocation = 'end' 'middle' 'start'
-    # YAxisNameGap = 15
-    # XAxisTitle = 'Date'
-    # XAxisNameLocation = 'middle' 'start' 'end'
-    # XAxisNameGap = 42
-    # Theme = 'wonderland'
-    # Legend = None
-    # LegendPosRight = '0%'
-    # LegendPosTop = '5%'
-    # HorizontalLine = None
-    # VerticalLine = None
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
+
     # Define Plotting Variable
     if YVar == None:
       return None
@@ -7338,13 +5409,7 @@ def Copula(dt = None,
       return None
 
     # Cap number of records and define dt1
-    if SampleSize != None:
-      if dt.shape[0] > SampleSize:
-        dt1 = dt.sample(n = SampleSize, shuffle = True)
-      else:
-        dt1 = dt.clone()
-    else:
-      dt1 = dt.clone()
+    dt1 = cap_records(dt, sample_size=SampleSize)
 
     # Subset Columns
     if not GroupVar is None:
@@ -7362,33 +5427,16 @@ def Copula(dt = None,
       XVal = dt1[XVar].to_list()
       
       # Create plot
-      InitOptions = {}
-      if not Theme is None:
-        InitOptions['theme'] = Theme
-  
-      if not Width is None:
-        InitOptions['width'] = Width
-  
-      if not Width is None:
-        InitOptions['height'] = Height
-
-      if not BackgroundColor is None:
-        InitOptions['bg_color'] = BackgroundColor
-  
-      InitOptions['is_horizontal_center'] = True
-
-      AnimationOptions = {}
-      AnimationOptions['animation_threshold'] = AnimationThreshold
-      AnimationOptions['animation_duration'] = AnimationDuration
-      AnimationOptions['animation_easing'] = AnimationEasing
-      AnimationOptions['animation_delay'] = AnimationDelay
-      AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-      AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-      AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-      InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+      InitOptions = initialize_options(
+        theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+        animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+        animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+        animation_duration_update=AnimationDurationUpdate, 
+        animation_easing_update=AnimationEasingUpdate,
+        animation_delay_update=AnimationDelayUpdate)
 
       # Create plot
-      c = Scatter(init_opts = opts.InitOpts(**InitOptions))
+      c = PyScatter(init_opts = opts.InitOpts(**InitOptions))
       c = c.add_xaxis(xaxis_data = XVal)
       if not Symbol is None:
         ShowSymbol = True
@@ -7404,71 +5452,30 @@ def Copula(dt = None,
 
       # Global Options
       GlobalOptions = {}
-      if Legend == 'right':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      elif Legend == 'top':
-        GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-      else:
-        GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+      GlobalOptions['legend_opts'] = configure_legend_options(
+        legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+        legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
   
       if not Title is None:
-        GlobalOptions['title_opts'] = opts.TitleOpts(
-            title = Title, subtitle = SubTitle,
-            title_textstyle_opts = opts.TextStyleOpts(
-              color = TitleColor,
-              font_size = TitleFontSize,
-            ),
-            subtitle_textstyle_opts = opts.TextStyleOpts(
-              color = SubTitleColor,
-              font_size = SubTitleFontSize,
-            )
-        )
+        GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), type_ = "value", name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-  
-      if ToolBox:
-        GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-          feature = opts.ToolBoxFeatureOpts(
-            save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-            restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-            data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-            data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-            magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-          )
-        )
-      
-      GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-  
-      if Brush:
-        GlobalOptions['brush_opts'] = opts.BrushOpts()
-  
-      if DataZoom:
-        GlobalOptions['datazoom_opts'] = [
-            opts.DataZoomOpts(
-              range_start = 0,
-              range_end = 100),
-            opts.DataZoomOpts(
-              type_ = "inside")]
+      GlobalOptions = configure_global_chart_options(
+        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+        brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
 
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
   
       # Series Options
-      if not HorizontalLine is None or not VerticalLine is None:
-        MarkLineDict = {}
-        if not HorizontalLine is None and not VerticalLine is None:
-          MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-        elif HorizontalLine is None:
-          MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
-        else:
-          MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
-
-        c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+      c = configure_marklines(
+        chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+        vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
         
       # Render html
       if RenderHTML:
-        c.render()
+        c.render(f"{RenderHTML}.html")
     
       return c
 
@@ -7487,33 +5494,16 @@ def Copula(dt = None,
           xvar_dict[gv] = temp[XVar].to_list()
 
         # Create plot
-        InitOptions = {}
-        if not Theme is None:
-          InitOptions['theme'] = Theme
-    
-        if not Width is None:
-          InitOptions['width'] = Width
-    
-        if not Width is None:
-          InitOptions['height'] = Height
-
-        if not BackgroundColor is None:
-          InitOptions['bg_color'] = BackgroundColor
-    
-        InitOptions['is_horizontal_center'] = True
-
-        AnimationOptions = {}
-        AnimationOptions['animation_threshold'] = AnimationThreshold
-        AnimationOptions['animation_duration'] = AnimationDuration
-        AnimationOptions['animation_easing'] = AnimationEasing
-        AnimationOptions['animation_delay'] = AnimationDelay
-        AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-        AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-        AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-        InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+        InitOptions = initialize_options(
+          theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+          animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+          animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+          animation_duration_update=AnimationDurationUpdate, 
+          animation_easing_update=AnimationEasingUpdate,
+          animation_delay_update=AnimationDelayUpdate)
 
         # Create plot
-        c = Scatter(init_opts = opts.InitOpts(**InitOptions))
+        c = PyScatter(init_opts = opts.InitOpts(**InitOptions))
         if not Symbol is None:
           ShowSymbol = True
         else:
@@ -7530,71 +5520,30 @@ def Copula(dt = None,
 
         # Global Options
         GlobalOptions = {}
-        if Legend == 'right':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-        elif Legend == 'top':
-          GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-        else:
-          GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+        GlobalOptions['legend_opts'] = configure_legend_options(
+          legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+          legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
   
         if not Title is None:
-          GlobalOptions['title_opts'] = opts.TitleOpts(
-              title = Title, subtitle = SubTitle,
-              title_textstyle_opts = opts.TextStyleOpts(
-                color = TitleColor,
-                font_size = TitleFontSize,
-              ),
-              subtitle_textstyle_opts = opts.TextStyleOpts(
-                color = SubTitleColor,
-                font_size = SubTitleFontSize,
-              )
-          )
+          GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
         GlobalOptions['xaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), type_ = "value", name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
         GlobalOptions['yaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-    
-        if ToolBox:
-          GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-            feature = opts.ToolBoxFeatureOpts(
-              save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-              restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-              data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-              data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-              magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-            )
-          )
-        
-        GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-    
-        if Brush:
-          GlobalOptions['brush_opts'] = opts.BrushOpts()
-    
-        if DataZoom:
-          GlobalOptions['datazoom_opts'] = [
-              opts.DataZoomOpts(
-                range_start = 0,
-                range_end = 100),
-              opts.DataZoomOpts(
-                type_ = "inside")]
+        GlobalOptions = configure_global_chart_options(
+          global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+          brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
   
         # Final Setting of Global Options
         c = c.set_global_opts(**GlobalOptions)
     
         # Series Options
-        if not HorizontalLine is None or not VerticalLine is None:
-          MarkLineDict = {}
-          if not HorizontalLine is None and not VerticalLine is None:
-            MarkLineDict['data'] = opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName), opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)
-          elif HorizontalLine is None:
-            MarkLineDict['data'] = [opts.MarkLineItem(x = VerticalLine, name = VerticalLineName)]
-          else:
-            MarkLineDict['data'] = [opts.MarkLineItem(y = HorizontalLine, name = HorizontalLineName)]
-  
-          c = c.set_series_opts(markline_opts = opts.MarkLineOpts(**MarkLineDict))
+        c = configure_marklines(
+          chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+          vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
           
         # Render html
         if RenderHTML:
-          c.render()
+          c.render(f"{RenderHTML}.html")
       
         return c
 
@@ -7624,7 +5573,7 @@ def Copula(dt = None,
         else:
           ShowSymbol = False
         for i in GroupLevels:# i = 'Yellow-Yum'
-          plot_dict[i] = Scatter(init_opts = opts.InitOpts(theme = Theme))
+          plot_dict[i] = PyScatter(init_opts = opts.InitOpts(theme = Theme))
           plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = xvar_dict[i])
           plot_dict[i] = plot_dict[i].add_yaxis(
             series_name = i,
@@ -7636,15 +5585,12 @@ def Copula(dt = None,
 
           # Global Options
           GlobalOptions = {}
-          if Legend == 'right':
-            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-          elif Legend == 'top':
-            GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-          else:
-            GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+          GlobalOptions['legend_opts'] = configure_legend_options(
+            legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+            legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
 
           if not Title is None:
-            GlobalOptions['title_opts'] = opts.TitleOpts(title = f"{Title}")
+            GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
           GlobalOptions['xaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), type_ = "value", name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
           GlobalOptions['yaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
@@ -7675,7 +5621,7 @@ def Copula(dt = None,
 
           # Render html
           if RenderHTML:
-            grid.render()
+            grid.render(f"{RenderHTML}.html")
 
           return grid
 
@@ -7688,7 +5634,7 @@ def Copula(dt = None,
 
           # Render html
           if RenderHTML:
-            tl.render()
+            tl.render(f"{RenderHTML}.html")
     
           return tl
 
@@ -7700,7 +5646,7 @@ def Parallel(dt = None,
              SampleSize = 15000,
              Vars = None,
              VarsTrans = None,
-             RenderHTML = False,
+             RenderHTML = None,
              SymbolSize = 6,
              Opacity = 0.05,
              LineWidth = 0.20,
@@ -7728,7 +5674,7 @@ def Parallel(dt = None,
     SampleSize: Reduce data size
     Vars: numeric variables
     VarsTrans: list of transformations
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     SymbolSize: Default 6
     Opacity: Default 0.05
     LineWidth: Default 0.20
@@ -7743,39 +5689,13 @@ def Parallel(dt = None,
     AnimationDelayUpdate: Default 0
     """
 
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Parallel, Grid
-    import polars as pl
-
-    # SampleSize = 500
-    # Vars = ['Daily Liters', 'Daily Units', 'Daily Revenue', 'Daily Margin']
-    # VarsTrans = ['logmin','logmin','logmin','logmin']
-    # SymbolSize = 6
-    # RenderHTML = False
-    # Opacity = 0.05
-    # LineWidth = 0.20
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
 
     # Define Plotting Variable
     if Vars == None:
       return None
     
     # Cap number of records and define dt1
-    if SampleSize != None:
-      if dt.shape[0] > SampleSize:
-        dt1 = dt.sample(n = SampleSize, shuffle = True)
-      else:
-        dt1 = dt.clone()
-    else:
-      dt1 = dt.clone()
+    dt1 = cap_records(dt, sample_size=SampleSize)
 
     # Subset Columns
     dt1 = dt1.select(Vars)
@@ -7801,33 +5721,16 @@ def Parallel(dt = None,
     data = list(zip(*data_dict.values()))
 
     # Create plot
-    InitOptions = {}
-    if not Theme is None:
-      InitOptions['theme'] = Theme
-
-    if not Width is None:
-      InitOptions['width'] = Width
-
-    if not Width is None:
-      InitOptions['height'] = Height
-
-    if not BackgroundColor is None:
-      InitOptions['bg_color'] = BackgroundColor
-
-    InitOptions['is_horizontal_center'] = True
-
-    AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = AnimationThreshold
-    AnimationOptions['animation_duration'] = AnimationDuration
-    AnimationOptions['animation_easing'] = AnimationEasing
-    AnimationOptions['animation_delay'] = AnimationDelay
-    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-    InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+    InitOptions = initialize_options(
+      theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+      animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+      animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+      animation_duration_update=AnimationDurationUpdate, 
+      animation_easing_update=AnimationEasingUpdate,
+      animation_delay_update=AnimationDelayUpdate)
 
     # Create plot
-    c = Parallel(init_opts = opts.InitOpts(**InitOptions))
+    c = PyParallel(init_opts = opts.InitOpts(**InitOptions))
     c = c.add_schema(schema = parallel_axis)
     c = c.add(
       series_name = "",
@@ -7837,24 +5740,14 @@ def Parallel(dt = None,
 
     GlobalOptions = {}
     if not Title is None:
-      GlobalOptions['title_opts'] = opts.TitleOpts(
-        title = Title, subtitle = SubTitle,
-        title_textstyle_opts = opts.TextStyleOpts(
-          color = TitleColor,
-          font_size = TitleFontSize,
-        ),
-        subtitle_textstyle_opts = opts.TextStyleOpts(
-          color = SubTitleColor,
-          font_size = SubTitleFontSize,
-        )
-      )
+      GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
     # Final Setting of Global Options
     c = c.set_global_opts(**GlobalOptions)
 
     # Render html
     if RenderHTML:
-      c.render()
+      c.render(f"{RenderHTML}.html")
 
     return c
 
@@ -7864,16 +5757,19 @@ def Parallel(dt = None,
 
 def Funnel(CategoryVar = None,
            ValuesVar = None,
-           RenderHTML = False,
+           RenderHTML = None,
            SeriesLabel = "Funnel Data",
            SortStyle = 'decending',
            Theme = 'wonderland',
            BackgroundColor = None,
            Width = None,
            Height = None,
-           Title = "Funnel",
+           Title = 'Funnel',
            TitleColor = "#fff",
            TitleFontSize = 20,
+           SubTitle = None,
+           SubTitleColor = "#fff",
+           SubTitleFontSize = 12,
            Legend = None,
            LegendPosRight = '0%',
            LegendPosTop = '5%',
@@ -7899,7 +5795,7 @@ def Funnel(CategoryVar = None,
     TitleColor: Font color. Default "#fff" 
     TitleFontSize: Font size. Default = 20
     SeriesLabel: For hover data
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
     AnimationThreshold: Default 2000
@@ -7910,81 +5806,36 @@ def Funnel(CategoryVar = None,
     AnimationEasingUpdate: Default "cubicOut"
     AnimationDelayUpdate: Default 0
     """
-
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Funnel, Grid
-    import polars as pl
-
-    # CategoryVar = ['Daily Liters', 'Daily Units', 'Daily Revenue', 'Daily Margin']
-    # ValuesVar = [100,80,60,40]
-    # Title = "Funnel"
-    # TitleColor = "#fff"
-    # TitleFontSize = 20
-    # Theme = 'wonderland'
-    # RenderHTML = False
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
     
+
     # Create plot
-    InitOptions = {}
-    if not Theme is None:
-      InitOptions['theme'] = Theme
-
-    if not Width is None:
-      InitOptions['width'] = Width
-
-    if not Width is None:
-      InitOptions['height'] = Height
-
-    if not BackgroundColor is None:
-      InitOptions['bg_color'] = BackgroundColor
-
-    InitOptions['is_horizontal_center'] = True
-
-    AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = AnimationThreshold
-    AnimationOptions['animation_duration'] = AnimationDuration
-    AnimationOptions['animation_easing'] = AnimationEasing
-    AnimationOptions['animation_delay'] = AnimationDelay
-    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-    InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+    InitOptions = initialize_options(
+      theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+      animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+      animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+      animation_duration_update=AnimationDurationUpdate, 
+      animation_easing_update=AnimationEasingUpdate,
+      animation_delay_update=AnimationDelayUpdate)
 
     # Create plot
     c = (
-      Funnel(init_opts = opts.InitOpts(**InitOptions))
+      PyFunnel(init_opts = opts.InitOpts(**InitOptions))
       .add(SeriesLabel, [list(z) for z in zip(CategoryVar, ValuesVar)], label_opts = opts.LabelOpts(position="inside"), sort_ = SortStyle)
     )
 
     # Global Options
     GlobalOptions = {}
-    if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-    elif Legend == 'top':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-    else:
-      GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+    GlobalOptions['legend_opts'] = configure_legend_options(
+      legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+      legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
 
-    GlobalOptions['title_opts'] = opts.TitleOpts(
-      title = Title,
-      title_textstyle_opts = opts.TextStyleOpts(
-        color = TitleColor,
-        font_size = TitleFontSize
-      )
-    )
+    GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
  
     c = c.set_global_opts(**GlobalOptions)
 
     # Render html
     if RenderHTML:
-      c.render()
+      c.render(f"{RenderHTML}.html")
 
     return c
 
@@ -7999,7 +5850,7 @@ def Bar3D(dt = None,
           ZVar = None,
           AggMethod = 'mean',
           ZVarTrans = None,
-          RenderHTML = False,
+          RenderHTML = None,
           Theme = 'wonderland',
           BarColors = ["#00b8ff", "#0097e1", "#0876b8", "#004fa7", "#012e6d"],
           BackgroundColor = "#000",
@@ -8036,7 +5887,7 @@ def Bar3D(dt = None,
     ZVar: Numeric variable
     AggMethod: Aggregation method. Choose from count, mean, median, sum, sd, skewness, kurtosis, CoeffVar
     ZVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     Title: title of plot in quotes
     TitleColor: Color of title in hex. Default "#fff"
     TitleFontSize: Font text size. Default 20
@@ -8064,42 +5915,8 @@ def Bar3D(dt = None,
     AnimationEasingUpdate: Default "cubicOut"
     AnimationDelayUpdate: Default 0
     """
-
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import Bar3D
-    import polars as pl
-
-    # PreAgg = False
-    # YVar = 'Category'
-    # XVar = 'Brand'
-    # ZVar = 'Daily Liters'
-    # AggMethod = 'mean'
-    # ZVarTrans = None
-    # RenderHTML = False
-    # Title = 'Bar3D Plot'
-    # TitleColor = 'fff'
-    # TitleFontSize = 20
-    # SubTitle = 'Subtitle'
-    # SubTitleColor = 'fff'
-    # SubTitleFontSize = 12
-    # AxisPointerType = 'cross'
-    # YAxisTitle = 'Daily Liters'
-    # YAxisNameLocation = 'end' 'middle' 'start'
-    # YAxisNameGap = 15
-    # XAxisTitle = 'Date'
-    # XAxisNameLocation = 'middle' 'start' 'end'
-    # XAxisNameGap = 42
-    # Theme = 'wonderland'
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
     
+
     # Subset Columns
     dt1 = dt.select([pl.col(YVar), pl.col(XVar), pl.col(ZVar)])
     
@@ -8138,33 +5955,16 @@ def Bar3D(dt = None,
           data[counter] = [i, j, dt2[ZVar][counter]]
 
     # Create plot
-    InitOptions = {}
-    if not Theme is None:
-      InitOptions['theme'] = Theme
-
-    if not Width is None:
-      InitOptions['width'] = Width
-
-    if not Width is None:
-      InitOptions['height'] = Height
-
-    if not BackgroundColor is None:
-      InitOptions['bg_color'] = BackgroundColor
-
-    InitOptions['is_horizontal_center'] = True
-
-    AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = AnimationThreshold
-    AnimationOptions['animation_duration'] = AnimationDuration
-    AnimationOptions['animation_easing'] = AnimationEasing
-    AnimationOptions['animation_delay'] = AnimationDelay
-    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-    InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+    InitOptions = initialize_options(
+      theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+      animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+      animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+      animation_duration_update=AnimationDurationUpdate, 
+      animation_easing_update=AnimationEasingUpdate,
+      animation_delay_update=AnimationDelayUpdate)
 
     # Create plot
-    c = Bar3D(init_opts = opts.InitOpts(**InitOptions))
+    c = PyBar3D(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
       "Bar3D Data",
       data,
@@ -8176,54 +5976,23 @@ def Bar3D(dt = None,
     # Global Options
     GlobalOptions = {}
     GlobalOptions['visualmap_opts'] = opts.VisualMapOpts(max_ = dt1[ZVar].max(), range_color = BarColors)
-    if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-    elif Legend == 'top':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-    else:
-      GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+    GlobalOptions['legend_opts'] = configure_legend_options(
+      legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+      legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
 
     if not Title is None:
-      GlobalOptions['title_opts'] = opts.TitleOpts(
-        title = Title, subtitle = SubTitle,
-        title_textstyle_opts = opts.TextStyleOpts(
-          color = TitleColor,
-          font_size = TitleFontSize,
-        ),
-        subtitle_textstyle_opts = opts.TextStyleOpts(
-          color = SubTitleColor,
-          font_size = SubTitleFontSize,
-        )
-      )
+      GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
-    if ToolBox:
-      GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-        feature = opts.ToolBoxFeatureOpts(
-          save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-          restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-          data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-          data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-          magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-        )
-      )
-
-    if Brush:
-      GlobalOptions['brush_opts'] = opts.BrushOpts()
-
-    if DataZoom:
-      GlobalOptions['datazoom_opts'] = [
-        opts.DataZoomOpts(
-          range_start = 0,
-          range_end = 100),
-        opts.DataZoomOpts(
-          type_ = "inside")]
+    GlobalOptions = configure_global_chart_options(
+      global_options=GlobalOptions, axis_pointer_type=None,
+      brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
 
     # Final Setting of Global Options
     c = c.set_global_opts(**GlobalOptions)
       
     # Render html
     if RenderHTML:
-      c.render()
+      c.render(f"{RenderHTML}.html")
   
     return c
 
@@ -8238,7 +6007,7 @@ def River(dt = None,
           GroupVar = None,
           AggMethod = "sum",
           YVarTrans = None,
-          RenderHTML = False,
+          RenderHTML = None,
           Theme = 'wonderland',
           BackgroundColor = None,
           ToolBox = True,
@@ -8289,7 +6058,7 @@ def River(dt = None,
     DataZoom: Logical. Select True to add zoom bar on xaxis. Default is True
     Width: Default None. Otherwise, use something like this "1000px"
     Height: Default None. Otherwise, use something like this "600px"
-    RenderHTML: "html", which save an html file, or notebook of choice, 'jupyter_lab', 'jupyter_Render', 'nteract', 'zeppelin'
+    RenderHTML: None or a quoted file name
     AnimationThreshold: Default 2000
     AnimationDuration: Default 1000
     AnimationEasing: Default 'cubicOut'. 'linear', 'quadraticIn', 'quadraticInOut', 'cubicIn', 'cubicOut', 'cubicInOut', 'quarticIn', 'quarticOut', 'quarticInOut', 'quinticIn', 'quinticOut', 'quinticInOut', 'sinusoidalIn', 'sinusoidalOut', 'sinusoidalInOut', 'exponentialIn', 'exponentialOut', 'exponentialInOut', 'circularIn', 'circularOut', 'circularInOut', 'elasticIn', 'elasticOut', 'elasticInOut', 'backIn', 'backOut', 'backInOut', 'bounceIn', 'bounceOut', 'bounceInOut'
@@ -8298,38 +6067,9 @@ def River(dt = None,
     AnimationEasingUpdate: Default "cubicOut"
     AnimationDelayUpdate: Default 0
     """
-
-    # Load environment
-    from pyecharts import options as opts
-    from pyecharts.charts import ThemeRiver, Grid
-    import polars as pl
+    
     from itertools import chain
 
-    # YVars = 'Daily Liters' # ['Daily Liters', 'Daily Units', 'Daily Revenue', 'Daily Margin']
-    # DateVar = 'Date'
-    # GroupVar = 'Brand'
-    # YVarTrans = 'logmin'
-    # AggMethod = "sum"
-    # Title = "River Plot"
-    # TitleColor = "#fff"
-    # TitleFontSize = 20
-    # SubTitle = "coolio"
-    # SubTitleColor = "#fff"
-    # SubTitleFontSize = 12
-    # Legend = 'top'
-    # LegendPosRight = '0%'
-    # LegendPosTop = '5%'
-    # Theme = 'wonderland'
-    # RenderHTML = False
-    # AnimationThreshold = 2000
-    # AnimationDuration = 1000
-    # AnimationEasing = "cubicOut"
-    # AnimationDelay = 0
-    # AnimationDurationUpdate = 300
-    # AnimationEasingUpdate = "cubicOut"
-    # AnimationDelayUpdate = 0
-    # dt = pl.read_csv("C:/Users/Bizon/Documents/GitHub/rappwd/FakeBevData.csv")
-    
     # Subset Columns
     if isinstance(YVars, list):
       cols = YVars.copy()
@@ -8375,30 +6115,13 @@ def River(dt = None,
       data = [[DateVal[i], YVal[i], GroupVal[i]] for i in range(min(len(DateVal), len(YVal), len(GroupVal)))]
 
     # Create plot
-    InitOptions = {}
-    if not Theme is None:
-      InitOptions['theme'] = Theme
-
-    if not Width is None:
-      InitOptions['width'] = Width
-
-    if not Width is None:
-      InitOptions['height'] = Height
-
-    if not BackgroundColor is None:
-      InitOptions['bg_color'] = BackgroundColor
-
-    InitOptions['is_horizontal_center'] = True
-
-    AnimationOptions = {}
-    AnimationOptions['animation_threshold'] = AnimationThreshold
-    AnimationOptions['animation_duration'] = AnimationDuration
-    AnimationOptions['animation_easing'] = AnimationEasing
-    AnimationOptions['animation_delay'] = AnimationDelay
-    AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-    AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-    AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-    InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+    InitOptions = initialize_options(
+      theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+      animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+      animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+      animation_duration_update=AnimationDurationUpdate, 
+      animation_easing_update=AnimationEasingUpdate,
+      animation_delay_update=AnimationDelayUpdate)
 
     c = ThemeRiver(init_opts = opts.InitOpts(**InitOptions))
     c = c.add(
@@ -8411,56 +6134,19 @@ def River(dt = None,
 
     # Global Options
     GlobalOptions = {}
-    GlobalOptions['tooltip_opts'] = opts.TooltipOpts(trigger = "axis", axis_pointer_type = AxisPointerType)
-    if Legend == 'right':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_right = LegendPosRight, pos_top = LegendPosTop, orient = "vertical", border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-    elif Legend == 'top':
-      GlobalOptions['legend_opts'] = opts.LegendOpts(pos_top = LegendPosTop, border_width = LegendBorderSize, textstyle_opts = opts.TextStyleOpts(color = LegendTextColor))
-    else:
-      GlobalOptions['legend_opts'] = opts.LegendOpts(is_show = False)
+    GlobalOptions['legend_opts'] = configure_legend_options(
+      legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+      legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
 
-    GlobalOptions['title_opts'] = opts.TitleOpts(
-      title = Title, subtitle = SubTitle,
-      title_textstyle_opts = opts.TextStyleOpts(
-        color = TitleColor,
-        font_size = TitleFontSize
-      ),
-      subtitle_textstyle_opts = opts.TextStyleOpts(
-        color = SubTitleColor,
-        font_size = SubTitleFontSize,
-      )
-    )
-
-    if ToolBox:
-      GlobalOptions['toolbox_opts'] = opts.ToolboxOpts(
-        feature = opts.ToolBoxFeatureOpts(
-          save_as_image = opts.ToolBoxFeatureSaveAsImageOpts(title="Download as Image"),
-          restore = opts.ToolBoxFeatureRestoreOpts(title = "Restore"),
-          data_view = opts.ToolBoxFeatureDataViewOpts(title = "View Data", lang = ["Data View", "Close", "Refresh"]),
-          data_zoom = opts.ToolBoxFeatureDataZoomOpts(zoom_title = "Zoom In", back_title = "Zoom Out"),
-          magic_type = opts.ToolBoxFeatureMagicTypeOpts(line_title = "Line", bar_title = "Bar", stack_title = "Stack")
-        )
-      )
-
-    if Brush:
-      GlobalOptions['brush_opts'] = opts.BrushOpts()
-
-    if DataZoom:
-      GlobalOptions['datazoom_opts'] = [
-          opts.DataZoomOpts(
-            range_start = 0,
-            range_end = 100),
-          opts.DataZoomOpts(
-            type_ = "inside")]
+    GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
+    GlobalOptions = configure_global_chart_options(
+      global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+      brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
 
     c = c.set_global_opts(**GlobalOptions)
 
     # Render html
     if RenderHTML:
-      c.render()
+      c.render(f"{RenderHTML}.html")
 
     return c
-
-
-#################################################################################################
-

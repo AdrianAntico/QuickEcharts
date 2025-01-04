@@ -1,7 +1,11 @@
+import os
+os.getcwd()
+os.chdir('C:/Users/Bizon/Documents/GitHub/QuickEcharts')
 import polars as pl
 from datetime import datetime
 from QuickEcharts import Charts
 import pyecharts
+
 
 def _get_data():
     df = pl.DataFrame(
@@ -107,7 +111,7 @@ def test_FacetGridValues():
 #############################################
 def test_Histogram():
     df = _get_data()
-    x = Charts.Histogram(dt=df, YVar='integer', GroupVar='string')
+    x = Charts.Histogram(dt=df, YVar='integer', GroupVar='string', RenderHTML = "Hist")
     assert isinstance(x, pyecharts.charts.composite_charts.grid.Grid)
 
 def test_Density():
