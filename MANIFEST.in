@@ -1,2 +1,4 @@
 include README.md LICENSE requirements.txt
 include datasets/FakeBevData.csv
+include requirements.txt
+recursive-include QuickEcharts/shiny_app/www *

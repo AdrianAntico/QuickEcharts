@@ -21,6 +21,12 @@ pip install git+https://github.com/AdrianAntico/QuickEcharts.git#egg=quickechart
 
 <br>
 
+# Run Shiny App
+```python
+from QuickEcharts.shiny_app import launch_dynamic_plot_app
+launch_dynamic_plot_app(port=8001)
+```
+
 # Code Examples
 
 <br>

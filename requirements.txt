@@ -1,3 +1,4 @@
 pyecharts
 polars>=1.0.0
 numpy
+shiny
