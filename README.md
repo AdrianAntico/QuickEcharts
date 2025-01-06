@@ -27,6 +27,9 @@ from QuickEcharts.shiny_app import run_app
 run_app(port=8001)
 ```
 
+<br>
+
+
 # Code Examples
 
 <br>
