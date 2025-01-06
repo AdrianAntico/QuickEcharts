@@ -157,6 +157,6 @@ def server(input, output, session):
     
 
 # App launcher function
-def launch_dynamic_plot_app(port=8001):
+def run_app(port=8001):
     app = App(app_ui, server)
     app.run(port=port)

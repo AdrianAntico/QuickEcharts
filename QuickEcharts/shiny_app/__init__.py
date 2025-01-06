@@ -1,3 +1,3 @@
-from .app import launch_dynamic_plot_app
+from .app import run_app
 
-__all__ = ["launch_dynamic_plot_app"]
+__all__ = ["run_app"]
