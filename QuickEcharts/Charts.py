@@ -903,7 +903,6 @@ def Density(dt = None,
         dt1 = dt1.group_by("Buckets").agg(pl.len().alias(YVar))
         dt1 = dt1.sort("Buckets")
 
-
       # Define data elements
       Buckets = dt1['Buckets'].to_list()
       YVal = dt1[YVar].to_list()
@@ -932,7 +931,7 @@ def Density(dt = None,
       GlobalOptions['legend_opts'] = configure_legend_options(
         legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
         legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
-  
+
       if not Title is None:
         GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
@@ -940,7 +939,7 @@ def Density(dt = None,
       GlobalOptions = configure_global_chart_options(
         global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
         brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
-      
+
       # Final Setting of Global Options
       c = c.set_global_opts(**GlobalOptions)
 
