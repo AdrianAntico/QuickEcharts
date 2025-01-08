@@ -634,7 +634,7 @@ def Histogram(dt = None,
       if not Title is None:
         GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
-      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
       GlobalOptions = configure_global_chart_options(
         global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
         brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
@@ -706,7 +706,7 @@ def Histogram(dt = None,
 
         # Global Options
         GlobalOptions = {}
-        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
         GlobalOptions = configure_global_chart_options(
           global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
           brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
@@ -936,7 +936,7 @@ def Density(dt = None,
       if not Title is None:
         GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
-      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
       GlobalOptions = configure_global_chart_options(
         global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
         brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
@@ -1012,7 +1012,7 @@ def Density(dt = None,
         
         # Global Options
         GlobalOptions = {}
-        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
         GlobalOptions = configure_global_chart_options(
           global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
           brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
@@ -1634,7 +1634,7 @@ def BoxPlot(dt = None,
     if not Title is None:
       GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
       
-    GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+    GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
     GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
     GlobalOptions = configure_global_chart_options(
       global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
@@ -2091,7 +2091,7 @@ def Line(dt = None,
       if not Title is None:
         GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
-      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
       GlobalOptions = configure_global_chart_options(
         global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
@@ -2162,7 +2162,7 @@ def Line(dt = None,
         if not Title is None:
           GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
-        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
         GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
         GlobalOptions = configure_global_chart_options(
           global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
@@ -2234,7 +2234,7 @@ def Line(dt = None,
 
           # Global Options
           GlobalOptions = {}
-          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
           GlobalOptions = configure_global_chart_options(
             global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
             brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
@@ -2474,7 +2474,7 @@ def StackedLine(dt = None,
       if not Title is None:
         GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
-      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
       GlobalOptions = configure_global_chart_options(
         global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
@@ -2538,7 +2538,7 @@ def StackedLine(dt = None,
       if not Title is None:
         GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
-      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
       GlobalOptions = configure_global_chart_options(
         global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
@@ -2743,7 +2743,7 @@ def Step(dt = None,
       if not Title is None:
         GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
-      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
       GlobalOptions = configure_global_chart_options(
         global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
@@ -2814,7 +2814,7 @@ def Step(dt = None,
         if not Title is None:
           GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
-        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
         GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
         GlobalOptions = configure_global_chart_options(
           global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
@@ -2888,7 +2888,7 @@ def Step(dt = None,
           # Global Options
           # Global Options
         GlobalOptions = {}
-        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
         GlobalOptions = configure_global_chart_options(
           global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
           brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
@@ -3127,7 +3127,7 @@ def StackedStep(dt = None,
       if not Title is None:
         GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
-      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
       GlobalOptions = configure_global_chart_options(
         global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
@@ -3191,7 +3191,7 @@ def StackedStep(dt = None,
       if not Title is None:
         GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
-      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
       GlobalOptions = configure_global_chart_options(
         global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
@@ -3446,7 +3446,7 @@ def Area(dt = None,
       if not Title is None:
         GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
-      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
       GlobalOptions = configure_global_chart_options(
         global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
@@ -3518,7 +3518,7 @@ def Area(dt = None,
         if not Title is None:
           GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
-        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
         GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
         GlobalOptions = configure_global_chart_options(
           global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
@@ -3603,7 +3603,7 @@ def Area(dt = None,
 
           # Global Options
           GlobalOptions = {}
-          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
           GlobalOptions = configure_global_chart_options(
             global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
             brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
@@ -3844,7 +3844,7 @@ def StackedArea(dt = None,
       if not Title is None:
         GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
-      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
       GlobalOptions = configure_global_chart_options(
         global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
@@ -3909,7 +3909,7 @@ def StackedArea(dt = None,
       if not Title is None:
         GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
-      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
       GlobalOptions = configure_global_chart_options(
         global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
@@ -4106,7 +4106,7 @@ def Bar(dt = None,
       if not Title is None:
         GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
-      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
       GlobalOptions = configure_global_chart_options(
         global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
@@ -4168,7 +4168,7 @@ def Bar(dt = None,
         if not Title is None:
           GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
   
-        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
         GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
         GlobalOptions = configure_global_chart_options(
           global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
@@ -4446,7 +4446,7 @@ def StackedBar(dt = None,
       if not Title is None:
         GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
-      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
       GlobalOptions = configure_global_chart_options(
         global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
@@ -4501,7 +4501,7 @@ def StackedBar(dt = None,
       if not Title is None:
         GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
-      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
       GlobalOptions = configure_global_chart_options(
         global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
@@ -4694,7 +4694,7 @@ def Heatmap(dt = None,
     if not Title is None:
       GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
 
-    GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+    GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
     GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
     GlobalOptions['visualmap_opts'] = opts.VisualMapOpts(range_color = RangeColor),
  
@@ -5025,7 +5025,7 @@ def Scatter(dt = None,
 
           # Global Options
           GlobalOptions = {}
-          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
           GlobalOptions = configure_global_chart_options(
             global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
             brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
@@ -5246,7 +5246,7 @@ def Copula3D(dt = None,
              AggMethod = 'mean',
              RenderHTML = None,
              ColorMapVar = "ZVar",
-             SymbolSize = 6,
+             SymbolSize = 100,
              RangeColor = ["red", "white", "blue"],
              Theme = 'wonderland',
              BackgroundColor = None,
@@ -5678,7 +5678,7 @@ def Copula(dt = None,
 
           # Global Options
           GlobalOptions = {}
-          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
           GlobalOptions = configure_global_chart_options(
             global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
             brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)

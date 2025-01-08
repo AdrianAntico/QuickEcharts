@@ -88,12 +88,6 @@ PLOT_SCHEMAS = {
       "LegendPosTop": {"type": "text", "label": "Legend Position Top", "default": "5%"},
       "LegendBorderSize": {"type": "slider", "label": "Legend Border Size", "min": 0, "max": 5, "default": 0.25},
       "LegendTextColor": {"type": "select", "label": "Legend Text Color", "options": ["white", "gray","black"], "default": "gray"},
-  
-      # Reference lines
-      
-      
-      
-      
   },
   
   "Bar": {
@@ -136,8 +130,7 @@ PLOT_SCHEMAS = {
       # Interaction settings
       "ToolBox": {"type": "checkbox", "label": "Enable Toolbox", "default": True},
       "Brush": {"type": "checkbox", "label": "Enable Brush", "default": True},
-      
-  
+
       # Title and subtitle settings
       "Title": {"type": "text", "label": "Title", "default": "Bar Plot"},
       "TitleColor": {"type": "select", "label": "Title Color", "options": ["white", "gray","black"], "default": "gray"},
@@ -200,7 +193,6 @@ PLOT_SCHEMAS = {
     # Interaction settings
     "ToolBox": {"type": "checkbox", "label": "Enable Toolbox", "default": True},
     "Brush": {"type": "checkbox", "label": "Enable Brush", "default": True},
-    
 
     # Title and subtitle settings
     "Title": {"type": "text", "label": "Title", "default": "Box Plot"},
@@ -240,10 +232,6 @@ PLOT_SCHEMAS = {
     "LegendPosTop": {"type": "text", "label": "Legend Position Top", "default": "5%"},
     "LegendBorderSize": {"type": "slider", "label": "Legend Border Size", "min": 0, "max": 5, "default": 0.25},
     "LegendTextColor": {"type": "select", "label": "Legend Text Color", "options": ["white", "gray","black"], "default": "gray"},
-
-    # Reference lines
-    
-
   },
   
   "Copula": {
@@ -257,7 +245,6 @@ PLOT_SCHEMAS = {
     "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
     "XVarTrans": {"type": "select", "label": "X Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
-    
     "AggMethod": {
         "type": "select",
         "label": "Aggregation Method",
@@ -330,12 +317,6 @@ PLOT_SCHEMAS = {
     "LegendPosTop": {"type": "text", "label": "Legend Position Top", "default": "5%"},
     "LegendBorderSize": {"type": "slider", "label": "Legend Border Size", "min": 0, "max": 5, "default": 0.25},
     "LegendTextColor": {"type": "select", "label": "Legend Text Color", "options": ["white", "gray","black"], "default": "gray"},
-
-    # Reference lines
-    
-    
-    
-
   },
   
   "Copula3D": {
@@ -351,12 +332,7 @@ PLOT_SCHEMAS = {
         "options": ["mean", "sum", "median", "max", "min"],
         "default": "mean",
     },
-    "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
-    "XVarTrans": {"type": "select", "label": "X Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
-    "ZVarTrans": {"type": "select", "label": "Z Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
-
     # Rendering settings
-    
     "Theme": {
         "type": "select",
         "label": "Theme",
@@ -374,7 +350,7 @@ PLOT_SCHEMAS = {
         "options": ["XVar", "YVar", "ZVar"],
         "default": "ZVar",
     },
-    "SymbolSize": {"type": "slider", "label": "Symbol Size", "min": 1, "max": 20, "default": 6},
+    "SymbolSize": {"type": "slider", "label": "Symbol Size", "min": 1, "max": 20, "default": 30},
     "RangeColor": {
         "type": "text",
         "label": "Range Colors (JSON Array)",
@@ -385,7 +361,7 @@ PLOT_SCHEMAS = {
   "Density": {
     # Data settings
     "dt": {"type": "file", "label": "Data Table", "default": None},
-    "SampleSize": {"type": "slider", "label": "Sample Size", "min": 1, "max": 100000, "default": None},
+    "SampleSize": {"type": "slider", "label": "Sample Size", "min": 1, "max": 100000, "default": 100000},
     "YVar": {"type": "select", "label": "Y Variable", "default": None},
     "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
     "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
@@ -628,21 +604,18 @@ PLOT_SCHEMAS = {
   "Histogram": {
     # Data settings
     "dt": {"type": "file", "label": "Data Table", "default": None},
-    "SampleSize": {"type": "slider", "label": "Sample Size", "min": 1, "max": 100000, "default": None},
+    "SampleSize": {"type": "slider", "label": "Sample Size", "min": 1, "max": 100000, "default": 100000},
     "YVar": {"type": "select", "label": "Y Variable", "default": None},
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
     "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
     "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
     "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
-    
-    
 
     # Histogram-specific settings
     "NumberBins": {"type": "slider", "label": "Number of Bins", "min": 1, "max": 100, "default": 20},
     "CategoryGap": {"type": "text", "label": "Category Gap", "default": "10%"},
 
     # Rendering settings
-    
     "Theme": {
         "type": "select",
         "label": "Theme",
@@ -656,7 +629,6 @@ PLOT_SCHEMAS = {
     # Interaction settings
     "ToolBox": {"type": "checkbox", "label": "Enable Toolbox", "default": True},
     "Brush": {"type": "checkbox", "label": "Enable Brush", "default": True},
-    
 
     # Title and subtitle settings
     "Title": {"type": "text", "label": "Title", "default": "Histogram"},
@@ -1119,7 +1091,6 @@ PLOT_SCHEMAS = {
     "ZVarTrans": {"type": "select", "label": "Z Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
-    
     "ColorMapVar": {
         "type": "select",
         "label": "Color Map Variable",
@@ -1159,7 +1130,6 @@ PLOT_SCHEMAS = {
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
-    
     "Opacity": {"type": "slider", "label": "Area Opacity", "min": 0, "max": 1, "default": 0.5},
     "LineWidth": {"type": "slider", "label": "Line Width", "min": 1, "max": 10, "default": 2},
     "SymbolSize": {"type": "slider", "label": "Symbol Size", "min": 1, "max": 20, "default": 6},
@@ -1241,7 +1211,6 @@ PLOT_SCHEMAS = {
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
-    
     "ShowLabels": {"type": "checkbox", "label": "Show Labels", "default": False},
     "LabelPosition": {
         "type": "select",
@@ -1262,7 +1231,6 @@ PLOT_SCHEMAS = {
     # Interaction settings
     "ToolBox": {"type": "checkbox", "label": "Enable Toolbox", "default": True},
     "Brush": {"type": "checkbox", "label": "Enable Brush", "default": True},
-    
 
     # Title and subtitle settings
     "Title": {"type": "text", "label": "Title", "default": "Stacked Bar"},
@@ -1320,7 +1288,6 @@ PLOT_SCHEMAS = {
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
-    
     "SmoothLine": {"type": "checkbox", "label": "Smooth Line", "default": True},
     "LineWidth": {"type": "slider", "label": "Line Width", "min": 1, "max": 10, "default": 2},
     "SymbolSize": {"type": "slider", "label": "Symbol Size", "min": 1, "max": 20, "default": 6},
@@ -1344,7 +1311,6 @@ PLOT_SCHEMAS = {
     # Interaction settings
     "ToolBox": {"type": "checkbox", "label": "Enable Toolbox", "default": True},
     "Brush": {"type": "checkbox", "label": "Enable Brush", "default": True},
-    
 
     # Title and subtitle settings
     "Title": {"type": "text", "label": "Title", "default": "Stacked Line"},
@@ -1402,7 +1368,6 @@ PLOT_SCHEMAS = {
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
-    
     "LineWidth": {"type": "slider", "label": "Line Width", "min": 1, "max": 10, "default": 2},
     "SymbolSize": {"type": "slider", "label": "Symbol Size", "min": 1, "max": 20, "default": 6},
     "ShowLabels": {"type": "checkbox", "label": "Show Labels", "default": False},
@@ -1425,7 +1390,6 @@ PLOT_SCHEMAS = {
     # Interaction settings
     "ToolBox": {"type": "checkbox", "label": "Enable Toolbox", "default": True},
     "Brush": {"type": "checkbox", "label": "Enable Brush", "default": True},
-    
 
     # Title and subtitle settings
     "Title": {"type": "text", "label": "Title", "default": "Line Plot"},
@@ -1476,8 +1440,6 @@ PLOT_SCHEMAS = {
     "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
     "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
     "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
-    
-    
     "AggMethod": {
         "type": "select",
         "label": "Aggregation Method",
@@ -1487,7 +1449,6 @@ PLOT_SCHEMAS = {
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
-    
     "LineWidth": {"type": "slider", "label": "Line Width", "min": 1, "max": 10, "default": 2},
     "SymbolSize": {"type": "slider", "label": "Symbol Size", "min": 1, "max": 20, "default": 6},
     "ShowLabels": {"type": "checkbox", "label": "Show Labels", "default": False},
@@ -1510,7 +1471,6 @@ PLOT_SCHEMAS = {
     # Interaction settings
     "ToolBox": {"type": "checkbox", "label": "Enable Toolbox", "default": True},
     "Brush": {"type": "checkbox", "label": "Enable Brush", "default": True},
-    
 
     # Title and subtitle settings
     "Title": {"type": "text", "label": "Title", "default": "Line Plot"},
@@ -1550,12 +1510,6 @@ PLOT_SCHEMAS = {
     "LegendPosTop": {"type": "text", "label": "Legend Position Top", "default": "5%"},
     "LegendBorderSize": {"type": "slider", "label": "Legend Border Size", "min": 0, "max": 5, "default": 0.25},
     "LegendTextColor": {"type": "select", "label": "Legend Text Color", "options": ["white", "gray","black"], "default": "gray"},
-
-    # Reference lines
-    
-    
-    
-
   },
   
   "WordCloud": {
@@ -1565,7 +1519,6 @@ PLOT_SCHEMAS = {
     "YVar": {"type": "select", "label": "Y Variable", "default": None},
 
     # Rendering settings
-    
     "Theme": {
         "type": "select",
         "label": "Theme",
