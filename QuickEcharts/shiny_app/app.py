@@ -11,17 +11,21 @@ logger = logging.getLogger(__name__)
 
 app_ui = ui.page_sidebar(
     ui.sidebar(
-        ui.input_action_button("build_plot", "Build Plot"),
+        ui.tags.head(ui.tags.title("QuickEcharts App")),
+        ui.input_action_button("build_plot", ui.HTML('<i class="fa fa-bar-chart"></i> Build Plot')),
+        # ui.input_action_button("build_plot", "Build Plot"),
         ui.input_file("dt", "Upload Data Table"),
         ui.input_select("plot_type", "Select Plot Type", choices=list(PLOT_SCHEMAS.keys()), selected="Area"),
         ui.output_ui("dynamic_inputs")
     ),
     ui.card(
-        ui.card_header("Dynamic Plot Viewer"),
+        ui.card_header("Dynamic Plot Viewer", class_="bg-primary text-white"),  # Add styling classes
+        # ui.card_header("Dynamic Plot Viewer"),
         ui.output_text_verbatim("columns"),
         ui.output_ui("plot"),
-    ),
+    )
 )
+
 
 def server(input, output, session):
     @reactive.calc

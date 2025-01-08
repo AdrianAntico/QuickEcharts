@@ -28,6 +28,29 @@ from pyecharts.charts import (
  )
 
 
+def JS_GradientAreaFill(gradient_colors):
+    """
+    Generate JavaScript code for an ECharts gradient area fill.
+
+    Parameters:
+    - gradient_colors: A list or tuple containing one or more color strings.
+
+    Returns:
+    - A string of JavaScript code for the gradient area fill.
+    """
+    if not gradient_colors or len(gradient_colors) < 1:
+        raise ValueError("gradient_colors must contain at least one color.")
+
+    stops = []
+    step = 1 / (len(gradient_colors) - 1) if len(gradient_colors) > 1 else 0
+
+    for i, color in enumerate(gradient_colors):
+        stops.append(f"{{offset: {i * step:.2f}, color: '{color}'}}")
+
+    area_color_js = f"new echarts.graphic.LinearGradient(0, 0, 0, 1, [{', '.join(stops)}], false)"
+    return area_color_js
+
+
 def NumericTransformation(dt, YVar, Trans):
   """
   Parameters
@@ -958,6 +981,15 @@ def Density(dt = None,
     # Group Variable Case
     else:
       
+      # Facet Mgt bc only faceting is used for grouped Density visuals
+      print(FacetRows)
+      print(FacetCols)
+      print(FacetRows <= 1 and FacetCols <= 1)
+      if FacetRows <= 1 and FacetCols <= 1:
+        FacetRows = len(dt1[GroupVar].unique())
+        print(FacetRows)
+        FacetCols = 1
+      
       # Time utilizes all levels; Facet only uses enough to fill grid
       if not TimeLine:
         if not FacetLevels is None:
@@ -989,6 +1021,7 @@ def Density(dt = None,
        
         # Define data elements
         Buckets = dt2['Buckets'].to_list().copy()
+        Buckets = [str(b) for b in Buckets]
         YVal = dt2[YVar].to_list().copy()
         
         # Create plot
@@ -1012,7 +1045,7 @@ def Density(dt = None,
         
         # Global Options
         GlobalOptions = {}
-        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
+        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
         GlobalOptions = configure_global_chart_options(
           global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
           brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
@@ -1027,7 +1060,7 @@ def Density(dt = None,
 
     # Facet Output
     if not TimeLine:
-
+      
       # Setup Grid Output
       facet_vals = FacetGridValues(
         FacetRows = FacetRows,
@@ -3216,29 +3249,6 @@ def JS_GradientAreaBackground(Color1, Color2):
     )
     return background_color_js
 
-# JS_GradientAreaBackground('#c86589', '#06a7ff')
-
-def JS_GradientAreaFill(gradient_colors):
-    """
-    Generate JavaScript code for an ECharts gradient area fill.
-
-    Parameters:
-    - gradient_colors: A list or tuple containing one or more color strings.
-
-    Returns:
-    - A string of JavaScript code for the gradient area fill.
-    """
-    if not gradient_colors or len(gradient_colors) < 1:
-        raise ValueError("gradient_colors must contain at least one color.")
-
-    stops = []
-    step = 1 / (len(gradient_colors) - 1) if len(gradient_colors) > 1 else 0
-
-    for i, color in enumerate(gradient_colors):
-        stops.append(f"{{offset: {i * step:.2f}, color: '{color}'}}")
-
-    area_color_js = f"new echarts.graphic.LinearGradient(0, 0, 0, 1, [{', '.join(stops)}], false)"
-    return area_color_js
 
 #################################################################################################
 
