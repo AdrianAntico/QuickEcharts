@@ -736,7 +736,7 @@ def Histogram(dt = None,
         Height = "750px"
       grid = Grid(init_opts=opts.InitOpts(theme=Theme, width=f"{int(Width.replace('px', '')) * FacetCols / math.sqrt(FacetCols)}px", height=f"{int(Height.replace('px', '')) * FacetRows}px"))
       counter = -1
-      for i in GroupLevels:
+      for i in levs:
         counter += 1
         grid = grid.add(
           plot_dict[i],
