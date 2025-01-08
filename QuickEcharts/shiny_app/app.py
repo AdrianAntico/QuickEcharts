@@ -137,7 +137,10 @@ def server(input, output, session):
             params = {}
             for param in schema.keys():
                 value = input[param]() if callable(input[param]) else input[param]
-                if param == 'dt':
+                if param in ["FacetRows", "FacetCols"]:
+                    # Convert FacetRows and FacetCols to integers
+                    params[param] = int(value) if value not in ["None", ""] else None
+                elif param == 'dt':
                     params[param] = data
                 else:
                     # Convert empty strings and "None" strings to None
@@ -145,6 +148,7 @@ def server(input, output, session):
     
             # Create plot dynamically using the selected plot function
             plot_function = getattr(Charts, plot_type)
+            logger.info(f"Creating {plot_type} plot with parameters: {params}")
             chart = plot_function(**params)  # Ensure `data` is correctly passed
             rendered_file = chart.render(f"{params.get('RenderHTML', 'output')}.html")
             

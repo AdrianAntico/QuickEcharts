@@ -6,25 +6,22 @@ PLOT_SCHEMAS = {
       "YVar": {"type": "select", "label": "Y Variable", "default": None},
       "XVar": {"type": "select", "label": "X Variable", "default": None},
       "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
-      "FacetRows": {"type": "slider", "label": "Facet Rows", "min": 1, "max": 10, "default": 1},
-      "FacetCols": {"type": "slider", "label": "Facet Columns", "min": 1, "max": 10, "default": 1},
-      
-      
+      "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
+      "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
       "AggMethod": {
           "type": "select",
           "label": "Aggregation Method",
           "options": ["mean", "sum", "median", "max", "min"],
           "default": "mean",
       },
-      "YVarTrans": {"type": "select", "label": "Y Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
+      "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
       # Rendering settings
-      
       "Theme": {
           "type": "select",
           "label": "Theme",
           "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-          "default": "wonderland",
+          "default": "dark",
       },
       
       "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -52,7 +49,6 @@ PLOT_SCHEMAS = {
       # Interaction settings
       "ToolBox": {"type": "checkbox", "label": "Enable Toolbox", "default": True},
       "Brush": {"type": "checkbox", "label": "Enable Brush", "default": True},
-      
   
       # Title and subtitle settings
       "Title": {"type": "text", "label": "Title", "default": "Area Plot"},
@@ -107,25 +103,22 @@ PLOT_SCHEMAS = {
       "YVar": {"type": "select", "label": "Y Variable", "default": None},
       "XVar": {"type": "select", "label": "X Variable", "default": None},
       "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
-      "FacetRows": {"type": "slider", "label": "Facet Rows", "min": 1, "max": 10, "default": 1},
-      "FacetCols": {"type": "slider", "label": "Facet Columns", "min": 1, "max": 10, "default": 1},
-      
-      
+      "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
+      "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
       "AggMethod": {
           "type": "select",
           "label": "Aggregation Method",
           "options": ["mean", "sum", "median", "max", "min"],
           "default": "mean",
       },
-      "YVarTrans": {"type": "select", "label": "Y Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
+      "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
   
       # Rendering settings
-      
       "Theme": {
           "type": "select",
           "label": "Theme",
           "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-          "default": "wonderland",
+          "default": "dark",
       },
       
       "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -183,13 +176,7 @@ PLOT_SCHEMAS = {
       "LegendPosTop": {"type": "text", "label": "Legend Position Top", "default": "5%"},
       "LegendBorderSize": {"type": "slider", "label": "Legend Border Size", "min": 0, "max": 5, "default": 0.25},
       "LegendTextColor": {"type": "select", "label": "Legend Text Color", "options": ["white", "gray","black"], "default": "gray"},
-  
-      # Reference lines
-      
-      
-      
-
-    },
+  },
   
   "BoxPlot": {
     # Data settings
@@ -197,15 +184,14 @@ PLOT_SCHEMAS = {
     "SampleSize": {"type": "slider", "label": "Sample Size", "min": 1, "max": 10000, "default": None},
     "YVar": {"type": "select", "label": "Y Variable", "default": None},
     "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
-    "YVarTrans": {"type": "select", "label": "Y Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
+    "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
-    
     "Theme": {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -267,9 +253,10 @@ PLOT_SCHEMAS = {
     "YVar": {"type": "select", "label": "Y Variable", "default": None},
     "XVar": {"type": "select", "label": "X Variable", "default": None},
     "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
-    "FacetRows": {"type": "slider", "label": "Facet Rows", "min": 1, "max": 10, "default": 1},
-    "FacetCols": {"type": "slider", "label": "Facet Columns", "min": 1, "max": 10, "default": 1},
-    
+    "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
+    "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
+    "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
+    "XVarTrans": {"type": "select", "label": "X Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
     
     "AggMethod": {
         "type": "select",
@@ -284,7 +271,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -364,6 +351,9 @@ PLOT_SCHEMAS = {
         "options": ["mean", "sum", "median", "max", "min"],
         "default": "mean",
     },
+    "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
+    "XVarTrans": {"type": "select", "label": "X Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
+    "ZVarTrans": {"type": "select", "label": "Z Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
     
@@ -371,7 +361,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -398,11 +388,11 @@ PLOT_SCHEMAS = {
     "SampleSize": {"type": "slider", "label": "Sample Size", "min": 1, "max": 100000, "default": None},
     "YVar": {"type": "select", "label": "Y Variable", "default": None},
     "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
-    "FacetRows": {"type": "slider", "label": "Facet Rows", "min": 1, "max": 10, "default": 1},
-    "FacetCols": {"type": "slider", "label": "Facet Columns", "min": 1, "max": 10, "default": 1},
+    "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
+    "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
     
     
-    "YVarTrans": {"type": "select", "label": "Y Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
+    "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
     
@@ -410,7 +400,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -475,7 +465,7 @@ PLOT_SCHEMAS = {
         "options": ["count", "mean", "sum", "median", "max", "min"],
         "default": "count",
     },
-    "YVarTrans": {"type": "select", "label": "Y Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
+    "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
     
@@ -483,7 +473,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -523,7 +513,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -579,7 +569,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     "RangeColor": {
         "type": "text",
@@ -640,10 +630,10 @@ PLOT_SCHEMAS = {
     "dt": {"type": "file", "label": "Data Table", "default": None},
     "SampleSize": {"type": "slider", "label": "Sample Size", "min": 1, "max": 100000, "default": None},
     "YVar": {"type": "select", "label": "Y Variable", "default": None},
-    "YVarTrans": {"type": "select", "label": "Y Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
+    "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
     "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
-    "FacetRows": {"type": "slider", "label": "Facet Rows", "min": 1, "max": 10, "default": 1},
-    "FacetCols": {"type": "slider", "label": "Facet Columns", "min": 1, "max": 10, "default": 1},
+    "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
+    "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
     
     
 
@@ -657,7 +647,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -719,11 +709,11 @@ PLOT_SCHEMAS = {
         "options": ["mean", "sum", "median", "max", "min"],
         "default": "mean",
     },
-    "FacetRows": {"type": "slider", "label": "Facet Rows", "min": 1, "max": 10, "default": 1},
-    "FacetCols": {"type": "slider", "label": "Facet Columns", "min": 1, "max": 10, "default": 1},
+    "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
+    "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
     
     
-    "YVarTrans": {"type": "select", "label": "Y Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
+    "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
     
@@ -740,7 +730,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -813,7 +803,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -840,7 +830,7 @@ PLOT_SCHEMAS = {
         "options": ["count", "mean", "sum", "median", "max", "min"],
         "default": "count",
     },
-    "YVarTrans": {"type": "select", "label": "Y Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
+    "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
     
@@ -848,7 +838,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -881,7 +871,7 @@ PLOT_SCHEMAS = {
         "options": ["mean", "sum", "median", "max", "min"],
         "default": "mean",
     },
-    "YVarTrans": {"type": "select", "label": "Y Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
+    "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
     
@@ -895,7 +885,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -930,7 +920,7 @@ PLOT_SCHEMAS = {
         "options": ["sum", "mean", "median", "max", "min"],
         "default": "sum",
     },
-    "YVarTrans": {"type": "select", "label": "Y Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
+    "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
     
@@ -938,7 +928,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -983,7 +973,7 @@ PLOT_SCHEMAS = {
         "options": ["count", "mean", "sum", "median", "max", "min"],
         "default": "count",
     },
-    "YVarTrans": {"type": "select", "label": "Y Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
+    "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
     
@@ -998,7 +988,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -1027,8 +1017,8 @@ PLOT_SCHEMAS = {
     "YVar": {"type": "select", "label": "Y Variable", "default": None},
     "XVar": {"type": "select", "label": "X Variable", "default": None},
     "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
-    "FacetRows": {"type": "slider", "label": "Facet Rows", "min": 1, "max": 10, "default": 1},
-    "FacetCols": {"type": "slider", "label": "Facet Columns", "min": 1, "max": 10, "default": 1},
+    "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
+    "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
     
     
     "AggMethod": {
@@ -1037,8 +1027,8 @@ PLOT_SCHEMAS = {
         "options": ["mean", "sum", "median", "max", "min"],
         "default": "mean",
     },
-    "YVarTrans": {"type": "select", "label": "Y Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
-    "XVarTrans": {"type": "text", "label": "X Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
+    "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
+    "XVarTrans": {"type": "select", "label": "X Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
     
@@ -1054,7 +1044,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -1124,9 +1114,9 @@ PLOT_SCHEMAS = {
         "options": ["mean", "sum", "median", "max", "min"],
         "default": "mean",
     },
-    "YVarTrans": {"type": "select", "label": "Y Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
-    "XVarTrans": {"type": "text", "label": "X Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
-    "ZVarTrans": {"type": "text", "label": "Z Variable Transformation", "default": None},
+    "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
+    "XVarTrans": {"type": "select", "label": "X Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
+    "ZVarTrans": {"type": "select", "label": "Z Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
     
@@ -1141,7 +1131,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     "RangeColor": {
         "type": "text",
@@ -1166,7 +1156,7 @@ PLOT_SCHEMAS = {
         "options": ["mean", "sum", "median", "max", "min"],
         "default": "mean",
     },
-    "YVarTrans": {"type": "select", "label": "Y Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
+    "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
     
@@ -1184,7 +1174,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -1248,7 +1238,7 @@ PLOT_SCHEMAS = {
         "options": ["mean", "sum", "median", "max", "min"],
         "default": "mean",
     },
-    "YVarTrans": {"type": "select", "label": "Y Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
+    "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
     
@@ -1263,7 +1253,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -1327,7 +1317,7 @@ PLOT_SCHEMAS = {
         "options": ["mean", "sum", "median", "max", "min"],
         "default": "mean",
     },
-    "YVarTrans": {"type": "select", "label": "Y Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
+    "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
     
@@ -1345,7 +1335,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -1409,7 +1399,7 @@ PLOT_SCHEMAS = {
         "options": ["mean", "sum", "median", "max", "min"],
         "default": "mean",
     },
-    "YVarTrans": {"type": "select", "label": "Y Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
+    "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
     
@@ -1426,7 +1416,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -1484,8 +1474,8 @@ PLOT_SCHEMAS = {
     "YVar": {"type": "select", "label": "Y Variable", "default": None},
     "XVar": {"type": "select", "label": "X Variable", "default": None},
     "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
-    "FacetRows": {"type": "slider", "label": "Facet Rows", "min": 1, "max": 10, "default": 1},
-    "FacetCols": {"type": "slider", "label": "Facet Columns", "min": 1, "max": 10, "default": 1},
+    "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
+    "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
     
     
     "AggMethod": {
@@ -1494,7 +1484,7 @@ PLOT_SCHEMAS = {
         "options": ["mean", "sum", "median", "max", "min"],
         "default": "mean",
     },
-    "YVarTrans": {"type": "select", "label": "Y Variable Transformation", "options": ["Identity", "Log", "SquareRoot", "Exp"], "default": None},
+    "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
     
@@ -1580,7 +1570,7 @@ PLOT_SCHEMAS = {
         "type": "select",
         "label": "Theme",
         "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "wonderland",
+        "default": "dark",
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},

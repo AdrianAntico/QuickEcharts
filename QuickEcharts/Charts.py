@@ -2,7 +2,7 @@
 # Author: Adrian Antico <adrianantico@gmail.com>
 # License: APGL (>= 3)
 # Release: quickecharts 1.2.0
-# Last modified : 2024-07-05
+# Last modified : 2025-01-05
 
 import numpy as np
 import polars as pl
@@ -128,72 +128,83 @@ def PolarsAggregation(dt, AggMethod, NumericVariable, GroupVariable, DateVariabl
   return(dt)
 
 
-def FacetGridValues(FacetRows = 1, FacetCols = 1, Legend = 'top', LegendSpace = 10):
+def FacetGridValues(
+    FacetRows=1, 
+    FacetCols=1, 
+    Legend='top', 
+    LegendSpace=10, 
+    Height="750px", 
+    Width="1250px"
+):
+    """
+    Calculates grid options for a facet grid layout using the original percentage-based logic
+    with adjustments for total height and width based on FacetRows and FacetCols.
 
-  # number of series
-  nseries = FacetRows * FacetCols
-  
-  # Specified margins
-  margin_trbl = {"t": 2, "r": 2, "b": 5, "l": 5}
-  
-  # Calculate spacings ------------------------------------------------------
-  
-  # introduce some spacing between panels for low dimensional grids
-  if FacetRows < 10:
-    v_panel_space = 10 - FacetRows 
-  else:
-    v_panel_space = 0
+    Parameters:
+    - FacetRows (int): Number of rows in the facet grid.
+    - FacetCols (int): Number of columns in the facet grid.
+    - Legend (str): Position of the legend ('top', 'right', or others).
+    - LegendSpace (int): Space allocated for the legend (in percentage).
+    - Height (str): Height of the entire grid in pixels.
+    - Width (str): Width of the entire grid in pixels.
 
-  if FacetCols < 10:
-    h_panel_space = 10 - FacetCols
-  else: 
-    h_panel_space = 0
-  
-  # Maximum space for facets (depends on legend position, and space for axis labels)
-  if Legend == "top":
-    w_max = 100 - margin_trbl["l"] - margin_trbl["r"]
-    h_max = 100 - LegendSpace - margin_trbl["b"] - margin_trbl["t"]
-  elif Legend == "right":
-    w_max = 100 - LegendSpace - margin_trbl["l"] - margin_trbl["r"]
-    h_max = 100 - margin_trbl["b"] -margin_trbl["t"]
-  else:
-    w_max = 90  - margin_trbl["l"] - margin_trbl["r"]
-    h_max = 100 - margin_trbl["b"] - margin_trbl["t"]
-  
-  
-  # Total space for panels, taking between-panel spacing, legend space, and
-  #   extra space for axis labels into account
-  FacetRows_h_max = h_max - (v_panel_space * (FacetRows - 1)) 
-  FacetCols_w_max = w_max - (h_panel_space * (FacetCols - 1))
-  
-  # Dimensions of each panel
-  height = FacetRows_h_max / FacetRows
-  width = FacetCols_w_max / FacetCols
-  
-  # Panel positions ---------------------------------------------------------
-  
-  # Offset only when legend is left or top
-  top_offset = 0
-  left_offset = 0
-  if Legend == "top":
-    top_offset = LegendSpace
+    Returns:
+    - dict: Contains positions (`top`, `left`) and dimensions (`width`, `height`) for each panel.
+    """
+    # Parse pixel-based dimensions
+    total_height_px = int(Height.replace("px", "")) if Height else 750
+    total_width_px = int(Width.replace("px", "")) if Width else 1250
 
-  # Generate a vector for positions from the top
-  top_pos_values = [0 for i in range(0,FacetRows)]
-  for x in range(0,FacetRows):
-    top_pos_values[x] = margin_trbl["t"] + top_offset + (x * (height + v_panel_space))
+    # Convert dimensions to percentages
+    total_height_percent = 100
+    total_width_percent = 100
 
-  top_pos_values_rep = top_pos_values * FacetCols
-  top_pos_values_rep.sort()
+    # Specified margins (as percentages)
+    margin_trbl = {"t": 2, "r": 2, "b": 5, "l": 5}
 
-  # Generate a vector for positions from the left
-  left_pos_values = [0 for i in range(0, FacetCols)]
-  for x in range(0, FacetCols):
-    left_pos_values[x] = margin_trbl["l"] + left_offset + (x * (width + h_panel_space))
+    # Calculate spacing adjustments
+    v_panel_space = 2  # max(0, 10 - FacetRows)
+    h_panel_space = 9  # max(0, 10 - FacetCols)
 
-  left_pos_values_rep = left_pos_values * FacetRows
-  
-  return {'top': top_pos_values_rep, 'left': left_pos_values_rep, 'width': width-5, 'height': height}
+    # Calculate maximum space for panels
+    if Legend == "top":
+        w_max = total_width_percent - margin_trbl["l"] - margin_trbl["r"]
+        h_max = total_height_percent - LegendSpace - margin_trbl["b"] - margin_trbl["t"]
+    elif Legend == "right":
+        w_max = total_width_percent - LegendSpace - margin_trbl["l"] - margin_trbl["r"]
+        h_max = total_height_percent - margin_trbl["b"] - margin_trbl["t"]
+    else:
+        w_max = total_width_percent - margin_trbl["l"] - margin_trbl["r"]
+        h_max = total_height_percent - margin_trbl["b"] - margin_trbl["t"]
+
+    # Total space for panels, accounting for spacing and legend
+    FacetRows_h_max = h_max - (v_panel_space * (max(1, FacetRows * 0.33)))
+    FacetCols_w_max = w_max - h_panel_space
+
+    # Dimensions of each panel (in percentages)
+    height = FacetRows_h_max / FacetRows
+    width = FacetCols_w_max / FacetCols
+
+    # Generate positions from the top
+    top_pos_values = [
+        margin_trbl["t"] + (row * (height + v_panel_space)) for row in range(FacetRows)
+    ]
+    top_pos_values_rep = top_pos_values * FacetCols
+    top_pos_values_rep.sort()
+
+    # Generate positions from the left
+    left_pos_values = [
+        margin_trbl["l"] + (col * (width + h_panel_space)) for col in range(FacetCols)
+    ]
+    left_pos_values_rep = left_pos_values * FacetRows
+
+    return {
+        "top": top_pos_values_rep,
+        "left": left_pos_values_rep,
+        "Width_f": width - 5,  # Subtract 5 for panel adjustments
+        "Height_f": height
+    }
+
 
 
 def Animation(AnimationThreshold, AnimationDuration, AnimationEasing, AnimationDelay, AnimationDurationUpdate, AnimationEasingUpdate, AnimationDelayUpdate):
@@ -678,40 +689,62 @@ def Histogram(dt = None,
         # Define data elements
         Buckets = dt2['Buckets'].to_list().copy()
         YVal = dt2[YVar].to_list().copy()
-       
+        
         # Create plot
-        plot_dict[i] = PyBar(init_opts = opts.InitOpts(theme = Theme))
+        InitOptions = initialize_options(
+          theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+          animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+          animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+          animation_duration_update=AnimationDurationUpdate, 
+          animation_easing_update=AnimationEasingUpdate,
+          animation_delay_update=AnimationDelayUpdate)
+  
+        # Create plot
+        plot_dict[i] = PyBar(init_opts = opts.InitOpts(**InitOptions))
         plot_dict[i] = plot_dict[i].add_xaxis(Buckets)
         plot_dict[i] = plot_dict[i].add_yaxis(YVar, YVal, stack = "stack1", category_gap = CategoryGap)
 
-        if not Title is None:
-          GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
+        # Global Options
+        GlobalOptions = {}
+        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+        GlobalOptions = configure_global_chart_options(
+          global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+          brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
   
-        if not XAxisTitle is None:
-          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}")
-
+        # Final Setting of Global Options
         plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
+    
+        # Series Options
+        plot_dict[i] = configure_marklines(
+          chart=plot_dict[i], horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+          vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
 
     # Facet Output
     if not TimeLine:
       
       # Setup Grid Output
-      grid = Grid()
       facet_vals = FacetGridValues(
         FacetRows = FacetRows,
         FacetCols = FacetCols,
         Legend = Legend,
-        LegendSpace = 10)
+        LegendSpace = 10,
+        Width = Width,
+        Height = Height)
+      if not Width:
+        Width = "1250px"
+      if not Height:
+        Height = "750px"
+      grid = Grid(init_opts=opts.InitOpts(theme=Theme, width=f"{int(Width.replace('px', '')) * FacetCols / math.sqrt(FacetCols)}px", height=f"{int(Height.replace('px', '')) * FacetRows}px"))
       counter = -1
-      for i in levs: # i = Levs[0]
+      for i in GroupLevels:
         counter += 1
         grid = grid.add(
           plot_dict[i],
           grid_opts = opts.GridOpts(
             pos_left = f"{facet_vals['left'][counter]}%",
             pos_top = f"{facet_vals['top'][counter]}%",
-            width = f"{facet_vals['width']}%",
-            height = f"{facet_vals['height']}%"))
+            width = f"{facet_vals['Width_f']}%",
+            height = f"{facet_vals['Height_f']}%"))
 
       # Render html
       if RenderHTML:
@@ -957,6 +990,15 @@ def Density(dt = None,
         # Define data elements
         Buckets = dt2['Buckets'].to_list().copy()
         YVal = dt2[YVar].to_list().copy()
+        
+        # Create plot
+        InitOptions = initialize_options(
+          theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+          animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+          animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+          animation_duration_update=AnimationDurationUpdate, 
+          animation_easing_update=AnimationEasingUpdate,
+          animation_delay_update=AnimationDelayUpdate)
        
         # Create plot
         plot_dict[i] = PyLine(init_opts = opts.InitOpts(theme = Theme))
@@ -968,33 +1010,47 @@ def Density(dt = None,
           linestyle_opts = opts.LineStyleOpts(width = LineWidth),
           areastyle_opts = opts.AreaStyleOpts(opacity = FillOpacity))
         
-        if not Title is None:
-          GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
+        # Global Options
+        GlobalOptions = {}
+        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+        GlobalOptions = configure_global_chart_options(
+          global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+          brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
   
-        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}")
-
+        # Final Setting of Global Options
         plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
+    
+        # Series Options
+        plot_dict[i] = configure_marklines(
+          chart=plot_dict[i], horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+          vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
 
     # Facet Output
     if not TimeLine:
 
       # Setup Grid Output
-      grid = Grid()
       facet_vals = FacetGridValues(
         FacetRows = FacetRows,
         FacetCols = FacetCols,
         Legend = Legend,
-        LegendSpace = 10)
+        LegendSpace = 10,
+        Width = Width,
+        Height = Height)
+      if not Width:
+        Width = "1250px"
+      if not Height:
+        Height = "750px"
+      grid = Grid(init_opts=opts.InitOpts(theme=Theme, width=f"{int(Width.replace('px', '')) * FacetCols / math.sqrt(FacetCols)}px", height=f"{int(Height.replace('px', '')) * FacetRows}px"))
       counter = -1
-      for i in levs: # i = Levs[0]
+      for i in GroupLevels:
         counter += 1
         grid = grid.add(
           plot_dict[i],
           grid_opts = opts.GridOpts(
             pos_left = f"{facet_vals['left'][counter]}%",
             pos_top = f"{facet_vals['top'][counter]}%",
-            width = f"{facet_vals['width']}%",
-            height = f"{facet_vals['height']}%"))
+            width = f"{facet_vals['Width_f']}%",
+            height = f"{facet_vals['Height_f']}%"))
   
       # Render html
       if RenderHTML:
@@ -2154,7 +2210,16 @@ def Line(dt = None,
         else:
           ShowSymbol = False
         for i in GroupLevels:# i = 'Yellow-Yum'
-          plot_dict[i] = PyLine(init_opts = opts.InitOpts(theme = Theme))
+          # Create plot
+          InitOptions = initialize_options(
+            theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+            animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+            animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+            animation_duration_update=AnimationDurationUpdate, 
+            animation_easing_update=AnimationEasingUpdate,
+            animation_delay_update=AnimationDelayUpdate)
+
+          plot_dict[i] = PyLine(init_opts = opts.InitOpts(**InitOptions))
           plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = XVal)
           plot_dict[i] = plot_dict[i].add_yaxis(
             series_name = i,
@@ -2169,37 +2234,44 @@ def Line(dt = None,
 
           # Global Options
           GlobalOptions = {}
-          GlobalOptions['legend_opts'] = configure_legend_options(
-            legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
-            legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
-
-          if not Title is None:
-            GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
-  
-          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}", position = "right")
-      
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+          GlobalOptions = configure_global_chart_options(
+            global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+            brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
+    
           # Final Setting of Global Options
           plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
+      
+          # Series Options
+          plot_dict[i] = configure_marklines(
+            chart=plot_dict[i], horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+            vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
 
         if not TimeLine:
-          
+
           # Setup Grid Output
-          grid = Grid()
           facet_vals = FacetGridValues(
             FacetRows = FacetRows,
             FacetCols = FacetCols,
             Legend = Legend,
-            LegendSpace = 10)
+            LegendSpace = 10,
+            Width = Width,
+            Height = Height)
+          if not Width:
+            Width = "1250px"
+          if not Height:
+            Height = "750px"
+          grid = Grid(init_opts=opts.InitOpts(theme=Theme, width=f"{int(Width.replace('px', '')) * FacetCols / math.sqrt(FacetCols)}px", height=f"{int(Height.replace('px', '')) * FacetRows}px"))
           counter = -1
-          for i in GroupLevels: # i = Levs[0]
+          for i in GroupLevels:
             counter += 1
             grid = grid.add(
               plot_dict[i],
               grid_opts = opts.GridOpts(
                 pos_left = f"{facet_vals['left'][counter]}%",
                 pos_top = f"{facet_vals['top'][counter]}%",
-                width = f"{facet_vals['width']}%",
-                height = f"{facet_vals['height']}%"))
+                width = f"{facet_vals['Width_f']}%",
+                height = f"{facet_vals['Height_f']}%"))
   
           # Render html
           if RenderHTML:
@@ -2790,7 +2862,17 @@ def Step(dt = None,
         else:
           ShowSymbol = False
         for i in GroupLevels:# i = 'Yellow-Yum'
-          plot_dict[i] = PyLine(init_opts = opts.InitOpts(theme = Theme))
+          
+          # Create plot
+          InitOptions = initialize_options(
+            theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+            animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+            animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+            animation_duration_update=AnimationDurationUpdate, 
+            animation_easing_update=AnimationEasingUpdate,
+            animation_delay_update=AnimationDelayUpdate)
+          
+          plot_dict[i] = PyLine(init_opts = opts.InitOpts(**InitOptions))
           plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = XVal)
           plot_dict[i] = plot_dict[i].add_yaxis(
             series_name = i,
@@ -2804,30 +2886,37 @@ def Step(dt = None,
           )
 
           # Global Options
-          GlobalOptions = {}
-          GlobalOptions['legend_opts'] = configure_legend_options(
-            legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
-            legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
-
-          if not Title is None:
-            GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
+          # Global Options
+        GlobalOptions = {}
+        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+        GlobalOptions = configure_global_chart_options(
+          global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+          brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
   
-          if not XAxisTitle is None:
-            GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}", position = "right")
-  
-          # Final Setting of Global Options
-          plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
+        # Final Setting of Global Options
+        plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
+    
+        # Series Options
+        plot_dict[i] = configure_marklines(
+          chart=plot_dict[i], horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+          vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
 
         # Facet Output
         if not TimeLine:
           
           # Setup Grid Output
-          grid = Grid()
           facet_vals = FacetGridValues(
             FacetRows = FacetRows,
             FacetCols = FacetCols,
             Legend = Legend,
-            LegendSpace = 10)
+            LegendSpace = 10,
+            Width = Width,
+            Height = Height)
+          if not Width:
+            Width = "1250px"
+          if not Height:
+            Height = "750px"
+          grid = Grid(init_opts=opts.InitOpts(theme=Theme, width=f"{int(Width.replace('px', '')) * FacetCols / math.sqrt(FacetCols)}px", height=f"{int(Height.replace('px', '')) * FacetRows}px"))
           counter = -1
           for i in GroupLevels:
             counter += 1
@@ -2836,8 +2925,8 @@ def Step(dt = None,
               grid_opts = opts.GridOpts(
                 pos_left = f"{facet_vals['left'][counter]}%",
                 pos_top = f"{facet_vals['top'][counter]}%",
-                width = f"{facet_vals['width']}%",
-                height = f"{facet_vals['height']}%"))
+                width = f"{facet_vals['Width_f']}%",
+                height = f"{facet_vals['Height_f']}%"))
   
           # Render html
           if RenderHTML:
@@ -3474,8 +3563,18 @@ def Area(dt = None,
           ShowSymbol = True
         else:
           ShowSymbol = False
-        for i in GroupLevels:
-          plot_dict[i] = PyLine(init_opts = opts.InitOpts(theme = Theme))
+        for i in GroupLevels: # i = "Cocain"
+
+          # Create plot
+          InitOptions = initialize_options(
+            theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+            animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+            animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+            animation_duration_update=AnimationDurationUpdate, 
+            animation_easing_update=AnimationEasingUpdate,
+            animation_delay_update=AnimationDelayUpdate)
+
+          plot_dict[i] = PyLine(init_opts = opts.InitOpts(**InitOptions))
           plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = XVal)
           if not TimeLine:
             plot_dict[i] = plot_dict[i].add_yaxis(
@@ -3504,29 +3603,35 @@ def Area(dt = None,
 
           # Global Options
           GlobalOptions = {}
-          GlobalOptions['legend_opts'] = configure_legend_options(
-            legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
-            legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
-
-          if not Title is None:
-            GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
-  
-          if not XAxisTitle is None:
-            GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}", position = "right")
-  
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+          GlobalOptions = configure_global_chart_options(
+            global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+            brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
+    
           # Final Setting of Global Options
           plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
+      
+          # Series Options
+          plot_dict[i] = configure_marklines(
+            chart=plot_dict[i], horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+            vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
 
         # Facet Output
         if not TimeLine:
           
           # Setup Grid Output
-          grid = Grid()
           facet_vals = FacetGridValues(
             FacetRows = FacetRows,
             FacetCols = FacetCols,
             Legend = Legend,
-            LegendSpace = 10)
+            LegendSpace = 10,
+            Width = Width,
+            Height = Height)
+          if not Width:
+            Width = "1250px"
+          if not Height:
+            Height = "750px"
+          grid = Grid(init_opts=opts.InitOpts(theme=Theme, width=f"{int(Width.replace('px', '')) * FacetCols / math.sqrt(FacetCols)}px", height=f"{int(Height.replace('px', '')) * FacetRows}px"))
           counter = -1
           for i in GroupLevels:
             counter += 1
@@ -3535,9 +3640,9 @@ def Area(dt = None,
               grid_opts = opts.GridOpts(
                 pos_left = f"{facet_vals['left'][counter]}%",
                 pos_top = f"{facet_vals['top'][counter]}%",
-                width = f"{facet_vals['width']}%",
-                height = f"{facet_vals['height']}%"))
-  
+                width = f"{facet_vals['Width_f']}%",
+                height = f"{facet_vals['Height_f']}%"))
+
           # Render html
           if RenderHTML:
             grid.render(f"{RenderHTML}.html")
@@ -4035,30 +4140,14 @@ def Bar(dt = None,
 
         XVal = dt1[XVar].unique().to_list()
 
-        InitOptions = {}
-        if not Theme is None:
-          InitOptions['theme'] = Theme
-
-        if not Width is None:
-          InitOptions['width'] = Width
-
-        if not Width is None:
-          InitOptions['height'] = Height
-  
-        if not BackgroundColor is None:
-          InitOptions['bg_color'] = BackgroundColor
-    
-        InitOptions['is_horizontal_center'] = True
-
-        AnimationOptions = {}
-        AnimationOptions['animation_threshold'] = AnimationThreshold
-        AnimationOptions['animation_duration'] = AnimationDuration
-        AnimationOptions['animation_easing'] = AnimationEasing
-        AnimationOptions['animation_delay'] = AnimationDelay
-        AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-        AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-        AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-        InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+        # Create plot
+        InitOptions = initialize_options(
+          theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+          animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+          animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+          animation_duration_update=AnimationDurationUpdate, 
+          animation_easing_update=AnimationEasingUpdate,
+          animation_delay_update=AnimationDelayUpdate)
 
         # Create plot
         c = PyBar(init_opts = opts.InitOpts(**InitOptions))
@@ -4102,30 +4191,14 @@ def Bar(dt = None,
       # Facet Case
       else:
         
-        InitOptions = {}
-        if not Theme is None:
-          InitOptions['theme'] = Theme
-
-        if not Width is None:
-          InitOptions['width'] = Width
-
-        if not Width is None:
-          InitOptions['height'] = Height
-  
-        if not BackgroundColor is None:
-          InitOptions['bg_color'] = BackgroundColor
-    
-        InitOptions['is_horizontal_center'] = True
-
-        AnimationOptions = {}
-        AnimationOptions['animation_threshold'] = AnimationThreshold
-        AnimationOptions['animation_duration'] = AnimationDuration
-        AnimationOptions['animation_easing'] = AnimationEasing
-        AnimationOptions['animation_delay'] = AnimationDelay
-        AnimationOptions['animation_duration_update'] = AnimationDurationUpdate
-        AnimationOptions['animation_easing_update'] = AnimationEasingUpdate
-        AnimationOptions['animation_delay_update'] = AnimationDelayUpdate
-        InitOptions['animation_opts'] = opts.AnimationOpts(**AnimationOptions)
+        # Create plot
+        InitOptions = initialize_options(
+          theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+          animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+          animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+          animation_duration_update=AnimationDurationUpdate, 
+          animation_easing_update=AnimationEasingUpdate,
+          animation_delay_update=AnimationDelayUpdate)
         
         yvar_dict = {}
         plot_dict = {}
@@ -4156,16 +4229,7 @@ def Bar(dt = None,
           
           # Global Options
           GlobalOptions = {}
-          GlobalOptions['legend_opts'] = configure_legend_options(
-            legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
-            legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
-          
-          # Global Options
-          if not Title is None:
-            GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
-  
-          if not XAxisTitle is None:
-            GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}", position = "right")
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}", position = "right")
   
           # Final Setting of Global Options
           plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
@@ -4174,12 +4238,18 @@ def Bar(dt = None,
         if not TimeLine:
           
           # Setup Grid Output
-          grid = Grid()
           facet_vals = FacetGridValues(
             FacetRows = FacetRows,
             FacetCols = FacetCols,
             Legend = Legend,
-            LegendSpace = 10)
+            LegendSpace = 10,
+            Width = Width,
+            Height = Height)
+          if not Width:
+            Width = "1250px"
+          if not Height:
+            Height = "750px"
+          grid = Grid(init_opts=opts.InitOpts(theme=Theme, width=f"{int(Width.replace('px', '')) * FacetCols / math.sqrt(FacetCols)}px", height=f"{int(Height.replace('px', '')) * FacetRows}px"))
           counter = -1
           for i in GroupLevels:
             counter += 1
@@ -4188,8 +4258,8 @@ def Bar(dt = None,
               grid_opts = opts.GridOpts(
                 pos_left = f"{facet_vals['left'][counter]}%",
                 pos_top = f"{facet_vals['top'][counter]}%",
-                width = f"{facet_vals['width']}%",
-                height = f"{facet_vals['height']}%"))
+                width = f"{facet_vals['Width_f']}%",
+                height = f"{facet_vals['Height_f']}%"))
 
           # Render html
           if RenderHTML:
@@ -4933,7 +5003,17 @@ def Scatter(dt = None,
         else:
           ShowSymbol = False
         for i in GroupLevels:# i = 'Yellow-Yum'
-          plot_dict[i] = PyScatter(init_opts = opts.InitOpts(theme = Theme))
+          
+          # Create plot
+          InitOptions = initialize_options(
+            theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+            animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+            animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+            animation_duration_update=AnimationDurationUpdate, 
+            animation_easing_update=AnimationEasingUpdate,
+            animation_delay_update=AnimationDelayUpdate)
+          
+          plot_dict[i] = PyScatter(init_opts = opts.InitOpts(**InitOptions))
           plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = xvar_dict[i])
           plot_dict[i] = plot_dict[i].add_yaxis(
             series_name = i,
@@ -4945,29 +5025,35 @@ def Scatter(dt = None,
 
           # Global Options
           GlobalOptions = {}
-          GlobalOptions['legend_opts'] = configure_legend_options(
-            legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
-            legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
-
-          if not Title is None:
-            GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
-  
-          GlobalOptions['xaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), type_ = "value", name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
-          GlobalOptions['yaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-  
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+          GlobalOptions = configure_global_chart_options(
+            global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+            brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
+    
           # Final Setting of Global Options
           plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
+      
+          # Series Options
+          plot_dict[i] = configure_marklines(
+            chart=plot_dict[i], horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+            vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
 
         # Facet Output
         if not TimeLine:
           
           # Setup Grid Output
-          grid = Grid()
           facet_vals = FacetGridValues(
             FacetRows = FacetRows,
             FacetCols = FacetCols,
             Legend = Legend,
-            LegendSpace = 10)
+            LegendSpace = 10,
+            Width = Width,
+            Height = Height)
+          if not Width:
+            Width = "1250px"
+          if not Height:
+            Height = "750px"
+          grid = Grid(init_opts=opts.InitOpts(theme=Theme, width=f"{int(Width.replace('px', '')) * FacetCols / math.sqrt(FacetCols)}px", height=f"{int(Height.replace('px', '')) * FacetRows}px"))
           counter = -1
           for i in GroupLevels:
             counter += 1
@@ -4976,8 +5062,8 @@ def Scatter(dt = None,
               grid_opts = opts.GridOpts(
                 pos_left = f"{facet_vals['left'][counter]}%",
                 pos_top = f"{facet_vals['top'][counter]}%",
-                width = f"{facet_vals['width']}%",
-                height = f"{facet_vals['height']}%"))
+                width = f"{facet_vals['Width_f']}%",
+                height = f"{facet_vals['Height_f']}%"))
   
           # Render html
           if RenderHTML:
@@ -5524,9 +5610,6 @@ def Copula(dt = None,
           legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
           legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
   
-        if not Title is None:
-          GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
-  
         GlobalOptions['xaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), type_ = "value", name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
         GlobalOptions['yaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
         GlobalOptions = configure_global_chart_options(
@@ -5573,7 +5656,17 @@ def Copula(dt = None,
         else:
           ShowSymbol = False
         for i in GroupLevels:# i = 'Yellow-Yum'
-          plot_dict[i] = PyScatter(init_opts = opts.InitOpts(theme = Theme))
+          
+          # Create plot
+          InitOptions = initialize_options(
+            theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+            animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+            animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+            animation_duration_update=AnimationDurationUpdate, 
+            animation_easing_update=AnimationEasingUpdate,
+            animation_delay_update=AnimationDelayUpdate)
+          
+          plot_dict[i] = PyScatter(init_opts = opts.InitOpts(**InitOptions))
           plot_dict[i] = plot_dict[i].add_xaxis(xaxis_data = xvar_dict[i])
           plot_dict[i] = plot_dict[i].add_yaxis(
             series_name = i,
@@ -5585,39 +5678,45 @@ def Copula(dt = None,
 
           # Global Options
           GlobalOptions = {}
-          GlobalOptions['legend_opts'] = configure_legend_options(
-            legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
-            legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
-
-          if not Title is None:
-            GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
-  
-          GlobalOptions['xaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), type_ = "value", name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
-          GlobalOptions['yaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-  
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
+          GlobalOptions = configure_global_chart_options(
+            global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+            brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
+    
           # Final Setting of Global Options
           plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
+      
+          # Series Options
+          plot_dict[i] = configure_marklines(
+            chart=plot_dict[i], horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+            vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
 
         # Facet Output
         if not TimeLine:
 
           # Setup Grid Output
-          grid = Grid()
           facet_vals = FacetGridValues(
             FacetRows = FacetRows,
             FacetCols = FacetCols,
             Legend = Legend,
-            LegendSpace = 10)
+            LegendSpace = 10,
+            Width = Width,
+            Height = Height)
+          if not Width:
+            Width = "1250px"
+          if not Height:
+            Height = "750px"
+          grid = Grid(init_opts=opts.InitOpts(theme=Theme, width=f"{int(Width.replace('px', '')) * FacetCols / math.sqrt(FacetCols)}px", height=f"{int(Height.replace('px', '')) * FacetRows}px"))
           counter = -1
-          for i in GroupLevels: # i = Levs[0]
+          for i in GroupLevels:
             counter += 1
             grid = grid.add(
               plot_dict[i],
               grid_opts = opts.GridOpts(
                 pos_left = f"{facet_vals['left'][counter]}%",
                 pos_top = f"{facet_vals['top'][counter]}%",
-                width = f"{facet_vals['width']}%",
-                height = f"{facet_vals['height']}%"))
+                width = f"{facet_vals['Width_f']}%",
+                height = f"{facet_vals['Height_f']}%"))
 
           # Render html
           if RenderHTML:
