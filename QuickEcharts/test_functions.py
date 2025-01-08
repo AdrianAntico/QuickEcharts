@@ -96,11 +96,11 @@ def test_PolarsAggregation_cv():
 #############################################
 def test_FacetGridValues():
     x = Charts.FacetGridValues(FacetRows = 1, FacetCols = 1, Legend = 'top', LegendSpace = 10)
-    assert x == {'top': [12.0], 'left': [5.0], 'width': 88.0, 'height': 83.0}
+    assert x == {'top': [2.0], 'left': [5.0], 'Width_f': 79.0, 'Height_f': 81.0}
 
 def test_FacetGridValues():
     x = Charts.FacetGridValues(FacetRows = 2, FacetCols = 2, Legend = 'top', LegendSpace = 10)
-    assert x == {'top': [12.0, 12.0, 57.5, 57.5], 'left': [5.0, 55.5, 5.0, 55.5], 'width': 37.5, 'height': 37.5}
+    assert x == {'top': [2.0, 2.0, 44.5, 44.5], 'left': [5.0, 56.0, 5.0, 56.0], 'Width_f': 37.0, 'Height_f': 40.5}
 
 
 #############################################
