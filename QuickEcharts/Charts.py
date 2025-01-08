@@ -905,6 +905,7 @@ def Density(dt = None,
 
       # Define data elements
       Buckets = dt1['Buckets'].to_list()
+      Buckets = [str(b) for b in Buckets]
       YVal = dt1[YVar].to_list()
 
       # Create plot
