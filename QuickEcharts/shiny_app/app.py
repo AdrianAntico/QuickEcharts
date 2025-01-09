@@ -13,7 +13,6 @@ app_ui = ui.page_sidebar(
     ui.sidebar(
         ui.tags.head(ui.tags.title("QuickEcharts App")),
         ui.input_action_button("build_plot", ui.HTML('<i class="fa fa-bar-chart"></i> Build Plot')),
-        # ui.input_action_button("build_plot", "Build Plot"),
         ui.input_file("dt", "Upload Data Table"),
         ui.input_select("plot_type", "Select Plot Type", choices=list(PLOT_SCHEMAS.keys()), selected="Area"),
         ui.output_ui("dynamic_inputs")
@@ -126,15 +125,16 @@ def server(input, output, session):
         """Render the plot based on user inputs and selected plot type."""
         if input.build_plot() == 0:
             return ui.p("Click 'Build Plot' to generate the plot.")
-    
+        
+        # Load data (assuming this is a synchronous operation)
         data = load_data()
         if data is None:
             return ui.p("Please upload a data file.")
-    
+        
         plot_type = input.plot_type()
         if not plot_type:
             return ui.p("Please select a plot type.")
-    
+        
         try:
             # Collect parameters dynamically
             schema = PLOT_SCHEMAS[plot_type]
@@ -153,15 +153,26 @@ def server(input, output, session):
             # Create plot dynamically using the selected plot function
             plot_function = getattr(Charts, plot_type)
             logger.info(f"Creating {plot_type} plot with parameters: {params}")
-            chart = plot_function(**params)  # Ensure `data` is correctly passed
-            rendered_file = chart.render(f"{params.get('RenderHTML', 'output')}.html")
+            
+            def replace_title_in_html(html_content, new_title="QuickEcharts App"):
+                return html_content.replace("<title>Awesome-pyecharts</title>", f"<title>{new_title}</title>")
+            
+            # Generate the plot (assumes synchronous plot function)
+            chart = plot_function(**params)
+    
+            # Render the plot (assumes synchronous rendering)
+            #rendered_file = chart.render(f"{params.get('RenderHTML', 'output')}.html")
+            rendered_file = replace_title_in_html(chart.render_embed())
             
             # Read and display the rendered HTML file
-            with open(rendered_file, "r") as f:
-                html_content = f.read()
-            return ui.HTML(html_content)
+            # with open(rendered_file, "r") as f:
+            #     html_content = f.read()
+            # return ui.HTML(html_content)
+            return ui.HTML(rendered_file)
         except Exception as e:
+            logger.error(f"Error creating plot: {e}")
             return ui.p(f"Error creating plot: {e}")
+
     
 
 # App launcher function
