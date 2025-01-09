@@ -11,7 +11,7 @@ PLOT_SCHEMAS = {
       "AggMethod": {
           "type": "select",
           "label": "Aggregation Method",
-          "options": ["mean", "sum", "median", "max", "min"],
+          "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
           "default": "mean",
       },
       "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
@@ -102,7 +102,7 @@ PLOT_SCHEMAS = {
       "AggMethod": {
           "type": "select",
           "label": "Aggregation Method",
-          "options": ["mean", "sum", "median", "max", "min"],
+          "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
           "default": "mean",
       },
       "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
@@ -248,7 +248,7 @@ PLOT_SCHEMAS = {
     "AggMethod": {
         "type": "select",
         "label": "Aggregation Method",
-        "options": ["mean", "sum", "median", "max", "min"],
+        "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
         "default": "mean",
     },
 
@@ -329,7 +329,7 @@ PLOT_SCHEMAS = {
     "AggMethod": {
         "type": "select",
         "label": "Aggregation Method",
-        "options": ["mean", "sum", "median", "max", "min"],
+        "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
         "default": "mean",
     },
     # Rendering settings
@@ -521,7 +521,7 @@ PLOT_SCHEMAS = {
     "AggMethod": {
         "type": "select",
         "label": "Aggregation Method",
-        "options": ["mean", "sum", "median", "max", "min"],
+        "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
         "default": "mean",
     },
     "MeasureVarTrans": {
@@ -678,7 +678,7 @@ PLOT_SCHEMAS = {
     "AggMethod": {
         "type": "select",
         "label": "Aggregation Method",
-        "options": ["mean", "sum", "median", "max", "min"],
+        "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
         "default": "mean",
     },
     "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
@@ -840,7 +840,7 @@ PLOT_SCHEMAS = {
     "AggMethod": {
         "type": "select",
         "label": "Aggregation Method",
-        "options": ["mean", "sum", "median", "max", "min"],
+        "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
         "default": "mean",
     },
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
@@ -996,7 +996,7 @@ PLOT_SCHEMAS = {
     "AggMethod": {
         "type": "select",
         "label": "Aggregation Method",
-        "options": ["mean", "sum", "median", "max", "min"],
+        "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
         "default": "mean",
     },
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
@@ -1083,7 +1083,7 @@ PLOT_SCHEMAS = {
     "AggMethod": {
         "type": "select",
         "label": "Aggregation Method",
-        "options": ["mean", "sum", "median", "max", "min"],
+        "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
         "default": "mean",
     },
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
@@ -1124,7 +1124,7 @@ PLOT_SCHEMAS = {
     "AggMethod": {
         "type": "select",
         "label": "Aggregation Method",
-        "options": ["mean", "sum", "median", "max", "min"],
+        "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
         "default": "mean",
     },
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
@@ -1205,7 +1205,7 @@ PLOT_SCHEMAS = {
     "AggMethod": {
         "type": "select",
         "label": "Aggregation Method",
-        "options": ["mean", "sum", "median", "max", "min"],
+        "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
         "default": "mean",
     },
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
@@ -1282,7 +1282,7 @@ PLOT_SCHEMAS = {
     "AggMethod": {
         "type": "select",
         "label": "Aggregation Method",
-        "options": ["mean", "sum", "median", "max", "min"],
+        "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
         "default": "mean",
     },
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
@@ -1362,7 +1362,7 @@ PLOT_SCHEMAS = {
     "AggMethod": {
         "type": "select",
         "label": "Aggregation Method",
-        "options": ["mean", "sum", "median", "max", "min"],
+        "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
         "default": "mean",
     },
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
@@ -1443,7 +1443,7 @@ PLOT_SCHEMAS = {
     "AggMethod": {
         "type": "select",
         "label": "Aggregation Method",
-        "options": ["mean", "sum", "median", "max", "min"],
+        "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
         "default": "mean",
     },
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
