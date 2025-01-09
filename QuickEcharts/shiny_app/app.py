@@ -153,7 +153,6 @@ def server(input, output, session):
             # Create plot dynamically using the selected plot function
             plot_function = getattr(Charts, plot_type)
             logger.info(f"Creating {plot_type} plot with parameters: {params}")
-            
             def replace_title_in_html(html_content, new_title="QuickEcharts App"):
                 return html_content.replace("<title>Awesome-pyecharts</title>", f"<title>{new_title}</title>")
             
@@ -161,19 +160,12 @@ def server(input, output, session):
             chart = plot_function(**params)
     
             # Render the plot (assumes synchronous rendering)
-            #rendered_file = chart.render(f"{params.get('RenderHTML', 'output')}.html")
             rendered_file = replace_title_in_html(chart.render_embed())
-            
-            # Read and display the rendered HTML file
-            # with open(rendered_file, "r") as f:
-            #     html_content = f.read()
-            # return ui.HTML(html_content)
             return ui.HTML(rendered_file)
         except Exception as e:
             logger.error(f"Error creating plot: {e}")
             return ui.p(f"Error creating plot: {e}")
 
-    
 
 # App launcher function
 def run_app(port=8001):
