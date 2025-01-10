@@ -1179,13 +1179,13 @@ def Pie(dt = None,
     # Subset Columns
     dt1 = dt.select([pl.col(YVar), pl.col(GroupVar)])
 
-    # Transformation
-    if not YVarTrans is None:
-      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
-  
     # Agg Data
     if not PreAgg:
       dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = None)
+
+    # Transformation
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
 
     # Define data elements
     GroupVals = dt1[GroupVar].to_list()
@@ -1316,13 +1316,13 @@ def Rosetype(dt = None,
     # Subset Columns
     dt1 = dt.select([pl.col(YVar), pl.col(GroupVar)])
 
-    # Transformation
-    if not YVarTrans is None:
-      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
-  
     # Agg Data
     if not PreAgg:
       dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = None)
+
+    # Transformation
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
 
     # Define data elements
     GroupVals = dt1[GroupVar].to_list()
@@ -1451,14 +1451,14 @@ def Donut(dt = None,
     # Subset Columns
     dt1 = dt.select([pl.col(YVar), pl.col(GroupVar)])
 
-    # Transformation
-    if not YVarTrans is None:
-      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
-  
     # Agg Data
     if not PreAgg:
       dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = None)
 
+    # Transformation
+    if not YVarTrans is None:
+      dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
+  
     # Define data elements
     GroupVals = dt1[GroupVar].to_list()
     YVal = dt1[YVar].to_list()
@@ -1607,10 +1607,21 @@ def BoxPlot(dt = None,
     # Define Plotting Variable
     if YVar == None:
       return None
+
     # YVar and GroupVar Mgt
     if isinstance(YVar, list):
       if len(YVar) > 1:
         GroupVar = None
+        if FacetRows > 1 or FacetCols > 1:
+          if FacetRows * FacetCols < len(YVar):
+            total_facets = len(YVar)
+            FacetRows = (total_facets + FacetCols - 1) // FacetCols
+      else:
+          FacetRows = 1
+          FacetCols = 1
+    elif not GroupVar:
+      FacetRows = 1
+      FacetCols = 1
 
     # Subset Columns
     if GroupVar == None:
@@ -1621,6 +1632,10 @@ def BoxPlot(dt = None,
     # Transformation
     if not YVarTrans is None:
       if isinstance(YVar, list):
+        if not isinstance(YVarTrans, list):
+          YVarTrans = [YVarTrans] * len(YVar)
+        elif len(YVarTrans) < len(YVar):
+          YVarTrans = YVarTrans[0] * len(YVar)
         for i in range(len(YVar)):# i = 1
           if not YVarTrans[i] is None:
             dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
@@ -1863,6 +1878,10 @@ def Radar(dt = None,
     # Transformation
     if not YVarTrans is None:
       if isinstance(YVar, list):
+        if not isinstance(YVarTrans, list):
+          YVarTrans = [YVarTrans] * len(YVar)
+        elif len(YVarTrans) < len(YVar):
+          YVarTrans = YVarTrans[0] * len(YVar)
         for i in range(len(YVar)):# i = 0
           if not YVarTrans[i] is None:
             dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
@@ -2054,9 +2073,20 @@ def Line(dt = None,
     if YVar == None:
       return None
 
+    # YVar and GroupVar Mgt
     if isinstance(YVar, list):
       if len(YVar) > 1:
         GroupVar = None
+        if FacetRows > 1 or FacetCols > 1:
+          if FacetRows * FacetCols < len(YVar):
+            total_facets = len(YVar)
+            FacetRows = (total_facets + FacetCols - 1) // FacetCols
+      else:
+          FacetRows = 1
+          FacetCols = 1
+    elif not GroupVar:
+      FacetRows = 1
+      FacetCols = 1
         
     # Subset Columns
     if not GroupVar is None:
@@ -2064,85 +2094,183 @@ def Line(dt = None,
     else:
       dt1 = dt.select([pl.col(YVar), pl.col(XVar)])
 
+    # Agg Data
+    if not PreAgg:
+      dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = XVar)
+      dt1 = dt1.sort(XVar)
+
     # Transformation
     if not YVarTrans is None:
       if isinstance(YVar, list):
+        if not isinstance(YVarTrans, list):
+          YVarTrans = [YVarTrans] * len(YVar)
+        elif len(YVarTrans) < len(YVar):
+          YVarTrans = YVarTrans[0] * len(YVar)
         for i in range(len(YVar)):# i = 0
           if not YVarTrans[i] is None:
             dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
       else:
         dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
 
-    # Agg Data
-    if not PreAgg:
-      dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = XVar)
-      dt1 = dt1.sort(XVar)
-
+    # Build plots
     if GroupVar is None:
-      yvar_dict = {}
-      if not isinstance(YVar, list):
-        YVar = [YVar]
-      for yvar in YVar:
-        yvar_dict[yvar] = dt1[yvar].to_list()
+      
+      # No Faceting
+      if FacetRows <= 1 and FacetCols <= 1:
         
-      XVal = dt1[XVar].unique().to_list()
-
-      # Create plot
-      InitOptions = initialize_options(
-        theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
-        animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
-        animation_easing=AnimationEasing, animation_delay=AnimationDelay,
-        animation_duration_update=AnimationDurationUpdate, 
-        animation_easing_update=AnimationEasingUpdate,
-        animation_delay_update=AnimationDelayUpdate)
-
-      # Create plot
-      c = PyLine(init_opts = opts.InitOpts(**InitOptions))
-      c = c.add_xaxis(xaxis_data = XVal)
-      if not Symbol is None:
-        ShowSymbol = True
-      else:
-        ShowSymbol = False
-      for yvar in YVar:
-        c = c.add_yaxis(
-          series_name = yvar,
-          is_smooth = SmoothLine,
-          symbol = Symbol,
-          symbol_size = SymbolSize,
-          is_symbol_show = ShowSymbol,
-          y_axis = yvar_dict[yvar],
-          linestyle_opts = opts.LineStyleOpts(width = LineWidth),
-          label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
-        )
-
-      # Global Options
-      GlobalOptions = {}
-      GlobalOptions['legend_opts'] = configure_legend_options(
-        legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
-        legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
+        yvar_dict = {}
+        if not isinstance(YVar, list):
+          YVar = [YVar]
+        for yvar in YVar:
+          yvar_dict[yvar] = dt1[yvar].to_list()
+          
+        XVal = dt1[XVar].unique().to_list()
   
-      if not Title is None:
-        GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
-
-      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
-      GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-      GlobalOptions = configure_global_chart_options(
-        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
-        brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
-
-      # Final Setting of Global Options
-      c = c.set_global_opts(**GlobalOptions)
+        # Create plot
+        InitOptions = initialize_options(
+          theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+          animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+          animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+          animation_duration_update=AnimationDurationUpdate, 
+          animation_easing_update=AnimationEasingUpdate,
+          animation_delay_update=AnimationDelayUpdate)
   
-      # Series Options
-      c = configure_marklines(
-        chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
-        vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
-        
-      # Render html
-      if RenderHTML:
-        c.render(f"{RenderHTML}.html")
+        # Create plot
+        c = PyLine(init_opts = opts.InitOpts(**InitOptions))
+        c = c.add_xaxis(xaxis_data = XVal)
+        if not Symbol is None:
+          ShowSymbol = True
+        else:
+          ShowSymbol = False
+        for yvar in YVar:
+          c = c.add_yaxis(
+            series_name = yvar,
+            is_smooth = SmoothLine,
+            symbol = Symbol,
+            symbol_size = SymbolSize,
+            is_symbol_show = ShowSymbol,
+            y_axis = yvar_dict[yvar],
+            linestyle_opts = opts.LineStyleOpts(width = LineWidth),
+            label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
+          )
+  
+        # Global Options
+        GlobalOptions = {}
+        GlobalOptions['legend_opts'] = configure_legend_options(
+          legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+          legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
     
-      return c
+        if not Title is None:
+          GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
+  
+        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
+        GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
+        GlobalOptions = configure_global_chart_options(
+          global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+          brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
+  
+        # Final Setting of Global Options
+        c = c.set_global_opts(**GlobalOptions)
+    
+        # Series Options
+        c = configure_marklines(
+          chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+          vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
+          
+        # Render html
+        if RenderHTML:
+          c.render(f"{RenderHTML}.html")
+      
+        return c
+        
+      # Faceting
+      else:
+        XAxisNameLocation = "end"
+        yvar_dict = {}
+        if not isinstance(YVar, list):
+          YVar = [YVar]
+        for yvar in YVar:
+          yvar_dict[yvar] = dt1[yvar].to_list()
+          
+        XVal = dt1[XVar].unique().to_list()
+  
+        # Create plot
+        InitOptions = initialize_options(
+          theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+          animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+          animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+          animation_duration_update=AnimationDurationUpdate, 
+          animation_easing_update=AnimationEasingUpdate,
+          animation_delay_update=AnimationDelayUpdate)
+  
+        # Create plot
+        plot_dict = dict()
+        if not Symbol is None:
+          ShowSymbol = True
+        else:
+          ShowSymbol = False
+        for yvar in YVar:
+          plot_dict[yvar] = PyLine(init_opts = opts.InitOpts(**InitOptions))
+          plot_dict[yvar] = plot_dict[yvar].add_xaxis(xaxis_data = XVal)
+          plot_dict[yvar] = plot_dict[yvar].add_yaxis(
+            series_name = yvar,
+            is_smooth = SmoothLine,
+            symbol = Symbol,
+            symbol_size = SymbolSize,
+            is_symbol_show = ShowSymbol,
+            y_axis = yvar_dict[yvar],
+            linestyle_opts = opts.LineStyleOpts(width = LineWidth),
+            label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
+          )
+  
+          # Global Options
+          GlobalOptions = {}
+          GlobalOptions['legend_opts'] = configure_legend_options(
+            legend=None, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+            legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
+      
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = yvar, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
+          GlobalOptions = configure_global_chart_options(
+            global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+            brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
+    
+          # Final Setting of Global Options
+          plot_dict[yvar] = plot_dict[yvar].set_global_opts(**GlobalOptions)
+      
+          # Series Options
+          plot_dict[yvar] = configure_marklines(
+            chart=plot_dict[yvar], horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+            vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
+      
+        # Setup Grid Output
+        facet_vals = FacetGridValues(
+          FacetRows = FacetRows,
+          FacetCols = FacetCols,
+          Legend = Legend,
+          LegendSpace = 10,
+          Width = Width,
+          Height = Height)
+        if not Width:
+          Width = "1250px"
+        if not Height:
+          Height = "750px"
+        grid = Grid(init_opts=opts.InitOpts(theme=Theme, width=f"{int(Width.replace('px', '')) * FacetCols / math.sqrt(FacetCols)}px", height=f"{int(Height.replace('px', '')) * FacetRows}px"))
+        counter = -1
+        for i in YVar:
+          counter += 1
+          grid = grid.add(
+            plot_dict[i],
+            grid_opts = opts.GridOpts(
+              pos_left = f"{facet_vals['left'][counter]}%",
+              pos_top = f"{facet_vals['top'][counter]}%",
+              width = f"{facet_vals['Width_f']}%",
+              height = f"{facet_vals['Height_f']}%"))
+
+        # Render html
+        if RenderHTML:
+          grid.render(f"{RenderHTML}.html")
+
+        return grid
 
     # Grouping Case
     else:
@@ -2217,7 +2345,7 @@ def Line(dt = None,
 
       # Facet Case
       else:
-        
+        XAxisNameLocation = "end"
         yvar_dict = {}
         plot_dict = {}
 
@@ -2268,6 +2396,7 @@ def Line(dt = None,
           # Global Options
           GlobalOptions = {}
           GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
+          GlobalOptions['legend_opts'] = configure_legend_options(legend=None)
           GlobalOptions = configure_global_chart_options(
             global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
             brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
@@ -2436,9 +2565,20 @@ def StackedLine(dt = None,
       if len(YVar) == 1 and GroupVar is None:
         return None
 
+    # YVar and GroupVar Mgt
     if isinstance(YVar, list):
       if len(YVar) > 1:
         GroupVar = None
+        if FacetRows > 1 or FacetCols > 1:
+          if FacetRows * FacetCols < len(YVar):
+            total_facets = len(YVar)
+            FacetRows = (total_facets + FacetCols - 1) // FacetCols
+      else:
+          FacetRows = 1
+          FacetCols = 1
+    elif not GroupVar:
+      FacetRows = 1
+      FacetCols = 1
 
     # Subset Columns
     if not GroupVar is None:
@@ -2446,20 +2586,25 @@ def StackedLine(dt = None,
     else:
       dt1 = dt.select([pl.col(YVar), pl.col(XVar)])
 
-    # Transformation
-    if not YVarTrans is None:
-      if isinstance(YVar, list):
-        for i in range(len(YVar)):# i = 0
-          if not YVarTrans[i] is None:
-            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
-      else:
-        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
-  
     # Agg Data
     if not PreAgg:
       dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = XVar)
       dt1 = dt1.sort(XVar)
 
+    # Transformation
+    if not YVarTrans is None:
+      if isinstance(YVar, list):
+        if not isinstance(YVarTrans, list):
+          YVarTrans = [YVarTrans] * len(YVar)
+        elif len(YVarTrans) < len(YVar):
+          YVarTrans = YVarTrans[0] * len(YVar)
+        for i in range(len(YVar)):# i = 0
+          if not YVarTrans[i] is None:
+            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
+      else:
+        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
+
+    # Build plots  
     if GroupVar is None:
       yvar_dict = {}
       if not isinstance(YVar, list):
@@ -2614,7 +2759,7 @@ def Step(dt = None,
          ToolBox = True,
          Brush = True,
          DataZoom = True,
-         Title = 'Line Plot',
+         Title = 'Step Plot',
          TitleColor = "#fff",
          TitleFontSize = 20,
          SubTitle = None,
@@ -2706,9 +2851,20 @@ def Step(dt = None,
     if YVar == None:
       return None
     
+    # YVar and GroupVar Mgt
     if isinstance(YVar, list):
       if len(YVar) > 1:
         GroupVar = None
+        if FacetRows > 1 or FacetCols > 1:
+          if FacetRows * FacetCols < len(YVar):
+            total_facets = len(YVar)
+            FacetRows = (total_facets + FacetCols - 1) // FacetCols
+      else:
+          FacetRows = 1
+          FacetCols = 1
+    elif not GroupVar:
+      FacetRows = 1
+      FacetCols = 1
 
     # Subset Columns
     if not GroupVar is None:
@@ -2716,85 +2872,182 @@ def Step(dt = None,
     else:
       dt1 = dt.select([pl.col(YVar), pl.col(XVar)])
 
-    # Transformation
-    if not YVarTrans is None:
-      if isinstance(YVar, list):
-        for i in range(len(YVar)):# i = 0
-          if not YVarTrans[i] is None:
-            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
-      else:
-        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
-  
     # Agg Data
     if not PreAgg:
       dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = XVar)
       dt1 = dt1.sort(XVar)
 
-    if GroupVar is None:
-      yvar_dict = {}
-      if not isinstance(YVar, list):
-        YVar = [YVar]
-      for yvar in YVar:
-        yvar_dict[yvar] = dt1[yvar].to_list()
-        
-      XVal = dt1[XVar].unique().to_list()
-
-      # Create plot
-      InitOptions = initialize_options(
-        theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
-        animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
-        animation_easing=AnimationEasing, animation_delay=AnimationDelay,
-        animation_duration_update=AnimationDurationUpdate, 
-        animation_easing_update=AnimationEasingUpdate,
-        animation_delay_update=AnimationDelayUpdate)
-
-      # Create plot
-      c = PyLine(init_opts = opts.InitOpts(**InitOptions))
-      c = c.add_xaxis(xaxis_data = XVal)
-      if not Symbol is None:
-        ShowSymbol = True
+    # Transformation
+    if not YVarTrans is None:
+      if isinstance(YVar, list):
+        if not isinstance(YVarTrans, list):
+          YVarTrans = [YVarTrans] * len(YVar)
+        elif len(YVarTrans) < len(YVar):
+          YVarTrans = YVarTrans[0] * len(YVar)
+        for i in range(len(YVar)):# i = 0
+          if not YVarTrans[i] is None:
+            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
       else:
-        ShowSymbol = False
-      for yvar in YVar:
-        c = c.add_yaxis(
-          series_name = yvar,
-          is_step = True,
-          symbol = Symbol,
-          symbol_size = SymbolSize,
-          is_symbol_show = ShowSymbol,
-          y_axis = yvar_dict[yvar],
-          linestyle_opts = opts.LineStyleOpts(width = LineWidth),
-          label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
-        )
+        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
 
-      # Global Options
-      GlobalOptions = {}
-      GlobalOptions['legend_opts'] = configure_legend_options(
-        legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
-        legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
-  
-      if not Title is None:
-        GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
-
-      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
-      GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-      GlobalOptions = configure_global_chart_options(
-        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
-        brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
-
-      # Final Setting of Global Options
-      c = c.set_global_opts(**GlobalOptions)
-  
-      # Series Options
-      c = configure_marklines(
-        chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
-        vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
+    # Build Plots
+    if GroupVar is None:
+      
+      if FacetRows <= 1 and FacetCols <= 1:
         
-      # Render html
-      if RenderHTML:
-        c.render(f"{RenderHTML}.html")
+        yvar_dict = {}
+        if not isinstance(YVar, list):
+          YVar = [YVar]
+        for yvar in YVar:
+          yvar_dict[yvar] = dt1[yvar].to_list()
+          
+        XVal = dt1[XVar].unique().to_list()
+  
+        # Create plot
+        InitOptions = initialize_options(
+          theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+          animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+          animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+          animation_duration_update=AnimationDurationUpdate, 
+          animation_easing_update=AnimationEasingUpdate,
+          animation_delay_update=AnimationDelayUpdate)
+  
+        # Create plot
+        c = PyLine(init_opts = opts.InitOpts(**InitOptions))
+        c = c.add_xaxis(xaxis_data = XVal)
+        if not Symbol is None:
+          ShowSymbol = True
+        else:
+          ShowSymbol = False
+        for yvar in YVar:
+          c = c.add_yaxis(
+            series_name = yvar,
+            is_step = True,
+            symbol = Symbol,
+            symbol_size = SymbolSize,
+            is_symbol_show = ShowSymbol,
+            y_axis = yvar_dict[yvar],
+            linestyle_opts = opts.LineStyleOpts(width = LineWidth),
+            label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
+          )
+  
+        # Global Options
+        GlobalOptions = {}
+        GlobalOptions['legend_opts'] = configure_legend_options(
+          legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+          legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
     
-      return c
+        if not Title is None:
+          GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
+  
+        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
+        GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
+        GlobalOptions = configure_global_chart_options(
+          global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+          brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
+  
+        # Final Setting of Global Options
+        c = c.set_global_opts(**GlobalOptions)
+    
+        # Series Options
+        c = configure_marklines(
+          chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+          vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
+          
+        # Render html
+        if RenderHTML:
+          c.render(f"{RenderHTML}.html")
+        
+        return c
+      
+      else:
+        XAxisNameLocation = "end"
+        yvar_dict = {}
+        if not isinstance(YVar, list):
+          YVar = [YVar]
+        for yvar in YVar:
+          yvar_dict[yvar] = dt1[yvar].to_list()
+          
+        XVal = dt1[XVar].unique().to_list()
+  
+        # Create plot
+        InitOptions = initialize_options(
+          theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+          animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+          animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+          animation_duration_update=AnimationDurationUpdate, 
+          animation_easing_update=AnimationEasingUpdate,
+          animation_delay_update=AnimationDelayUpdate)
+  
+        # Create plot
+        plot_dict = dict()
+        if not Symbol is None:
+          ShowSymbol = True
+        else:
+          ShowSymbol = False
+        for yvar in YVar:
+          plot_dict[yvar] = PyLine(init_opts = opts.InitOpts(**InitOptions))
+          plot_dict[yvar] = plot_dict[yvar].add_xaxis(xaxis_data = XVal)
+          plot_dict[yvar] = plot_dict[yvar].add_yaxis(
+            series_name = yvar,
+            is_step = True,
+            symbol = Symbol,
+            symbol_size = SymbolSize,
+            is_symbol_show = ShowSymbol,
+            y_axis = yvar_dict[yvar],
+            linestyle_opts = opts.LineStyleOpts(width = LineWidth),
+            label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
+          )
+  
+          # Global Options
+          GlobalOptions = {}
+          GlobalOptions['legend_opts'] = configure_legend_options(
+            legend=None, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+            legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
+      
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = yvar, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
+          GlobalOptions = configure_global_chart_options(
+            global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+            brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
+    
+          # Final Setting of Global Options
+          plot_dict[yvar] = plot_dict[yvar].set_global_opts(**GlobalOptions)
+      
+          # Series Options
+          plot_dict[yvar] = configure_marklines(
+            chart=plot_dict[yvar], horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+            vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
+
+        # Setup Grid Output
+        facet_vals = FacetGridValues(
+          FacetRows = FacetRows,
+          FacetCols = FacetCols,
+          Legend = Legend,
+          LegendSpace = 10,
+          Width = Width,
+          Height = Height)
+        if not Width:
+          Width = "1250px"
+        if not Height:
+          Height = "750px"
+        grid = Grid(init_opts=opts.InitOpts(theme=Theme, width=f"{int(Width.replace('px', '')) * FacetCols / math.sqrt(FacetCols)}px", height=f"{int(Height.replace('px', '')) * FacetRows}px"))
+        counter = -1
+        for i in YVar:
+          counter += 1
+          grid = grid.add(
+            plot_dict[i],
+            grid_opts = opts.GridOpts(
+              pos_left = f"{facet_vals['left'][counter]}%",
+              pos_top = f"{facet_vals['top'][counter]}%",
+              width = f"{facet_vals['Width_f']}%",
+              height = f"{facet_vals['Height_f']}%"))
+
+        # Render html
+        if RenderHTML:
+          grid.render(f"{RenderHTML}.html")
+
+        return grid
+      
 
     # Grouping Case
     else:
@@ -2869,7 +3122,7 @@ def Step(dt = None,
 
       # Facet Case
       else:
-        
+        XAxisNameLocation = "end"
         yvar_dict = {}
         plot_dict = {}
 
@@ -2919,20 +3172,20 @@ def Step(dt = None,
           )
 
           # Global Options
-          # Global Options
-        GlobalOptions = {}
-        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
-        GlobalOptions = configure_global_chart_options(
-          global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
-          brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
-  
-        # Final Setting of Global Options
-        plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
+          GlobalOptions = {}
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
+          GlobalOptions['legend_opts'] = configure_legend_options(legend=None)
+          GlobalOptions = configure_global_chart_options(
+            global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+            brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
     
-        # Series Options
-        plot_dict[i] = configure_marklines(
-          chart=plot_dict[i], horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
-          vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
+          # Final Setting of Global Options
+          plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
+      
+          # Series Options
+          plot_dict[i] = configure_marklines(
+            chart=plot_dict[i], horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+            vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
 
         # Facet Output
         if not TimeLine:
@@ -3089,9 +3342,20 @@ def StackedStep(dt = None,
       if len(YVar) == 1 and GroupVar is None:
         return None
 
+    # YVar and GroupVar Mgt
     if isinstance(YVar, list):
       if len(YVar) > 1:
         GroupVar = None
+        if FacetRows > 1 or FacetCols > 1:
+          if FacetRows * FacetCols < len(YVar):
+            total_facets = len(YVar)
+            FacetRows = (total_facets + FacetCols - 1) // FacetCols
+      else:
+          FacetRows = 1
+          FacetCols = 1
+    elif not GroupVar:
+      FacetRows = 1
+      FacetCols = 1
 
     # Subset Columns
     if not GroupVar is None:
@@ -3099,20 +3363,25 @@ def StackedStep(dt = None,
     else:
       dt1 = dt.select([pl.col(YVar), pl.col(XVar)])
 
-    # Transformation
-    if not YVarTrans is None:
-      if isinstance(YVar, list):
-        for i in range(len(YVar)):# i = 0
-          if not YVarTrans[i] is None:
-            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
-      else:
-        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
-  
     # Agg Data
     if not PreAgg:
       dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = XVar)
       dt1 = dt1.sort(XVar)
 
+    # Transformation
+    if not YVarTrans is None:
+      if isinstance(YVar, list):
+        if not isinstance(YVarTrans, list):
+          YVarTrans = [YVarTrans] * len(YVar)
+        elif len(YVarTrans) < len(YVar):
+          YVarTrans = YVarTrans[0] * len(YVar)
+        for i in range(len(YVar)):# i = 0
+          if not YVarTrans[i] is None:
+            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
+      else:
+        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
+
+    # Build plots
     if GroupVar is None:
       yvar_dict = {}
       if not isinstance(YVar, list):
@@ -3376,105 +3645,220 @@ def Area(dt = None,
     if YVar == None:
       return None
     
+    # YVar and GroupVar Mgt
     if isinstance(YVar, list):
       if len(YVar) > 1:
         GroupVar = None
-
+        if FacetRows > 1 or FacetCols > 1:
+          if FacetRows * FacetCols < len(YVar):
+            total_facets = len(YVar)
+            FacetRows = (total_facets + FacetCols - 1) // FacetCols
+      else:
+          FacetRows = 1
+          FacetCols = 1
+    elif not GroupVar:
+      FacetRows = 1
+      FacetCols = 1
+    
     # Subset Columns
     if not GroupVar is None:
       dt1 = dt.select([pl.col(YVar), pl.col(XVar), pl.col(GroupVar)])
     else:
       dt1 = dt.select([pl.col(YVar), pl.col(XVar)])
 
+    # Agg Data
+    if not PreAgg:
+      dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = XVar)
+      dt1 = dt1.sort(XVar)
+    
     # Transformation
     if not YVarTrans is None:
       if isinstance(YVar, list):
+        if not isinstance(YVarTrans, list):
+          YVarTrans = [YVarTrans] * len(YVar)
+        elif len(YVarTrans) < len(YVar):
+          YVarTrans = YVarTrans[0] * len(YVar)
         for i in range(len(YVar)):# i = 0
           if not YVarTrans[i] is None:
             dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
       else:
         dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
 
-
-    # Agg Data
-    if not PreAgg:
-      dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = XVar)
-      dt1 = dt1.sort(XVar)
-
     # No GroupVar
     if GroupVar is None:
-      yvar_dict = {}
-      if not isinstance(YVar, list):
-        YVar = [YVar]
-      for yvar in YVar:
-        yvar_dict[yvar] = dt1[yvar].to_list()
-        
-      XVal = dt1[XVar].unique().to_list()
 
-      # Create plot
-      InitOptions = initialize_options(
-        theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
-        animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
-        animation_easing=AnimationEasing, animation_delay=AnimationDelay,
-        animation_duration_update=AnimationDurationUpdate, 
-        animation_easing_update=AnimationEasingUpdate,
-        animation_delay_update=AnimationDelayUpdate)
-
-      # Create plot
-      c = PyLine(init_opts = opts.InitOpts(**InitOptions))
-      c = c.add_xaxis(xaxis_data = XVal)
-      if not Symbol is None:
-        ShowSymbol = True
-      else:
-        ShowSymbol = False
-      for yvar in YVar:
-        yaxis_options = {}
-        yaxis_options['series_name'] = yvar
-        yaxis_options['is_smooth'] = True
-        yaxis_options['symbol'] = Symbol
-        yaxis_options['symbol_size'] = SymbolSize,
-        yaxis_options['is_symbol_show'] = ShowSymbol
-        yaxis_options['y_axis'] = yvar_dict[yvar]
-        yaxis_options['linestyle_opts'] = opts.LineStyleOpts(width = LineWidth)
-        yaxis_options['label_opts'] = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition)
-        if isinstance(YVar, list):
-          if len(YVar) == 1:
-            yaxis_options['areastyle_opts'] = opts.AreaStyleOpts(color = JsCode(JS_GradientAreaFill(GradientColors)), opacity=Opacity)
-          else:
-            yaxis_options['areastyle_opts'] = opts.AreaStyleOpts(opacity = Opacity)
+      # Single / Multiple Variable, NO FACETING
+      if FacetRows <= 1 and FacetCols <= 1:
+        yvar_dict = {}
+        if not isinstance(YVar, list):
+          YVar = [YVar]
+        for yvar in YVar:
+          yvar_dict[yvar] = dt1[yvar].to_list()
+          
+        XVal = dt1[XVar].unique().to_list()
+  
+        # Create plot
+        InitOptions = initialize_options(
+          theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+          animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+          animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+          animation_duration_update=AnimationDurationUpdate, 
+          animation_easing_update=AnimationEasingUpdate,
+          animation_delay_update=AnimationDelayUpdate)
+  
+        # Create plot
+        c = PyLine(init_opts = opts.InitOpts(**InitOptions))
+        c = c.add_xaxis(xaxis_data = XVal)
+        if not Symbol is None:
+          ShowSymbol = True
         else:
-          yaxis_options['areastyle_opts'] = opts.AreaStyleOpts(color = JsCode(JS_GradientAreaFill(GradientColors)), opacity=Opacity)
-
-        c = c.add_yaxis(**yaxis_options)
-
-      # Global Options
-      GlobalOptions = {}
-      GlobalOptions['legend_opts'] = configure_legend_options(
-        legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
-        legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
+          ShowSymbol = False
+        for yvar in YVar:
+          yaxis_options = {}
+          yaxis_options['series_name'] = yvar
+          yaxis_options['is_smooth'] = True
+          yaxis_options['symbol'] = Symbol
+          yaxis_options['symbol_size'] = SymbolSize,
+          yaxis_options['is_symbol_show'] = ShowSymbol
+          yaxis_options['y_axis'] = yvar_dict[yvar]
+          yaxis_options['linestyle_opts'] = opts.LineStyleOpts(width = LineWidth)
+          yaxis_options['label_opts'] = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition)
+          if isinstance(YVar, list):
+            if len(YVar) == 1:
+              yaxis_options['areastyle_opts'] = opts.AreaStyleOpts(color = JsCode(JS_GradientAreaFill(GradientColors)), opacity=Opacity)
+            else:
+              yaxis_options['areastyle_opts'] = opts.AreaStyleOpts(opacity = Opacity)
+          else:
+            yaxis_options['areastyle_opts'] = opts.AreaStyleOpts(color = JsCode(JS_GradientAreaFill(GradientColors)), opacity=Opacity)
   
-      if not Title is None:
-        GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
-
-      GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
-      GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-      GlobalOptions = configure_global_chart_options(
-        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
-        brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
-
-      # Final Setting of Global Options
-      c = c.set_global_opts(**GlobalOptions)
+          c = c.add_yaxis(**yaxis_options)
   
-      # Series Options
-      c = configure_marklines(
-        chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
-        vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
-        
-      # Render html
-      if RenderHTML:
-        c.render(f"{RenderHTML}.html")
+        # Global Options
+        GlobalOptions = {}
+        GlobalOptions['legend_opts'] = configure_legend_options(
+          legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
+          legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
     
-      return c
+        if not Title is None:
+          GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
+  
+        GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
+        GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
+        GlobalOptions = configure_global_chart_options(
+          global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+          brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
+  
+        # Final Setting of Global Options
+        c = c.set_global_opts(**GlobalOptions)
+    
+        # Series Options
+        c = configure_marklines(
+          chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+          vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
+          
+        # Render html
+        if RenderHTML:
+          c.render(f"{RenderHTML}.html")
+      
+        return c
+
+      # Faceting with multi-YVar
+      elif isinstance(YVar, list):
+
+        XAxisNameLocation = "end"
+        yvar_dict = {}
+        if not isinstance(YVar, list):
+          YVar = [YVar]
+        for yvar in YVar:
+          yvar_dict[yvar] = dt1[yvar].to_list()
+          
+        XVal = dt1[XVar].unique().to_list()
+  
+        # Create plot
+        InitOptions = initialize_options(
+          theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
+          animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
+          animation_easing=AnimationEasing, animation_delay=AnimationDelay,
+          animation_duration_update=AnimationDurationUpdate, 
+          animation_easing_update=AnimationEasingUpdate,
+          animation_delay_update=AnimationDelayUpdate)
+  
+        # Create plot
+        if not Symbol is None:
+          ShowSymbol = True
+        else:
+          ShowSymbol = False
+
+        plot_dict = dict()
+        for yvar in YVar:
+          plot_dict[yvar] = PyLine(init_opts = opts.InitOpts(**InitOptions))
+          plot_dict[yvar] = plot_dict[yvar].add_xaxis(xaxis_data = XVal)
+          yaxis_options = {}
+          yaxis_options['series_name'] = yvar
+          yaxis_options['is_smooth'] = True
+          yaxis_options['symbol'] = Symbol
+          yaxis_options['symbol_size'] = SymbolSize,
+          yaxis_options['is_symbol_show'] = ShowSymbol
+          yaxis_options['y_axis'] = yvar_dict[yvar]
+          yaxis_options['linestyle_opts'] = opts.LineStyleOpts(width = LineWidth)
+          yaxis_options['label_opts'] = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition)
+          if isinstance(YVar, list):
+            if len(YVar) == 1:
+              yaxis_options['areastyle_opts'] = opts.AreaStyleOpts(color = JsCode(JS_GradientAreaFill(GradientColors)), opacity=Opacity)
+            else:
+              yaxis_options['areastyle_opts'] = opts.AreaStyleOpts(opacity = Opacity)
+          else:
+            yaxis_options['areastyle_opts'] = opts.AreaStyleOpts(color = JsCode(JS_GradientAreaFill(GradientColors)), opacity=Opacity)
+  
+          plot_dict[yvar] = plot_dict[yvar].add_yaxis(**yaxis_options)
+  
+          # Global Options
+          GlobalOptions = {}
+          GlobalOptions['legend_opts'] = configure_legend_options(legend=None)
+      
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = yvar, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
+          GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
+          GlobalOptions = configure_global_chart_options(
+            global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+            brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
+    
+          # Final Setting of Global Options
+          plot_dict[yvar] = plot_dict[yvar].set_global_opts(**GlobalOptions)
+      
+          # Series Options
+          plot_dict[yvar] = configure_marklines(
+            chart=plot_dict[yvar], horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
+            vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
+        
+        # Setup Grid Output
+        facet_vals = FacetGridValues(
+          FacetRows = FacetRows,
+          FacetCols = FacetCols,
+          Legend = Legend,
+          LegendSpace = 10,
+          Width = Width,
+          Height = Height)
+        if not Width:
+          Width = "1250px"
+        if not Height:
+          Height = "750px"
+        grid = Grid(init_opts=opts.InitOpts(theme=Theme, width=f"{int(Width.replace('px', '')) * FacetCols / math.sqrt(FacetCols)}px", height=f"{int(Height.replace('px', '')) * FacetRows}px"))
+        counter = -1
+        for i in YVar:
+          counter += 1
+          grid = grid.add(
+            plot_dict[i],
+            grid_opts = opts.GridOpts(
+              pos_left = f"{facet_vals['left'][counter]}%",
+              pos_top = f"{facet_vals['top'][counter]}%",
+              width = f"{facet_vals['Width_f']}%",
+              height = f"{facet_vals['Height_f']}%"))
+
+        # Render html
+        if RenderHTML:
+          grid.render(f"{RenderHTML}.html")
+
+        return grid
 
     # Grouping Case
     else:
@@ -3550,7 +3934,7 @@ def Area(dt = None,
 
       # Facet Case
       else:
-        
+        XAxisNameLocation = "end"
         yvar_dict = {}
         plot_dict = {}
         if not TimeLine:
@@ -3613,12 +3997,14 @@ def Area(dt = None,
 
           # Global Options
           GlobalOptions = {}
-          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
+          GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = i, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
+          GlobalOptions['legend_opts'] = configure_legend_options(legend=None)
           GlobalOptions = configure_global_chart_options(
             global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
             brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
     
           # Final Setting of Global Options
+          GlobalOptions['legend_opts'] = configure_legend_options(legend=None)
           plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
       
           # Series Options
@@ -3781,9 +4167,20 @@ def StackedArea(dt = None,
       if len(YVar) == 1 and GroupVar is None:
         return None
 
+    # YVar and GroupVar Mgt
     if isinstance(YVar, list):
       if len(YVar) > 1:
         GroupVar = None
+        if FacetRows > 1 or FacetCols > 1:
+          if FacetRows * FacetCols < len(YVar):
+            total_facets = len(YVar)
+            FacetRows = (total_facets + FacetCols - 1) // FacetCols
+      else:
+          FacetRows = 1
+          FacetCols = 1
+    elif not GroupVar:
+      FacetRows = 1
+      FacetCols = 1
 
     # Subset Columns
     if not GroupVar is None:
@@ -3791,20 +4188,25 @@ def StackedArea(dt = None,
     else:
       dt1 = dt.select([pl.col(YVar), pl.col(XVar)])
 
-    # Transformation
-    if not YVarTrans is None:
-      if isinstance(YVar, list):
-        for i in range(len(YVar)):# i = 0
-          if not YVarTrans[i] is None:
-            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
-      else:
-        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
-  
     # Agg Data
     if not PreAgg:
       dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = XVar)
       dt1 = dt1.sort(XVar)
 
+    # Transformation
+    if not YVarTrans is None:
+      if isinstance(YVar, list):
+        if not isinstance(YVarTrans, list):
+          YVarTrans = [YVarTrans] * len(YVar)
+        elif len(YVarTrans) < len(YVar):
+          YVarTrans = YVarTrans[0] * len(YVar)
+        for i in range(len(YVar)):# i = 0
+          if not YVarTrans[i] is None:
+            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
+      else:
+        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
+
+    # Build plots
     if GroupVar is None:
       yvar_dict = {}
       if not isinstance(YVar, list):
@@ -4053,9 +4455,20 @@ def Bar(dt = None,
     if YVar == None:
       return None
     
+    # YVar and GroupVar Mgt
     if isinstance(YVar, list):
       if len(YVar) > 1:
         GroupVar = None
+        if FacetRows > 1 or FacetCols > 1:
+          if FacetRows * FacetCols < len(YVar):
+            total_facets = len(YVar)
+            FacetRows = (total_facets + FacetCols - 1) // FacetCols
+      else:
+          FacetRows = 1
+          FacetCols = 1
+    elif not GroupVar:
+      FacetRows = 1
+      FacetCols = 1
 
     # Subset Columns
     if not GroupVar is None:
@@ -4063,20 +4476,24 @@ def Bar(dt = None,
     else:
       dt1 = dt.select([pl.col(YVar), pl.col(XVar)])
 
+    # Agg Data
+    if not PreAgg:
+      dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = XVar)
+      dt1 = dt1.sort(XVar)
+
     # Transformation
     if not YVarTrans is None:
       if isinstance(YVar, list):
+        if not isinstance(YVarTrans, list):
+          YVarTrans = [YVarTrans] * len(YVar)
+        elif len(YVarTrans) < len(YVar):
+          YVarTrans = YVarTrans[0] * len(YVar)
         for i in range(len(YVar)):# i = 0
           if not YVarTrans[i] is None:
             dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
       else:
         dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
   
-    # Agg Data
-    if not PreAgg:
-      dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = XVar)
-      dt1 = dt1.sort(XVar)
-
     # No GroupVar
     if GroupVar is None:
       yvar_dict = {}
@@ -4200,8 +4617,7 @@ def Bar(dt = None,
 
       # Facet Case
       else:
-        
-        # Create plot
+        XAxisNameLocation = "end"
         InitOptions = initialize_options(
           theme=Theme, width=Width, height=Height, background_color=BackgroundColor, 
           animation_threshold=AnimationThreshold, animation_duration=AnimationDuration,
@@ -4240,6 +4656,7 @@ def Bar(dt = None,
           # Global Options
           GlobalOptions = {}
           GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = f"{i}", position = "right")
+          GlobalOptions['legend_opts'] = configure_legend_options(legend=None)
   
           # Final Setting of Global Options
           plot_dict[i] = plot_dict[i].set_global_opts(**GlobalOptions)
@@ -4393,9 +4810,20 @@ def StackedBar(dt = None,
       if len(YVar) == 1 and GroupVar is None:
         return None
 
+    # YVar and GroupVar Mgt
     if isinstance(YVar, list):
       if len(YVar) > 1:
         GroupVar = None
+        if FacetRows > 1 or FacetCols > 1:
+          if FacetRows * FacetCols < len(YVar):
+            total_facets = len(YVar)
+            FacetRows = (total_facets + FacetCols - 1) // FacetCols
+      else:
+          FacetRows = 1
+          FacetCols = 1
+    elif not GroupVar:
+      FacetRows = 1
+      FacetCols = 1
 
     # Subset Columns
     if not GroupVar is None:
@@ -4403,20 +4831,25 @@ def StackedBar(dt = None,
     else:
       dt1 = dt.select([pl.col(YVar), pl.col(XVar)])
 
-    # Transformation
-    if not YVarTrans is None:
-      if isinstance(YVar, list):
-        for i in range(len(YVar)):# i = 0
-          if not YVarTrans[i] is None:
-            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
-      else:
-        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
-  
     # Agg Data
     if not PreAgg:
       dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = XVar)
       dt1 = dt1.sort(XVar)
 
+    # Transformation
+    if not YVarTrans is None:
+      if isinstance(YVar, list):
+        if not isinstance(YVarTrans, list):
+          YVarTrans = [YVarTrans] * len(YVar)
+        elif len(YVarTrans) < len(YVar):
+          YVarTrans = YVarTrans[0] * len(YVar)
+        for i in range(len(YVar)):# i = 0
+          if not YVarTrans[i] is None:
+            dt1 = NumericTransformation(dt1, YVar[i], Trans = YVarTrans[i].lower())
+      else:
+        dt1 = NumericTransformation(dt1, YVar, Trans = YVarTrans.lower())
+
+    # Build plots
     if GroupVar is None:
       yvar_dict = {}
       if not isinstance(YVar, list):
@@ -4636,15 +5069,15 @@ def Heatmap(dt = None,
     # Subset Columns
     dt1 = dt.select([pl.col(YVar), pl.col(XVar), pl.col(MeasureVar)])
 
-    # Transformation
-    if not MeasureVarTrans is None:
-      dt1 = NumericTransformation(dt1, MeasureVar, Trans = MeasureVarTrans.lower())
-  
     # Agg Data
     if not PreAgg:
       dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = MeasureVar, GroupVariable = [YVar, XVar], DateVariable = None)
       dt1 = dt1.sort(YVar)
 
+    # Transformation
+    if not MeasureVarTrans is None:
+      dt1 = NumericTransformation(dt1, MeasureVar, Trans = MeasureVarTrans.lower())
+  
     # Variable Creation
     xvar_unique = dt1[XVar].unique().to_list()
     yvar_unique = dt1[YVar].unique().to_list()
@@ -4690,7 +5123,7 @@ def Heatmap(dt = None,
       value = data,
       label_opts = opts.LabelOpts(
         is_show = ShowLabels,
-        color = "#fff",
+        color = LabelColor,
         position = LabelPosition,
         horizontal_align = "50%")
     )
@@ -4989,7 +5422,7 @@ def Scatter(dt = None,
 
       # Facet Case
       else:
-        
+        XAxisNameLocation = "end"
         plot_dict = {}
         if not TimeLine:
           if FacetLevels is None:
@@ -5036,6 +5469,7 @@ def Scatter(dt = None,
           # Global Options
           GlobalOptions = {}
           GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
+          GlobalOptions['legend_opts'] = configure_legend_options(legend=None)
           GlobalOptions = configure_global_chart_options(
             global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
             brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
@@ -5642,7 +6076,7 @@ def Copula(dt = None,
 
       # Facet Case
       else:
-        
+        XAxisNameLocation = "end"
         plot_dict = {}
         if not TimeLine:
           if FacetLevels is None:
@@ -5689,6 +6123,7 @@ def Copula(dt = None,
           # Global Options
           GlobalOptions = {}
           GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
+          GlobalOptions['legend_opts'] = configure_legend_options(legend=None)
           GlobalOptions = configure_global_chart_options(
             global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
             brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
@@ -5802,6 +6237,8 @@ def Parallel(dt = None,
     # Define Plotting Variable
     if Vars == None:
       return None
+    elif not isinstance(Vars, list):
+      return None
     
     # Cap number of records and define dt1
     dt1 = cap_records(dt, sample_size=SampleSize)
@@ -5811,6 +6248,10 @@ def Parallel(dt = None,
 
     # Transformations
     if not VarsTrans is None:
+      if not isinstance(VarsTrans, list):
+        VarsTrans = [VarsTrans] * len(Vars)
+      elif len(VarsTrans) < len(Vars):
+        VarsTrans = VarsTrans[0] * len(Vars)
       counter = -1
       for v in Vars:
         counter += 1
@@ -5915,7 +6356,6 @@ def Funnel(CategoryVar = None,
     AnimationEasingUpdate: Default "cubicOut"
     AnimationDelayUpdate: Default 0
     """
-    
 
     # Create plot
     InitOptions = initialize_options(
@@ -6028,15 +6468,15 @@ def Bar3D(dt = None,
 
     # Subset Columns
     dt1 = dt.select([pl.col(YVar), pl.col(XVar), pl.col(ZVar)])
-    
-    # Transformation
-    if not ZVarTrans is None:
-      dt1 = NumericTransformation(dt1, ZVar, Trans = ZVarTrans.lower())
-  
+
     # Agg Data
     if not PreAgg:
       dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = ZVar, GroupVariable = [YVar, XVar], DateVariable = None)
       dt1 = dt1.sort(YVar)
+
+    # Transformation
+    if not ZVarTrans is None:
+      dt1 = NumericTransformation(dt1, ZVar, Trans = ZVarTrans.lower())
 
     XVal = dt1[XVar].unique().to_list()
     YVal = dt1[YVar].unique().to_list()
@@ -6195,6 +6635,10 @@ def River(dt = None,
     # Transformation
     if not YVarTrans is None:
       if isinstance(YVars, list):
+        if not isinstance(YVarTrans, list):
+          YVarTrans = [YVarTrans] * len(YVars)
+        elif len(YVarTrans) < len(YVars):
+          YVarTrans = YVarTrans[0] * len(YVars)
         for i in range(len(YVars)):# i = 0
           if not YVarTrans[i] is None:
             dt1 = NumericTransformation(dt1, YVars[i], Trans = YVarTrans[i].lower())

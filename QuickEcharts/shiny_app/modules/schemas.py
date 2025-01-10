@@ -3,9 +3,10 @@ PLOT_SCHEMAS = {
       # Data settings
       "dt": {"type": "file", "label": "Data Table", "default": None},
       "PreAgg": {"type": "checkbox", "label": "Pre-Aggregated Data", "default": False},
-      "YVar": {"type": "select", "label": "Y Variable", "default": None},
+      "YVar": {"type": "multi-select", "label": "Y Variable", "default": None},
       "XVar": {"type": "select", "label": "X Variable", "default": None},
       "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
+      "TimeLine": {"type": "checkbox", "label": "Create Timeline", "default": False},
       "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
       "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
       "AggMethod": {
@@ -97,6 +98,7 @@ PLOT_SCHEMAS = {
       "YVar": {"type": "select", "label": "Y Variable", "default": None},
       "XVar": {"type": "select", "label": "X Variable", "default": None},
       "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
+      "TimeLine": {"type": "checkbox", "label": "Create Timeline", "default": False},
       "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
       "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
       "AggMethod": {
@@ -174,7 +176,7 @@ PLOT_SCHEMAS = {
   "BoxPlot": {
     # Data settings
     "dt": {"type": "file", "label": "Data Table", "default": None},
-    "SampleSize": {"type": "slider", "label": "Sample Size", "min": 1, "max": 10000, "default": None},
+    "SampleSize": {"type": "slider", "label": "Sample Size", "min": 1, "max": 100000, "default": 100000},
     "YVar": {"type": "select", "label": "Y Variable", "default": None},
     "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
@@ -241,6 +243,7 @@ PLOT_SCHEMAS = {
     "YVar": {"type": "select", "label": "Y Variable", "default": None},
     "XVar": {"type": "select", "label": "X Variable", "default": None},
     "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
+    "TimeLine": {"type": "checkbox", "label": "Create Timeline", "default": False},
     "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
     "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
@@ -364,6 +367,7 @@ PLOT_SCHEMAS = {
     "SampleSize": {"type": "slider", "label": "Sample Size", "min": 1, "max": 100000, "default": 100000},
     "YVar": {"type": "select", "label": "Y Variable", "default": None},
     "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
+    "TimeLine": {"type": "checkbox", "label": "Create Timeline", "default": False},
     "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
     "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
     
@@ -438,8 +442,8 @@ PLOT_SCHEMAS = {
     "AggMethod": {
         "type": "select",
         "label": "Aggregation Method",
-        "options": ["count", "mean", "sum", "median", "max", "min"],
-        "default": "count",
+        "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
+        "default": "mean"
     },
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
@@ -471,46 +475,6 @@ PLOT_SCHEMAS = {
     "LegendTextColor": {"type": "select", "label": "Legend Text Color", "options": ["white", "gray","black"], "default": "gray"},
   },
 
-  "Funnel": {
-    # Data settings
-    "CategoryVar": {"type": "text", "label": "Category Variable", "default": None},
-    "ValuesVar": {"type": "text", "label": "Values Variable", "default": None},
-
-    # Rendering settings
-    
-    "SeriesLabel": {"type": "text", "label": "Series Label", "default": "Funnel Data"},
-    "SortStyle": {
-        "type": "select",
-        "label": "Sort Style",
-        "options": ["ascending", "descending"],
-        "default": "descending",
-    },
-    "Theme": {
-        "type": "select",
-        "label": "Theme",
-        "options": ['chalk', 'dark', 'essos', 'halloween', 'infographic', 'light', 'macarons', 'purple-passion', 'roma', 'romantic', 'shine', 'vintage', 'walden', 'westeros', 'white', 'wonderland'],
-        "default": "dark",
-    },
-    
-    "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
-    "Height": {"type": "text", "label": "Chart Height", "default": "750px"},
-
-    # Title and subtitle settings
-    "Title": {"type": "text", "label": "Title", "default": "Funnel"},
-    "TitleColor": {"type": "select", "label": "Title Color", "options": ["white", "gray","black"], "default": "gray"},
-    "TitleFontSize": {"type": "slider", "label": "Title Font Size", "min": 10, "max": 50, "default": 20},
-    "SubTitle": {"type": "text", "label": "Subtitle", "default": None},
-    "SubTitleColor": {"type": "select", "label": "Subtitle Color", "options": ["white", "gray","black"], "default": "gray"},
-    "SubTitleFontSize": {"type": "slider", "label": "Subtitle Font Size", "min": 10, "max": 30, "default": 12},
-
-    # Legend settings
-    "Legend": {"type": "select", "label": "Show Legend", "options": [None, 'right', 'top'], "default": 'top'},
-    "LegendPosRight": {"type": "text", "label": "Legend Position Right", "default": "0%"},
-    "LegendPosTop": {"type": "text", "label": "Legend Position Top", "default": "5%"},
-    "LegendBorderSize": {"type": "slider", "label": "Legend Border Size", "min": 0, "max": 5, "default": 0.25},
-    "LegendTextColor": {"type": "select", "label": "Legend Text Color", "options": ["white", "gray","black"], "default": "gray"},
-  },
-  
   "Heatmap": {
     # Data settings
     "dt": {"type": "file", "label": "Data Table", "default": None},
@@ -524,15 +488,9 @@ PLOT_SCHEMAS = {
         "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
         "default": "mean",
     },
-    "MeasureVarTrans": {
-        "type": "select",
-        "label": "Measure Variable Transformation",
-        "options": ["Identity", "Log", "SquareRoot", "Exp"],
-        "default": "Identity",
-    },
+    "MeasureVarTrans": {"type": "select", "label": "MeasureVar Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
-    
     "ShowLabels": {"type": "checkbox", "label": "Show Labels", "default": False},
     "LabelPosition": {
         "type": "select",
@@ -540,7 +498,14 @@ PLOT_SCHEMAS = {
         "options": ["top", "left", "right", "bottom", "inside"],
         "default": "top",
     },
-    "LabelColor": {"type": "color", "label": "Label Color", "default": "#fff"},
+    "LabelColor": {
+      "type": "select",
+      "label": "Label Color",
+      "options": [
+            "black", "silver", "gray", "white", "maroon", "red", "purple", "fuchsia", "green", "lime", "olive", "yellow", "navy", "blue", "teal", "aqua", "aliceblue", "antiquewhite", "aquamarine", "azure", "beige", "bisque", "blanchedalmond", "blueviolet", "brown", "burlywood", "cadetblue", "chartreuse", "chocolate", "coral", "cornflowerblue", "cornsilk", "crimson", "cyan", "darkblue", "darkcyan", "darkgoldenrod", "darkgray", "darkgreen", "darkgrey", "darkkhaki", "darkmagenta", "darkolivegreen", "darkorange", "darkorchid", "darkred", "darksalmon", "darkseagreen", "darkslateblue", "darkslategray", "darkslategrey", "darkturquoise", "darkviolet", "deeppink", "deepskyblue", "dimgray", "dimgrey", "dodgerblue", "firebrick", "floralwhite", "forestgreen", "gainsboro", "ghostwhite", "gold", "goldenrod", "greenyellow", "grey", "honeydew", "hotpink", "indianred", "indigo", "ivory", "khaki", "lavender", "lavenderblush", "lawngreen", "lemonchiffon", "lightblue", "lightcoral", "lightcyan", "lightgoldenrodyellow", "lightgray", "lightgreen", "lightgrey", "lightpink", "lightsalmon", "lightseagreen", "lightskyblue", "lightslategray", "lightslategrey", "lightsteelblue", "lightyellow", "limegreen", "linen", "magenta", "mediumaquamarine", "mediumblue", "mediumorchid", "mediumpurple", "mediumseagreen", "mediumslateblue", "mediumspringgreen", "mediumturquoise", "mediumvioletred", "midnightblue", "mintcream", "mistyrose", "moccasin", "navajowhite", "oldlace", "olivedrab", "orange", "orangered", "orchid", "palegoldenrod", "palegreen", "paleturquoise", "palevioletred", "papayawhip", "peachpuff", "peru", "pink", "plum", "powderblue", "rosybrown", "royalblue", "saddlebrown", "salmon", "sandybrown", "seagreen", "seashell", "sienna", "skyblue", "slateblue", "slategray", "slategrey", "snow", "springgreen", "steelblue", "tan", "thistle", "tomato", "turquoise", "violet", "wheat", "whitesmoke", "yellowgreen"
+          ],
+      "default": "gray"
+    },
     "Theme": {
         "type": "select",
         "label": "Theme",
@@ -548,9 +513,12 @@ PLOT_SCHEMAS = {
         "default": "dark",
     },
     "RangeColor": {
-        "type": "text",
-        "label": "Range Colors (JSON Array)",
-        "default": '["#5b5b5b5d", "#00c4ff", "#9cff00"]',
+        "type": "multi-select",
+        "label": "Range Colors",
+        "default": ["chartreuse", "dodgerblue", "silver"],
+        "options": [
+            "black", "silver", "gray", "white", "maroon", "red", "purple", "fuchsia", "green", "lime", "olive", "yellow", "navy", "blue", "teal", "aqua", "aliceblue", "antiquewhite", "aquamarine", "azure", "beige", "bisque", "blanchedalmond", "blueviolet", "brown", "burlywood", "cadetblue", "chartreuse", "chocolate", "coral", "cornflowerblue", "cornsilk", "crimson", "cyan", "darkblue", "darkcyan", "darkgoldenrod", "darkgray", "darkgreen", "darkgrey", "darkkhaki", "darkmagenta", "darkolivegreen", "darkorange", "darkorchid", "darkred", "darksalmon", "darkseagreen", "darkslateblue", "darkslategray", "darkslategrey", "darkturquoise", "darkviolet", "deeppink", "deepskyblue", "dimgray", "dimgrey", "dodgerblue", "firebrick", "floralwhite", "forestgreen", "gainsboro", "ghostwhite", "gold", "goldenrod", "greenyellow", "grey", "honeydew", "hotpink", "indianred", "indigo", "ivory", "khaki", "lavender", "lavenderblush", "lawngreen", "lemonchiffon", "lightblue", "lightcoral", "lightcyan", "lightgoldenrodyellow", "lightgray", "lightgreen", "lightgrey", "lightpink", "lightsalmon", "lightseagreen", "lightskyblue", "lightslategray", "lightslategrey", "lightsteelblue", "lightyellow", "limegreen", "linen", "magenta", "mediumaquamarine", "mediumblue", "mediumorchid", "mediumpurple", "mediumseagreen", "mediumslateblue", "mediumspringgreen", "mediumturquoise", "mediumvioletred", "midnightblue", "mintcream", "mistyrose", "moccasin", "navajowhite", "oldlace", "olivedrab", "orange", "orangered", "orchid", "palegoldenrod", "palegreen", "paleturquoise", "palevioletred", "papayawhip", "peachpuff", "peru", "pink", "plum", "powderblue", "rosybrown", "royalblue", "saddlebrown", "salmon", "sandybrown", "seagreen", "seashell", "sienna", "skyblue", "slateblue", "slategray", "slategrey", "snow", "springgreen", "steelblue", "tan", "thistle", "tomato", "turquoise", "violet", "wheat", "whitesmoke", "yellowgreen"
+          ]
     },
     
     "Width": {"type": "text", "label": "Chart Width", "default": "1250px"},
@@ -559,7 +527,6 @@ PLOT_SCHEMAS = {
     # Interaction settings
     "ToolBox": {"type": "checkbox", "label": "Enable Toolbox", "default": True},
     "Brush": {"type": "checkbox", "label": "Enable Brush", "default": True},
-    
 
     # Title and subtitle settings
     "Title": {"type": "text", "label": "Title", "default": "Heatmap Plot"},
@@ -608,6 +575,7 @@ PLOT_SCHEMAS = {
     "YVar": {"type": "select", "label": "Y Variable", "default": None},
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
     "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
+    "TimeLine": {"type": "checkbox", "label": "Create Timeline", "default": False},
     "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
     "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
 
@@ -672,7 +640,7 @@ PLOT_SCHEMAS = {
     # Data settings
     "dt": {"type": "file", "label": "Data Table", "default": None},
     "PreAgg": {"type": "checkbox", "label": "Pre-Aggregated Data", "default": False},
-    "YVar": {"type": "select", "label": "Y Variable", "default": None},
+    "YVar": {"type": "multi-select", "label": "Y Variable", "default": None},
     "XVar": {"type": "select", "label": "X Variable", "default": None},
     "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
     "AggMethod": {
@@ -681,10 +649,9 @@ PLOT_SCHEMAS = {
         "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
         "default": "mean",
     },
+    "TimeLine": {"type": "checkbox", "label": "Create Timeline", "default": False},
     "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
     "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
-    
-    
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
@@ -763,11 +730,10 @@ PLOT_SCHEMAS = {
     # Data settings
     "dt": {"type": "file", "label": "Data Table", "default": None},
     "SampleSize": {"type": "slider", "label": "Sample Size", "min": 1, "max": 100000, "default": 15000},
-    "Vars": {"type": "text", "label": "Variables", "default": None},
-    "VarsTrans": {"type": "text", "label": "Variables Transformation", "default": None},
+    "Vars": {"type": "multi-select", "label": "Variables", "default": None},
+    "VarsTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
-    
     "SymbolSize": {"type": "slider", "label": "Symbol Size", "min": 1, "max": 20, "default": 6},
     "Opacity": {"type": "slider", "label": "Line Opacity", "min": 0, "max": 1, "default": 0.05},
     "LineWidth": {"type": "slider", "label": "Line Width", "min": 0.1, "max": 5, "default": 0.20},
@@ -799,8 +765,8 @@ PLOT_SCHEMAS = {
     "AggMethod": {
         "type": "select",
         "label": "Aggregation Method",
-        "options": ["count", "mean", "sum", "median", "max", "min"],
-        "default": "count",
+        "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
+        "default": "mean"
     },
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
@@ -846,8 +812,14 @@ PLOT_SCHEMAS = {
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
-    
-    "LabelColor": {"type": "color", "label": "Label Color", "default": "#fff"},
+    "LabelColor": {
+      "type": "select",
+      "label": "Label Color",
+      "options": [
+            "black", "silver", "gray", "white", "maroon", "red", "purple", "fuchsia", "green", "lime", "olive", "yellow", "navy", "blue", "teal", "aqua", "aliceblue", "antiquewhite", "aquamarine", "azure", "beige", "bisque", "blanchedalmond", "blueviolet", "brown", "burlywood", "cadetblue", "chartreuse", "chocolate", "coral", "cornflowerblue", "cornsilk", "crimson", "cyan", "darkblue", "darkcyan", "darkgoldenrod", "darkgray", "darkgreen", "darkgrey", "darkkhaki", "darkmagenta", "darkolivegreen", "darkorange", "darkorchid", "darkred", "darksalmon", "darkseagreen", "darkslateblue", "darkslategray", "darkslategrey", "darkturquoise", "darkviolet", "deeppink", "deepskyblue", "dimgray", "dimgrey", "dodgerblue", "firebrick", "floralwhite", "forestgreen", "gainsboro", "ghostwhite", "gold", "goldenrod", "greenyellow", "grey", "honeydew", "hotpink", "indianred", "indigo", "ivory", "khaki", "lavender", "lavenderblush", "lawngreen", "lemonchiffon", "lightblue", "lightcoral", "lightcyan", "lightgoldenrodyellow", "lightgray", "lightgreen", "lightgrey", "lightpink", "lightsalmon", "lightseagreen", "lightskyblue", "lightslategray", "lightslategrey", "lightsteelblue", "lightyellow", "limegreen", "linen", "magenta", "mediumaquamarine", "mediumblue", "mediumorchid", "mediumpurple", "mediumseagreen", "mediumslateblue", "mediumspringgreen", "mediumturquoise", "mediumvioletred", "midnightblue", "mintcream", "mistyrose", "moccasin", "navajowhite", "oldlace", "olivedrab", "orange", "orangered", "orchid", "palegoldenrod", "palegreen", "paleturquoise", "palevioletred", "papayawhip", "peachpuff", "peru", "pink", "plum", "powderblue", "rosybrown", "royalblue", "saddlebrown", "salmon", "sandybrown", "seagreen", "seashell", "sienna", "skyblue", "slateblue", "slategray", "slategrey", "snow", "springgreen", "steelblue", "tan", "thistle", "tomato", "turquoise", "violet", "wheat", "whitesmoke", "yellowgreen"
+          ],
+      "default": "gray"
+    },
     "LineColors": {
         "type": "text",
         "label": "Line Colors (JSON Array)",
@@ -883,19 +855,18 @@ PLOT_SCHEMAS = {
     # Data settings
     "dt": {"type": "file", "label": "Data Table", "default": None},
     "PreAgg": {"type": "checkbox", "label": "Pre-Aggregated Data", "default": False},
-    "YVars": {"type": "text", "label": "Y Variables (JSON Array)", "default": None},
-    "DateVar": {"type": "text", "label": "Date Variable", "default": None},
+    "YVars": {"type": "multi-select", "label": "Y Variable", "default": None},
+    "DateVar": {"type": "select", "label": "Date Variable", "default": None},
     "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
     "AggMethod": {
         "type": "select",
         "label": "Aggregation Method",
-        "options": ["sum", "mean", "median", "max", "min"],
-        "default": "sum",
+        "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
+        "default": "mean",
     },
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
-    
     "Theme": {
         "type": "select",
         "label": "Theme",
@@ -942,13 +913,12 @@ PLOT_SCHEMAS = {
     "AggMethod": {
         "type": "select",
         "label": "Aggregation Method",
-        "options": ["count", "mean", "sum", "median", "max", "min"],
-        "default": "count",
+        "options": ["count", "mean", "sum", "median", "sd", "skewness", "kurtosis", "CoeffVar"],
+        "default": "mean"
     },
     "YVarTrans": {"type": "select", "label": "Y Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
-    
     "Type": {
         "type": "select",
         "label": "Rosetype Type",
@@ -989,10 +959,9 @@ PLOT_SCHEMAS = {
     "YVar": {"type": "select", "label": "Y Variable", "default": None},
     "XVar": {"type": "select", "label": "X Variable", "default": None},
     "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
+    "TimeLine": {"type": "checkbox", "label": "Create Timeline", "default": False},
     "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
     "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
-    
-    
     "AggMethod": {
         "type": "select",
         "label": "Aggregation Method",
@@ -1003,7 +972,6 @@ PLOT_SCHEMAS = {
     "XVarTrans": {"type": "select", "label": "X Var Transformation", "options": ["None", "log", "logmin", "sqrt", "asinh", "perc_rank"], "default": "None"},
 
     # Rendering settings
-    
     "LineWidth": {"type": "slider", "label": "Line Width", "min": 1, "max": 10, "default": 2},
     "ShowLabels": {"type": "checkbox", "label": "Show Labels", "default": False},
     "LabelPosition": {
@@ -1065,12 +1033,6 @@ PLOT_SCHEMAS = {
     "LegendPosTop": {"type": "text", "label": "Legend Position Top", "default": "5%"},
     "LegendBorderSize": {"type": "slider", "label": "Legend Border Size", "min": 0, "max": 5, "default": 0.25},
     "LegendTextColor": {"type": "select", "label": "Legend Text Color", "options": ["white", "gray","black"], "default": "gray"},
-
-    # Reference lines
-    
-    
-    
-
   },
   
   "Scatter3D": {
@@ -1153,7 +1115,6 @@ PLOT_SCHEMAS = {
     # Interaction settings
     "ToolBox": {"type": "checkbox", "label": "Enable Toolbox", "default": True},
     "Brush": {"type": "checkbox", "label": "Enable Brush", "default": True},
-    
 
     # Title and subtitle settings
     "Title": {"type": "text", "label": "Title", "default": "Stacked Area"},
@@ -1435,9 +1396,10 @@ PLOT_SCHEMAS = {
     # Data settings
     "dt": {"type": "file", "label": "Data Table", "default": None},
     "PreAgg": {"type": "checkbox", "label": "Pre-Aggregated Data", "default": False},
-    "YVar": {"type": "select", "label": "Y Variable", "default": None},
+    "YVar": {"type": "multi-select", "label": "Y Variable", "default": None},
     "XVar": {"type": "select", "label": "X Variable", "default": None},
     "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
+    "TimeLine": {"type": "checkbox", "label": "Create Timeline", "default": False},
     "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
     "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
     "AggMethod": {

@@ -123,10 +123,12 @@ def server(input, output, session):
     @render.ui
     def plot():
         """Render the plot based on user inputs and selected plot type."""
+        logger.info(f"Plotting step 1")
         if input.build_plot() == 0:
             return ui.p("Click 'Build Plot' to generate the plot.")
         
         # Load data (assuming this is a synchronous operation)
+        logger.info(f"Plotting step 2: data loading")
         data = load_data()
         if data is None:
             return ui.p("Please upload a data file.")
@@ -137,29 +139,52 @@ def server(input, output, session):
         
         try:
             # Collect parameters dynamically
+            logger.info(f"Plotting step 3")
             schema = PLOT_SCHEMAS[plot_type]
             params = {}
             for param in schema.keys():
+                logger.info(f"Plotting step 4")
                 value = input[param]() if callable(input[param]) else input[param]
                 if param in ["FacetRows", "FacetCols"]:
                     # Convert FacetRows and FacetCols to integers
                     params[param] = int(value) if value not in ["None", ""] else None
                 elif param == 'dt':
                     params[param] = data
+                elif isinstance(value, (list, tuple)) and len(value) > 1:  # Check for multiple elements
+                    # Convert multiple elements to a list
+                    params[param] = list(value)
+                elif isinstance(value, tuple) and len(value) == 1:  # Check for single-element tuple
+                    # Unpack single-element tuple
+                    params[param] = value[0]
                 else:
-                    # Convert empty strings and "None" strings to None
-                    params[param] = None if value in ["None", ""] else value
-    
+                    # Keep single values as they are
+                    params[param] = value if value not in ["None", ""] else None
+
             # Create plot dynamically using the selected plot function
+            logger.info(f"Plotting step 5")
             plot_function = getattr(Charts, plot_type)
             logger.info(f"Creating {plot_type} plot with parameters: {params}")
-            def replace_title_in_html(html_content, new_title="QuickEcharts App"):
-                return html_content.replace("<title>Awesome-pyecharts</title>", f"<title>{new_title}</title>")
-            
+            def replace_title_in_html(html):
+                # Replace <title> tag in the HTML, if needed
+                updated_html = html.replace("<title>Awesome-pyecharts</title>", "<title>QuickEcharts App</title>")
+                # Add JavaScript to reinitialize the chart
+                updated_html += """
+                <script>
+                setTimeout(() => {
+                    // Force ECharts initialization
+                    if (typeof echarts !== 'undefined') {
+                        echarts.init(document.getElementById('chart'));
+                    }
+                }, 100);  // Delay to ensure rendering
+                </script>
+                """
+                return updated_html
+
             # Generate the plot (assumes synchronous plot function)
+            if not hasattr(plot, "has_run"):
+                reactive.invalidate_later(0.1)
+                plot.has_run = True  # Prevent further invalidation loops
             chart = plot_function(**params)
-    
-            # Render the plot (assumes synchronous rendering)
             rendered_file = replace_title_in_html(chart.render_embed())
             return ui.HTML(rendered_file)
         except Exception as e:
