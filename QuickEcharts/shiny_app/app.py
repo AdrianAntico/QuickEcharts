@@ -11,7 +11,6 @@ logger = logging.getLogger(__name__)
 
 app_ui = ui.page_sidebar(
     ui.sidebar(
-        ui.tags.head(ui.tags.title("QuickEcharts App")),
         ui.input_action_button("build_plot", ui.HTML('<i class="fa fa-bar-chart"></i> Build Plot')),
         ui.input_file("dt", "Upload Data Table"),
         ui.input_select("plot_type", "Select Plot Type", choices=list(PLOT_SCHEMAS.keys()), selected="Area"),
