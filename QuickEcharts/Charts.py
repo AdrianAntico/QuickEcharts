@@ -1612,16 +1612,6 @@ def BoxPlot(dt = None,
     if isinstance(YVar, list):
       if len(YVar) > 1:
         GroupVar = None
-        if FacetRows > 1 or FacetCols > 1:
-          if FacetRows * FacetCols < len(YVar):
-            total_facets = len(YVar)
-            FacetRows = (total_facets + FacetCols - 1) // FacetCols
-      else:
-          FacetRows = 1
-          FacetCols = 1
-    elif not GroupVar:
-      FacetRows = 1
-      FacetCols = 1
 
     # Subset Columns
     if GroupVar == None:
@@ -2569,16 +2559,6 @@ def StackedLine(dt = None,
     if isinstance(YVar, list):
       if len(YVar) > 1:
         GroupVar = None
-        if FacetRows > 1 or FacetCols > 1:
-          if FacetRows * FacetCols < len(YVar):
-            total_facets = len(YVar)
-            FacetRows = (total_facets + FacetCols - 1) // FacetCols
-      else:
-          FacetRows = 1
-          FacetCols = 1
-    elif not GroupVar:
-      FacetRows = 1
-      FacetCols = 1
 
     # Subset Columns
     if not GroupVar is None:
@@ -3346,16 +3326,6 @@ def StackedStep(dt = None,
     if isinstance(YVar, list):
       if len(YVar) > 1:
         GroupVar = None
-        if FacetRows > 1 or FacetCols > 1:
-          if FacetRows * FacetCols < len(YVar):
-            total_facets = len(YVar)
-            FacetRows = (total_facets + FacetCols - 1) // FacetCols
-      else:
-          FacetRows = 1
-          FacetCols = 1
-    elif not GroupVar:
-      FacetRows = 1
-      FacetCols = 1
 
     # Subset Columns
     if not GroupVar is None:
@@ -4171,16 +4141,6 @@ def StackedArea(dt = None,
     if isinstance(YVar, list):
       if len(YVar) > 1:
         GroupVar = None
-        if FacetRows > 1 or FacetCols > 1:
-          if FacetRows * FacetCols < len(YVar):
-            total_facets = len(YVar)
-            FacetRows = (total_facets + FacetCols - 1) // FacetCols
-      else:
-          FacetRows = 1
-          FacetCols = 1
-    elif not GroupVar:
-      FacetRows = 1
-      FacetCols = 1
 
     # Subset Columns
     if not GroupVar is None:
@@ -4814,16 +4774,6 @@ def StackedBar(dt = None,
     if isinstance(YVar, list):
       if len(YVar) > 1:
         GroupVar = None
-        if FacetRows > 1 or FacetCols > 1:
-          if FacetRows * FacetCols < len(YVar):
-            total_facets = len(YVar)
-            FacetRows = (total_facets + FacetCols - 1) // FacetCols
-      else:
-          FacetRows = 1
-          FacetCols = 1
-    elif not GroupVar:
-      FacetRows = 1
-      FacetCols = 1
 
     # Subset Columns
     if not GroupVar is None:
