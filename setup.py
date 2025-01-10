@@ -18,7 +18,7 @@ with open(os.path.join(HERE, "requirements.txt"), encoding="utf-8") as f:
 # Setup configuration
 setup(
     name="QuickEcharts",
-    version="1.2.0",
+    version="2.0.0",
     description="Create Echart plots in a single simple function call, with internal data wrangling via polars",
     long_description=README,
     long_description_content_type="text/markdown",
