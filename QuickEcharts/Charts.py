@@ -1,8 +1,8 @@
 # Module: Charts
 # Author: Adrian Antico <adrianantico@gmail.com>
 # License: APGL (>= 3)
-# Release: quickecharts 1.2.0
-# Last modified : 2025-01-05
+# Release: quickecharts 2.0.1
+# Last modified : 2025-01-11
 
 import numpy as np
 import polars as pl

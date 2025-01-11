@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 app_ui = ui.page_sidebar(
     ui.sidebar(
+        ui.input_dark_mode(id="light_dark_mode", mode="dark"),
         ui.input_action_button("build_plot", ui.HTML('<i class="fa fa-bar-chart"></i> Build Plot')),
         ui.input_file("dt", "Upload Data Table"),
         ui.input_select("plot_type", "Select Plot Type", choices=list(PLOT_SCHEMAS.keys()), selected="Area"),
@@ -18,10 +19,10 @@ app_ui = ui.page_sidebar(
     ),
     ui.card(
         ui.card_header("Dynamic Plot Viewer", class_="bg-primary text-white"),  # Add styling classes
-        # ui.card_header("Dynamic Plot Viewer"),
         ui.output_text_verbatim("columns"),
         ui.output_ui("plot"),
-    )
+    ),
+    title = "QuickEcharts"
 )
 
 
@@ -164,20 +165,30 @@ def server(input, output, session):
             plot_function = getattr(Charts, plot_type)
             logger.info(f"Creating {plot_type} plot with parameters: {params}")
             def replace_title_in_html(html):
-                # Replace <title> tag in the HTML, if needed
+                # Replace the title
                 updated_html = html.replace("<title>Awesome-pyecharts</title>", "<title>QuickEcharts App</title>")
-                # Add JavaScript to reinitialize the chart
+                # Add JavaScript for reinitialization
                 updated_html += """
                 <script>
                 setTimeout(() => {
-                    // Force ECharts initialization
+                    // Ensure ECharts is available
                     if (typeof echarts !== 'undefined') {
-                        echarts.init(document.getElementById('chart'));
+                        // Select the chart container
+                        const chartContainer = document.getElementById('chart');
+                        if (chartContainer) {
+                            // Dispose of existing chart instance
+                            const instance = echarts.getInstanceByDom(chartContainer);
+                            if (instance) instance.dispose();
+            
+                            // Reinitialize with the updated theme
+                            echarts.init(chartContainer);
+                        }
                     }
-                }, 100);  // Delay to ensure rendering
+                }, 100);
                 </script>
                 """
                 return updated_html
+
 
             # Generate the plot (assumes synchronous plot function)
             if not hasattr(plot, "has_run"):
