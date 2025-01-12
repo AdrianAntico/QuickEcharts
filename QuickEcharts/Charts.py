@@ -687,6 +687,7 @@ def Histogram(dt = None,
           levs = dt1[GroupVar].unique().sort()[0:(FacetCols * FacetRows)]
       else:
         levs = dt1[GroupVar].unique().sort()
+        DataZoom = False
 
       # Build individual plots
       plot_dict = {}
@@ -778,7 +779,7 @@ def Histogram(dt = None,
     # TimeLine Output
     else:
 
-      tl = Timeline()
+      tl = Timeline(init_opts = opts.InitOpts(**InitOptions))
       for i in levs:
         tl.add(plot_dict[i], i)
 
@@ -982,12 +983,8 @@ def Density(dt = None,
     else:
       
       # Facet Mgt bc only faceting is used for grouped Density visuals
-      print(FacetRows)
-      print(FacetCols)
-      print(FacetRows <= 1 and FacetCols <= 1)
       if FacetRows <= 1 and FacetCols <= 1:
         FacetRows = len(dt1[GroupVar].unique())
-        print(FacetRows)
         FacetCols = 1
       
       # Time utilizes all levels; Facet only uses enough to fill grid
@@ -998,6 +995,7 @@ def Density(dt = None,
           levs = dt1[GroupVar].unique().sort()[0:(FacetCols * FacetRows)]
       else:
         levs = dt1[GroupVar].unique().sort()
+        DataZoom = False
 
       plot_dict = {}
       for i in levs: # i = levs[0]
@@ -1094,7 +1092,7 @@ def Density(dt = None,
     # TimeLine Output
     else:
 
-      tl = Timeline()
+      tl = Timeline(init_opts = opts.InitOpts(**InitOptions))
       for i in levs:
         tl.add(plot_dict[i], i)
 
@@ -2114,7 +2112,7 @@ def Line(dt = None,
         for yvar in YVar:
           yvar_dict[yvar] = dt1[yvar].to_list()
           
-        XVal = dt1[XVar].unique().to_list()
+        XVal = dt1[XVar].unique().sort().to_list()
   
         # Create plot
         InitOptions = initialize_options(
@@ -2182,7 +2180,7 @@ def Line(dt = None,
         for yvar in YVar:
           yvar_dict[yvar] = dt1[yvar].to_list()
           
-        XVal = dt1[XVar].unique().to_list()
+        XVal = dt1[XVar].unique().sort().to_list()
   
         # Create plot
         InitOptions = initialize_options(
@@ -2274,7 +2272,7 @@ def Line(dt = None,
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
 
-        XVal = dt1[XVar].unique().to_list()
+        XVal = dt1[XVar].unique().sort().to_list()
 
         # Create plot
         InitOptions = initialize_options(
@@ -2348,12 +2346,13 @@ def Line(dt = None,
             GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
         else:
           GroupLevels = dt1[GroupVar].unique().sort().to_list()
+          DataZoom = False
 
         for gv in GroupLevels:
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
 
-        XVal = dt1[XVar].unique().to_list()
+        XVal = dt1[XVar].unique().sort().to_list()
         
         # Create plot
         if not Symbol is None:
@@ -2433,7 +2432,7 @@ def Line(dt = None,
 
         # TimeLine Output
         else:
-          tl = Timeline()
+          tl = Timeline(init_opts = opts.InitOpts(**InitOptions))
           for i in GroupLevels:
             tl.add(plot_dict[i], i)
 
@@ -2592,7 +2591,7 @@ def StackedLine(dt = None,
       for yvar in YVar:
         yvar_dict[yvar] = dt1[yvar].to_list()
         
-      XVal = dt1[XVar].unique().to_list()
+      XVal = dt1[XVar].unique().sort().to_list()
 
       # Create plot
       InitOptions = initialize_options(
@@ -2656,7 +2655,7 @@ def StackedLine(dt = None,
         temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
         yvar_dict[gv] = temp[YVar].to_list()
 
-      XVal = dt1[XVar].unique().to_list()
+      XVal = dt1[XVar].unique().sort().to_list()
 
       # Create plot
       InitOptions = initialize_options(
@@ -2881,7 +2880,7 @@ def Step(dt = None,
         for yvar in YVar:
           yvar_dict[yvar] = dt1[yvar].to_list()
           
-        XVal = dt1[XVar].unique().to_list()
+        XVal = dt1[XVar].unique().sort().to_list()
   
         # Create plot
         InitOptions = initialize_options(
@@ -2948,7 +2947,7 @@ def Step(dt = None,
         for yvar in YVar:
           yvar_dict[yvar] = dt1[yvar].to_list()
           
-        XVal = dt1[XVar].unique().to_list()
+        XVal = dt1[XVar].unique().sort().to_list()
   
         # Create plot
         InitOptions = initialize_options(
@@ -3041,7 +3040,7 @@ def Step(dt = None,
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
   
-        XVal = dt1[XVar].unique().to_list()
+        XVal = dt1[XVar].unique().sort().to_list()
 
         # Create plot
         InitOptions = initialize_options(
@@ -3115,12 +3114,13 @@ def Step(dt = None,
             GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
         else:
           GroupLevels = dt1[GroupVar].unique().sort().to_list()
+          DataZoom = False
 
         for gv in GroupLevels:
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
 
-        XVal = dt1[XVar].unique().to_list()
+        XVal = dt1[XVar].unique().sort().to_list()
         
         # Create plot
         if not Symbol is None:
@@ -3202,7 +3202,7 @@ def Step(dt = None,
 
         # TimeLine Output
         else:
-          tl = Timeline()
+          tl = Timeline(init_opts = opts.InitOpts(**InitOptions))
           for i in GroupLevels:
             tl.add(plot_dict[i], i)
 
@@ -3359,7 +3359,7 @@ def StackedStep(dt = None,
       for yvar in YVar:
         yvar_dict[yvar] = dt1[yvar].to_list()
         
-      XVal = dt1[XVar].unique().to_list()
+      XVal = dt1[XVar].unique().sort().to_list()
 
       # Create plot
       InitOptions = initialize_options(
@@ -3423,7 +3423,7 @@ def StackedStep(dt = None,
         temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
         yvar_dict[gv] = temp[YVar].to_list()
 
-      XVal = dt1[XVar].unique().to_list()
+      XVal = dt1[XVar].unique().sort().to_list()
 
       # Create plot
       InitOptions = initialize_options(
@@ -3477,16 +3477,6 @@ def StackedStep(dt = None,
         c.render(f"{RenderHTML}.html")
     
       return c
-
-
-#################################################################################################
-
-def JS_GradientAreaBackground(Color1, Color2):
-    background_color_js = (
-        f"new echarts.graphic.LinearGradient(0, 0, 0, 1, "
-        f"[{{offset: 0, color: '{Color1}'}}, {{offset: 1, color: '{Color2}'}}], false)"
-    )
-    return background_color_js
 
 
 #################################################################################################
@@ -3631,7 +3621,7 @@ def Area(dt = None,
       FacetCols = 1
     
     # Subset Columns
-    if not GroupVar is None:
+    if GroupVar:
       dt1 = dt.select([pl.col(YVar), pl.col(XVar), pl.col(GroupVar)])
     else:
       dt1 = dt.select([pl.col(YVar), pl.col(XVar)])
@@ -3639,7 +3629,10 @@ def Area(dt = None,
     # Agg Data
     if not PreAgg:
       dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = YVar, GroupVariable = GroupVar, DateVariable = XVar)
-      dt1 = dt1.sort(XVar)
+      if GroupVar:
+        dt1 = dt1.sort([GroupVar, XVar])
+      else:
+        dt1 = dt1.sort(XVar)
     
     # Transformation
     if not YVarTrans is None:
@@ -3665,7 +3658,7 @@ def Area(dt = None,
         for yvar in YVar:
           yvar_dict[yvar] = dt1[yvar].to_list()
           
-        XVal = dt1[XVar].unique().to_list()
+        XVal = dt1[XVar].unique().sort().to_list()
   
         # Create plot
         InitOptions = initialize_options(
@@ -3742,7 +3735,7 @@ def Area(dt = None,
         for yvar in YVar:
           yvar_dict[yvar] = dt1[yvar].to_list()
           
-        XVal = dt1[XVar].unique().to_list()
+        XVal = dt1[XVar].unique().sort().to_list()
   
         # Create plot
         InitOptions = initialize_options(
@@ -3838,11 +3831,11 @@ def Area(dt = None,
         
         yvar_dict = {}
         GroupLevels = dt1[GroupVar].unique().sort().to_list()
-        for gv in GroupLevels:
+        for gv in GroupLevels: # gv = GroupLevels[0]
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
   
-        XVal = dt1[XVar].unique().to_list()
+        XVal = XVal = dt1[XVar].unique().sort().to_list()
 
         # Create plot
         InitOptions = initialize_options(
@@ -3915,12 +3908,13 @@ def Area(dt = None,
             GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
         else:
           GroupLevels = dt1[GroupVar].unique().sort().to_list()
+          DataZoom = False
 
         for gv in GroupLevels:
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
 
-        XVal = dt1[XVar].unique().to_list()
+        XVal = dt1[XVar].unique().sort().to_list()
 
         # Create plot
         if not Symbol is None:
@@ -4017,13 +4011,15 @@ def Area(dt = None,
 
         # TimeLine Output
         else:
-          tl = Timeline()
+          tl = Timeline(init_opts = opts.InitOpts(**InitOptions))
           for i in GroupLevels:
             tl.add(plot_dict[i], i)
 
           # Render html
           if RenderHTML:
             tl.render(f"{RenderHTML}.html")
+
+          return tl
 
 
 #################################################################################################
@@ -4174,7 +4170,7 @@ def StackedArea(dt = None,
       for yvar in YVar:
         yvar_dict[yvar] = dt1[yvar].to_list()
         
-      XVal = dt1[XVar].unique().to_list()
+      XVal = dt1[XVar].unique().sort().to_list()
 
       # Create plot
       InitOptions = initialize_options(
@@ -4240,7 +4236,7 @@ def StackedArea(dt = None,
         temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
         yvar_dict[gv] = temp[YVar].to_list()
 
-      XVal = dt1[XVar].unique().to_list()
+      XVal = dt1[XVar].unique().sort().to_list()
 
       # Create plot
       InitOptions = initialize_options(
@@ -4462,7 +4458,7 @@ def Bar(dt = None,
       for yvar in YVar:
         yvar_dict[yvar] = dt1[yvar].to_list()
         
-      XVal = dt1[XVar].unique().to_list()
+      XVal = dt1[XVar].unique().sort().to_list()
 
       # Create plot
       InitOptions = initialize_options(
@@ -4525,7 +4521,7 @@ def Bar(dt = None,
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
 
-        XVal = dt1[XVar].unique().to_list()
+        XVal = dt1[XVar].unique().sort().to_list()
 
         # Create plot
         InitOptions = initialize_options(
@@ -4596,12 +4592,13 @@ def Bar(dt = None,
             GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
         else:
           GroupLevels = dt1[GroupVar].unique().sort().to_list()
+          DataZoom = False
 
         for gv in GroupLevels:
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
 
-        XVal = dt1[XVar].unique().to_list()
+        XVal = dt1[XVar].unique().sort().to_list()
 
         # Create plot
         for i in GroupLevels:# i = 'Yellow-Yum'
@@ -4656,7 +4653,7 @@ def Bar(dt = None,
 
         # TimeLine Output
         else:
-          tl = Timeline()
+          tl = Timeline(init_opts = opts.InitOpts(**InitOptions))
           for i in GroupLevels:
             tl.add(plot_dict[i], i)
           
@@ -4807,7 +4804,7 @@ def StackedBar(dt = None,
       for yvar in YVar:
         yvar_dict[yvar] = dt1[yvar].to_list()
         
-      XVal = dt1[XVar].unique().to_list()
+      XVal = dt1[XVar].unique().sort().to_list()
 
       # Create plot
       InitOptions = initialize_options(
@@ -4863,7 +4860,7 @@ def StackedBar(dt = None,
         temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
         yvar_dict[gv] = temp[YVar].to_list()
 
-      XVal = dt1[XVar].unique().to_list()
+      XVal = dt1[XVar].unique().sort().to_list()
 
       # Create plot
       InitOptions = initialize_options(
@@ -5382,6 +5379,7 @@ def Scatter(dt = None,
             GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
         else:
           GroupLevels = dt1[GroupVar].unique().sort().to_list()
+          DataZoom = False
 
         yvar_dict = {}
         xvar_dict = {}
@@ -5467,7 +5465,7 @@ def Scatter(dt = None,
 
         # TimeLine Output
         else:
-          tl = Timeline()
+          tl = Timeline(init_opts = opts.InitOpts(**InitOptions))
           for i in GroupLevels:
             tl.add(plot_dict[i], i)
 
@@ -6036,6 +6034,7 @@ def Copula(dt = None,
             GroupLevels = FacetLevels[0:(FacetCols * FacetRows)]
         else:
           GroupLevels = dt1[GroupVar].unique().sort().to_list()
+          DataZoom = False
 
         yvar_dict = {}
         xvar_dict = {}
@@ -6122,7 +6121,7 @@ def Copula(dt = None,
         # TimeLine Output
         else:
 
-          tl = Timeline()
+          tl = Timeline(init_opts = opts.InitOpts(**InitOptions))
           for i in GroupLevels:
             tl.add(plot_dict[i], i)
 
@@ -6422,14 +6421,14 @@ def Bar3D(dt = None,
     # Agg Data
     if not PreAgg:
       dt1 = PolarsAggregation(dt1, AggMethod, NumericVariable = ZVar, GroupVariable = [YVar, XVar], DateVariable = None)
-      dt1 = dt1.sort(YVar)
+      dt1 = dt1.sort([XVar, YVar])
 
     # Transformation
     if not ZVarTrans is None:
       dt1 = NumericTransformation(dt1, ZVar, Trans = ZVarTrans.lower())
 
-    XVal = dt1[XVar].unique().to_list()
-    YVal = dt1[YVar].unique().to_list()
+    XVal = dt1[XVar].unique().sort().to_list()
+    YVal = dt1[YVar].unique().sort().to_list()
 
     # Creating Cross Join from lists
     total_len = len(YVal) * len(XVal)

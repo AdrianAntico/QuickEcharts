@@ -15,7 +15,9 @@ app_ui = ui.page_sidebar(
         ui.input_action_button("build_plot", ui.HTML('<i class="fa fa-bar-chart"></i> Build Plot')),
         ui.input_file("dt", "Upload Data Table"),
         ui.input_select("plot_type", "Select Plot Type", choices=list(PLOT_SCHEMAS.keys()), selected="Area"),
-        ui.output_ui("dynamic_inputs")
+        ui.output_ui("dynamic_inputs"),
+        width="325px",
+        gap="25px"
     ),
     ui.card(
         ui.card_header("Dynamic Plot Viewer", class_="bg-primary text-white"),  # Add styling classes
