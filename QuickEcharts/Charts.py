@@ -5029,6 +5029,8 @@ def Heatmap(dt = None,
     xvar_unique = dt1[XVar].unique().to_list()
     yvar_unique = dt1[YVar].unique().to_list()
     measurevar_unique = dt1[MeasureVar].unique().to_list()
+    MinVal = dt1[MeasureVar].min()
+    MaxVal = dt1[MeasureVar].max()
     
     # Creating Cross Join from lists
     total_len = len(yvar_unique) * len(xvar_unique)
@@ -5086,7 +5088,7 @@ def Heatmap(dt = None,
 
     GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
     GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-    GlobalOptions['visualmap_opts'] = opts.VisualMapOpts(range_color = RangeColor),
+    GlobalOptions['visualmap_opts'] = opts.VisualMapOpts(range_color = RangeColor, min_=MinVal, max_=MaxVal)
  
     if DataZoom:
       GlobalOptions['datazoom_opts'] = get_datazoom_options()
