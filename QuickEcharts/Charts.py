@@ -7,6 +7,8 @@
 import numpy as np
 import polars as pl
 import math
+import re
+from typing import List, Optional, Union
 from pyecharts import options as opts
 from pyecharts.commons.utils import JsCode
 from pyecharts.charts import (
@@ -151,6 +153,135 @@ def PolarsAggregation(dt, AggMethod, NumericVariable, GroupVariable, DateVariabl
   return(dt)
 
 
+_STYLE_RE = re.compile(
+    r'style="[^"]*width:\s*[^;"]+;\s*height:\s*[^;"]+;?[^"]*"',
+    re.IGNORECASE
+)
+
+def display_plots_grid(
+    plots: List[Union[object, str]],
+    cols: Optional[int] = None,
+    container_class: str = "plot-card",
+    grid_class: str = "plot-grid",
+    render: str = "html",
+    filename: str = "plots_grid.html",
+    item_height: int = 360,
+    fix_pyecharts: bool = True,
+):
+    if not isinstance(plots, list):
+        raise TypeError("`plots` must be a list.")
+    nplots = len(plots)
+
+    # --- grid CSS ---
+    explicit_cols = cols is not None
+    if explicit_cols:
+        if not (isinstance(cols, int) and cols >= 1):
+            raise ValueError("`cols` must be a positive integer or None.")
+        grid_style = (
+            f"display:grid;"
+            f"grid-template-columns:repeat({cols},1fr);"
+            f"gap:20px;"
+            f"align-items:start;"   # top-align, avoids tall empty cells
+        )
+    else:
+        grid_style = (
+            "display:grid;"
+            "grid-template-columns:repeat(auto-fit,minmax(350px,1fr));"
+            "gap:20px;"
+            "align-items:start;"
+        )
+
+    # last-row span logic (span all when one chart in last row)
+    if explicit_cols:
+        r = nplots % cols
+        plots_in_last_row = cols if (r == 0 and nplots > 0) else r
+    else:
+        plots_in_last_row = None
+
+    def _to_html(p) -> str:
+        if hasattr(p, "render_embed") and callable(getattr(p, "render_embed")):
+            html = p.render_embed()
+        elif hasattr(p, "_repr_html_") and callable(getattr(p, "_repr_html_")):
+            html = p._repr_html_() or ""
+        elif isinstance(p, str):
+            html = p
+        else:
+            html = str(p)
+
+        # Make embedded pyecharts divs responsive
+        if fix_pyecharts and html:
+            html = _STYLE_RE.sub(
+                f'style="width:100%;height:{int(item_height)}px;"', html
+            )
+        return html
+
+    wrapped = []
+    for i, p in enumerate(plots, start=1):
+        span_all = explicit_cols and plots_in_last_row == 1 and i > nplots - plots_in_last_row
+        style_attr = f' style="grid-column: span {cols};"' if span_all else ""
+        wrapped.append(f'<div class="{container_class}"{style_attr}>\n{_to_html(p)}\n</div>')
+
+    grid_html = (
+        f'<div class="{grid_class}" style="{grid_style}">\n'
+        + "\n".join(wrapped)
+        + "\n</div>"
+    )
+
+    if render == "return":
+        return grid_html
+
+    if render == "inline":
+        try:
+            from IPython.display import HTML, display
+            display(HTML(grid_html))
+            return
+        except ImportError:
+            # fall through to returning string if not in a notebook
+            return grid_html
+
+    if render == "html":
+        # Build a full, self-contained HTML page with ECharts CDN
+        full_html = f"""<!DOCTYPE html>
+        <html lang="en">
+        <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>Plots Grid</title>
+        <!-- ECharts v5 CDN (needed for pyecharts embeds) -->
+        <script src="https://assets.pyecharts.org/assets/v5/echarts.min.js"></script>
+        <style>
+          html, body {{
+            margin: 0; padding: 0; background: #0b0d17; color: #e8ebf1;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+          }}
+          .page-wrap {{
+            max-width: 1600px; margin: 24px auto; padding: 0 16px;
+          }}
+          .{grid_class} {{
+            /* inline style applied too, but keeping class for future CSS overrides */
+          }}
+          .{container_class} {{
+            background: #0f1323; border-radius: 12px; padding: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+          }}
+        </style>
+        </head>
+        <body>
+          <div class="page-wrap">
+          {grid_html}
+          </div>
+        </body>
+        </html>
+        """
+        with open(filename, "w", encoding="utf-8") as f:
+            f.write(full_html)
+        print(f"✅ Saved grid to {filename}")
+        return
+
+    raise ValueError("`render` must be 'inline', 'html', or 'return'.")
+
+
+
 def FacetGridValues(
     FacetRows=1, 
     FacetCols=1, 
@@ -227,7 +358,6 @@ def FacetGridValues(
         "Width_f": width - 5,  # Subtract 5 for panel adjustments
         "Height_f": height
     }
-
 
 
 def Animation(AnimationThreshold, AnimationDuration, AnimationEasing, AnimationDelay, AnimationDurationUpdate, AnimationEasingUpdate, AnimationDelayUpdate):
