@@ -5088,7 +5088,7 @@ def Heatmap(dt = None,
 
     GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
     GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
-    GlobalOptions['visualmap_opts'] = opts.VisualMapOpts(range_color = RangeColor, min_=MinVal, max_=MaxVal)
+    GlobalOptions['visualmap_opts'] = opts.VisualMapOpts(range_color = RangeColor, min_=MinVal, max_=MaxVal, precision=5)
  
     if DataZoom:
       GlobalOptions['datazoom_opts'] = get_datazoom_options()

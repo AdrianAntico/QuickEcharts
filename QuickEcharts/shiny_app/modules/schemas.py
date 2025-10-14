@@ -6,7 +6,7 @@ PLOT_SCHEMAS = {
       "YVar": {"type": "multi-select", "label": "Y Variable", "default": None},
       "XVar": {"type": "select", "label": "X Variable", "default": None},
       "GroupVar": {"type": "select", "label": "Group Variable", "default": None},
-      "TimeLine": {"type": "checkbox", "label": "Create Timeline", "default": False},
+      "TiemLine": {"type": "checkbox", "label": "Create Timeline", "default": False},
       "FacetRows": {"type": "select", "label": "Facet Rows",  "options": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "default": 1},
       "FacetCols": {"type": "select", "label": "Facet Columns", "options": [1,2,3,4], "default": 1},
       "AggMethod": {
