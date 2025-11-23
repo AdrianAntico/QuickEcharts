@@ -1,43 +1,50 @@
 # Copyright (C) 2024 Adrian Antico <adrianantico@gmail.com>
-# License: AGPL (>= 3), adrianantico@gmail.com
+# License: MIT, adrianantico@gmail.com
 
 from setuptools import setup, find_packages
-import os
+from pathlib import Path
 
-# The directory containing this file
-HERE = os.path.dirname(os.path.abspath(__file__))
+# Project directory
+HERE = Path(__file__).parent.resolve()
 
 # Read the README file
-with open(os.path.join(HERE, "README.md"), encoding="utf-8") as fid:
-    README = fid.read()
+README = (HERE / "README.md").read_text(encoding="utf-8")
 
 # Read the requirements file
-with open(os.path.join(HERE, "requirements.txt"), encoding="utf-8") as f:
-    required = f.read().splitlines()
+required = (HERE / "requirements.txt").read_text(encoding="utf-8").splitlines()
 
-# Setup configuration
 setup(
     name="QuickEcharts",
-    version="2.1.1",
-    description="Create Echart plots in a single simple function call, with internal data wrangling via polars",
+    version="2.1.2",  # bump when you're ready (e.g., 2.2.0 or 2.1.3)
+    description="Create ECharts plots in a single simple function call, with internal data wrangling via polars",
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/AdrianAntico/QuickEcharts",
     author="Adrian Antico",
     author_email="adrianantico@gmail.com",
-    license="AGPL >= 3",
-    packages=[
-        "QuickEcharts",
-        "QuickEcharts.shiny_app",
-        "QuickEcharts.shiny_app.modules",
-    ],
+    license="MIT",
+    python_requires=">=3.10",
+    packages=find_packages(),
     include_package_data=True,  # Ensure non-Python files are included
     package_data={
-        "QuickEcharts": ["shiny_app/www/*"],  # Include static files
+        "QuickEcharts": [
+            "shiny_app/www/*",
+        ],
     },
     install_requires=required,
     classifiers=[
+        "Development Status :: 4 - Beta",
+        "License :: OSI Approved :: MIT License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
+        "Operating System :: OS Independent",
+        "Intended Audience :: Developers",
+        "Intended Audience :: Science/Research",
+        "Topic :: Scientific/Engineering :: Visualization",
     ],
 )
