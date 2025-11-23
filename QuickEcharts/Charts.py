@@ -158,6 +158,7 @@ _STYLE_RE = re.compile(
     re.IGNORECASE
 )
 
+
 def display_plots_grid(
     plots: List[Union[object, str]],
     cols: Optional[int] = None,
@@ -573,7 +574,8 @@ def configure_global_chart_options(
     - The updated GlobalOptions dictionary.
     """
     # Add or update tooltip options
-    global_options["tooltip_opts"] = opts.TooltipOpts(trigger="axis", axis_pointer_type=axis_pointer_type)
+    if not axis_pointer_type is None:
+        global_options["tooltip_opts"] = opts.TooltipOpts(trigger="axis", axis_pointer_type=axis_pointer_type)
 
     # Add brush options if enabled
     if brush:
@@ -1237,7 +1239,7 @@ def Density(dt = None,
 
 
 def Pie(dt = None,
-        PreAgg = False,
+        PreAgg = True,
         YVar = None,
         GroupVar = None,
         AggMethod = 'count',
@@ -1370,7 +1372,7 @@ def Pie(dt = None,
 
 
 def Rosetype(dt = None,
-             PreAgg = False,
+             PreAgg = True,
              YVar = None,
              GroupVar = None,
              AggMethod = 'count',
@@ -1509,7 +1511,7 @@ def Rosetype(dt = None,
 
 
 def Donut(dt = None,
-          PreAgg = False,
+          PreAgg = True,
           YVar = None,
           GroupVar = None,
           AggMethod = 'count',
@@ -2074,7 +2076,7 @@ def Radar(dt = None,
 
 
 def Line(dt = None,
-         PreAgg = False,
+         PreAgg = True,
          YVar = None,
          XVar = None,
          GroupVar = None,
@@ -2241,7 +2243,7 @@ def Line(dt = None,
           YVar = [YVar]
         for yvar in YVar:
           yvar_dict[yvar] = dt1[yvar].to_list()
-          
+
         XVal = dt1[XVar].unique().sort().to_list()
   
         # Create plot
@@ -2252,7 +2254,7 @@ def Line(dt = None,
           animation_duration_update=AnimationDurationUpdate, 
           animation_easing_update=AnimationEasingUpdate,
           animation_delay_update=AnimationDelayUpdate)
-  
+
         # Create plot
         c = PyLine(init_opts = opts.InitOpts(**InitOptions))
         c = c.add_xaxis(xaxis_data = XVal)
@@ -2271,22 +2273,22 @@ def Line(dt = None,
             linestyle_opts = opts.LineStyleOpts(width = LineWidth),
             label_opts = opts.LabelOpts(is_show = ShowLabels, position = LabelPosition),
           )
-  
+
         # Global Options
         GlobalOptions = {}
         GlobalOptions['legend_opts'] = configure_legend_options(
           legend=Legend, legend_pos_right=LegendPosRight, legend_pos_top=LegendPosTop,
           legend_border_size=LegendBorderSize, legend_text_color=LegendTextColor)
-    
+
         if not Title is None:
           GlobalOptions['title_opts'] = get_title_options(Title, SubTitle, TitleColor, SubTitleColor, TitleFontSize, SubTitleFontSize)
-  
+
         GlobalOptions['xaxis_opts'] = opts.AxisOpts(name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap, axislabel_opts=opts.LabelOpts(rotate=45))
         GlobalOptions['yaxis_opts'] = opts.AxisOpts(name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
         GlobalOptions = configure_global_chart_options(
           global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
           brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
-  
+
         # Final Setting of Global Options
         c = c.set_global_opts(**GlobalOptions)
     
@@ -2294,7 +2296,7 @@ def Line(dt = None,
         c = configure_marklines(
           chart=c, horizontal_line=HorizontalLine, horizontal_line_name=HorizontalLineName,
           vertical_line=VerticalLine, vertical_line_name=VerticalLineName)
-          
+  
         # Render html
         if RenderHTML:
           c.render(f"{RenderHTML}.html")
@@ -2577,7 +2579,7 @@ def Line(dt = None,
 
 
 def StackedLine(dt = None,
-                PreAgg = False,
+                PreAgg = True,
                 YVar = None,
                 XVar = None,
                 GroupVar = None,
@@ -2845,7 +2847,7 @@ def StackedLine(dt = None,
 
 
 def Step(dt = None,
-         PreAgg = False,
+         PreAgg = True,
          YVar = None,
          XVar = None,
          GroupVar = None,
@@ -3347,7 +3349,7 @@ def Step(dt = None,
 
 
 def StackedStep(dt = None,
-                PreAgg = False,
+                PreAgg = True,
                 YVar = None,
                 XVar = None,
                 GroupVar = None,
@@ -3613,7 +3615,7 @@ def StackedStep(dt = None,
 
 
 def Area(dt = None,
-         PreAgg = False,
+         PreAgg = True,
          YVar = None,
          XVar = None,
          GroupVar = None,
@@ -4156,7 +4158,7 @@ def Area(dt = None,
 
 
 def StackedArea(dt = None,
-                PreAgg = False,
+                PreAgg = True,
                 YVar = None,
                 XVar = None,
                 GroupVar = None,
@@ -4427,7 +4429,7 @@ def StackedArea(dt = None,
 
 
 def Bar(dt = None,
-        PreAgg = False,
+        PreAgg = True,
         YVar = None,
         XVar = None,
         GroupVar = None,
@@ -4798,7 +4800,7 @@ def Bar(dt = None,
 
 
 def StackedBar(dt = None,
-               PreAgg = False,
+               PreAgg = True,
                YVar = None,
                XVar = None,
                GroupVar = None,
@@ -5041,7 +5043,7 @@ def StackedBar(dt = None,
 
 
 def Heatmap(dt = None,
-            PreAgg = False,
+            PreAgg = True,
             YVar = None,
             XVar = None,
             MeasureVar = None,
@@ -5414,7 +5416,7 @@ def Scatter(dt = None,
       GlobalOptions['xaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), type_ = "value", name = XAxisTitle, name_location = XAxisNameLocation, name_gap = XAxisNameGap)
       GlobalOptions['yaxis_opts'] = opts.AxisOpts(splitline_opts=opts.SplitLineOpts(is_show=True), name = YAxisTitle, name_location = YAxisNameLocation, name_gap = YAxisNameGap)
       GlobalOptions = configure_global_chart_options(
-        global_options=GlobalOptions, axis_pointer_type=AxisPointerType,
+        global_options=GlobalOptions, axis_pointer_type=None,
         brush=Brush, data_zoom=DataZoom, toolbox=ToolBox)
 
       # Final Setting of Global Options
@@ -6474,7 +6476,7 @@ def Funnel(CategoryVar = None,
 
 
 def Bar3D(dt = None,
-          PreAgg = False,
+          PreAgg = True,
           YVar = None,
           XVar = None,
           ZVar = None,
@@ -6631,7 +6633,7 @@ def Bar3D(dt = None,
 
 
 def River(dt = None,
-          PreAgg = False,
+          PreAgg = True,
           YVars = None,
           DateVar = None,
           GroupVar = None,
