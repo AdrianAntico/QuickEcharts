@@ -15,7 +15,7 @@ required = (HERE / "requirements.txt").read_text(encoding="utf-8").splitlines()
 
 setup(
     name="QuickEcharts",
-    version="2.1.2",
+    version="2.1.3",
     description="Create ECharts plots in a single simple function call, with internal data wrangling via polars",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -25,7 +25,7 @@ setup(
     license="MIT",
     python_requires=">=3.10",
     packages=find_packages(),
-    include_package_data=True,  # Ensure non-Python files are included
+    include_package_data=True,
     package_data={
         "QuickEcharts": [
             "shiny_app/www/*",

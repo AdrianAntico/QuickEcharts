@@ -2244,7 +2244,7 @@ def Line(dt = None,
         for yvar in YVar:
           yvar_dict[yvar] = dt1[yvar].to_list()
 
-        XVal = dt1[XVar].unique().sort().to_list()
+        XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
   
         # Create plot
         InitOptions = initialize_options(
@@ -2312,7 +2312,7 @@ def Line(dt = None,
         for yvar in YVar:
           yvar_dict[yvar] = dt1[yvar].to_list()
           
-        XVal = dt1[XVar].unique().sort().to_list()
+        XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
   
         # Create plot
         InitOptions = initialize_options(
@@ -2404,7 +2404,7 @@ def Line(dt = None,
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
 
-        XVal = dt1[XVar].unique().sort().to_list()
+        XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
 
         # Create plot
         InitOptions = initialize_options(
@@ -2484,7 +2484,7 @@ def Line(dt = None,
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
 
-        XVal = dt1[XVar].unique().sort().to_list()
+        XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
         
         # Create plot
         if not Symbol is None:
@@ -2723,7 +2723,7 @@ def StackedLine(dt = None,
       for yvar in YVar:
         yvar_dict[yvar] = dt1[yvar].to_list()
         
-      XVal = dt1[XVar].unique().sort().to_list()
+      XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
 
       # Create plot
       InitOptions = initialize_options(
@@ -2787,7 +2787,7 @@ def StackedLine(dt = None,
         temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
         yvar_dict[gv] = temp[YVar].to_list()
 
-      XVal = dt1[XVar].unique().sort().to_list()
+      XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
 
       # Create plot
       InitOptions = initialize_options(
@@ -3012,7 +3012,7 @@ def Step(dt = None,
         for yvar in YVar:
           yvar_dict[yvar] = dt1[yvar].to_list()
           
-        XVal = dt1[XVar].unique().sort().to_list()
+        XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
   
         # Create plot
         InitOptions = initialize_options(
@@ -3079,7 +3079,7 @@ def Step(dt = None,
         for yvar in YVar:
           yvar_dict[yvar] = dt1[yvar].to_list()
           
-        XVal = dt1[XVar].unique().sort().to_list()
+        XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
   
         # Create plot
         InitOptions = initialize_options(
@@ -3172,7 +3172,7 @@ def Step(dt = None,
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
   
-        XVal = dt1[XVar].unique().sort().to_list()
+        XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
 
         # Create plot
         InitOptions = initialize_options(
@@ -3252,7 +3252,7 @@ def Step(dt = None,
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
 
-        XVal = dt1[XVar].unique().sort().to_list()
+        XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
         
         # Create plot
         if not Symbol is None:
@@ -3491,7 +3491,7 @@ def StackedStep(dt = None,
       for yvar in YVar:
         yvar_dict[yvar] = dt1[yvar].to_list()
         
-      XVal = dt1[XVar].unique().sort().to_list()
+      XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
 
       # Create plot
       InitOptions = initialize_options(
@@ -3555,7 +3555,7 @@ def StackedStep(dt = None,
         temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
         yvar_dict[gv] = temp[YVar].to_list()
 
-      XVal = dt1[XVar].unique().sort().to_list()
+      XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
 
       # Create plot
       InitOptions = initialize_options(
@@ -3790,7 +3790,7 @@ def Area(dt = None,
         for yvar in YVar:
           yvar_dict[yvar] = dt1[yvar].to_list()
           
-        XVal = dt1[XVar].unique().sort().to_list()
+        XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
   
         # Create plot
         InitOptions = initialize_options(
@@ -3867,7 +3867,7 @@ def Area(dt = None,
         for yvar in YVar:
           yvar_dict[yvar] = dt1[yvar].to_list()
           
-        XVal = dt1[XVar].unique().sort().to_list()
+        XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
   
         # Create plot
         InitOptions = initialize_options(
@@ -3967,7 +3967,7 @@ def Area(dt = None,
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
   
-        XVal = XVal = dt1[XVar].unique().sort().to_list()
+        XVal = XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
 
         # Create plot
         InitOptions = initialize_options(
@@ -4046,7 +4046,7 @@ def Area(dt = None,
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
 
-        XVal = dt1[XVar].unique().sort().to_list()
+        XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
 
         # Create plot
         if not Symbol is None:
@@ -4302,7 +4302,7 @@ def StackedArea(dt = None,
       for yvar in YVar:
         yvar_dict[yvar] = dt1[yvar].to_list()
         
-      XVal = dt1[XVar].unique().sort().to_list()
+      XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
 
       # Create plot
       InitOptions = initialize_options(
@@ -4368,7 +4368,7 @@ def StackedArea(dt = None,
         temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
         yvar_dict[gv] = temp[YVar].to_list()
 
-      XVal = dt1[XVar].unique().sort().to_list()
+      XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
 
       # Create plot
       InitOptions = initialize_options(
@@ -4590,7 +4590,7 @@ def Bar(dt = None,
       for yvar in YVar:
         yvar_dict[yvar] = dt1[yvar].to_list()
         
-      XVal = dt1[XVar].unique().sort().to_list()
+      XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
 
       # Create plot
       InitOptions = initialize_options(
@@ -4653,7 +4653,7 @@ def Bar(dt = None,
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
 
-        XVal = dt1[XVar].unique().sort().to_list()
+        XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
 
         # Create plot
         InitOptions = initialize_options(
@@ -4730,7 +4730,7 @@ def Bar(dt = None,
           temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
           yvar_dict[gv] = temp[YVar].to_list()
 
-        XVal = dt1[XVar].unique().sort().to_list()
+        XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
 
         # Create plot
         for i in GroupLevels:# i = 'Yellow-Yum'
@@ -4936,7 +4936,7 @@ def StackedBar(dt = None,
       for yvar in YVar:
         yvar_dict[yvar] = dt1[yvar].to_list()
         
-      XVal = dt1[XVar].unique().sort().to_list()
+      XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
 
       # Create plot
       InitOptions = initialize_options(
@@ -4992,7 +4992,7 @@ def StackedBar(dt = None,
         temp = dt1.filter(dt1[GroupVar] == gv).select(YVar)
         yvar_dict[gv] = temp[YVar].to_list()
 
-      XVal = dt1[XVar].unique().sort().to_list()
+      XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
 
       # Create plot
       InitOptions = initialize_options(
@@ -6561,7 +6561,7 @@ def Bar3D(dt = None,
     if not ZVarTrans is None:
       dt1 = NumericTransformation(dt1, ZVar, Trans = ZVarTrans.lower())
 
-    XVal = dt1[XVar].unique().sort().to_list()
+    XVal = dt1[XVar].to_list()  # .unique().sort().to_list()
     YVal = dt1[YVar].unique().sort().to_list()
 
     # Creating Cross Join from lists
