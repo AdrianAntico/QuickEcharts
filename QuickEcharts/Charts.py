@@ -1647,6 +1647,7 @@ def BoxPlot(dt = None,
             SampleSize = None,
             YVar = None,
             GroupVar = None,
+            Orientation = "vertical",
             YVarTrans = None,
             RenderHTML = None,
             Theme = 'wonderland',
@@ -1689,6 +1690,7 @@ def BoxPlot(dt = None,
     dt: polars dataframe
     YVar: numeric variable
     GroupVar: grouping variable
+    Orientation: 'vertical' has a box spanning up and down the y-axis. 'horizontal' is the opposite
     YVarTrans: apply a numeric transformation on your YVar values. Choose from log, logmin, sqrt, asinh, and perc_rank
     RenderHTML: None or a quoted file name
     Title: title of plot in quotes
@@ -1727,7 +1729,6 @@ def BoxPlot(dt = None,
     AnimationDelayUpdate: Default 0
     """
     
-
     if XAxisTitle == None and not GroupVar is None:
       XAxisTitle = GroupVar
 
@@ -1792,6 +1793,10 @@ def BoxPlot(dt = None,
       else:
         YVal = [dt1[YVar].to_list()]
         c = c.add_yaxis(YVar, c.prepare_data(YVal))
+
+    # Flip axes for horizontal orientation
+    if Orientation.lower() == "horizontal":
+        c = c.reversal_axis()
 
     # Global Options
     GlobalOptions = {}
