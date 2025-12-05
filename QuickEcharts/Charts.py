@@ -1775,8 +1775,8 @@ def BoxPlot(dt = None,
     # Create plot
     c = Boxplot(init_opts = opts.InitOpts(**InitOptions))
     if not GroupVar is None:
-      Buckets = dt1[GroupVar].unique().to_list()
-      Buckets.sort()
+      Buckets = list(dict.fromkeys(dt1[GroupVar].to_list()))
+      Buckets = Buckets[::-1]
       bucket_data = []
       c = c.add_xaxis(Buckets)
       for i in Buckets: # i = 'Angel'
