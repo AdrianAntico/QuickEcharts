@@ -1,8 +1,8 @@
 # Module: Charts
 # Author: Adrian Antico <adrianantico@gmail.com>
-# License: APGL (>= 3)
-# Release: quickecharts 2.0.1
-# Last modified : 2025-01-11
+# License: MIT
+# Release: quickecharts 2.1.6
+# Last modified : 2025-12-13
 
 import numpy as np
 import polars as pl
@@ -2094,7 +2094,7 @@ def Line(dt = None,
          RenderHTML = None,
          SmoothLine = True,
          LineWidth = 2,
-         Symbol = "emptyCircle",
+         Symbol = None,
          SymbolSize = 6,
          ShowLabels = False,
          LabelPosition = "top",
@@ -5161,35 +5161,18 @@ def Heatmap(dt = None,
     # Transformation
     if not MeasureVarTrans is None:
       dt1 = NumericTransformation(dt1, MeasureVar, Trans = MeasureVarTrans.lower())
-  
+      
+    classes = sorted(
+            set(dt1["true_class"].to_list()) | set(dt1["pred_class"].to_list())
+        )
+
     # Variable Creation
-    xvar_unique = dt1[XVar].unique().to_list()
-    yvar_unique = dt1[YVar].unique().to_list()
-    measurevar_unique = dt1[MeasureVar].unique().to_list()
     MinVal = dt1[MeasureVar].min()
     MaxVal = dt1[MeasureVar].max()
-    
-    # Creating Cross Join from lists
-    total_len = len(yvar_unique) * len(xvar_unique)
-    dt2 = pl.DataFrame({
-      YVar: yvar_unique * len(xvar_unique),
-      XVar: xvar_unique * len(yvar_unique)
-    })
-
-    dt2 = dt2.sort(YVar)
-    dt2 = dt2.join(dt1, on = [YVar, XVar], how = "left")
-
-    max_counter = dt2.shape[0]
-    data = [[0,0,0]] * max_counter
-    counter = -1
-    for i in range(len(xvar_unique)):# counter = 75
-      temp_xval = dt1[XVar][i]
-      for j in range(len(yvar_unique)):
-        counter += 1
-        if dt2[MeasureVar][counter] is None:
-          data[counter] = [i, j, 0]
-        else:
-          data[counter] = [i, j, dt2[MeasureVar][counter]]
+    data_triplets = [
+            [r[1], r[0], float(r[2])]   # [pred, true, value]
+            for r in dt1.select(["true_class", "pred_class", "value"]).rows()
+        ]
 
     # Create plot
     InitOptions = initialize_options(
@@ -5202,11 +5185,11 @@ def Heatmap(dt = None,
 
     # Create plot
     c = HeatMap(init_opts = opts.InitOpts(**InitOptions))
-    c = c.add_xaxis(xvar_unique)
+    c = c.add_xaxis(classes)
     c = c.add_yaxis(
       series_name = MeasureVar,
-      yaxis_data = yvar_unique,
-      value = data,
+      yaxis_data = classes,
+      value = data_triplets,
       label_opts = opts.LabelOpts(
         is_show = ShowLabels,
         color = LabelColor,

@@ -15,7 +15,7 @@ required = (HERE / "requirements.txt").read_text(encoding="utf-8").splitlines()
 
 setup(
     name="QuickEcharts",
-    version="2.1.5",
+    version="2.1.6",
     description="Create ECharts plots in a single simple function call, with internal data wrangling via polars",
     long_description=README,
     long_description_content_type="text/markdown",
