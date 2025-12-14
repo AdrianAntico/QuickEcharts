@@ -195,7 +195,7 @@ def test_Bar3D():
     
 def test_Heatmap():
     df = _get_data()
-    x = Charts.Heatmap(dt=df, MeasureVar='integer', YVar='date', XVar='string')
+    x = Charts.Heatmap(dt=df, MeasureVar='float', YVar='integer', XVar='string')
     assert isinstance(x, pyecharts.charts.basic_charts.heatmap.HeatMap)
 
 def test_Scatter():

@@ -5162,16 +5162,21 @@ def Heatmap(dt = None,
     if not MeasureVarTrans is None:
       dt1 = NumericTransformation(dt1, MeasureVar, Trans = MeasureVarTrans.lower())
       
-    classes = sorted(
-            set(dt1[YVar].to_list()) | set(dt1[XVar].to_list())
+    values = set(dt1[YVar].to_list()) | set(dt1[XVar].to_list())
+
+    classes = [
+        v for _, v in sorted(
+            ((str(v), v) for v in values),
+            key=lambda t: t[0]
         )
+    ]
 
     # Variable Creation
     MinVal = dt1[MeasureVar].min()
     MaxVal = dt1[MeasureVar].max()
     data_triplets = [
-            [r[1], r[0], float(r[2])]   # [pred, true, value]
-            for r in dt1.select([YVar, XVar, "value"]).rows()
+            [r[1], r[0], float(r[2])]
+            for r in dt1.select([YVar, XVar, MeasureVar]).rows()
         ]
 
     # Create plot
