@@ -5163,7 +5163,7 @@ def Heatmap(dt = None,
       dt1 = NumericTransformation(dt1, MeasureVar, Trans = MeasureVarTrans.lower())
       
     classes = sorted(
-            set(dt1["true_class"].to_list()) | set(dt1["pred_class"].to_list())
+            set(dt1[YVar].to_list()) | set(dt1[XVar].to_list())
         )
 
     # Variable Creation
@@ -5171,7 +5171,7 @@ def Heatmap(dt = None,
     MaxVal = dt1[MeasureVar].max()
     data_triplets = [
             [r[1], r[0], float(r[2])]   # [pred, true, value]
-            for r in dt1.select(["true_class", "pred_class", "value"]).rows()
+            for r in dt1.select([YVar, XVar, "value"]).rows()
         ]
 
     # Create plot
